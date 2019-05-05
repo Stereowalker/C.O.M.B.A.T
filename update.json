@@ -1,11 +1,10 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/c-o-m-b-a-t",
-  "<mcversion>": {
-    "<modversion>": "<changelog for this version>", 
-    // List all versions of your mod for the given Minecraft version, along with their changelogs
-    ...
+  "1.13.2": {
+    "1.13.2-0.0.0.3": "changelogurl", 
+    "1.13.2-0.0.0.2": "changelogurl", 
+    "1.13.2-0.0.0.1": "changelogurl", 
   },
-  ...
   "promos": {
     "<mcversion>-latest": "<modversion>",
     // Declare the latest "bleeding-edge" version of your mod for the given Minecraft version
