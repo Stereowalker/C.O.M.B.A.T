@@ -1,9 +1,9 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/c-o-m-b-a-t",
-  "1.13.2": {
-    "1.13.2-0.0.0.3": "changelogurl", 
-    "1.13.2-0.0.0.2": "changelogurl", 
-    "1.13.2-0.0.0.1": "changelogurl", 
+  "1.14.4": {
+    "1.14.4-0.26.1": "changelogurl", 
+    "1.14.4-0.26.0": "changelogurl", 
+    "1.14.4-0.25.0": "changelogurl", 
   },
   "promos": {
     "<mcversion>-latest": "<modversion>",
