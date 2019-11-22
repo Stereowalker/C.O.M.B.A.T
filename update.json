@@ -1,16 +1,11 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/c-o-m-b-a-t",
-  "1.14.4": {
-    "1.14.4-0.27.0": "changelogurl",
-    "1.14.4-0.26.1": "changelogurl", 
-    "1.14.4-0.26.0": "changelogurl", 
-    "1.14.4-0.25.0": "changelogurl", 
-  },
   "promos": {
-    "<mcversion>-latest": "<modversion>",
-    // Declare the latest "bleeding-edge" version of your mod for the given Minecraft version
-    "<mcversion>-recommended": "<modversion>",
-    // Declare the latest "stable" version of your mod for the given Minecraft version
-    ...
+    "1.13.2-latest": "25.0.219",
+    "1.14.2-latest": "26.0.63",
+    //"1.14.3-latest": "27.0.60",
+    //"1.14.4-latest": "28.1.92",
+    "1.14.4-recommended": "1.14.4-0.27.0",
   }
+}
 }
