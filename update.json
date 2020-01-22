@@ -2,7 +2,8 @@
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/c-o-m-b-a-t",
   "promos": {
     "1.14.3-latest": "0.11.0",
-    "1.14.4-latest": "1.0.0",
-    "1.14.4-recommended": "1.0.0"
+    "1.14.4-latest": "1.0.2",
+    "1.15.1-latest": "2.2.0",
+    "1.15.1-recommended": "2.2.0"
   }
 }
