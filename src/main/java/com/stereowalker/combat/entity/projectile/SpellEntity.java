@@ -1,5 +1,6 @@
 package com.stereowalker.combat.entity.projectile;
 
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.spell.AbstractProjectileSpell;
 import com.stereowalker.combat.api.spell.SpellInstance;
 import com.stereowalker.combat.entity.CEntityType;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class SpellEntity extends AbstractMagicProjectileEntity {
 	protected static final DataParameter<CompoundNBT> SPELL = EntityDataManager.createKey(AbstractMagicProjectileEntity.class, DataSerializers.COMPOUND_NBT);
 	private int duration = 20;
+	public boolean hasSetSpell = false;
 
 	public SpellEntity(EntityType<? extends SpellEntity> type, World worldIn) {
 		super(type, worldIn);
@@ -38,9 +40,11 @@ public class SpellEntity extends AbstractMagicProjectileEntity {
 	}
 
 	public void setSpell(SpellInstance spell) {
-		if (spell.getSpell() instanceof AbstractProjectileSpell) {
-			this.dataManager.set(SPELL, spell.write(new CompoundNBT()));
+		this.hasSetSpell = true;
+		if (!(spell.getSpell() instanceof AbstractProjectileSpell)) {
+			Combat.getInstance().LOGGER.error("This Spell "+spell.getSpell()+" Is Not An Instance Of A Projectile Spell");
 		}
+		this.dataManager.set(SPELL, spell.write(new CompoundNBT()));
 	}
 
 	public SpellInstance getSpell() {
@@ -49,6 +53,9 @@ public class SpellEntity extends AbstractMagicProjectileEntity {
 
 	@Override
 	protected SoundEvent getHitSound() {
+		if (!hasSetSpell) {
+			return null;
+		}
 		if (this.getSpell().getSpell() instanceof AbstractProjectileSpell) {
 			return ((AbstractProjectileSpell)this.getSpell().getSpell()).projectileHitSound();
 		} else return null;
