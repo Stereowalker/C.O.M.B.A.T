@@ -1,4 +1,4 @@
-package com.stereowalker.rankup.compat.curios.accessories;
+package com.stereowalker.rankup;
 
 import java.util.ArrayList;
 import java.util.List;

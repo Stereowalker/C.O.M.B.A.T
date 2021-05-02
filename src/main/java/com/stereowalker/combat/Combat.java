@@ -143,7 +143,7 @@ public class Combat extends UnionMod
 	private void setup(final FMLCommonSetupEvent event)
 	{
 		if (ModHelper.isCuriosLoaded())
-			MinecraftForge.EVENT_BUS.register(new CuriosEvents());
+			MinecraftForge.EVENT_BUS.register(CuriosEvents.class);
 		BrewingPotion.registerBrewing();
 		setBurnableBlocks();
 		CTags.init();

@@ -6,7 +6,7 @@ issueTrackerURL="https://github.com/Stereowalker/C.O.M.B.A.T./issues"
 logoFile="Combat.png"
 [[mods]]
 modId="combat"
-version="${version}"#version="7.2.2"
+version="${version}"#7.2.3-beta"
 displayName="C.O.M.B.A.T"
 updateJSONURL="https://raw.githubusercontent.com/Stereowalker/C.O.M.B.A.T/master/update.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/c-o-m-b-a-t"

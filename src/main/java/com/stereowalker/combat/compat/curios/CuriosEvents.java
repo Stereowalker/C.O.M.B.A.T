@@ -14,37 +14,16 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.event.DropRulesEvent;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
-@EventBusSubscriber(modid = "combat")
 public class CuriosEvents {
 	@SubscribeEvent
 	public static void addEffectsToAccessories(LivingUpdateEvent event) {
 		if (ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
 			if (event.getEntityLiving() instanceof PlayerEntity) {
 				CuriosAccesories.addEffectsToAccessory((PlayerEntity) event.getEntityLiving());
-			}
-		}
-	}
-	
-	@SubscribeEvent
-	public static void addEffectsToChestItems(PlayerContainerEvent.Open event) {
-		if (ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
-				CuriosAccesories.addEffectsToChestItems(event.getContainer());
-			}
-		}
-	}
-	
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void modifierTooltip(ItemTooltipEvent event) {
-		if (ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
-				CuriosAccesories.modifierTooltip(event.getToolTip(), event.getItemStack());
 			}
 		}
 	}
