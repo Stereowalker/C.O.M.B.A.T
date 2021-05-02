@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:dead_oak_log",
+    "combat:dead_oak_wood",
+    "combat:stripped_dead_oak_log",
+    "combat:stripped_dead_oak_wood"
+  ]
+}

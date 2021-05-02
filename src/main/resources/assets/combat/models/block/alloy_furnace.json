@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "combat:block/alloy_furnace_top",
+        "front": "combat:block/alloy_furnace_front",
+        "side": "combat:block/alloy_furnace_side"
+    }
+}

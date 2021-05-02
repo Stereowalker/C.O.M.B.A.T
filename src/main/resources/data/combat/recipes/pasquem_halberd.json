@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "  X",
+    " YX",
+    "#  "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "Y": {
+      "item": "combat:pasquem_axe"
+    },
+    "X": {
+      "item": "combat:pasquem_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:pasquem_halberd"
+  }
+}

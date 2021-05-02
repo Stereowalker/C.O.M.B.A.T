@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "serable_ingot",
+  "ingredients": [
+    {
+      "item": "combat:serable_block"
+    }
+  ],
+  "result": {
+    "item": "combat:serable_ingot",
+    "count": 9
+  }
+}

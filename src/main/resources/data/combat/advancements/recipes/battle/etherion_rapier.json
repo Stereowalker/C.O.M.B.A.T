@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:etherion_rapier"
+    ]
+  },
+  "criteria": {
+    "has_etherion_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:etherion_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:etherion_rapier"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_etherion_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

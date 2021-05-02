@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=east,powered=false": { "model": "block/wall_torch" },
+        "facing=south,powered=false": { "model": "block/wall_torch", "y": 90 },
+        "facing=west,powered=false": { "model": "block/wall_torch", "y": 180 },
+        "facing=north,powered=false": { "model": "block/wall_torch", "y": 270 },
+        "facing=east,powered=true": { "model": "combat:block/wall_torch_on" },
+        "facing=south,powered=true": { "model": "combat:block/wall_torch_on", "y": 90 },
+        "facing=west,powered=true": { "model": "combat:block/wall_torch_on", "y": 180 },
+        "facing=north,powered=true": { "model": "combat:block/wall_torch_on", "y": 270 }
+    }
+}

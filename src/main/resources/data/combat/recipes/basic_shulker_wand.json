@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "group": "wand",
+  "ingredients": [
+    {
+      "item": "minecraft:shulker_shell"
+    }
+  ],
+  "result": {
+    "item": "combat:basic_shulker_wand"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "combat:fletching",
+  "pattern": [
+    "S",
+    "I",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:feather"
+    },
+    "S": {
+      "item": "minecraft:iron_ingot"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "combat:iron_arrow",
+    "count": 6
+  }
+}

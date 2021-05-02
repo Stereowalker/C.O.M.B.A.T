@@ -1,0 +1,79 @@
+{
+  "display": {
+    "icon": {
+      "item": "combat:arcane_workbench"
+    },
+    "title": {
+      "translate": "advancements.magic.root.title"
+    },
+    "description": {
+      "translate": "advancements.magic.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "combat:textures/gui/advancements/backgrounds/magic.png"
+  },
+  "criteria": {
+    "basic_stick_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:stick"
+          }
+        ]
+      }
+    },
+    "basic_blaze_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:blaze_powder"
+          }
+        ]
+      }
+    },
+    "basic_golden_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:gold_rod"
+          }
+        ]
+      }
+    },
+    "basic_shulker_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:shulker_shell"
+          }
+        ]
+      }
+    },
+    "basic_serable_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_rod"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "basic_stick_wand",
+      "basic_blaze_wand",
+      "basic_golden_wand",
+      "basic_shulker_wand",
+      "basic_serable_wand"
+    ]
+  ]
+}

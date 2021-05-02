@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "group": "wand",
+  "ingredients": [
+    {
+      "item": "minecraft:stick"
+    }
+  ],
+  "result": {
+    "item": "combat:basic_stick_wand"
+  }
+}

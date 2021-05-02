@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:etherion_pickaxe"
+    ]
+  },
+  "criteria": {
+    "has_etherion": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:etherion_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:etherion_pickaxe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_etherion",
+      "has_the_recipe"
+    ]
+  ]
+}

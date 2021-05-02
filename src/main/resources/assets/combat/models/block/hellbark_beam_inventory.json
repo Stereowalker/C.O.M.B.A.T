@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/beam_inventory",
+    "textures": {
+        "texture": "biomesoplenty:block/hellbark_planks"
+    }
+}

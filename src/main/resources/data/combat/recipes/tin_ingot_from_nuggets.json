@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "group": "tin_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:tin_nugget"
+    }
+  },
+  "result": {
+    "item": "combat:tin_ingot"
+  }
+}

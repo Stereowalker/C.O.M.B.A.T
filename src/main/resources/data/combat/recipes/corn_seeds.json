@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+       {
+      "item": "combat:corn"
+    }
+  ],
+  "result": {
+    "item": "combat:corn_seeds",
+    "count": 4
+  }
+}

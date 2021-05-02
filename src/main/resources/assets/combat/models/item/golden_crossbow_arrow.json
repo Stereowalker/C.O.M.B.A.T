@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/golden_crossbow",
+    "textures": {
+        "layer0": "combat:item/golden_crossbow_arrow"
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "combat:fletching",
+  "pattern": [
+    "S",
+    "I",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:feather"
+    },
+    "S": {
+      "tag": "minecraft:planks"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "combat:wooden_arrow",
+    "count": 6
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:pasquem_ingot"
+    ]
+  },
+  "criteria": {
+    "has_pasquem_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:pasquem_ore"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:pasquem_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pasquem_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

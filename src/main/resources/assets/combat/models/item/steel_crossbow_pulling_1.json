@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/steel_crossbow",
+    "textures": {
+        "layer0": "combat:item/steel_crossbow_pulling_1"
+    }
+}

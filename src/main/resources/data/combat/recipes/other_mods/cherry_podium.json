@@ -1,0 +1,24 @@
+{
+	"conditions": [{
+		"type": "forge:mod_loaded",
+		"modid": "biomesoplenty"
+	}],
+  "type": "crafting_shaped",
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "biomesoplenty:cherry_planks"
+    },
+    "S": {
+      "item": "biomesoplenty:cherry_slab"
+    }
+  },
+  "result": {
+    "item": "combat:cherry_podium",
+      "count": 2
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "A#B",
+    "###",
+    "B#A"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:pasquem_block"
+    },
+    "A": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:robin_summoner"
+  }
+}

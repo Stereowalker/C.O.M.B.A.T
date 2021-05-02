@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "group": "wand",
+  "ingredients": [
+    {
+      "item": "combat:gold_rod"
+    }
+  ],
+  "result": {
+    "item": "combat:basic_golden_wand"
+  }
+}

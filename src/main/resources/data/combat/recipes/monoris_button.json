@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "combat:monoris_planks"
+    }
+  ],
+  "result": {
+    "item": "combat:monoris_button"
+  }
+}

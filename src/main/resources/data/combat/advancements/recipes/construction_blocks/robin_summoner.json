@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:robin_summoner"
+    ]
+  },
+  "criteria": {
+    "has_pasquem_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:pasquem_block"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:robin_summoner"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pasquem_block",
+      "has_the_recipe"
+    ]
+  ]
+}

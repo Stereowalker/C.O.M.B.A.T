@@ -1,0 +1,8 @@
+{
+    "parent": "block/stairs",
+    "textures": {
+        "bottom": "combat:block/monoris_planks",
+        "top": "combat:block/monoris_planks",
+        "side": "combat:block/monoris_planks"
+    }
+}

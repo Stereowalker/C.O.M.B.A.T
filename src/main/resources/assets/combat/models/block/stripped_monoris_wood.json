@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "combat:block/stripped_monoris_log",
+        "side": "combat:block/stripped_monoris_log"
+    }
+}

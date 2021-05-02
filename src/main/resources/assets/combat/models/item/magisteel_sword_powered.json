@@ -1,0 +1,7 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "combat:item/magisteel_sword",
+        "layer1": "combat:item/magisteel_sword_blade"
+    }
+}

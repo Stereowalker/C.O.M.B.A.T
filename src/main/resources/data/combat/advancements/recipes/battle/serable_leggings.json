@@ -1,0 +1,32 @@
+{
+  "parent": "combat:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:serable_leggings"
+    ]
+  },
+  "criteria": {
+    "has_serable_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:serable_leggings"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_serable_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "combat:alloy_smelting_2_outputs_3_inputs",
+  "ingredient1": {
+    "tag": "forge:ingots/iron"
+  },
+  "ingredient2": {
+    "item": "combat:limestone_rock"
+  },
+  "ingredient3": {
+    "item": "minecraft:coal"
+  },
+  "result1": {
+    "item": "combat:steel_ingot"
+  },
+  "result2": {
+    "item": "combat:slag"
+  },
+  "experience": 3.0,
+  "cookingtime": 300
+}

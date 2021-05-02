@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "block/torch" },
+        "powered=true": { "model": "combat:block/torch_on"}
+    }
+}

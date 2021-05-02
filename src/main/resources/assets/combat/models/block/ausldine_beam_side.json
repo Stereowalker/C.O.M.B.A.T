@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/beam_side",
+    "textures": {
+        "texture": "combat:block/ausldine_planks"
+    }
+}

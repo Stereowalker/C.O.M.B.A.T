@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/template_torch_on",
+    "textures": {
+        "torch": "block/torch"
+    }
+}

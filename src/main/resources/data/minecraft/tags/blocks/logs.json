@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#combat:ausldine_logs",
+    "#combat:dead_oak_logs",
+    "#combat:monoris_logs",
+    "#combat:rezal_logs"
+  ]
+}

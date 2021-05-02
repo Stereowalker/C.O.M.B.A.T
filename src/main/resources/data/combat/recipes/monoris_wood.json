@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "group": "bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:monoris_log"
+    }
+  },
+  "result": {
+    "item": "combat:monoris_wood",
+    "count": 3
+  }
+}

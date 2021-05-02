@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/soul_bow",
+    "textures": {
+        "layer0": "combat:item/soul_bow_pulling_0"
+    }
+}

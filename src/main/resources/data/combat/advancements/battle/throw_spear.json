@@ -1,0 +1,38 @@
+{
+  "parent": "combat:battle/root",
+  "display": {
+    "icon": {
+      "item": "combat:spear"
+    },
+    "title": {
+      "translate": "advancements.battle.throw_spear.title"
+    },
+    "description": {
+      "translate": "advancements.battle.throw_spear.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "shot_spear": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "damage": {
+          "type": {
+            "is_projectile": true,
+            "direct_entity": {
+              "type": "combat:spear"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "shot_spear"
+    ]
+  ]
+}

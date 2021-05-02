@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/steel_bow",
+    "textures": {
+        "layer0": "combat:item/steel_bow_pulling_0"
+    }
+}

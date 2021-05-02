@@ -1,0 +1,24 @@
+{
+	"conditions": [{
+		"type": "forge:mod_loaded",
+		"modid": "biomesoplenty"
+	}],
+  "type": "crafting_shaped",
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "biomesoplenty:hellbark_planks"
+    },
+    "S": {
+      "item": "biomesoplenty:hellbark_slab"
+    }
+  },
+  "result": {
+    "item": "combat:hellbark_podium",
+      "count": 2
+  }
+}

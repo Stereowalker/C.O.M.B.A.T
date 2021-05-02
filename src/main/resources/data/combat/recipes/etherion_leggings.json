@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "combat:bronze_leggings"
+  },
+  "addition": {
+    "item": "combat:etherion_ingot"
+  },
+  "result": {
+    "item": "combat:etherion_leggings"
+  }
+}

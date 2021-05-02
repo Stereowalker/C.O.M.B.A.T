@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "combat:item/quiver",
+        "layer1": "combat:item/quiver_overlay"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/podium",
+    "textures": {
+        "texture": "block/acacia_planks"
+    }
+}

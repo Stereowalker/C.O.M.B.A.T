@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "group": "bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:ausldine_log"
+    }
+  },
+  "result": {
+    "item": "combat:ausldine_wood",
+    "count": 3
+  }
+}

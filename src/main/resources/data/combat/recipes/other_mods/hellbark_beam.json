@@ -1,0 +1,24 @@
+{
+	"conditions": [{
+		"type": "forge:mod_loaded",
+		"modid": "biomesoplenty"
+	}],
+  "type": "crafting_shaped",
+  "pattern": [
+    " S ",
+    "S#S",
+    " S "
+  ],
+  "key": {
+    "#": {
+      "item": "biomesoplenty:hellbark_planks"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "combat:hellbark_beam",
+      "count": 2
+  }
+}

@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "combat:item/backpack",
+        "layer1": "combat:item/backpack_overlay"
+    }
+}

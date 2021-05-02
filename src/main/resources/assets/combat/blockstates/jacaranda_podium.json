@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "combat:block/jacaranda_podium" },
+		"facing=south": { "model": "combat:block/jacaranda_podium", "y": 180},
+		"facing=east": { "model": "combat:block/jacaranda_podium", "y": 90},
+		"facing=west": { "model": "combat:block/jacaranda_podium", "y": 270}
+    }
+}

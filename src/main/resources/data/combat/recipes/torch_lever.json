@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "minecraft:torch"
+    }
+  ],
+  "result": {
+    "item": "combat:torch_lever"
+  }
+}

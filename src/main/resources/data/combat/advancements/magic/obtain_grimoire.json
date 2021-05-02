@@ -1,0 +1,35 @@
+{
+  "parent": "combat:magic/obtain_soul_gem",
+  "display": {
+    "icon": {
+      "item": "combat:grimoire"
+    },
+    "title": {
+      "translate": "advancements.magic.obtain_grimoire.title"
+    },
+    "description": {
+      "translate": "advancements.magic.obtain_grimoire.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_grimoire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:grimoire"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_grimoire"
+    ]
+  ]
+}

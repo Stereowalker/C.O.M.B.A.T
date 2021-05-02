@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:pelgan_rapier"
+    ]
+  },
+  "criteria": {
+    "has_pelgan_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:pelgan_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:pelgan_rapier"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pelgan_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

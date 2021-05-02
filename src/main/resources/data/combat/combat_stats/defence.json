@@ -1,0 +1,17 @@
+{
+	"enabled": true,
+	"limitable": false,
+	"default_points": 100,
+	"maximum_points_earned_per_level": 10,
+	"minimum_points_earned_per_level": 5,
+	"attributes": [
+		{
+			"attribute": "combat:generic.physical_resistance",
+			"modifier_per_point": 0.1
+		},
+		{
+			"attribute": "minecraft:generic.knockback_resistance",
+			"modifier_per_point": 0.001
+		}
+	]
+}

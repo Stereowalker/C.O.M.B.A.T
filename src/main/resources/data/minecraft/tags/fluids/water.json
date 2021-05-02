@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:oil",
+    "combat:flowing_oil",
+    "combat:biable",
+    "combat:flowing_biable"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "combat:ausldine_fence",
+    "combat:dead_oak_fence",
+    "combat:monoris_fence"
+  ]
+}

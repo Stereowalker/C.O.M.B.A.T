@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "group": "serable_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:serable_nugget"
+    }
+  },
+  "result": {
+    "item": "combat:serable_ingot"
+  }
+}

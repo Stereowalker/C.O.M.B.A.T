@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/beam_center",
+    "textures": {
+        "texture": "biomesoplenty:block/palm_planks"
+    }
+}

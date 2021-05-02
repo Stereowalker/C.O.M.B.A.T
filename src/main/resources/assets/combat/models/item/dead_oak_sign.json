@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/arch",
+    "textures": {
+        "layer0": "combat:item/dead_oak_sign"
+    }
+}

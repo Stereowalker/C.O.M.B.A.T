@@ -1,0 +1,21 @@
+{
+	"enabled": true,
+	"limitable": false,
+	"default_points": 100,
+	"maximum_points_earned_per_level": 10,
+	"minimum_points_earned_per_level": 5,
+	"attributes": [
+		{
+			"attribute": "combat:generic.max_mana",
+			"modifier_per_point": 0.2
+		},
+		{
+			"attribute": "combat:generic.mana_regeneration",
+			"modifier_per_point": 0.01
+		},
+		{
+			"attribute": "combat:generic.magic_strength",
+			"modifier_per_point": 0.01
+		}
+	]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "combat:alloy_smelting_2_outputs_3_inputs",
+  "ingredient1": {
+    "tag": "forge:ingots/steel"
+  },
+  "ingredient2": {
+    "item": "combat:red_magic_stone"
+  },
+  "ingredient3": {
+    "item": "combat:yellow_magic_stone"
+  },
+  "result1": {
+    "item": "combat:magisteel_ingot"
+  },
+  "result2": {
+    "item": "minecraft:gunpowder"
+  },
+  "experience": 100.0,
+  "cookingtime": 1200
+}

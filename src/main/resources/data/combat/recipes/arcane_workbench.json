@@ -1,0 +1,18 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "TGT",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_block"
+    },
+    "T": {
+      "item": "combat:tridox"
+    }
+  },
+  "result": {
+    "item": "combat:arcane_workbench"
+  }
+}

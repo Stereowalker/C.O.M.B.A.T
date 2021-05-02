@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "": [
+            { "model": "combat:block/purified_dirt" },
+            { "model": "combat:block/purified_dirt", "y": 90 },
+            { "model": "combat:block/purified_dirt", "y": 180 },
+            { "model": "combat:block/purified_dirt", "y": 270 }
+        ]
+    }
+}

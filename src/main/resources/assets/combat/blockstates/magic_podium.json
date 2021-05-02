@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "combat:block/magic_podium" },
+		"facing=south": { "model": "combat:block/magic_podium", "y": 180},
+		"facing=east": { "model": "combat:block/magic_podium", "y": 90},
+		"facing=west": { "model": "combat:block/magic_podium", "y": 270}
+    }
+}

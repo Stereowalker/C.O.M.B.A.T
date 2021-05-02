@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "biomesoplenty:mahogany_planks"
+    },
+    "S": {
+      "item": "biomesoplenty:mahogany_slab"
+    }
+  },
+  "result": {
+    "item": "combat:mahogany_podium",
+      "count": 2
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "block/button",
+    "textures": {
+        "texture": "combat:block/dead_oak_planks"
+    }
+}

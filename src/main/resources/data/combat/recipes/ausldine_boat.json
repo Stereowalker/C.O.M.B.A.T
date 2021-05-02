@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "group": "boat",
+  "pattern": [
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:ausldine_planks"
+    }
+  },
+  "result": {
+    "item": "combat:ausldine_boat"
+  }
+}

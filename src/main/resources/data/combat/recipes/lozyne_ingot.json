@@ -1,0 +1,9 @@
+{
+  "type": "smelting",
+  "ingredient": {
+    "item": "combat:lozyne_ore"
+  },
+  "result": "combat:lozyne_ingot",
+  "experience": 1.8,
+  "cookingtime": 600
+}

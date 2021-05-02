@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/lozyne_longbow",
+    "textures": {
+        "layer0": "combat:item/lozyne_longbow_pulling_2"
+    }
+}

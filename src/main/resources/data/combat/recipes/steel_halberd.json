@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "  X",
+    " YX",
+    "#  "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "Y": {
+      "item": "combat:steel_axe"
+    },
+    "X": {
+      "item": "combat:steel_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:steel_halberd"
+  }
+}

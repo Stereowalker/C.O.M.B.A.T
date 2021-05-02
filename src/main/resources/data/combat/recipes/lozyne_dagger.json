@@ -1,0 +1,18 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:dagger_handle"
+    },
+    "X": {
+      "item": "combat:lozyne_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:lozyne_dagger"
+  }
+}

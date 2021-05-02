@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/lozyne_crossbow",
+    "textures": {
+        "layer0": "combat:item/lozyne_crossbow_pulling_2"
+    }
+}

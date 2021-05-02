@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "group": "boat",
+  "pattern": [
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:rezal_planks"
+    }
+  },
+  "result": {
+    "item": "combat:rezal_boat"
+  }
+}

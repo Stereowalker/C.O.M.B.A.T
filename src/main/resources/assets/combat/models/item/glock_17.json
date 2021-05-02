@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/gun",
+    "textures": {
+        "layer0": "combat:item/glock_17"
+    }
+}

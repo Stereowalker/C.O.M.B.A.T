@@ -1,0 +1,20 @@
+{
+  "type": "combat:arcane_conversion_2_inputs",
+  "base": {
+    "item": "combat:scroll"
+  },
+  "addition1": {
+    "item": "minecraft:ink_sac"
+  },
+  "additionCost1": 10,
+  
+  "addition2": {
+    "item": "minecraft:feather"
+  },
+  "additionCost2": 1,
+  
+  "tridoxCost": 10,
+  "result": {
+    "item": "combat:research_scroll"
+  }
+}

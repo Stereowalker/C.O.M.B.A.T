@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "combat:dead_oak_planks"
+    }
+  ],
+  "result": {
+    "item": "combat:dead_oak_button"
+  }
+}

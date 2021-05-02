@@ -1,0 +1,57 @@
+
+modLoader="javafml"
+loaderVersion="[34,)"
+license="All Rights Reserved"
+issueTrackerURL="https://github.com/Stereowalker/C.O.M.B.A.T./issues"
+logoFile="Combat.png"
+[[mods]]
+modId="combat"
+version="${version}"#version="7.2.2"
+displayName="C.O.M.B.A.T"
+updateJSONURL="https://raw.githubusercontent.com/Stereowalker/C.O.M.B.A.T/master/update.json"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/c-o-m-b-a-t"
+credits="I'd like to thank my Obsidian Patreon, Komorebi, and you for downloading this mod"
+authors="Stereowalker"
+description='''
+Concept Of Magic, Battle And Technology, or in short, C.O.M.B.A.T, is a mod that aims to adds a whole new sense of exploration to Minecraft
+'''
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+[[dependencies.combat]] #optional
+    # the modid of the dependency
+    modId="forge" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[36.1.12,)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+# Here's another dependency
+[[dependencies.combat]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,)"
+    ordering="NONE"
+    side="BOTH"
+	
+[[dependencies.combat]]
+    modId="unionlib"
+    mandatory=true
+    versionRange="[3.3.0, 3.3.999)"
+    ordering="NONE"
+    side="BOTH"
+	
+[[dependencies.combat]]
+    modId="jei"
+    mandatory=true
+    versionRange="[7.3.2.29,)"
+    ordering="NONE"
+    side="BOTH"
+	
+[[dependencies.combat]]
+    modId="curios"
+    mandatory=false
+    versionRange="[1.16.5-4.0.5.1,)"
+    ordering="NONE"
+    side="BOTH"

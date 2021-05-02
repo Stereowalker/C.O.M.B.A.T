@@ -1,0 +1,7 @@
+{
+	"name": "book.combat.category.magic.name",
+	"description": "book.combat.category.magic.desc",
+	"icon": "combat:necronomicon",
+	"sortnum": 1,
+	"secret": false
+}

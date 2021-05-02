@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "combat:block/rezal_log_top",
+        "side": "combat:block/rezal_log"
+    }
+}

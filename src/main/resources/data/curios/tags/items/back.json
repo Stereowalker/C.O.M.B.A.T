@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "combat:quiver",
+        "combat:backpack",
+        "combat:sheath"
+    ]
+}

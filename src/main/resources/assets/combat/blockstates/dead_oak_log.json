@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y":  { "model": "combat:block/dead_oak_log" },
+        "axis=z":   { "model": "combat:block/dead_oak_log", "x": 90 },
+        "axis=x":   { "model": "combat:block/dead_oak_log", "x": 90, "y": 90 }
+    }
+}

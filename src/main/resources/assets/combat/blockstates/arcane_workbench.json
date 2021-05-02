@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "combat:block/arcane_workbench" }
+    }
+}

@@ -1,0 +1,79 @@
+{
+  "pools": [
+    {
+      "rolls": {
+        "min": 0.0,
+        "max": 2.0,
+        "type": "minecraft:uniform"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 32,
+          "functions": [
+            {
+              "function": "combat:append_random_spell_with_rank",
+              "rank": "basic"
+            }
+          ],
+          "name": "combat:scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 16,
+          "functions": [
+            {
+              "function": "combat:append_random_spell_with_rank",
+              "rank": "novice"
+            }
+          ],
+          "name": "combat:scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "combat:append_random_spell_with_rank",
+              "rank": "apprentice"
+            }
+          ],
+          "name": "combat:scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "combat:append_random_spell_with_rank",
+              "rank": "advanced"
+            }
+          ],
+          "name": "combat:scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "combat:append_random_spell_with_rank",
+              "rank": "master"
+            }
+          ],
+          "name": "combat:scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "combat:append_random_spell_with_rank",
+              "rank": "god"
+            }
+          ],
+          "name": "combat:scroll"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "biomesoplenty:magic_planks"
+    },
+    "S": {
+      "item": "biomesoplenty:magic_slab"
+    }
+  },
+  "result": {
+    "item": "combat:magic_podium",
+      "count": 2
+  }
+}

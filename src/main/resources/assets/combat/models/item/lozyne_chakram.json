@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/chakram",
+    "textures": {
+        "layer0": "combat:item/lozyne_chakram"
+    }
+}

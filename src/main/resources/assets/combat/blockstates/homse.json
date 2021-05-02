@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "": [
+            { "model": "combat:block/homse" },
+            { "model": "combat:block/homse", "y": 90 },
+            { "model": "combat:block/homse", "y": 180 },
+            { "model": "combat:block/homse", "y": 270 }
+        ]
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y": { "model": "combat:block/stripped_monoris_wood" },
+        "axis=z": { "model": "combat:block/stripped_monoris_wood", "x": 90 },
+        "axis=x": { "model": "combat:block/stripped_monoris_wood", "x": 90, "y": 90 }
+    }
+}

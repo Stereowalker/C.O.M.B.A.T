@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "combat:block/dead_oak_log",
+        "side": "combat:block/dead_oak_log"
+    }
+}

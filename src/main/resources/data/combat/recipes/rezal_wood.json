@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "group": "bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:rezal_log"
+    }
+  },
+  "result": {
+    "item": "combat:rezal_wood",
+    "count": 3
+  }
+}

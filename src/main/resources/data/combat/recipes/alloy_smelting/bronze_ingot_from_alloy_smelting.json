@@ -1,0 +1,14 @@
+{
+  "type": "combat:alloy_smelting_1_output_2_inputs",
+  "ingredient1": {
+    "tag": "forge:ingots/copper"
+  },
+  "ingredient2": {
+    "item": "combat:tin_nugget"
+  },
+  "result1": {
+    "item": "combat:bronze_ingot"
+  },
+  "experience": 2.0,
+  "cookingtime": 200
+}

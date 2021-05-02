@@ -1,0 +1,23 @@
+{
+  "type": "combat:fletching",
+  "pattern": [
+    "S",
+    "I",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:feather"
+    },
+    "S": {
+      "item": "minecraft:flint"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "minecraft:arrow",
+    "count": 6
+  }
+}

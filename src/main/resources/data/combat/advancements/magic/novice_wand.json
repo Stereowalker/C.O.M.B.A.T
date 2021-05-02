@@ -1,0 +1,79 @@
+{
+	"parent": "combat:magic/mine_magic_stone",
+	"display": {
+    "icon": {
+      "item": "combat:novice_stick_wand"
+    },
+    "title": {
+      "translate": "advancements.magic.novice_wand.title"
+    },
+    "description": {
+      "translate": "advancements.magic.novice_wand.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "novice_stick_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:novice_stick_wand"
+          }
+        ]
+      }
+    },
+    "novice_blaze_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:novice_blaze_wand"
+          }
+        ]
+      }
+    },
+    "novice_golden_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:novice_golden_wand"
+          }
+        ]
+      }
+    },
+    "novice_shulker_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:novice_shulker_wand"
+          }
+        ]
+      }
+    },
+    "novice_serable_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:novice_serable_wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "novice_stick_wand",
+      "novice_blaze_wand",
+      "novice_golden_wand",
+      "novice_shulker_wand",
+      "novice_serable_wand"
+    ]
+  ]
+}

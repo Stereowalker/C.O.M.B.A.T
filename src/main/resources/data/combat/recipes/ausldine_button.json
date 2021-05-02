@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "combat:ausldine_planks"
+    }
+  ],
+  "result": {
+    "item": "combat:ausldine_button"
+  }
+}

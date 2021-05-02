@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "combat:item/skill_runestone_primary",
+        "layer1": "combat:item/skill_runestone_secondary"
+    }
+}

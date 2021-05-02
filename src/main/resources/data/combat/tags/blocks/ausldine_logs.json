@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:ausldine_log",
+    "combat:ausldine_wood",
+    "combat:stripped_ausldine_log",
+    "combat:stripped_ausldine_wood"
+  ]
+}

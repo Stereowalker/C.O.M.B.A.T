@@ -1,0 +1,9 @@
+{
+  "type": "smelting",
+  "ingredient": {
+    "item": "combat:serable_ore"
+  },
+  "result": "combat:serable_ingot",
+  "experience": 1.8,
+  "cookingtime": 600
+}

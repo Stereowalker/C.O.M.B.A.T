@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "biomesoplenty:dead_planks"
+    },
+    "S": {
+      "item": "biomesoplenty:dead_slab"
+    }
+  },
+  "result": {
+    "item": "combat:dead_podium",
+      "count": 2
+  }
+}

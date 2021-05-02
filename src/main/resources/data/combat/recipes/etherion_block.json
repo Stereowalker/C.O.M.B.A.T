@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:etherion_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:etherion_block"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "combat:round_shield"
+  },
+  "addition": {
+    "tag": "forge:ingots/bronze"
+  },
+  "result": {
+    "item": "combat:bronze_round_shield"
+  }
+}

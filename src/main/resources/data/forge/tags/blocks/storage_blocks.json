@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:storage_blocks/copper",
+    "#forge:storage_blocks/pasquem",
+    "#forge:storage_blocks/steel",
+    "#forge:storage_blocks/pelgan",
+    "#forge:storage_blocks/tridox",
+    "#forge:storage_blocks/lozyne"
+  ]
+}

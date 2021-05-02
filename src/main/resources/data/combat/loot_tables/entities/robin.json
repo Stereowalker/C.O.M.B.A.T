@@ -1,0 +1,31 @@
+{
+  "pools": [
+    {
+    	"name": "Gems",
+        "rolls": 1,
+        "entries": [
+            {
+                "type": "item",
+                "name": "combat:arch_freeze_gem"
+            },
+            {
+                "type": "item",
+                "name": "combat:arch_flame_gem"
+            },
+            {
+                "type": "item",
+                "name": "combat:arch_explosion_gem"
+            },
+            {
+                "type": "item",
+                "name": "combat:arch_teleport_gem"
+            }
+        ],
+        "conditions": [
+            {
+                "condition": "killed_by_player"
+            }
+        ]
+    }
+  ]
+}

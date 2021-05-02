@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:pelgan_ingot"
+    ]
+  },
+  "criteria": {
+    "has_pelgan_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:pelgan_ore"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:pelgan_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pelgan_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

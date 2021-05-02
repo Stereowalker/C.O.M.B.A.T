@@ -1,0 +1,7 @@
+{
+	"name": "book.combat.category.materials.name",
+	"description": "book.combat.category.materials.desc",
+	"icon": "combat:bronze_ingot",
+	"sortnum": 2,
+	"secret": false
+}

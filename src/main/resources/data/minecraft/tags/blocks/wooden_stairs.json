@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "combat:ausldine_stairs",
+    "combat:dead_oak_stairs",
+    "combat:monoris_stairs"
+  ]
+}

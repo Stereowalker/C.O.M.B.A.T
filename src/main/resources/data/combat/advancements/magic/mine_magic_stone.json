@@ -1,0 +1,35 @@
+{
+  "parent": "combat:magic/basic_wand",
+  "display": {
+    "icon": {
+      "item": "combat:red_magic_stone"
+    },
+    "title": {
+      "translate": "advancements.magic.mine_magic_stone.title"
+    },
+    "description": {
+      "translate": "advancements.magic.mine_magic_stone.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:red_magic_stone"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_stone"
+    ]
+  ]
+}

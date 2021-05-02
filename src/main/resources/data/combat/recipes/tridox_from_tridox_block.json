@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "tridox",
+  "ingredients": [
+    {
+      "item": "combat:tridox_block"
+    }
+  ],
+  "result": {
+    "item": "combat:tridox",
+    "count": 9
+  }
+}

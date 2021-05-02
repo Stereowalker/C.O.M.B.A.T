@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "snowy=false": [
+            { "model": "combat:block/purified_grass_block" },
+            { "model": "combat:block/purified_grass_block", "y": 90 },
+            { "model": "combat:block/purified_grass_block", "y": 180 },
+            { "model": "combat:block/purified_grass_block", "y": 270 }
+        ],
+        "snowy=true":  [
+            { "model": "combat:block/purified_grass_block" },
+            { "model": "combat:block/purified_grass_block", "y": 90 },
+            { "model": "combat:block/purified_grass_block", "y": 180 },
+            { "model": "combat:block/purified_grass_block", "y": 270 }
+        ]
+    }
+}

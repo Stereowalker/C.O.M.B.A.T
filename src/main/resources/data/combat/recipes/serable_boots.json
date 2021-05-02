@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "combat:serable_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:serable_boots"
+  }
+}

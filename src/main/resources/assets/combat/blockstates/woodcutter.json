@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "combat:block/woodcutter" },
+        "facing=south": { "model": "combat:block/woodcutter", "y": 180 },
+        "facing=west": { "model": "combat:block/woodcutter", "y": 270 },
+        "facing=east": { "model": "combat:block/woodcutter", "y": 90 }
+    }
+}

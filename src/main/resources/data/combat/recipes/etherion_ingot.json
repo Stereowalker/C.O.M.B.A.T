@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "EXE",
+    "XCX",
+    "EXE"
+  ],
+  "key": {
+    "E": {
+      "item": "combat:white_etherion"
+    },
+    "X": {
+      "item": "combat:blue_etherion"
+    },
+    "C": {
+      "item": "combat:ruby"
+    }
+  },
+  "result": {
+    "item": "combat:etherion_ingot"
+  }
+}

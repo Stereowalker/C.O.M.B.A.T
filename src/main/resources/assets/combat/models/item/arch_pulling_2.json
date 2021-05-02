@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/arch",
+    "textures": {
+        "layer0": "combat:item/arch_pulling_2"
+    }
+}

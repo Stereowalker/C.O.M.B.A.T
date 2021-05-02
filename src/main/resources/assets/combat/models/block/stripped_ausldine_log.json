@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "combat:block/stripped_ausldine_log_top",
+        "side": "combat:block/stripped_ausldine_log"
+    }
+}

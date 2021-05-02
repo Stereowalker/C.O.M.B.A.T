@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "ruby",
+  "ingredients": [
+    {
+      "item": "combat:ruby_block"
+    }
+  ],
+  "result": {
+    "item": "combat:ruby",
+    "count": 9
+  }
+}

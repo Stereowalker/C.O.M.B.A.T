@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shapeless",
+  "group": "wand",
+  "ingredients": [
+    {
+      "item": "combat:serable_rod"
+    }
+  ],
+  "result": {
+    "item": "combat:basic_serable_wand"
+  }
+}

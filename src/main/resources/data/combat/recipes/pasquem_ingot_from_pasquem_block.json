@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "copper_ingot",
+  "ingredients": [
+    {
+      "item": "combat:pasquem_block"
+    }
+  ],
+  "result": {
+    "item": "combat:pasquem_ingot",
+    "count": 9
+  }
+}

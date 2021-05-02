@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:tridox"
+    }
+  },
+  "result": {
+    "item": "combat:tridox_block"
+  }
+}

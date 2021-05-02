@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "combat:block/fir_podium" },
+		"facing=south": { "model": "combat:block/fir_podium", "y": 180},
+		"facing=east": { "model": "combat:block/fir_podium", "y": 90},
+		"facing=west": { "model": "combat:block/fir_podium", "y": 270}
+    }
+}

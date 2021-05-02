@@ -1,0 +1,25 @@
+{
+  "type": "combat:arcane_conversion_3_inputs",
+  "base": {
+    "item": "combat:grimoire"
+  },
+  "addition1": {
+    "item": "minecraft:diamond"
+  },
+  "additionCost1": 5,
+  
+  "addition2": {
+    "item": "minecraft:paper"
+  },
+  "additionCost2": 10,
+  
+  "addition3": {
+    "item": "combat:soul_gem"
+  },
+  "additionCost3": 1,
+  
+  "tridoxCost": 64,
+  "result": {
+    "item": "combat:necronomicon"
+  }
+}

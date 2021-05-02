@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    " X ",
+    "X X",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:rods/wooden"
+    },
+    "X": {
+     "tag": "minecraft:stone_tool_materials"
+    }
+  },
+  "result": {
+    "item": "combat:stone_chakram"
+  }
+}

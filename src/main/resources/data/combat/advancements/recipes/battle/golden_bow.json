@@ -1,0 +1,32 @@
+{
+  "parent": "combat:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:golden_bow"
+    ]
+  },
+  "criteria": {
+    "has_bow": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:bow"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:golden_bow"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bow",
+      "has_the_recipe"
+    ]
+  ]
+}

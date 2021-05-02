@@ -1,0 +1,7 @@
+{
+    "parent": "block/fire_up",
+    "textures": {
+        "particle": "combat:block/pyranite_fire_1",
+        "fire": "combat:block/pyranite_fire_1"
+    }
+}

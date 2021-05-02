@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "combat:block/yellow_magic_cluster" }
+    }
+}

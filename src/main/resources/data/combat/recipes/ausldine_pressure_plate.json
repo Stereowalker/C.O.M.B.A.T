@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "group": "wooden_pressure_plate",
+  "pattern": [
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:ausldine_planks"
+    }
+  },
+  "result": {
+    "item": "combat:ausldine_pressure_plate"
+  }
+}

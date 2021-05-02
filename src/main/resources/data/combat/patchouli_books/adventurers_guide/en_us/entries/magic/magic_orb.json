@@ -1,0 +1,30 @@
+{
+    "name": "book.combat.entry.magic_orb.name",
+    "icon": "combat:magic_orb",
+    "category": "combat:magic",
+	"advancement": "combat:magic/mine_tridox",
+    "secret": false,
+    "priority": false,
+    "read_by_default": false,
+    "sortnum": 70,
+    "pages": [
+        {
+            "type": "text",
+            "text": "book.combat.entry.magic_orb.page.1"
+        },
+		{
+            "type": "crafting",
+			"recipe": "combat:magic_orb",
+            "title": "book.combat.entry.magic_orb.heading.1",
+            "text": "book.combat.entry.magic_orb.page.2"
+        },
+        {
+            "type": "text",
+            "text": "book.combat.entry.magic_orb.page.3"
+        },
+		{
+            "type": "empty",
+            "draw_filler": false
+        }
+    ]
+}

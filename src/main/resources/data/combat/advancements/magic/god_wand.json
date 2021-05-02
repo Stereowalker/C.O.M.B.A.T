@@ -1,0 +1,38 @@
+{
+  "parent": "combat:magic/master_wand",
+  "display": {
+    "icon": {
+      "item": "combat:god_wand"
+    },
+    "title": {
+      "translate": "advancements.magic.god_wand.title"
+    },
+    "description": {
+      "translate": "advancements.magic.god_wand.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 50
+  },
+  "criteria": {
+    "get_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:god_wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_stone"
+    ]
+  ]
+}

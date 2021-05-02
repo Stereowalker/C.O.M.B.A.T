@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/beam_center",
+    "textures": {
+        "texture": "combat:block/dead_oak_planks"
+    }
+}

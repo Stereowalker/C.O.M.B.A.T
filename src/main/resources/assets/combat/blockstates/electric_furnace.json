@@ -1,0 +1,12 @@
+{
+	"variants": {
+		"facing=north,lit=true": { "model": "combat:block/electric_furnace_on" },
+		"facing=south,lit=true": { "model": "combat:block/electric_furnace_on", "y": 180},
+		"facing=east,lit=true": { "model": "combat:block/electric_furnace_on", "y": 90},
+		"facing=west,lit=true": { "model": "combat:block/electric_furnace_on", "y": 270},
+		"facing=north,lit=false": { "model": "combat:block/electric_furnace"},
+		"facing=south,lit=false": { "model": "combat:block/electric_furnace", "y": 180},
+		"facing=east,lit=false": { "model": "combat:block/electric_furnace", "y": 90},
+		"facing=west,lit=false": { "model": "combat:block/electric_furnace", "y": 270}
+	}
+}

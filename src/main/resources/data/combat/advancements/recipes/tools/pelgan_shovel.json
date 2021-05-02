@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:pelgan_shovel"
+    ]
+  },
+  "criteria": {
+    "has_pelgan": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:pelgan_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:pelgan_shovel"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pelgan",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,28 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "combat:item/magic_orb"
+    },
+    "overrides": [
+    	{ "predicate": { "affinity": 0.12 }, "model": "combat:item/magic_orb_fw" },
+		{ "predicate": { "affinity": 0.13 }, "model": "combat:item/magic_orb_fl" },
+		{ "predicate": { "affinity": 0.14 }, "model": "combat:item/magic_orb_fe" },
+		{ "predicate": { "affinity": 0.15 }, "model": "combat:item/magic_orb_fa" },
+		{ "predicate": { "affinity": 0.21 }, "model": "combat:item/magic_orb_wf" },
+		{ "predicate": { "affinity": 0.23 }, "model": "combat:item/magic_orb_wl" },
+		{ "predicate": { "affinity": 0.24 }, "model": "combat:item/magic_orb_we" },
+		{ "predicate": { "affinity": 0.25 }, "model": "combat:item/magic_orb_wa" },
+		{ "predicate": { "affinity": 0.31 }, "model": "combat:item/magic_orb_lf" },
+		{ "predicate": { "affinity": 0.32 }, "model": "combat:item/magic_orb_lw" },
+		{ "predicate": { "affinity": 0.34 }, "model": "combat:item/magic_orb_le" },
+		{ "predicate": { "affinity": 0.35 }, "model": "combat:item/magic_orb_la" },
+		{ "predicate": { "affinity": 0.41 }, "model": "combat:item/magic_orb_ef" },
+		{ "predicate": { "affinity": 0.42 }, "model": "combat:item/magic_orb_ew" },
+		{ "predicate": { "affinity": 0.43 }, "model": "combat:item/magic_orb_el" },
+		{ "predicate": { "affinity": 0.45 }, "model": "combat:item/magic_orb_ea" },
+		{ "predicate": { "affinity": 0.51 }, "model": "combat:item/magic_orb_af" },
+		{ "predicate": { "affinity": 0.52 }, "model": "combat:item/magic_orb_aw" },
+		{ "predicate": { "affinity": 0.53 }, "model": "combat:item/magic_orb_al" },
+		{ "predicate": { "affinity": 0.54 }, "model": "combat:item/magic_orb_ae" }
+    ]
+}

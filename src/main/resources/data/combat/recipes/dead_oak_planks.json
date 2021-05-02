@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    {
+      "tag": "combat:dead_oak_logs"
+    }
+  ],
+  "result": {
+    "item": "combat:dead_oak_planks",
+    "count": 4
+  }
+}

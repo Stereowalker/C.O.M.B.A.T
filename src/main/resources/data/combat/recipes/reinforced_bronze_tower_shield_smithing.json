@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:shield"
+  },
+  "addition": {
+    "tag": "forge:ingots/bronze"
+  },
+  "result": {
+    "item": "combat:bronze_tower_shield"
+  }
+}

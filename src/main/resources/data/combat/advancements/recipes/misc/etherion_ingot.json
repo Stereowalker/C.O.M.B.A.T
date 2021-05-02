@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:etherion_ingot"
+    ]
+  },
+  "criteria": {
+    "has_etherion_white": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:white_etherion"
+          }
+        ]
+      }
+    },
+    "has_etherion_blue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:blue_etherion"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:etherion_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_etherion_white",
+      "has_etherion_blue",
+      "has_the_recipe"
+    ]
+  ]
+}

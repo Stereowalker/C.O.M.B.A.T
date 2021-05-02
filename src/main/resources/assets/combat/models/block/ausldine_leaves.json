@@ -1,0 +1,6 @@
+{
+    "parent": "block/leaves",
+    "textures": {
+        "all": "combat:block/ausldine_leaves"
+    }
+}

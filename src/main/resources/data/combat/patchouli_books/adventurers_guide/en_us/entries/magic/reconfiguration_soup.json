@@ -1,0 +1,21 @@
+{
+    "name": "book.combat.entry.reconfiguration_soup.name",
+    "icon": "combat:reconfiguration_soup",
+    "category": "combat:magic",
+	"advancement": "combat:recipes/misc/reconfiguration_soup",
+    "secret": false,
+    "priority": false,
+    "read_by_default": false,
+    "sortnum": 70,
+    "pages": [
+        {
+            "type": "text",
+            "text": "book.combat.entry.reconfiguration_soup.page.1"
+        },
+		{
+            "type": "crafting",
+			"recipe": "combat:reconfiguration_soup",
+            "title": "book.combat.entry.reconfiguration_soup.heading.1"
+        }
+    ]
+}

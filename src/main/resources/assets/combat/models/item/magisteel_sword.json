@@ -1,0 +1,14 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "combat:item/magisteel_sword"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "powered": 1
+            },
+            "model": "combat:item/magisteel_sword_powered"
+        }
+    ]
+}

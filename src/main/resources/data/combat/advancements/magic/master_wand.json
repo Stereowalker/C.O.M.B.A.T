@@ -1,0 +1,79 @@
+{
+	"parent": "combat:magic/advanced_wand",
+	"display": {
+    "icon": {
+      "item": "combat:master_stick_wand"
+    },
+    "title": {
+      "translate": "advancements.magic.master_wand.title"
+    },
+    "description": {
+      "translate": "advancements.magic.master_wand.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "master_stick_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:master_stick_wand"
+          }
+        ]
+      }
+    },
+    "master_blaze_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:master_blaze_wand"
+          }
+        ]
+      }
+    },
+    "master_golden_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:master_golden_wand"
+          }
+        ]
+      }
+    },
+    "master_shulker_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:master_shulker_wand"
+          }
+        ]
+      }
+    },
+    "master_serable_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:master_serable_wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "master_stick_wand",
+      "master_blaze_wand",
+      "master_golden_wand",
+      "master_shulker_wand",
+      "master_serable_wand"
+    ]
+  ]
+}

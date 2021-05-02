@@ -1,0 +1,32 @@
+{
+  "parent": "combat:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:basic_golden_wand"
+    ]
+  },
+  "criteria": {
+    "has_gold_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:gold_rod"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:basic_golden_wand"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_gold_rod",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "combat:pasquem_ore"
+  },
+  "result": "combat:pasquem_ingot",
+  "experience": 10,
+  "cookingtime": 250
+}

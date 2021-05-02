@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:crossbow"
+  },
+  "addition": {
+    "tag": "forge:ingots/bronze"
+  },
+  "result": {
+    "item": "combat:bronze_crossbow"
+  }
+}

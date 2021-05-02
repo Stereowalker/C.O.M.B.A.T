@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:monoris_log",
+    "combat:monoris_wood",
+    "combat:stripped_monoris_log",
+    "combat:stripped_monoris_wood"
+  ]
+}

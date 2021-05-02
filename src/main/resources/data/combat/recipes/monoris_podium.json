@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:monoris_planks"
+    },
+    "S": {
+      "item": "combat:monoris_slab"
+    }
+  },
+  "result": {
+    "item": "combat:monoris_podium",
+      "count": 2
+  }
+}

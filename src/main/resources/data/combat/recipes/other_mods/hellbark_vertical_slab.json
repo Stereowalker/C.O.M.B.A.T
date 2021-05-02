@@ -1,0 +1,22 @@
+{
+	"conditions": [{
+		"type": "forge:mod_loaded",
+		"modid": "biomesoplenty"
+	}],
+  "type": "crafting_shaped",
+  "group": "wooden_vertical_slab",
+  "pattern": [
+    "#",
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "biomesoplenty:hellbark_planks"
+    }
+  },
+  "result": {
+    "item": "combat:hellbark_vertical_slab",
+    "count": 6
+  }
+}

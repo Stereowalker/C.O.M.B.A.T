@@ -1,0 +1,131 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:serable_nugget_from_smelting"
+    ]
+  },
+  "criteria": {
+    "has_serable_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_pickaxe"
+          }
+        ]
+      }
+    },
+    "has_serable_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_shovel"
+          }
+        ]
+      }
+    },
+    "has_serable_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_axe"
+          }
+        ]
+      }
+    },
+    "has_serable_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_hoe"
+          }
+        ]
+      }
+    },
+    "has_serable_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_sword"
+          }
+        ]
+      }
+    },
+    "has_serable_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_helmet"
+          }
+        ]
+      }
+    },
+    "has_serable_chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_chestplate"
+          }
+        ]
+      }
+    },
+    "has_serable_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_leggings"
+          }
+        ]
+      }
+    },
+    "has_serable_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_boots"
+          }
+        ]
+      }
+    },
+    "has_serable_horse_armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_horse_armor"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:serable_nugget_from_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_serable_pickaxe",
+      "has_serable_shovel",
+      "has_serable_axe",
+      "has_serable_hoe",
+      "has_serable_sword",
+      "has_serable_helmet",
+      "has_serable_chestplate",
+      "has_serable_leggings",
+      "has_serable_boots",
+      "has_serable_horse_armor",
+      "has_the_recipe"
+    ]
+  ]
+}

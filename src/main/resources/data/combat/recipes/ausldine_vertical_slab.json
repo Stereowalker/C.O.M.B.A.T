@@ -1,0 +1,18 @@
+{
+  "type": "crafting_shaped",
+  "group": "wooden_vertical_slab",
+  "pattern": [
+    "#",
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:ausldine_planks"
+    }
+  },
+  "result": {
+    "item": "combat:ausldine_vertical_slab",
+    "count": 6
+  }
+}

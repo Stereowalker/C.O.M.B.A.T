@@ -1,0 +1,11 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+  {
+    "item": "combat:tridox"
+  }],
+  "result": {
+    "item": "combat:mana_pill",
+    "count": 5
+  }
+}

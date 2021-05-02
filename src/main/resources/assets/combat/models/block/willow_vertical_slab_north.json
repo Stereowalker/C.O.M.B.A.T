@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/vertical_slab_north",
+    "textures": {
+        "texture": "biomesoplenty:block/willow_planks"
+    }
+}

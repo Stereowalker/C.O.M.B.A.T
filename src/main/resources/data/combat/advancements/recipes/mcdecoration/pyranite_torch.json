@@ -1,0 +1,32 @@
+{
+  "parent": "combat:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:pyranite_torch"
+    ]
+  },
+  "criteria": {
+    "has_pyranite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:pyranite"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:pyranite_torch"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pyranite",
+      "has_the_recipe"
+    ]
+  ]
+}

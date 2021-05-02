@@ -1,0 +1,35 @@
+{
+  "parent": "combat:magic/root",
+  "display": {
+    "icon": {
+      "item": "combat:tridox"
+    },
+    "title": {
+      "translate": "advancements.magic.mine_tridox.title"
+    },
+    "description": {
+      "translate": "advancements.magic.mine_tridox.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:tridox"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_stone"
+    ]
+  ]
+}

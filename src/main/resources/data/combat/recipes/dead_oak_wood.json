@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "group": "bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:dead_oak_log"
+    }
+  },
+  "result": {
+    "item": "combat:dead_oak_wood",
+    "count": 3
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "  X",
+    " YX",
+    "#  "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "Y": {
+      "item": "combat:serable_axe"
+    },
+    "X": {
+      "item": "combat:serable_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:serable_halberd"
+  }
+}

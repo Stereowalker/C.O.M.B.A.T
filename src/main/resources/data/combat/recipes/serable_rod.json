@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:serable_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:serable_rod",
+    "count": 4
+  }
+}

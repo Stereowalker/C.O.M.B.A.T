@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X",
+    "X",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "combat:lozyne_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:lozyne_sword"
+  }
+}

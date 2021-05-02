@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "combat:block/mezepine_furnace_top",
+        "front": "combat:block/mezepine_furnace_front_on",
+        "side": "combat:block/mezepine_furnace_side"
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "combat:oil",
+    "combat:flowing_oil"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    {
+      "tag": "combat:ausldine_logs"
+    }
+  ],
+  "result": {
+    "item": "combat:ausldine_planks",
+    "count": 4
+  }
+}

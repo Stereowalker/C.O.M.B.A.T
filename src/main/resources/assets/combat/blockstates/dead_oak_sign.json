@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "combat:block/dead_oak_sign" }
+    }
+}

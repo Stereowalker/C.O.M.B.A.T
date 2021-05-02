@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:ausldine_boat",
+    "combat:dead_oak_boat",
+    "combat:monoris_boat",
+    "combat:rezal_boat"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "combat:block/dead_oak_slab" },
+        "type=top": { "model": "combat:block/dead_oak_slab_top" },
+        "type=double": { "model": "combat:block/dead_oak_planks" }
+    }
+}

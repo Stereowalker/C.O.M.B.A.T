@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/vertical_slab_south",
+    "textures": {
+        "texture": "biomesoplenty:block/jacaranda_planks"
+    }
+}

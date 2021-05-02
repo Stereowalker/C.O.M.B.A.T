@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "S",
+    "#",
+    "S"
+  ],
+  "key": {
+    "#": {
+      "item": "biomesoplenty:jacaranda_planks"
+    },
+    "S": {
+      "item": "biomesoplenty:jacaranda_slab"
+    }
+  },
+  "result": {
+    "item": "combat:jacaranda_podium",
+      "count": 2
+  }
+}

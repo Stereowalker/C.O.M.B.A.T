@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_top_rh",
+    "textures": {
+        "bottom": "combat:block/ausldine_door_bottom",
+        "top": "combat:block/ausldine_door_top"
+    }
+}

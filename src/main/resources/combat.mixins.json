@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.stereowalker.combat.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "combat.refmap.json",
+  "mixins": [
+  	"PlayerEntityMixin"
+  ],
+  "client": [
+    "BipedArmorLayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

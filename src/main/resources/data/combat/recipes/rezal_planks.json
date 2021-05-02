@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    {
+      "tag": "combat:rezal_logs"
+    }
+  ],
+  "result": {
+    "item": "combat:rezal_planks",
+    "count": 4
+  }
+}

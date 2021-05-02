@@ -1,0 +1,9 @@
+{
+  "type": "smelting",
+  "ingredient": {
+    "item": "combat:pelgan_ore"
+  },
+  "result": "combat:pelgan_ingot",
+  "experience": 1.8,
+  "cookingtime": 600
+}

@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X",
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "combat:serable_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:serable_shovel"
+  }
+}

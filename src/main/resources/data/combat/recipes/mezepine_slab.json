@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:mezepine"
+    }
+  },
+  "result": {
+    "item": "combat:mezepine_slab",
+    "count": 6
+  }
+}

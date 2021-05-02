@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    " X ",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "combat:iron_rod"
+    },
+    "X": {
+      "item": "combat:magisteel_ingot"
+    },
+    "#": {
+      "item": "combat:tridox"
+    }
+  },
+  "result": {
+    "item": "combat:magisteel_sword"
+  }
+}

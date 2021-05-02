@@ -1,0 +1,7 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "combat:item/light_saber_hilt",
+        "layer1": "combat:item/light_saber_blade"
+    }
+}

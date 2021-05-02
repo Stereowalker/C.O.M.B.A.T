@@ -1,0 +1,22 @@
+{
+    "name": "book.combat.entry.lozyne_ingot.name",
+    "icon": "combat:lozyne_ingot",
+    "category": "combat:materials",
+	"advancement": "combat:recipes/misc/lozyne_ingot",
+    "secret": false,
+    "priority": false,
+    "read_by_default": false,
+    "sortnum": 70,
+    "pages": [
+        {
+            "type": "text",
+            "text": "book.combat.entry.lozyne_ingot.page.1"
+        },
+		{
+            "type": "spotlight",
+			"item": "combat:lozyne_ingot",
+            "title": "book.combat.entry.lozyne_ingot.heading.1",
+            "text": "book.combat.entry.lozyne_ingot.page.2"
+        }
+    ]
+}

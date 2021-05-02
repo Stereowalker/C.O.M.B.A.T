@@ -1,0 +1,7 @@
+{
+    "parent": "block/fire_up_alt",
+    "textures": {
+        "particle": "combat:block/pyranite_fire_0",
+        "fire": "combat:block/pyranite_fire_0"
+    }
+}

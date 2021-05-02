@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:ausldine_planks",
+    "combat:dead_oak_planks",
+    "combat:monoris_planks",
+    "combat:rezal_planks"
+  ]
+}

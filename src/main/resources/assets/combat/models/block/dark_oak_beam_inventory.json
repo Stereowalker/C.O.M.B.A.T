@@ -1,0 +1,6 @@
+{
+    "parent": "combat:block/beam_inventory",
+    "textures": {
+        "texture": "block/dark_oak_planks"
+    }
+}

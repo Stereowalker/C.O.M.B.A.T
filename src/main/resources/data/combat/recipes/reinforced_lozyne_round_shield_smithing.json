@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "combat:round_shield"
+  },
+  "addition": {
+    "item": "combat:lozyne_ingot"
+  },
+  "result": {
+    "item": "combat:lozyne_round_shield"
+  }
+}

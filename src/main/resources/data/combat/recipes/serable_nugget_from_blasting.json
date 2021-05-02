@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": [
+    {
+      "item": "combat:serable_pickaxe"
+    },
+    {
+      "item": "combat:serable_shovel"
+    },
+    {
+      "item": "combat:serable_axe"
+    },
+    {
+      "item": "combat:serable_hoe"
+    },
+    {
+      "item": "combat:serable_sword"
+    },
+    {
+      "item": "combat:serable_helmet"
+    },
+    {
+      "item": "combat:serable_chestplate"
+    },
+    {
+      "item": "combat:serable_leggings"
+    },
+    {
+      "item": "combat:serable_boots"
+    }
+  ],
+  "result": "combat:serable_nugget",
+  "experience": 0.3,
+  "cookingtime": 300
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "combat:item/novice_blaze_wand"
+    }
+}

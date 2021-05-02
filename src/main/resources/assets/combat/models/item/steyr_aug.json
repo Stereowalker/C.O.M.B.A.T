@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/assault_rifle",
+    "textures": {
+        "layer0": "combat:item/steyr_aug"
+    }
+}

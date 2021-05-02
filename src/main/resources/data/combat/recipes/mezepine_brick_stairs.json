@@ -1,0 +1,18 @@
+{
+  "type": "crafting_shaped",
+  "group": "wooden_stairs",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:mezepine_bricks"
+    }
+  },
+  "result": {
+    "item": "combat:mezepine_brick_stairs",
+    "count": 4
+  }
+}

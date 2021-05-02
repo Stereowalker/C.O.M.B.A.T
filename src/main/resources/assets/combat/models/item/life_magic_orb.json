@@ -1,0 +1,11 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "combat:item/life_magic_orb"
+    },
+    "overrides": [
+    	{ "predicate": { "affinity": 0.0 }, "model": "combat:item/life_magic_orb" },
+		{ "predicate": { "affinity": 0.1 }, "model": "combat:item/life_magic_orb_restoration" },
+        { "predicate": { "affinity": 0.2 }, "model": "combat:item/life_magic_orb_conjuration" }
+    ]
+}

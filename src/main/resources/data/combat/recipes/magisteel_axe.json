@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XX",
+    "T#",
+    " #"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:iron_rod"
+    },
+    "X": {
+      "item": "combat:pelgan_ingot"
+    },
+    "T": {
+      "item": "combat:tridox"
+    }
+  },
+  "result": {
+    "item": "combat:magisteel_axe"
+  }
+}

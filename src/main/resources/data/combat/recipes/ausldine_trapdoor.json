@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "group": "wooden_trapdoor",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:ausldine_planks"
+    }
+  },
+  "result": {
+    "item": "combat:ausldine_trapdoor",
+    "count": 2
+  }
+}

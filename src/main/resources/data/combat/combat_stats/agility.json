@@ -1,0 +1,25 @@
+{
+	"enabled": true,
+	"limitable": true,
+	"default_points": 100,
+	"maximum_points_earned_per_level": 10,
+	"minimum_points_earned_per_level": 5,
+	"attributes": [
+		{
+			"attribute": "minecraft:generic.movement_speed",
+			"modifier_per_point": 0.001
+		},
+		{
+			"attribute": "minecraft:generic.attack_speed",
+			"modifier_per_point": 0.04
+		},
+		{
+			"attribute": "forge:swim_speed",
+			"modifier_per_point": 0.01
+		},
+		{
+			"attribute": "combat:generic.jump_strength",
+			"modifier_per_point": 0.002
+		}
+	]
+}

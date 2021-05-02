@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_bottom",
+    "textures": {
+        "bottom": "combat:block/monoris_door_bottom",
+        "top": "combat:block/monoris_door_top"
+    }
+}

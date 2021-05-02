@@ -1,0 +1,9 @@
+{
+  "type": "smelting",
+  "ingredient": {
+    "item": "combat:copper_ore"
+  },
+  "result": "combat:copper_ingot",
+  "experience": 0.6,
+  "cookingtime": 200
+}

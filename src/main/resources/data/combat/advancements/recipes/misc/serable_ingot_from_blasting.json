@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:serable_ingot_from_blasting"
+    ]
+  },
+  "criteria": {
+    "has_serable_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:serable_ore"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:serable_ingot_from_blasting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_serable_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

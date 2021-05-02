@@ -1,0 +1,32 @@
+{
+  "parent": "combat:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:elemental_magic_compass"
+    ]
+  },
+  "criteria": {
+    "has_tridox": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:tridox"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:elemental_magic_compass"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_tridox",
+      "has_the_recipe"
+    ]
+  ]
+}

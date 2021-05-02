@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "type=north": { "model": "combat:block/fir_vertical_slab_north" },
+        "type=south": { "model": "combat:block/fir_vertical_slab_south" },
+        "type=east": { "model": "combat:block/fir_vertical_slab_east" },
+        "type=west": { "model": "combat:block/fir_vertical_slab_west" },
+        "type=double": { "model": "biomesoplenty:block/fir_planks" }
+    }
+}

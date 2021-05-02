@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:bow"
+  },
+  "addition": {
+    "item": "combat:lozyne_ingot"
+  },
+  "result": {
+    "item": "combat:lozyne_bow"
+  }
+}

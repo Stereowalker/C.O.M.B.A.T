@@ -1,0 +1,9 @@
+{
+  "type": "smelting",
+  "ingredient": {
+    "item": "combat:cassiterite"
+  },
+  "result": "combat:tin_ingot",
+  "experience": 0.6,
+  "cookingtime": 200
+}

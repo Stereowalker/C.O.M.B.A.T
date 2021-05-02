@@ -1,0 +1,79 @@
+{
+	"parent": "combat:magic/apprentice_wand",
+	"display": {
+    "icon": {
+      "item": "combat:advanced_stick_wand"
+    },
+    "title": {
+      "translate": "advancements.magic.advanced_wand.title"
+    },
+    "description": {
+      "translate": "advancements.magic.advanced_wand.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "advanced_stick_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:advanced_stick_wand"
+          }
+        ]
+      }
+    },
+    "advanced_blaze_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:advanced_blaze_wand"
+          }
+        ]
+      }
+    },
+    "advanced_golden_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:advanced_golden_wand"
+          }
+        ]
+      }
+    },
+    "advanced_shulker_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:advanced_shulker_wand"
+          }
+        ]
+      }
+    },
+    "advanced_serable_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:advanced_serable_wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "advanced_stick_wand",
+      "advanced_blaze_wand",
+      "advanced_golden_wand",
+      "advanced_shulker_wand",
+      "advanced_serable_wand"
+    ]
+  ]
+}

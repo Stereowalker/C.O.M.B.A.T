@@ -1,0 +1,15 @@
+{
+  "type": "combat:arcane_conversion_1_input",
+  "base": {
+    "item": "minecraft:emerald"
+  },
+  "addition1": {
+    "item": "combat:soul_gem"
+  },
+  "additionCost1": 32,
+  
+  "tridoxCost": 5,
+  "result": {
+    "item": "combat:purple_magic_stone"
+  }
+}

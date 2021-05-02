@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "age=0": { "model": "combat:block/corn_stage0" },
+        "age=1": { "model": "combat:block/corn_stage1" },
+        "age=2": { "model": "combat:block/corn_stage2" },
+        "age=3": { "model": "combat:block/corn_stage3" },
+        "age=4": { "model": "combat:block/corn_stage4" },
+        "age=5": { "model": "combat:block/corn_stage5" }
+    }
+}

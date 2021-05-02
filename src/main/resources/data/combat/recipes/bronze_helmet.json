@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "combat:bronze_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:bronze_helmet"
+  }
+}

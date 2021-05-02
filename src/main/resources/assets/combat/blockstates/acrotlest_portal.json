@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "axis=z": { "model": "combat:block/acrotlest_portal_ew" },
+        "axis=x": { "model": "combat:block/acrotlest_portal_ns" }
+    }
+}

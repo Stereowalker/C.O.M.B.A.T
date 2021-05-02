@@ -1,0 +1,35 @@
+{
+  "parent": "combat:magic/root",
+  "display": {
+    "icon": {
+      "item": "combat:soul_gem"
+    },
+    "title": {
+      "translate": "advancements.magic.obtain_soul_gem.title"
+    },
+    "description": {
+      "translate": "advancements.magic.obtain_soul_gem.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_soul_gem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:soul_gem"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_soul_gem"
+    ]
+  ]
+}

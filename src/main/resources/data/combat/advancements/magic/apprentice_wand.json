@@ -1,0 +1,79 @@
+{
+	"parent": "combat:magic/novice_wand",
+	"display": {
+    "icon": {
+      "item": "combat:apprentice_stick_wand"
+    },
+    "title": {
+      "translate": "advancements.magic.apprentice_wand.title"
+    },
+    "description": {
+      "translate": "advancements.magic.apprentice_wand.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "apprentice_stick_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:apprentice_stick_wand"
+          }
+        ]
+      }
+    },
+    "apprentice_blaze_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:apprentice_blaze_wand"
+          }
+        ]
+      }
+    },
+    "apprentice_golden_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:apprentice_golden_wand"
+          }
+        ]
+      }
+    },
+    "apprentice_shulker_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:apprentice_shulker_wand"
+          }
+        ]
+      }
+    },
+    "apprentice_serable_wand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:apprentice_serable_wand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "apprentice_stick_wand",
+      "apprentice_blaze_wand",
+      "apprentice_golden_wand",
+      "apprentice_shulker_wand",
+      "apprentice_serable_wand"
+    ]
+  ]
+}

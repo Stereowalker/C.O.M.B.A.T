@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "hanging=true": { "model": "combat:block/hanging_pyranite_lantern"},
+        "hanging=false": { "model": "combat:block/pyranite_lantern"}
+  }
+}

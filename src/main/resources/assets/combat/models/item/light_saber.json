@@ -1,0 +1,15 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "combat:item/light_saber_hilt",
+        "layer1": "combat:item/light_saber_hilt2"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "drawn": 1
+            },
+            "model": "combat:item/light_saber_drawn"
+        }
+    ]
+}

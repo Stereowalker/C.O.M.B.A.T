@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "combat:wooden_arrow",
+    "combat:golden_arrow",
+    "combat:quartz_arrow",
+    "combat:iron_arrow",
+    "combat:diamond_arrow",
+    "combat:obsidian_arrow",
+    "combat:wooden_tipped_arrow",
+    "combat:golden_tipped_arrow",
+    "combat:quartz_tipped_arrow",
+    "combat:iron_tipped_arrow",
+    "combat:diamond_tipped_arrow",
+    "combat:obsidian_tipped_arrow"
+  ]
+}

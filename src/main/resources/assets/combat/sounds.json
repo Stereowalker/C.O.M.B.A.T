@@ -1,0 +1,7 @@
+{
+	"glock_17_reload": {"subtitle": "Glock 17 Reload", "sounds": [{"name": "combat:glock_17_reload", "stream": true}]},
+	"glock_17_fire": {"subtitle": "Glock 17 Fire", "sounds": [{"name": "combat:glock_17_fire", "stream": true}]},
+	"entity_bullet_hit": {"subtitle": "Bullet Hit", "sounds": [{"name": "combat:entity_bullet_hit", "stream": true}]},
+	"beretta_92_reload": {"subtitle": "Beretta 92 Reload", "sounds": [{"name": "combat:beretta_92_reload", "stream": true}]},
+	"beretta_92_fire": {"subtitle": "Beretta 92 Fire", "sounds": [{"name": "combat:beretta_92_fire", "stream": true}]}
+}

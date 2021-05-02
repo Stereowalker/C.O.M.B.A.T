@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "combat:corn"
+  },
+  "result": "combat:roast_corn",
+  "experience": 0.25,
+  "cookingtime": 200
+}
