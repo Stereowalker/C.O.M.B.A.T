@@ -1,0 +1,9 @@
+{
+  "type": "origins:attribute",
+  "modifier": {
+    "name": "Increased Mana Capacity",
+    "attribute": "combat:generic.max_mana",
+    "value": 10240,
+    "operation": "addition"
+  }
+}

@@ -12,7 +12,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class CAttributes {
 	public static List<Attribute> ATTRIBUTE = new ArrayList<Attribute>();
 	
-	public static final Attribute MAX_MANA = register("generic.max_mana", (new RangedAttribute("attribute.name.combat.max_mana", 20.0D, 0.0D, 1024.0D)).setShouldWatch(true));
+	public static final Attribute MAX_MANA = register("generic.max_mana", (new RangedAttribute("attribute.name.combat.max_mana", 20.0D, 0.0D, 10240.0D)).setShouldWatch(true));
 	public static final Attribute MAGIC_STRENGTH = register("generic.magic_strength", (new RangedAttribute("attribute.name.combat.magic_strength", 1.0D, 0.0D, 1024.0D)).setShouldWatch(true));
 	public static final Attribute MANA_REGENERATION = register("generic.mana_regeneration", (new RangedAttribute("attribute.name.combat.mana_regeneration", 1.0D, 0.0D, 1024.0D)).setShouldWatch(true));
 	public static final Attribute HEALTH_REGENERATION = register("generic.health_regeneration", (new RangedAttribute("attribute.name.combat.health_regeneration", 1.0D, 0.0D, 1024.0D)).setShouldWatch(true));

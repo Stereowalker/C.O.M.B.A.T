@@ -1,0 +1,36 @@
+{
+    "type": "origins:action_on_item_use",
+    "entity_action": {
+        "type": "origins:apply_effect",
+  		"effects": [
+  			{
+    			"effect": "minecraft:blindness",
+    			"duration": 1200,
+    			"amplifier": 0
+  			},
+  			{
+    			"effect": "minecraft:nausea",
+    			"duration": 1200,
+    			"amplifier": 0
+  			},
+  			{
+    			"effect": "minecraft:weakness",
+    			"duration": 1200,
+    			"amplifier": 0
+  			},
+  			{
+    			"effect": "minecraft:mining_fatigue",
+    			"duration": 1200,
+    			"amplifier": 0
+  			},
+  			{
+    			"effect": "minecraft:slowness",
+    			"duration": 1200,
+    			"amplifier": 0
+  			}
+  		]
+    },
+    "item_condition": {
+        "type": "origins:food"
+    }
+}

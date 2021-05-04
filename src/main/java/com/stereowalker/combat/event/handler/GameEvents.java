@@ -312,6 +312,7 @@ public class GameEvents {
 		CombatEntityStats.getOrCreateModNBT(event.getPlayer());
 		if (!event.isWasDeath()) {
 			CombatEntityStats.setVampire(event.getPlayer(), CombatEntityStats.isVampire(event.getOriginal()));
+			CombatEntityStats.setManabornBonus(event.getPlayer(), CombatEntityStats.hasManabornBonus(event.getOriginal()));
 			CombatEntityStats.setMana(event.getPlayer(), CombatEntityStats.getMana(event.getOriginal()));
 		}
 		CombatEntityStats.setManaColor(event.getPlayer() , CombatEntityStats.getManaColor(event.getOriginal()));

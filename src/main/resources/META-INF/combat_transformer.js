@@ -662,7 +662,7 @@ function log(message) {
 }
 
 function debug(message) {
-	if (true) {
+	if (false) {
 		print("[C.O.M.B.A.T Transformer Debug]: " + message);
 	}
 }

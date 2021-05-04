@@ -48,6 +48,7 @@ public class CombatEntityStats {
 	public static String xpStoredID = "XPStored";
 	public static String limiterId = "Limiter";
 	public static String vampireId = "IsVampire";
+	public static String manabornBonusId = "IsManaborn";
 	public static String elementalAffinityID = "ElementalAffinity";
 	public static String subElementalAffinity1ID = "SubElementalAffinity1";
 	public static String subElementalAffinity2ID = "SUbElementalAffinity2";
@@ -159,6 +160,14 @@ public class CombatEntityStats {
 		if(entity != null) {
 			CompoundNBT compound = getModNBT(entity);
 			return compound.getBoolean(vampireId);
+		}
+		return false;
+	}
+
+	public static boolean hasManabornBonus(LivingEntity entity) {
+		if(entity != null) {
+			CompoundNBT compound = getModNBT(entity);
+			return compound.getBoolean(manabornBonusId);
 		}
 		return false;
 	}
@@ -328,6 +337,11 @@ public class CombatEntityStats {
 		compound.putBoolean(vampireId, vampire);
 	}
 
+	public static void setManabornBonus(LivingEntity entity, boolean manaborn) {
+		CompoundNBT compound = getModNBT(entity);
+		compound.putBoolean(manabornBonusId, manaborn);
+	}
+
 	public static void setAbomination(LivingEntity entity, AbominationType category) {
 		CompoundNBT compound = getModNBT(entity);
 		compound.putInt(abominationID, category.ordinal());
@@ -451,6 +465,9 @@ public class CombatEntityStats {
 				}
 				if (!compound.contains(resistID)) {
 					setResist(player, 0.0D);
+				}
+				if (!compound.contains(manabornBonusId)) {
+					setManabornBonus(player, false);
 				}
 				if (!compound.contains(etherionTowerPositionID)) {
 					setNearestEtherionTowerPos(player, BlockPos.ZERO);

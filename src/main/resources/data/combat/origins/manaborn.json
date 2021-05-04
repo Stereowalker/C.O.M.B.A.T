@@ -1,0 +1,12 @@
+{
+    "powers": [
+        "combat:altered_regeneration",
+        "combat:magic_stomach",
+        "combat:mana_capacity",
+        "combat:no_mana_absorbers",
+        "combat:semi_translucent"
+    ],
+    "icon": "combat:mana_orb",
+    "order": 4,
+    "impact": 2
+}

@@ -1,5 +1,6 @@
 package com.stereowalker.combat.event;
 
+import com.stereowalker.combat.compat.origins.OriginsCompat;
 import com.stereowalker.combat.entity.CombatEntityStats;
 import com.stereowalker.combat.entity.ai.CAttributes;
 import com.stereowalker.combat.spell.SpellStats;
@@ -12,6 +13,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
+import net.minecraftforge.fml.ModList;
 
 public class MagicEvents {
 
@@ -26,15 +28,45 @@ public class MagicEvents {
 					if (!player.isPotionActive(Effects.WEAKNESS)) player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 1, false, false, false));
 				}
 				if (player.ticksExisted%40 == 20) {
-					if (CombatEntityStats.getMana(player) > MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA))) {
-						CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
+					boolean shouldRegenerateMana = true;
+					if (ModList.get().isLoaded("origins")) {
+						if (OriginsCompat.hasNoManaAbsorbers(player)) {
+							if (!CombatEntityStats.hasManabornBonus(player)) {
+								System.out.println("Max Mana = "+MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
+								CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
+								CombatEntityStats.setManabornBonus(player, true);
+							}
+							shouldRegenerateMana = false;
+						}
+						if (OriginsCompat.hasAlteredRegeneration(player)) {
+							if (!CombatEntityStats.hasManabornBonus(player)) {
+								System.out.println("Max Mana = "+MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
+								CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
+								CombatEntityStats.setManabornBonus(player, true);
+							}
+							if (player.shouldHeal()) {
+								if (player.getHealth() < player.getMaxHealth() - 1) {
+									player.heal(1.0F);
+									CombatEntityStats.addMana(player, -1.0F);
+								} else {
+									player.heal(player.getMaxHealth() - player.getHealth());
+									CombatEntityStats.addMana(player, player.getHealth() - player.getMaxHealth());
+								}
+							}
+						}
 					}
-					float multiplier;
-					if (CBiomes.getMagicBiomes().contains(entity.world.getBiome(entity.getPosition()).getRegistryName())) multiplier = 10;
-					else multiplier = 0.02F;
-					if (!player.getFoodStats().needFood()) multiplier*=5;
-					float mana = multiplier*MathHelper.floor(player.getAttributeValue(CAttributes.MANA_REGENERATION));
-					CombatEntityStats.addMana(entity, mana);
+
+					if (shouldRegenerateMana) {
+						if (CombatEntityStats.getMana(player) > MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA))) {
+							CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
+						}
+						float multiplier;
+						if (CBiomes.getMagicBiomes().contains(entity.world.getBiome(entity.getPosition()).getRegistryName())) multiplier = 10;
+						else multiplier = 0.02F;
+						if (!player.getFoodStats().needFood()) multiplier*=5;
+						float mana = multiplier*MathHelper.floor(player.getAttributeValue(CAttributes.MANA_REGENERATION));
+						CombatEntityStats.addMana(entity, mana);
+					}
 				}
 			}
 		}
