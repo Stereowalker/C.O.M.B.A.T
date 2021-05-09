@@ -156,23 +156,6 @@ function initializeCoreMod() {
             }
         },
 
-        //Allows us to apply fall damage based on the jump strength attribute instead of the jump boost potion
-        'living_entity_patch': {
-            'target': {
-                'type': 'CLASS',
-                'name': 'net.minecraft.entity.LivingEntity'
-            },
-            'transformer': function(classNode) {
-                patchMethod([{
-                    obfName: "func_225503_b_",
-                    name: "damageEntity",
-                    desc: "(Lnet/minecraft/util/DamageSource;F)V",
-                    patches: [patchLivingEntityDamageEntity]
-                }], classNode, "LivingEntity");
-                return classNode;
-            }
-        },
-
         //Allows us to render a custom glint texture for legendary items
         'item_renderer_patch': {
             'target': {
@@ -515,26 +498,6 @@ var patchLivingEntityOnLivingFall = {
         insnList.add(new VarInsnNode(Opcodes.FLOAD, 2));
         insnList.add(generateHook("calculateFallDamageFromAttribute", "(Lnet/minecraft/entity/LivingEntity;FF)I"));
         insnList.add(new VarInsnNode(Opcodes.ISTORE, 5));
-        instructions.insert(node, insnList);
-    }
-};
-
-var patchLivingEntityDamageEntity = {
-    filter: function(node, obfuscated) {
-        if (matchesHook(node, "net/minecraft/entity/LivingEntity", obfuscated ? "func_70672_c" : "applyPotionDamageCalculations", "(Lnet/minecraft/util/DamageSource;F)F")) {
-			var nextNode = node.getNext();
-			if (nextNode instanceof VarInsnNode && nextNode.getOpcode().equals(Opcodes.FSTORE) && nextNode.var.equals(2)) {
-            	return nextNode;
-			}
-        }
-    },
-    action: function(node, instructions, obfuscated) {
-        var insnList = new InsnList();
-        insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
-        insnList.add(new VarInsnNode(Opcodes.FLOAD, 2));
-        insnList.add(generateHook("applyPotionDamageCalculationsFromAttribute", "(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/DamageSource;F)F"));
-        insnList.add(new VarInsnNode(Opcodes.FSTORE, 2));
         instructions.insert(node, insnList);
     }
 };

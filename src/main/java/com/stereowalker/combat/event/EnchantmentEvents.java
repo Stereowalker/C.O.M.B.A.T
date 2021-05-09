@@ -149,7 +149,6 @@ public class EnchantmentEvents {
 			Entry<EquipmentSlotType, ItemStack> entry = EnchantmentHelper.getRandomItemWithEnchantment(CEnchantments.BURNING_SPIKES, user);
 			int level = EnchantmentHelper.getMaxEnchantmentLevel(CEnchantments.BURNING_SPIKES, user);
 			if (shouldHit(level, random)) {
-				Combat.debug("RETALIATE");
 				if (attacker != null) {
 					attacker.setFire(level * 40);
 					attacker.attackEntityFrom(CDamageSource.causeBurningThornsDamage(user), (float)getDamage(level, random));
@@ -166,6 +165,28 @@ public class EnchantmentEvents {
 
 	@SubscribeEvent
 	public static void enchantmentSpikes(LivingAttackEvent event) {
+		Entity attacker = event.getSource().getTrueSource();
+		LivingEntity user = event.getEntityLiving();
+		if (event.getAmount() > 0.0F && canBlockDamageSource(event.getEntityLiving(), event.getSource())) {
+			Random random = user.getRNG();
+			Entry<EquipmentSlotType, ItemStack> entry = EnchantmentHelper.getRandomItemWithEnchantment(CEnchantments.SPIKES, user);
+			int level = EnchantmentHelper.getMaxEnchantmentLevel(CEnchantments.SPIKES, user);
+			if (shouldHit(level, random)) {
+				if (attacker != null) {
+					attacker.attackEntityFrom(DamageSource.causeThornsDamage(user), (float)getDamage(level, random));
+				}
+
+				if (entry != null) {
+					entry.getValue().damageItem(3, user, (p_222183_1_) -> {
+						p_222183_1_.sendBreakAnimation(entry.getKey());
+					});
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void enchantmentAbsorption(LivingAttackEvent event) {
 		Entity attacker = event.getSource().getTrueSource();
 		LivingEntity user = event.getEntityLiving();
 		if (event.getAmount() > 0.0F && canBlockDamageSource(event.getEntityLiving(), event.getSource())) {

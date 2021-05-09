@@ -896,6 +896,8 @@
 	"enchantment.combat.ice_aspect.desc": "Freezes the target",
 	"enchantment.combat.retaining": "Retaining",
 	"enchantment.combat.retaining.desc": "Item stays in the inventory on death",
+	"enchantment.combat.absorption": "Absorption",
+	"enchantment.combat.absorption.desc": "Absorbs 5% of damage per level into the armor",
 ///////////////////////////////////////////////////////////[ADVANCENENTS]///////////////////////////////////////////////////////////
 	"advancements.magic.root.title": "Magic",
 	"advancements.magic.root.description": "A little magic won't hurt anyone, right?",

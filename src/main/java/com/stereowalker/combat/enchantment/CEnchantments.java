@@ -14,6 +14,7 @@ public class CEnchantments {
 	public static List<Enchantment> ENCHANTMENTS = new ArrayList<Enchantment>();
 	
 	private static final EquipmentSlotType[] ARMOR_SLOTS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
+	private static final EquipmentSlotType[] HAND_SLOTS = new EquipmentSlotType[]{EquipmentSlotType.MAINHAND, EquipmentSlotType.OFFHAND};
 	public static final Enchantment SUN_SHIELD = register("sun_shield", new SunShieldEnchantment(Rarity.UNCOMMON, new EquipmentSlotType[] {EquipmentSlotType.HEAD}));
 	public static final Enchantment MAGMA_WALKER = register("magma_walker", new MagmaWalkerEnchantment(Rarity.RARE, new EquipmentSlotType[] {EquipmentSlotType.FEET}));
 	public static final Enchantment VAMPIRE_SLAYER = register("vampire_slayer", new VampireSlayerEnchantment(Rarity.VERY_RARE, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND}));
@@ -28,7 +29,7 @@ public class CEnchantments {
 	public static final Enchantment ICE_ASPECT = register("ice_aspect", new IceAspectEnchantment(Enchantment.Rarity.RARE, EquipmentSlotType.MAINHAND));
 	public static final Enchantment BURNING_THORNS = register("burning_thorns", new BurningThornsEnchantment(Rarity.VERY_RARE, ARMOR_SLOTS));
 	//Shield
-	public static final Enchantment SPIKES = register("spikes", new SpikesEnchantment(Rarity.RARE, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND, EquipmentSlotType.OFFHAND}));
+	public static final Enchantment SPIKES = register("spikes", new SpikesEnchantment(Rarity.RARE, HAND_SLOTS));
 	public static final Enchantment BURNING_SPIKES = register("burning_spikes", new SpikesEnchantment(Rarity.RARE, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND, EquipmentSlotType.OFFHAND}));
 	//Wand
 	public static final Enchantment COOLDOWN_REDUCTION = register("cooldown_reduction", new CooldownReductionEnchantment(Rarity.UNCOMMON, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND, EquipmentSlotType.OFFHAND}));
@@ -36,6 +37,8 @@ public class CEnchantments {
 	//All
 	public static final Enchantment RETAINING = register("retaining", new RestoringEnchantment(Rarity.RARE, EquipmentSlotType.values()));
 	public static final Enchantment RESTORING = register("restoring", new RetainingEnchantment(Rarity.RARE, EquipmentSlotType.values()));
+	//Armor
+	public static final Enchantment ABSORPTION = register("absorption", new AbsorptionEnchantment(Rarity.VERY_RARE, ARMOR_SLOTS));
 	
 	
 	public static Enchantment register(String name, Enchantment enchantment) {

@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "combat.refmap.json",
   "mixins": [
-  	"PlayerEntityMixin"
+  	"PlayerEntityMixin",
+  	"LivingEntityMixin"
   ],
   "client": [
     "BipedArmorLayerMixin"

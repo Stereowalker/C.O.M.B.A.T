@@ -44,10 +44,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.CombatRules;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -240,47 +237,6 @@ public class CombatHooks {
 			f = effectinstance == null ? 0.0F : (float)(effectinstance.getAmplifier() + 1);
 		}
 		return MathHelper.ceil((distance - 3.0F - f) * damageMultiplier);
-	}
-
-	/**
-	 * Reduces damage, depending on potions
-	 */
-	public static float applyPotionDamageCalculationsFromAttribute(LivingEntity entity, DamageSource source, float damage) {
-		boolean useVanilla = false;
-		if (source.isDamageAbsolute()) {
-			return damage;
-		} else {
-			if ((entity.isPotionActive(Effects.RESISTANCE) || !useVanilla) && entity.getAttributeValue(CAttributes.PHYSICAL_RESISTANCE) > 0 && source != DamageSource.OUT_OF_WORLD) {
-				int i;
-				if (useVanilla)
-					i = (entity.getActivePotionEffect(Effects.RESISTANCE).getAmplifier() + 1) * 5;
-				else
-					i = MathHelper.ceil(entity.getAttributeValue(CAttributes.PHYSICAL_RESISTANCE)) + (Config.RPG_COMMON.enableLevelingSystem.get() ? -10 : 0);
-				int j = 25 - i;
-				float f = damage * (float)j;
-				float f1 = damage;
-				damage = Math.max(f / 25.0F, 0.0F);
-				float f2 = f1 - damage;
-				if (f2 > 0.0F && f2 < 3.4028235E37F && entity.isPotionActive(Effects.RESISTANCE)) {
-					if (entity instanceof ServerPlayerEntity) {
-						((ServerPlayerEntity)entity).addStat(Stats.DAMAGE_RESISTED, Math.round(f2 * 10.0F));
-					} else if (source.getTrueSource() instanceof ServerPlayerEntity) {
-						((ServerPlayerEntity)source.getTrueSource()).addStat(Stats.DAMAGE_DEALT_RESISTED, Math.round(f2 * 10.0F));
-					}
-				}
-			}
-
-			if (damage <= 0.0F) {
-				return 0.0F;
-			} else {
-				int k = EnchantmentHelper.getEnchantmentModifierDamage(entity.getArmorInventoryList(), source);
-				if (k > 0) {
-					damage = CombatRules.getDamageAfterMagicAbsorb(damage, (float)k);
-				}
-
-				return damage;
-			}
-		}
 	}
 
 

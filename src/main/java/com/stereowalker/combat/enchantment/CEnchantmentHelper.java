@@ -26,6 +26,10 @@ public class CEnchantmentHelper {
 		return EnchantmentHelper.getEnchantmentLevel(CEnchantments.COOLDOWN_REDUCTION, stack);
 	}
 	
+	public static int getAbsorptionModifier(ItemStack stack) {
+		return EnchantmentHelper.getEnchantmentLevel(CEnchantments.ABSORPTION, stack);
+	}
+	
 	public static int getIceAspectModifier(LivingEntity player) {
 		return EnchantmentHelper.getMaxEnchantmentLevel(CEnchantments.ICE_ASPECT, player);
 	}
