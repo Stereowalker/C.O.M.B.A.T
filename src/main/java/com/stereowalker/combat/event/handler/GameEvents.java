@@ -405,7 +405,7 @@ public class GameEvents {
 			}
 		}
 
-		if(!event.getEntityLiving().getEntityWorld().isRemote && !event.getEntityLiving().getType().isContained(CEntityTypeTags.BOSSES)) {
+		if(!event.getEntityLiving().getEntityWorld().isRemote && event.getEntityLiving().getType().isContained(CEntityTypeTags.BOSSES)) {
 			if(event.getSource().getTrueSource() instanceof PlayerEntity) {
 				//				for (EntityType<?> entity : ForgeRegistries.ENTITIES) {
 				//					if (entity.getRegistryName().toString() == "c") {
