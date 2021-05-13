@@ -329,8 +329,19 @@ public class CItems {
 	public static final Item SERABLE_HALBERD = register("serable_halberd", new HalberdItem(CItemTier.SERABLE, 12.0F, -3.4F, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item LOZYNE_HALBERD = register("lozyne_halberd", new HalberdItem(CItemTier.LOZYNE, 14.0F, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
 
+	public static final Item WOODEN_SCYTHE = register("wooden_scythe", new ScytheItem(ItemTier.WOOD, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item STONE_SCYTHE = register("stone_scythe", new ScytheItem(ItemTier.STONE, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item IRON_SCYTHE = register("iron_scythe", new ScytheItem(ItemTier.IRON, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item GOLDEN_SCYTHE = register("golden_scythe", new ScytheItem(ItemTier.GOLD, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item DIAMOND_SCYTHE = register("diamond_scythe", new ScytheItem(ItemTier.DIAMOND, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item NETHERITE_SCYTHE = register("netherite_scythe", new ScytheItem(ItemTier.NETHERITE, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE).isImmuneToFire()));
+	public static final Item BRONZE_SCYTHE = register("bronze_scythe", new ScytheItem(CItemTier.BRONZE, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item STEEL_SCYTHE = register("steel_scythe", new ScytheItem(CItemTier.STEEL, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item PASQUEM_SCYTHE = register("pasquem_scythe", new ScytheItem(CItemTier.PASQUEM, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item PELGAN_SCYTHE = register("pelgan_scythe", new ScytheItem(CItemTier.PELGAN, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item SERABLE_SCYTHE = register("serable_scythe", new ScytheItem(CItemTier.SERABLE, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item LOZYNE_SCYTHE = register("lozyne_scythe", new ScytheItem(CItemTier.LOZYNE, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item ETHERION_SCYTHE = register("etherion_scythe", new ScytheItem(CItemTier.ETHERION, 12, -3.7F, new Item.Properties().group(CItemGroup.BATTLE)));
 
 	public static final Item BRONZE_HELMET = register("bronze_helmet", new ArmorItem(CArmorMaterial.BRONZE, EquipmentSlotType.HEAD, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item BRONZE_CHESTPLATE = register("bronze_chestplate", new ArmorItem(CArmorMaterial.BRONZE, EquipmentSlotType.CHEST, new Item.Properties().group(CItemGroup.BATTLE)));

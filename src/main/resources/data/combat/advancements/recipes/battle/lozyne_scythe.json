@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:lozyne_scythe"
+    ]
+  },
+  "criteria": {
+    "has_lozyne_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:lozyne_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:lozyne_scythe"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lozyne_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

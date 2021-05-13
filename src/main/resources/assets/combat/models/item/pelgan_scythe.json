@@ -1,0 +1,6 @@
+{
+    "parent": "combat:item/double_handheld",
+    "textures": {
+        "layer0": "combat:item/pelgan_scythe"
+    }
+}

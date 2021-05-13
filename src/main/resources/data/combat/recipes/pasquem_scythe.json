@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    " #X",
+    "#  "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "combat:pasquem_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:pasquem_scythe"
+  }
+}
