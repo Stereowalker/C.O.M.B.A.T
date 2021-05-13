@@ -13,7 +13,7 @@
       "item": "minecraft:stone_axe"
     },
     "X": {
-      "item": "minecraft:cobblestone"
+      "tag": "minecraft:stone_tool_materials"
     }
   },
   "result": {
