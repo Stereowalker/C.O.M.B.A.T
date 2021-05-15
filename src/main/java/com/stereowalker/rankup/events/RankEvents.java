@@ -25,12 +25,18 @@ public class RankEvents {
 	@SubscribeEvent
 	public static void living(LivingUpdateEvent event) {
 		SkillsEvents.tickSkillUpdate(event.getEntityLiving());
-		if (Config.RPG_COMMON.enableLevelingSystem.get()) {
-			StatEvents.registerEntityStats(event.getEntityLiving());
-			StatEvents.statUpdate(event.getEntityLiving());
-		}
-		if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity) {
-			StatEvents.sendToClient((ServerPlayerEntity) event.getEntityLiving());
+		if (!event.getEntityLiving().world.isRemote) {
+			if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+				StatEvents.registerEntityStats(event.getEntityLiving());
+				StatEvents.statUpdate(event.getEntityLiving());
+			}
+			if (event.getEntityLiving() instanceof ServerPlayerEntity) {
+				StatEvents.sendPlayerToClient((ServerPlayerEntity) event.getEntityLiving());
+			} else if (!(event.getEntityLiving() instanceof PlayerEntity)){
+				for (ServerPlayerEntity player : event.getEntityLiving().world.getEntitiesWithinAABB(ServerPlayerEntity.class, event.getEntityLiving().getBoundingBox().grow(40))) {
+					StatEvents.sendEntityToClient(player, event.getEntityLiving());
+				}
+			}
 		}
 	}
 
@@ -71,20 +77,23 @@ public class RankEvents {
 
 	@SubscribeEvent
 	public static void createPlayer(EntityJoinWorldEvent event) {
-		if (event.getEntity() instanceof LivingEntity) {
-			if (Config.RPG_COMMON.enableLevelingSystem.get()) {
-				StatEvents.registerEntityStats((LivingEntity)event.getEntity());
-				StatEvents.statUpdate((LivingEntity)event.getEntity());
+		if (!event.getWorld().isRemote) {
+			if (event.getEntity() instanceof LivingEntity) {
+				if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+					StatEvents.registerEntityStats((LivingEntity)event.getEntity());
+					StatEvents.statUpdate((LivingEntity)event.getEntity());
+				}
 			}
-		}
-		if (event.getEntity() instanceof PlayerEntity && !PlayerAttributeLevels.hasInitPlayer((PlayerEntity)event.getEntity())) {
-			StatEvents.aad((LivingEntity)event.getEntity());
-			PlayerAttributeLevels.setPlayerInitialization((PlayerEntity)event.getEntity(), true);
+			if (event.getEntity() instanceof PlayerEntity && !PlayerAttributeLevels.hasInitPlayer((PlayerEntity)event.getEntity())) {
+				StatEvents.initializeAllStats((LivingEntity)event.getEntity());
+				PlayerAttributeLevels.setPlayerInitialization((PlayerEntity)event.getEntity(), true);
+			}
 		}
 	}
 
 	@SubscribeEvent
 	public static void deletePlayer(LivingDeathEvent event) {
+		System.out.println("Current Level - "+PlayerAttributeLevels.getLevel(event.getEntityLiving()));
 		if (!event.isCanceled() && event.getEntity() instanceof PlayerEntity) {
 			PlayerAttributeLevels.setPlayerInitialization((PlayerEntity)event.getEntity(), false);
 		}

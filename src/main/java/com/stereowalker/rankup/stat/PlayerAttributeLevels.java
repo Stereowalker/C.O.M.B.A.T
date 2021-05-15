@@ -11,7 +11,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.server.ServerWorld;
 
@@ -89,15 +88,16 @@ public class PlayerAttributeLevels {
 	public static void addLevelsOnSpawn(LivingEntity entity) {
 		CompoundNBT compound;
 		compound = getOrCreateRankNBT(entity);
-//		String name = entity.getScoreboardName();
 		if(entity.isAlive()) {
-			for (Stat stat : CombatRegistries.STATS) {
-				if (!compound.contains(stat.getRegistryName().getPath())) {
-					if (entity instanceof PlayerEntity)
-						setStatProfile(entity, stat, new StatProfile(Rankup.statsManager.STATS.get(stat).getDefaultPoints(), Maps.newHashMap()));
-					else
-						setStatProfile(entity, stat, new StatProfile(StatEvents.calculatePointsFromBase(entity, stat), Maps.newHashMap()));
+			if (!entity.world.isRemote) {
+				for (Stat stat : CombatRegistries.STATS) {
+					if (!compound.contains(stat.getRegistryName().getPath())) {
+						if (entity instanceof PlayerEntity)
+							setStatProfile(entity, stat, new StatProfile(Rankup.statsManager.STATS.get(stat).getDefaultPoints(), Maps.newHashMap()));
+						else
+							setStatProfile(entity, stat, new StatProfile(StatEvents.calculatePointsFromBase(entity, stat), Maps.newHashMap()));
 
+					}
 				}
 			}
 
@@ -123,7 +123,7 @@ public class PlayerAttributeLevels {
 								continueFlag = false;
 							}
 						}
-						
+
 						for (int i = 0; i < level; i++) {
 							StatEvents.levelUp(entity, false);
 						}

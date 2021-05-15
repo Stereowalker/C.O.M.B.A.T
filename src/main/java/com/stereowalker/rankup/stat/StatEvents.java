@@ -9,6 +9,7 @@ import com.stereowalker.combat.entity.CombatEntityStats;
 import com.stereowalker.combat.entity.ai.CAttributes;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
+import com.stereowalker.rankup.network.server.SEntityStatsPacket;
 import com.stereowalker.rankup.network.server.SPlayerDisplayStatPacket;
 import com.stereowalker.rankup.network.server.SPlayerLevelUpPacket;
 import com.stereowalker.rankup.network.server.SPlayerStatsPacket;
@@ -32,8 +33,12 @@ public class StatEvents {
 		PlayerAttributeLevels.addLevelsOnSpawn(entity);
 	}
 
-	public static void sendToClient(ServerPlayerEntity player) {
+	public static void sendPlayerToClient(ServerPlayerEntity player) {
 		Combat.getInstance().channel.sendTo(new SPlayerStatsPacket(player), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+	}
+	
+	public static void sendEntityToClient(ServerPlayerEntity player, LivingEntity target) {
+		Combat.getInstance().channel.sendTo(new SEntityStatsPacket(target), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
 	}
 
 	public static void restoreStats(PlayerEntity player, PlayerEntity original, boolean wasDeath) {
@@ -65,7 +70,7 @@ public class StatEvents {
 		int xp = a + (n - 1)*d;
 		return xp;
 	}
-	
+
 	public static void levelUp(LivingEntity player, boolean sendMessage) {
 		PlayerAttributeLevels.addLevel(player);
 		if (sendMessage) new SPlayerLevelUpPacket(PlayerAttributeLevels.getLevel(player)).send((ServerPlayerEntity)player);
@@ -75,9 +80,9 @@ public class StatEvents {
 			int max = Rankup.statsManager.STATS.get(stat).getMaxPointsPerLevel();
 			int i;
 			if (max > 0)
-			i = min + new Random().nextInt(MathHelper.clamp(max - min, 0, max));
+				i = min + new Random().nextInt(MathHelper.clamp(max - min, 0, max));
 			else
-			i = 0;
+				i = 0;
 			PlayerAttributeLevels.addStatPoints(player, stat, i);
 			upText.appendSibling(stat.getName().appendString("+"+i).mergeStyle(TextFormatting.GREEN)).appendString(", ");
 		}
@@ -93,7 +98,6 @@ public class StatEvents {
 				levelUp(player, true);
 			}
 		}
-
 
 		for (Stat stat : CombatRegistries.STATS) {
 			StatSettings statSettings = Rankup.statsManager.STATS.get(stat);
@@ -119,36 +123,36 @@ public class StatEvents {
 			});
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static int calculatePointsFromBase(LivingEntity entity, Stat stat) {
 		Attribute attribute;
-		
+
 		if (stat == Stats.VITALITY) {
 			attribute = Attributes.MAX_HEALTH;
-			
+
 		} else if (stat == Stats.AGILITY) {
 			attribute = Attributes.MOVEMENT_SPEED;
-			
+
 		} else if (stat == Stats.DEFENCE) {
 			attribute = CAttributes.PHYSICAL_RESISTANCE;
-			
+
 		} else if (stat == Stats.STRENGTH) {
 			attribute = Attributes.ATTACK_DAMAGE;
-			
+
 		} else {
 			attribute = null;
 		}
-		
-		if (Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(attribute) && attribute != null && GlobalEntityTypeAttributes.getAttributesForEntity((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
+
+		if (!entity.world.isRemote() && Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(attribute) && attribute != null && GlobalEntityTypeAttributes.getAttributesForEntity((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
 			double baseValue = GlobalEntityTypeAttributes.getAttributesForEntity((EntityType<? extends LivingEntity>) entity.getType()).getAttributeBaseValue(attribute);
 			return MathHelper.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(attribute));
 		} else {
 			return 0;
 		}
 	}
-	
-	public static void aad(LivingEntity entity) {
+
+	public static void initializeAllStats(LivingEntity entity) {
 		for (Stat stat : CombatRegistries.STATS) {
 			StatSettings statSettings = Rankup.statsManager.STATS.get(stat);
 			double points = PlayerAttributeLevels.getStatPoints(entity, stat).getPoints();
