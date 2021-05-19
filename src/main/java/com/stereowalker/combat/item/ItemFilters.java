@@ -21,7 +21,7 @@ public class ItemFilters {
 
 	public static final Predicate<ItemStack> EDGELESS_THRUSTING_WEAPONS = (stack) -> {
 		boolean flag = false;
-		for (String sword : Config.COMMON.edgelessThrustingWeapons.get()) {
+		for (String sword : Config.BATTLE_COMMON.edgelessThrustingWeapons.get()) {
 			flag = RegistryHelper.matchesRegisteredEntry(sword, stack.getItem());
 			if (flag) {
 				break;
@@ -38,7 +38,7 @@ public class ItemFilters {
 
 	public static final Predicate<ItemStack> SINGLE_EDGE_CURVED_WEAPONS = (stack) -> {
 		boolean flag = false;
-		for (String sword : Config.COMMON.singleEdgeCurvedWeapons.get()) {
+		for (String sword : Config.BATTLE_COMMON.singleEdgeCurvedWeapons.get()) {
 			flag = RegistryHelper.matchesRegisteredEntry(sword, stack.getItem());
 			if (flag) {
 				break;
@@ -55,7 +55,7 @@ public class ItemFilters {
 
 	public static final Predicate<ItemStack> DOUBLE_EDGE_STRAIGHT_WEAPONS = (stack) -> {
 		boolean flag = false;
-		for (String sword : Config.COMMON.doubleEdgeStraightWeapons.get()) {
+		for (String sword : Config.BATTLE_COMMON.doubleEdgeStraightWeapons.get()) {
 			flag = RegistryHelper.matchesRegisteredEntry(sword, stack.getItem());
 			if (flag) {
 				break;

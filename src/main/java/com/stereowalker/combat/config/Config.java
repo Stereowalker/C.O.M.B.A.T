@@ -50,6 +50,14 @@ public class Config
         RPG_COMMON = Combat.disableConfig() ? new RpgCommonConfig(new Builder()) : specPair.getLeft();
     }
 
+    static final ForgeConfigSpec battleCommonSpec;
+    public static final BattleCommonConfig BATTLE_COMMON;
+    static {
+        final Pair<BattleCommonConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(BattleCommonConfig::new);
+        battleCommonSpec = Combat.disableConfig() ? null : specPair.getRight();
+        BATTLE_COMMON = Combat.disableConfig() ? new BattleCommonConfig(new Builder()) : specPair.getLeft();
+    }
+
     static final ForgeConfigSpec serverSpec;
     public static final ServerConfig SERVER;
     static {
@@ -65,6 +73,7 @@ public class Config
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.magicCommonSpec, "combat\\magic.toml");
+    	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.battleCommonSpec, "combat\\battle.toml");
     	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.rpgCommonSpec, "combat\\rpg.toml");
     }
     

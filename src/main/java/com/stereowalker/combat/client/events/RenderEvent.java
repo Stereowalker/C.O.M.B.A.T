@@ -16,6 +16,7 @@ import com.stereowalker.combat.entity.ai.CAttributes;
 import com.stereowalker.combat.item.AbstractMagicCastingItem;
 import com.stereowalker.combat.item.AbstractSpellBookItem;
 import com.stereowalker.combat.item.GunItem;
+import com.stereowalker.combat.item.ItemFilters;
 import com.stereowalker.combat.item.ReinforcedCrossbowItem;
 import com.stereowalker.combat.potion.CEffects;
 import com.stereowalker.combat.spell.SpellStats;
@@ -31,6 +32,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -48,11 +50,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -72,7 +76,7 @@ public class RenderEvent {
 	static int playerHealth;
 	static long lastSystemTime;
 	static int lastPlayerHealth;
-	
+
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void renderLayer(RenderLivingEvent<?, ?> event) {
@@ -133,6 +137,37 @@ public class RenderEvent {
 	//		}
 	//		//	}
 	//	}
+
+	@SubscribeEvent
+	public static void swordBlock(RenderHandEvent event) {
+		ClientPlayerEntity player = Minecraft.getInstance().player;
+		ItemStack stack = event.getItemStack();
+		boolean flag = event.getHand() == Hand.MAIN_HAND;
+		HandSide handside = flag ? player.getPrimaryHand() : player.getPrimaryHand().opposite();
+		if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+			if (player.isHandActive() && player.getItemInUseCount() > 0 && player.getActiveHand() == event.getHand()) {
+//				event.getMatrixStack().push();
+				boolean flag3 = handside == HandSide.RIGHT;
+				transformBlockFirstPerson(event.getMatrixStack(), event.getPartialTicks(), handside, stack);
+				transformSideFirstPerson(event.getMatrixStack(), handside, event.getEquipProgress());
+				Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(player, stack, flag3 ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !flag3, event.getMatrixStack(), event.getBuffers(), event.getLight());
+				event.setCanceled(false);
+//				event.getMatrixStack().pop();
+			}
+		}
+	}
+
+	private static void transformBlockFirstPerson(MatrixStack matrixStackIn, float partialTicks, HandSide handIn, ItemStack stack) {
+		int i = handIn == HandSide.RIGHT ? 1 : -1;
+		matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(70 * i));
+		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90 * i));
+		matrixStackIn.translate(0.0d, -0.1d * i, 0.5d);
+	}
+
+	private static void transformSideFirstPerson(MatrixStack matrixStackIn, HandSide handIn, float equippedProg) {
+		int i = handIn == HandSide.RIGHT ? 1 : -1;
+		matrixStackIn.translate((double)((float)i * 0.56F), (double)(-0.52F + equippedProg * -0.6F), (double)-0.72F);
+	}
 
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
@@ -238,7 +273,7 @@ public class RenderEvent {
 			//RenderSystem.disableAlphaTest();
 		}
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	public static void renderArmorOverlay(MatrixStack matrixStack, double maxHealth, int absorption, PlayerEntity playerentity, int k1, int i1) {
 		float f0 = Combat.isFirstAidLoaded() ? 0.0f : (float)maxHealth;
@@ -252,7 +287,7 @@ public class RenderEvent {
 		renderArmor(matrixStack, playerentity.getAttribute(Attributes.ARMOR_TOUGHNESS).getValue(), 0, "armorToughness", 114, i1, armorY, playerentity);
 		renderArmor(matrixStack, CombatEntityStats.getResist(playerentity), 0, "knockbackResistance", 123, i1, armorY, playerentity);
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	public static void renderSaturationOverlay(MatrixStack matrixStack, LivingEntity living, PlayerEntity playerentity, int j1, int k1, Random rand) {
 		LivingEntity livingentity = living;
@@ -281,7 +316,7 @@ public class RenderEvent {
 			endSection();
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@OnlyIn(Dist.CLIENT)
 	public static void renderManaOverlay(MatrixStack matrixStack, boolean needsAir, ModifiableAttributeInstance iattributemaxMana, PlayerEntity playerentity, double totalHealth, int x, int j3, int k2) {
@@ -351,7 +386,7 @@ public class RenderEvent {
 		}
 		endSection();
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@OnlyIn(Dist.CLIENT)
 	public static void renderSpellOverlay(MatrixStack matrixStack, PlayerEntity playerentity, int k2) {
@@ -372,78 +407,78 @@ public class RenderEvent {
 			int cWidth = (int) ((CombatEntityStats.getSpellStats(playerentity, cSpell).cooldownColmpetion())*60);
 			int nWidth = (int) ((CombatEntityStats.getSpellStats(playerentity, nSpell).cooldownColmpetion())*60);
 			int pWidth = (int) ((CombatEntityStats.getSpellStats(playerentity, pSpell).cooldownColmpetion())*60);
-			
+
 			if (playerentity.getHeldItemMainhand().getItem() instanceof AbstractMagicCastingItem) {
 				int time = playerentity.getActiveItemStack() != playerentity.getHeldItemMainhand() ? 0 : (playerentity.getHeldItemMainhand().getUseDuration() - playerentity.getItemInUseCount());
 				float q = (float)time/(float)cSpell.getCastTime();
 				int tWidth = MathHelper.clamp((int) (q * 60),0,60);
-					startSection("spellLeft");
-					int i10 = (int) ((gui().scaledWidth/scale) - mc.fontRenderer.getStringPropertyWidth(s));
-					int i11 = (int) ((gui().scaledWidth/scale2) - mc.fontRenderer.getStringPropertyWidth(s1));
-					int i12 = (int) ((gui().scaledWidth/scale2) - mc.fontRenderer.getStringPropertyWidth(s2));
-					if(Minecraft.isGuiEnabled() && !mc.playerController.isSpectatorMode()) {
-						gui().blit(matrixStack, gui().scaledWidth - 61, j10 - offset, 60, 49, 60, 30);
-						
-						RenderSystem.color4f(1.0f, 1.0f, 1.0f, 0.101F);
-						gui().blit(matrixStack, gui().scaledWidth - cWidth-1, j10 - offset + 10, 0, 82, cWidth, 10);
-						gui().blit(matrixStack, gui().scaledWidth - nWidth-1, j10 - offset + 21, 0, 82, nWidth, 8);
-						gui().blit(matrixStack, gui().scaledWidth - pWidth-1, j10 - offset + 01, 0, 82, pWidth, 8);
-						RenderSystem.color4f(1.0f-q, q, 0.0f, 0.101F);
-						gui().blit(matrixStack, gui().scaledWidth - tWidth-1, j10 - offset + 10, 0, 82, tWidth, 10);
+				startSection("spellLeft");
+				int i10 = (int) ((gui().scaledWidth/scale) - mc.fontRenderer.getStringPropertyWidth(s));
+				int i11 = (int) ((gui().scaledWidth/scale2) - mc.fontRenderer.getStringPropertyWidth(s1));
+				int i12 = (int) ((gui().scaledWidth/scale2) - mc.fontRenderer.getStringPropertyWidth(s2));
+				if(Minecraft.isGuiEnabled() && !mc.playerController.isSpectatorMode()) {
+					gui().blit(matrixStack, gui().scaledWidth - 61, j10 - offset, 60, 49, 60, 30);
 
-						matrixStack.push();
-						matrixStack.scale(scale, scale, scale);
-						mc.fontRenderer.drawText(matrixStack, s, (float)i10 - (2 / scale) , (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
-						matrixStack.pop();
+					RenderSystem.color4f(1.0f, 1.0f, 1.0f, 0.101F);
+					gui().blit(matrixStack, gui().scaledWidth - cWidth-1, j10 - offset + 10, 0, 82, cWidth, 10);
+					gui().blit(matrixStack, gui().scaledWidth - nWidth-1, j10 - offset + 21, 0, 82, nWidth, 8);
+					gui().blit(matrixStack, gui().scaledWidth - pWidth-1, j10 - offset + 01, 0, 82, pWidth, 8);
+					RenderSystem.color4f(1.0f-q, q, 0.0f, 0.101F);
+					gui().blit(matrixStack, gui().scaledWidth - tWidth-1, j10 - offset + 10, 0, 82, tWidth, 10);
 
-						matrixStack.push();
-						matrixStack.scale(scale2, scale2, scale2);
-						mc.fontRenderer.drawText(matrixStack, s1, (float)i11 - (2 / scale2), (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
-						matrixStack.pop();
+					matrixStack.push();
+					matrixStack.scale(scale, scale, scale);
+					mc.fontRenderer.drawText(matrixStack, s, (float)i10 - (2 / scale) , (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.pop();
 
-						matrixStack.push();
-						matrixStack.scale(scale2, scale2, scale2);
-						mc.fontRenderer.drawText(matrixStack, s2, (float)i12 - (2 / scale2), (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
-						matrixStack.pop();
-					}
-					endSection();
+					matrixStack.push();
+					matrixStack.scale(scale2, scale2, scale2);
+					mc.fontRenderer.drawText(matrixStack, s1, (float)i11 - (2 / scale2), (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.pop();
+
+					matrixStack.push();
+					matrixStack.scale(scale2, scale2, scale2);
+					mc.fontRenderer.drawText(matrixStack, s2, (float)i12 - (2 / scale2), (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.pop();
+				}
+				endSection();
 			}
 
 			else if (playerentity.getHeldItemOffhand().getItem() instanceof AbstractMagicCastingItem && !AbstractSpellBookItem.getMainSpellBook(playerentity).isEmpty()) {
 				int time = playerentity.getActiveItemStack() != playerentity.getHeldItemOffhand() ? 0 : (playerentity.getHeldItemOffhand().getUseDuration() - playerentity.getItemInUseCount());
 				float q = (float)time/(float)cSpell.getCastTime();
 				int tWidth = MathHelper.clamp((int) (q * 60),0,60);
-					startSection("spellRight");
-					if(Minecraft.isGuiEnabled() && !mc.playerController.isSpectatorMode()) {
-						gui().blit(matrixStack, 1, j10 - offset, 0, 49, 60, 30);
+				startSection("spellRight");
+				if(Minecraft.isGuiEnabled() && !mc.playerController.isSpectatorMode()) {
+					gui().blit(matrixStack, 1, j10 - offset, 0, 49, 60, 30);
 
-						RenderSystem.color4f(1.0f, 1.0f, 1.0f, 0.101F);
-						gui().blit(matrixStack, 1, j10 - offset + 10, 0, 82, cWidth, 10);
-						gui().blit(matrixStack, 1, j10 - offset + 21, 0, 82, nWidth, 8);
-						gui().blit(matrixStack, 1, j10 - offset + 01, 0, 82, pWidth, 8);
-						RenderSystem.color4f(1.0f-q, q, 0.0f, 0.101F);
-						gui().blit(matrixStack, 1, j10 - offset + 10, 0, 82, tWidth, 10);
-						
-						matrixStack.push();
-						matrixStack.scale(scale, scale, scale);
-						mc.fontRenderer.drawText(matrixStack, s, 2 / scale, (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
-						matrixStack.pop();
+					RenderSystem.color4f(1.0f, 1.0f, 1.0f, 0.101F);
+					gui().blit(matrixStack, 1, j10 - offset + 10, 0, 82, cWidth, 10);
+					gui().blit(matrixStack, 1, j10 - offset + 21, 0, 82, nWidth, 8);
+					gui().blit(matrixStack, 1, j10 - offset + 01, 0, 82, pWidth, 8);
+					RenderSystem.color4f(1.0f-q, q, 0.0f, 0.101F);
+					gui().blit(matrixStack, 1, j10 - offset + 10, 0, 82, tWidth, 10);
 
-						matrixStack.push();
-						matrixStack.scale(scale2, scale2, scale2);
-						mc.fontRenderer.drawText(matrixStack, s1, 2 / scale2, (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
-						matrixStack.pop();
+					matrixStack.push();
+					matrixStack.scale(scale, scale, scale);
+					mc.fontRenderer.drawText(matrixStack, s, 2 / scale, (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.pop();
 
-						matrixStack.push();
-						matrixStack.scale(scale2, scale2, scale2);
-						mc.fontRenderer.drawText(matrixStack, s2, 2 / scale2, (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
-						matrixStack.pop();
-					}
-					endSection();
+					matrixStack.push();
+					matrixStack.scale(scale2, scale2, scale2);
+					mc.fontRenderer.drawText(matrixStack, s1, 2 / scale2, (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.pop();
+
+					matrixStack.push();
+					matrixStack.scale(scale2, scale2, scale2);
+					mc.fontRenderer.drawText(matrixStack, s2, 2 / scale2, (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.pop();
+				}
+				endSection();
 			}
 		}
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	public static void renderArmor(MatrixStack matrixStack, double attributeValue, int armorSub, String section, int yValue, int i1, int k2, PlayerEntity playerentity) {
 		int j3 = MathHelper.floor(attributeValue);
@@ -455,11 +490,11 @@ public class RenderEvent {
 				if (l3 * 2 + 1 < subbedArmor) {
 					gui().blit(matrixStack, i4, k2, 34, yValue, 9, 9);
 				}
-				
+
 				if (l3 * 2 + 1 == subbedArmor) {
 					gui().blit(matrixStack, i4, k2, 25, yValue, 9, 9);
 				}
-				
+
 				if (l3 * 2 + 1 > subbedArmor) {
 					gui().blit(matrixStack, i4, k2, 16, yValue, 9, 9);
 				}

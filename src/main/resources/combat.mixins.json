@@ -5,7 +5,8 @@
   "refmap": "combat.refmap.json",
   "mixins": [
   	"PlayerEntityMixin",
-  	"LivingEntityMixin"
+  	"LivingEntityMixin",
+  	"ItemMixin"
   ],
   "client": [
     "BipedArmorLayerMixin"
