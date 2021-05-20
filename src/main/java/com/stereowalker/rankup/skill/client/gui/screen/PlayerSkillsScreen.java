@@ -63,7 +63,7 @@ public class PlayerSkillsScreen extends Screen {
 	@Override
 	public void init() {
 		this.addButton(new Button(0, 0, 40, 20, new StringTextComponent("LEVELS"), (p_213088_1_) -> {
-			minecraft.displayGuiScreen(new PlayerLevelsScreen(minecraft, null));
+			minecraft.displayGuiScreen(new PlayerLevelsScreen(minecraft));
 		}));
 		int defX = -118;
 		int xPos = defX;

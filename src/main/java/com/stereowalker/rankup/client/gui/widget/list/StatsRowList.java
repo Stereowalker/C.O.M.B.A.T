@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.stereowalker.combat.Combat;
-import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.client.gui.screen.PlayerLevelsScreen;
 import com.stereowalker.rankup.network.client.CUpgradeLevelsPacket;
@@ -87,7 +86,7 @@ public class StatsRowList extends AbstractOptionList<StatsRowList.Row> {
 
 		public static Button addStat(int xPos, Stat stat, boolean isEnabled) {
 			Button newButton;
-			PlayerLevelsScreen screen = new PlayerLevelsScreen(Minecraft.getInstance(), stat);
+			PlayerLevelsScreen screen = new PlayerLevelsScreen(Minecraft.getInstance());
 			newButton = new ImageButton(xPos, 0, 20, 20, 0, 0, 20, isEnabled && stat != null ? stat.getButtonTexture() : stat.getLockedButtonTexture(), 20, 40, (p_213088_1_) -> {
 				Minecraft.getInstance().displayGuiScreen(screen);
 			});
@@ -111,17 +110,17 @@ public class StatsRowList extends AbstractOptionList<StatsRowList.Row> {
 			return upgradeButton;
 		}
 
-		public void render(MatrixStack matrixStack, int p_230432_2_, int p_230432_3_, int p_230432_4_, int p_230432_5_, int p_230432_6_, int mouseX, int mouseY, boolean p_230432_9_, float partialTicks) {
+		public void render(MatrixStack matrixStack, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
 			PlayerEntity player = Minecraft.getInstance().player;
 			this.widgets.forEach((widget) -> {
-				widget.y = p_230432_3_;
+				widget.y = top;
 				widget.render(matrixStack, mouseX, mouseY, partialTicks);
 				IFormattableTextComponent normalStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player)));
 				IFormattableTextComponent lockedStatDisplay = (stat.getName().appendString(": Locked"));
 				IFormattableTextComponent bonusStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player))).appendSibling(new StringTextComponent(" +"+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.GREEN));
 				IFormattableTextComponent debuffStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player))).appendSibling(new StringTextComponent(" "+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.RED));
 				
-				AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled() ? lockedStatDisplay : stat.getAdditionalPoints(player) > 0 ? bonusStatDisplay : stat.getAdditionalPoints(player) < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-170, p_230432_3_+5, 0xffffff);
+				AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled() ? lockedStatDisplay : stat.getAdditionalPoints(player) > 0 ? bonusStatDisplay : stat.getAdditionalPoints(player) < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-160, top+5, 0xffffff);
 			});
 		}
 
