@@ -50,7 +50,6 @@ public class SStatManagerPacket {
 		Map<Stat,StatSettings> statMap = new HashMap<>();
 		statMap.putAll(Combat.rankupInstance.CLIENT_STATS);
 		statMap.put(stat, settings);
-		System.out.println("UPDATED CLIENT STATS");
 		Combat.rankupInstance.CLIENT_STATS = ImmutableMap.copyOf(statMap);
 	}
 }

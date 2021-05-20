@@ -69,6 +69,10 @@ public class ItemFilters {
 				|| stack.getItem() == Items.DIAMOND_SWORD
 				|| stack.getItem() == Items.NETHERITE_SWORD;
 	};
+	
+	public static final Predicate<ItemStack> BLOCKABLE_WEAPONS = (stack) -> {
+		return DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack) || SINGLE_EDGE_CURVED_WEAPONS.test(stack);
+	};
 
 	public static final Predicate<ItemStack> HEAVY_WEAPONS = (stack) -> {
 		return stack.getItem() instanceof HammerItem;

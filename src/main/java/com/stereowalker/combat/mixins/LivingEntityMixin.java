@@ -5,13 +5,19 @@ import javax.annotation.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.At.Shift;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.stereowalker.combat.config.Config;
 import com.stereowalker.combat.enchantment.CEnchantmentHelper;
 import com.stereowalker.combat.entity.ai.CAttributes;
 import com.stereowalker.combat.item.ItemFilters;
 
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -28,7 +34,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.CombatRules;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -208,189 +213,53 @@ public abstract class LivingEntityMixin extends Entity {
 			}
 		}
 	}
-
+	
+	private float storedDamage = 0.0f;
 	/**
-	 * Called when the entity is attacked.
-	 * @reason To apply sword blocking
-	 * @author Stereowalker
+	 * Stores the amount of damage the player takes into a variable since @ModifyVariable doesn't use locals
+	 * @param source
+	 * @param amount
+	 * @param cir
+	 * @param f
+	 * @param flag
+	 * @param f1
 	 */
-	@Overwrite
-	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (!net.minecraftforge.common.ForgeHooks.onLivingAttack((LivingEntity)(Object)this, source, amount)) return false;
-		if (this.isInvulnerableTo(source)) {
-			return false;
-		} else if (this.world.isRemote) {
-			return false;
-		} else if (this.getShouldBeDead()) {
-			return false;
-		} else if (source.isFireDamage() && this.isPotionActive(Effects.FIRE_RESISTANCE)) {
-			return false;
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/DamageSource;isProjectile()Z", shift = Shift.BY, by = -4), method = "attackEntityFrom", locals = LocalCapture.CAPTURE_FAILHARD)
+	public void blockWithSword(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir, float f, boolean flag, float f1) {
+		storedDamage = f1;
+	}
+	
+	/**
+	 * If we sword block, divide the damage we stored recently by 2
+	 * @param amount
+	 * @return
+	 */
+	@ModifyVariable(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/DamageSource;isProjectile()Z", shift = Shift.BY, by = -3), method = "attackEntityFrom", name = "amount", print = false)
+	public float blockWithSword(float amount) {
+		if (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND))) {
+			return storedDamage/2;
 		} else {
-			if (this.isSleeping() && !this.world.isRemote) {
-				this.wakeUp();
-			}
-
-			this.idleTime = 0;
-			float f = amount;
-			if ((source == DamageSource.ANVIL || source == DamageSource.FALLING_BLOCK) && !this.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty()) {
-				this.getItemStackFromSlot(EquipmentSlotType.HEAD).damageItem((int)(amount * 4.0F + this.rand.nextFloat() * amount * 2.0F), (LivingEntity)(Object)this, (p_233653_0_) -> {
-					p_233653_0_.sendBreakAnimation(EquipmentSlotType.HEAD);
-				});
-				amount *= 0.75F;
-			}
-
-			boolean flag = false;
-			float f1 = 0.0F;
-			float swordAbs = 0.0F;
-			// Handle Sword Blocking
-			if (amount > 0.0F && this.canBlockDamageSource(source) && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND)) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND)))) {
-				this.damageShield(amount);
-				swordAbs = amount/2.0F;
-				amount = amount/2.0F;
-				if (!source.isProjectile()) {
-					Entity entity = source.getImmediateSource();
-					if (entity instanceof LivingEntity) {
-						this.blockUsingSword((LivingEntity)entity);
-					}
-				}
-
-				flag = true;
-			} 
-			// Handle Shield Blocking (Vanilla Style)
-			else if (amount > 0.0F && this.canBlockDamageSource(source)){
-				this.damageShield(amount);
-				f1 = amount;
-				amount = 0.0F;
-				if (!source.isProjectile()) {
-					Entity entity = source.getImmediateSource();
-					if (entity instanceof LivingEntity) {
-						this.blockUsingShield((LivingEntity)entity);
-					}
-				}
-
-				flag = true;
-			}
-
-			this.limbSwingAmount = 1.5F;
-			boolean flag1 = true;
-			if ((float)this.hurtResistantTime > 10.0F) {
-				if (amount <= this.lastDamage) {
-					return false;
-				}
-
-				this.damageEntity(source, amount - this.lastDamage);
-				this.lastDamage = amount;
-				flag1 = false;
-			} else {
-				this.lastDamage = amount;
-				this.hurtResistantTime = 20;
-				this.damageEntity(source, amount);
-				this.maxHurtTime = 10;
-				this.hurtTime = this.maxHurtTime;
-			}
-
-			this.attackedAtYaw = 0.0F;
-			Entity entity1 = source.getTrueSource();
-			if (entity1 != null) {
-				if (entity1 instanceof LivingEntity) {
-					this.setRevengeTarget((LivingEntity)entity1);
-				}
-
-				if (entity1 instanceof PlayerEntity) {
-					this.recentlyHit = 100;
-					this.attackingPlayer = (PlayerEntity)entity1;
-				} else if (entity1 instanceof net.minecraft.entity.passive.TameableEntity) {
-					net.minecraft.entity.passive.TameableEntity wolfentity = (net.minecraft.entity.passive.TameableEntity)entity1;
-					if (wolfentity.isTamed()) {
-						this.recentlyHit = 100;
-						LivingEntity livingentity = wolfentity.getOwner();
-						if (livingentity != null && livingentity.getType() == EntityType.PLAYER) {
-							this.attackingPlayer = (PlayerEntity)livingentity;
-						} else {
-							this.attackingPlayer = null;
-						}
-					}
-				}
-			}
-
-			if (flag1) {
-				if (flag) {
-					this.world.setEntityState(this, (byte)29);
-				} else if (source instanceof EntityDamageSource && ((EntityDamageSource)source).getIsThornsDamage()) {
-					this.world.setEntityState(this, (byte)33);
-				} else {
-					byte b0;
-					if (source == DamageSource.DROWN) {
-						b0 = 36;
-					} else if (source.isFireDamage()) {
-						b0 = 37;
-					} else if (source == DamageSource.SWEET_BERRY_BUSH) {
-						b0 = 44;
-					} else {
-						b0 = 2;
-					}
-
-					this.world.setEntityState(this, b0);
-				}
-
-				if (source != DamageSource.DROWN && (!flag || amount > 0.0F)) {
-					this.markVelocityChanged();
-				}
-
-				if (entity1 != null) {
-					double d1 = entity1.getPosX() - this.getPosX();
-
-					double d0;
-					for(d0 = entity1.getPosZ() - this.getPosZ(); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
-						d1 = (Math.random() - Math.random()) * 0.01D;
-					}
-
-					this.attackedAtYaw = (float)(MathHelper.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)this.rotationYaw);
-					this.applyKnockback(0.4F, d1, d0);
-				} else {
-					this.attackedAtYaw = (float)((int)(Math.random() * 2.0D) * 180);
-				}
-			}
-
-			if (this.getShouldBeDead()) {
-				if (!this.checkTotemDeathProtection(source)) {
-					SoundEvent soundevent = this.getDeathSound();
-					if (flag1 && soundevent != null) {
-						this.playSound(soundevent, this.getSoundVolume(), this.getSoundPitch());
-					}
-
-					this.onDeath(source);
-				}
-			} else if (flag1) {
-				this.playHurtSound(source);
-			}
-
-			boolean flag2 = !flag || amount > 0.0F;
-			if (flag2) {
-				this.lastDamageSource = source;
-				this.lastDamageStamp = this.world.getGameTime();
-			}
-
-			if ((Object)this instanceof ServerPlayerEntity) {
-				CriteriaTriggers.ENTITY_HURT_PLAYER.trigger((ServerPlayerEntity)(Object)this, source, f, amount, flag);
-				if (f1 > 0.0F && f1 < 3.4028235E37F) {
-					((ServerPlayerEntity)(Object)this).addStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(f1 * 10.0F));
-				}
-				if (swordAbs > 0.0F && swordAbs < 3.4028235E37F) {
-					((ServerPlayerEntity)(Object)this).addStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(swordAbs * 10.0F));
-				}
-			}
-
-
-			if (entity1 instanceof ServerPlayerEntity) {
-				CriteriaTriggers.PLAYER_HURT_ENTITY.trigger((ServerPlayerEntity)entity1, this, source, f, amount, flag);
-			}
-
-			return flag2;
+			return amount;
+		}
+	}
+	
+	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;blockUsingShield(Lnet/minecraft/entity/LivingEntity;)V"), method = "attackEntityFrom")
+	public void applyKnockback(LivingEntity us, LivingEntity entity) {
+		if (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND))) {
+			this.blockUsingSword(entity);
+		} else {
+			this.blockUsingShield(entity);
+		}
+	}
+	
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/criterion/EntityHurtPlayerTrigger;trigger(Lnet/minecraft/entity/player/ServerPlayerEntity;Lnet/minecraft/util/DamageSource;FFZ)V", shift = Shift.AFTER), method = "attackEntityFrom", locals = LocalCapture.CAPTURE_FAILHARD)
+	public void blockStats(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir, float f, boolean flag, float f1, boolean flag1, Entity entity1, boolean flag2) {
+		if (amount > 0.0F && amount < 3.4028235E37F && ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND))) {
+			((ServerPlayerEntity)(Object)this).addStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(amount * 10.0F));
 		}
 	}
 
 	protected void blockUsingSword(LivingEntity entityIn) {
-		entityIn.applyKnockback(0.75F, entityIn.getPosX() - this.getPosX(), entityIn.getPosZ() - this.getPosZ());
+		this.applyKnockback(0.75F, entityIn.getPosX() - this.getPosX(), entityIn.getPosZ() - this.getPosZ());
 	}
 }
