@@ -82,7 +82,7 @@ public class StatsRowList extends AbstractOptionList<StatsRowList.Row> {
 		 * Creates an options row with button for the specified option
 		 */
 		public static StatsRowList.Row create(int guiWidth, Stat stat) {
-			return new StatsRowList.Row(ImmutableList.of(addUpgrade(guiWidth + 170, stat, Rankup.statsManager.STATS.get(stat).isEnabled())), stat);
+			return new StatsRowList.Row(ImmutableList.of(addUpgrade(guiWidth + 170, stat, Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled())), stat);
 		}
 
 		public static Button addStat(int xPos, Stat stat, boolean isEnabled) {
@@ -121,7 +121,7 @@ public class StatsRowList extends AbstractOptionList<StatsRowList.Row> {
 				IFormattableTextComponent bonusStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player))).appendSibling(new StringTextComponent(" +"+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.GREEN));
 				IFormattableTextComponent debuffStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player))).appendSibling(new StringTextComponent(" "+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.RED));
 				
-				AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Rankup.statsManager.STATS.get(stat).isEnabled() ? lockedStatDisplay : stat.getAdditionalPoints(player) > 0 ? bonusStatDisplay : stat.getAdditionalPoints(player) < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-170, p_230432_3_+5, 0xffffff);
+				AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled() ? lockedStatDisplay : stat.getAdditionalPoints(player) > 0 ? bonusStatDisplay : stat.getAdditionalPoints(player) < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-170, p_230432_3_+5, 0xffffff);
 			});
 		}
 

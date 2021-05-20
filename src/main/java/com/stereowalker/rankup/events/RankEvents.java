@@ -9,6 +9,7 @@ import com.stereowalker.rankup.stat.StatEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -16,6 +17,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -36,6 +38,22 @@ public class RankEvents {
 				for (ServerPlayerEntity player : event.getEntityLiving().world.getEntitiesWithinAABB(ServerPlayerEntity.class, event.getEntityLiving().getBoundingBox().grow(40))) {
 					StatEvents.sendEntityToClient(player, event.getEntityLiving());
 				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void playerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+		if (event.getPlayer() instanceof ServerPlayerEntity) {
+			StatEvents.sendStatsToClient((ServerPlayerEntity) event.getPlayer());
+		}
+	}
+	
+	@SubscribeEvent
+	public static void playerJoin(WorldEvent.Save event) {
+		if (event.getWorld() instanceof ServerWorld) {
+			for (ServerPlayerEntity player : ((ServerWorld)event.getWorld()).getPlayers()) {
+				StatEvents.sendStatsToClient(player);
 			}
 		}
 	}

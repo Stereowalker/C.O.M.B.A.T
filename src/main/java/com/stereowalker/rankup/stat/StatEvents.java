@@ -13,6 +13,7 @@ import com.stereowalker.rankup.network.server.SEntityStatsPacket;
 import com.stereowalker.rankup.network.server.SPlayerDisplayStatPacket;
 import com.stereowalker.rankup.network.server.SPlayerLevelUpPacket;
 import com.stereowalker.rankup.network.server.SPlayerStatsPacket;
+import com.stereowalker.rankup.network.server.SStatManagerPacket;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -39,6 +40,12 @@ public class StatEvents {
 	
 	public static void sendEntityToClient(ServerPlayerEntity player, LivingEntity target) {
 		Combat.getInstance().channel.sendTo(new SEntityStatsPacket(target), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+	}
+	
+	public static void sendStatsToClient(ServerPlayerEntity player) {
+		for (Stat stat : Rankup.statsManager.STATS.keySet()) {
+			Combat.getInstance().channel.sendTo(new SStatManagerPacket(stat, Rankup.statsManager.STATS.get(stat)), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+		}
 	}
 
 	public static void restoreStats(PlayerEntity player, PlayerEntity original, boolean wasDeath) {

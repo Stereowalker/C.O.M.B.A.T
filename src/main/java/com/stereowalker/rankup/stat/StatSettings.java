@@ -9,7 +9,11 @@ import com.google.gson.JsonObject;
 import com.stereowalker.combat.Combat;
 
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class StatSettings {
@@ -183,5 +187,39 @@ public class StatSettings {
 		return maxPointsPerLevel;
 	}
 
-
+	public CompoundNBT serialize() {
+		CompoundNBT nbt = new CompoundNBT();
+		nbt.putBoolean("enabled", this.enabled);
+		nbt.putBoolean("limitable", this.limitable);
+		nbt.putInt("defaultPoints", this.defaultPoints);
+		nbt.putInt("minPointsPerLevel", this.minPointsPerLevel);
+		nbt.putInt("maxPointsPerLevel", this.maxPointsPerLevel);
+		
+		ListNBT list = new ListNBT();
+		for (Attribute attribute : this.attributeMap.keySet()) {
+			CompoundNBT nbt2 = new CompoundNBT();
+			nbt2.putString("attribute", attribute.getRegistryName().toString());
+			nbt2.putDouble("value", this.attributeMap.get(attribute));
+			list.add(nbt2);
+		}
+		
+		nbt.put("attributeMap", list);
+		
+		return nbt;
+	}
+	
+	public StatSettings(CompoundNBT nbt) {
+		this.enabled = nbt.getBoolean("enabled");
+		this.limitable = nbt.getBoolean("limitable");
+		this.defaultPoints = nbt.getInt("defaultPoints");
+		this.minPointsPerLevel = nbt.getInt("minPointsPerLevel");
+		this.maxPointsPerLevel = nbt.getInt("maxPointsPerLevel");
+		
+		ImmutableMap.Builder<Attribute,Double> attributeMapIn = ImmutableMap.builder();
+		for (INBT nbt3 : nbt.getList("attributeMap", NBT.TAG_COMPOUND)) {
+			CompoundNBT nbt2 = (CompoundNBT)nbt3;
+			attributeMapIn.put(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(nbt2.getString("attribute"))), nbt2.getDouble("value"));
+		}
+		this.attributeMap = attributeMapIn.build();
+	}
 }
