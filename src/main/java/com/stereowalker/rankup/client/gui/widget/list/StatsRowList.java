@@ -7,9 +7,12 @@ import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.stereowalker.combat.Combat;
+import com.stereowalker.combat.config.Config;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.client.gui.screen.PlayerLevelsScreen;
 import com.stereowalker.rankup.network.client.CUpgradeLevelsPacket;
+import com.stereowalker.rankup.stat.LevelType;
+import com.stereowalker.rankup.stat.PlayerAttributeLevels;
 import com.stereowalker.unionlib.util.EntityHelper;
 
 import net.minecraft.client.Minecraft;
@@ -31,9 +34,9 @@ import net.minecraftforge.fml.network.NetworkDirection;
 public class StatsRowList extends AbstractOptionList<StatsRowList.Row> {
 	public StatsRowList(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int itemHeightIn) {
 		super(mcIn, widthIn, heightIn, topIn, bottomIn, itemHeightIn);
-//		this.centerListVertically = false;
-//		this.func_244605_b(false);
-//		this.func_244606_c(false);
+		//		this.centerListVertically = false;
+		//		this.func_244605_b(false);
+		//		this.func_244606_c(false);
 	}
 
 	public int addStat(Stat p_214333_1_) {
@@ -97,13 +100,14 @@ public class StatsRowList extends AbstractOptionList<StatsRowList.Row> {
 		public static Button addUpgrade(int xPos, Stat stat, boolean isEnabled) {
 			Button upgradeButton;
 			boolean upgradeActive;
-			int cost = stat.getExperienceCost(Minecraft.getInstance().player);
-			if (EntityHelper.getActualExperienceTotal(Minecraft.getInstance().player) >= cost) {
-				upgradeActive = true;
+			boolean useXP = false;//TODO: Send that info from the server to the client
+			if (useXP) {
+				int cost = stat.getExperienceCost(Minecraft.getInstance().player);
+				upgradeActive = EntityHelper.getActualExperienceTotal(Minecraft.getInstance().player) >= cost;
 			} else {
-				upgradeActive = false;
+				upgradeActive = PlayerAttributeLevels.getUpgradePoints(Minecraft.getInstance().player) > 0;
 			}
-			upgradeButton = new Button(xPos, 0, 48, 20, new StringTextComponent("Upgrade"), (p_214328_1_) -> {
+			upgradeButton = new Button(xPos, 0, 20, 20, new StringTextComponent("+"), (p_214328_1_) -> {
 				Combat.getInstance().channel.sendTo(new CUpgradeLevelsPacket(stat, Minecraft.getInstance().player.getUniqueID()), Minecraft.getInstance().player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_SERVER);
 			});
 			upgradeButton.active = upgradeActive && isEnabled;
@@ -114,12 +118,13 @@ public class StatsRowList extends AbstractOptionList<StatsRowList.Row> {
 			PlayerEntity player = Minecraft.getInstance().player;
 			this.widgets.forEach((widget) -> {
 				widget.y = top;
-				widget.render(matrixStack, mouseX, mouseY, partialTicks);
+				if (Config.RPG_COMMON.levelUpType.get() == LevelType.UPGRADE_POINTS)
+					widget.render(matrixStack, mouseX, mouseY, partialTicks);
 				IFormattableTextComponent normalStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player)));
 				IFormattableTextComponent lockedStatDisplay = (stat.getName().appendString(": Locked"));
 				IFormattableTextComponent bonusStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player))).appendSibling(new StringTextComponent(" +"+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.GREEN));
 				IFormattableTextComponent debuffStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player))).appendSibling(new StringTextComponent(" "+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.RED));
-				
+
 				AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled() ? lockedStatDisplay : stat.getAdditionalPoints(player) > 0 ? bonusStatDisplay : stat.getAdditionalPoints(player) < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-160, top+5, 0xffffff);
 			});
 		}

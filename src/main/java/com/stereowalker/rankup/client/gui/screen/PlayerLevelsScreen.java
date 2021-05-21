@@ -5,8 +5,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.client.keybindings.KeyBindings;
+import com.stereowalker.combat.config.Config;
 import com.stereowalker.rankup.client.gui.widget.list.StatsRowList;
 import com.stereowalker.rankup.skill.client.gui.screen.PlayerSkillsScreen;
+import com.stereowalker.rankup.stat.LevelType;
 import com.stereowalker.rankup.stat.PlayerAttributeLevels;
 import com.stereowalker.rankup.stat.StatEvents;
 
@@ -88,13 +90,14 @@ public class PlayerLevelsScreen extends Screen {
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderDirtBackground(0);
 		this.statsRowList.render(matrixStack, mouseX, mouseY, partialTicks);
-		this.offset = -15;
+		AbstractGui.drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 20, 16777215);
+		this.offset = -1;
 		this.minecraft.getTextureManager().bindTexture(BARS);
 		int barWidth = 226;
 		int k = (int)(PlayerAttributeLevels.getExperience(minecraft.player) * ((float)barWidth+1.0F) / StatEvents.getMaxExperience(PlayerAttributeLevels.getLevel(minecraft.player)));
 		k = MathHelper.clamp(k, 0, barWidth+1);
-		this.blit(matrixStack, this.width / 2 - (barWidth/2), this.height/ 2 - 45 + offset, 0, 40, barWidth, 5);
-		this.blit(matrixStack, this.width / 2 - (barWidth/2), this.height/ 2 - 45 + offset, 0, 45, k, 5);
+		this.blit(matrixStack, this.width / 2 - (barWidth/2), this.height/ 2 - 65 + offset, 0, 40, barWidth, 5);
+		this.blit(matrixStack, this.width / 2 - (barWidth/2), this.height/ 2 - 65 + offset, 0, 45, k, 5);
 		int ex = 0;
 		if (PlayerAttributeLevels.getLevel(minecraft.player) > 900) {
 			ex = 80;
@@ -113,12 +116,12 @@ public class PlayerLevelsScreen extends Screen {
 		RenderSystem.enableBlend();
 		RenderSystem.enableAlphaTest();
 		RenderSystem.defaultBlendFunc();
-		this.blit(matrixStack, this.width / 2 - (barWidth/2), this.height/ 2 - 45 + offset, 0, ex, barWidth, 5);
+		this.blit(matrixStack, this.width / 2 - (barWidth/2), this.height/ 2 - 65 + offset, 0, ex, barWidth, 5);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		AbstractGui.drawCenteredString(matrixStack, this.font, "Level: " +PlayerAttributeLevels.getLevel(minecraft.player), this.width / 2 - 94, this.height/ 2 - 55 + offset, 0xFFFFFF);
-
-		AbstractGui.drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 20, 16777215);
+		AbstractGui.drawCenteredString(matrixStack, this.font, "Level: " +PlayerAttributeLevels.getLevel(minecraft.player), this.width / 2 - 94, this.height/ 2 - 75 + offset, 0xFFFFFF);
+		if (Config.RPG_COMMON.levelUpType.get() == LevelType.UPGRADE_POINTS)
+			AbstractGui.drawCenteredString(matrixStack, this.font, "Upgrade Points: "+PlayerAttributeLevels.getUpgradePoints(minecraft.player), this.width / 2, this.height/ 2 - 55 + offset, 16777215);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		for(Widget widget : this.buttons) {
 			if (widget.isHovered()) {

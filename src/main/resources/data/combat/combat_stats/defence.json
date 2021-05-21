@@ -4,6 +4,7 @@
 	"default_points": 100,
 	"maximum_points_earned_per_level": 10,
 	"minimum_points_earned_per_level": 5,
+	"upgrade_points_earned_per_level": 5,
 	"attributes": [
 		{
 			"attribute": "combat:generic.physical_resistance",

@@ -43,6 +43,14 @@ public class PlayerAttributeLevels {
 		return 0;
 	}
 
+	public static int getUpgradePoints(LivingEntity entity) {
+		if(entity != null) {
+			CompoundNBT compound = entity.getPersistentData().getCompound("combat:RankUp"); 
+			return compound.getInt("upgrade_points");
+		}
+		return 0;
+	}
+
 	public static boolean hasInitPlayer(LivingEntity entity) {
 		if(entity != null) {
 			CompoundNBT compound = entity.getPersistentData().getCompound("combat:RankUp"); 
@@ -68,6 +76,11 @@ public class PlayerAttributeLevels {
 		compound.putInt("level", level);
 	}
 
+	public static void setUpgradePoints(LivingEntity entity, int upgradePoints) {
+		CompoundNBT compound = entity.getPersistentData().getCompound("combat:RankUp"); 
+		compound.putInt("upgrade_points", upgradePoints);
+	}
+
 	public static void setPlayerInitialization(LivingEntity entity, boolean value) {
 		CompoundNBT compound = entity.getPersistentData().getCompound("combat:RankUp"); 
 		compound.putBoolean("init_player", value);
@@ -83,6 +96,15 @@ public class PlayerAttributeLevels {
 	public static boolean addLevel(LivingEntity entity) {
 		setLevel(entity, getLevel(entity)+1);
 		return true;
+	}
+
+	public static boolean addUpgradePoints(LivingEntity entity, int points) {
+		if (getUpgradePoints(entity)+points >= 0) {
+			setUpgradePoints(entity, getUpgradePoints(entity)+points);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static void addLevelsOnSpawn(LivingEntity entity) {
@@ -103,6 +125,10 @@ public class PlayerAttributeLevels {
 
 			if (!compound.contains("experience")) {
 				setExperience(entity, 0);
+			}
+			
+			if (!compound.contains("upgrade_points")) {
+				setUpgradePoints(entity, 0);
 			}
 
 			if (!compound.contains("level")) {

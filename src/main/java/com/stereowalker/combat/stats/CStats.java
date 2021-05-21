@@ -22,15 +22,6 @@ public class CStats {
 	public static final ResourceLocation INTERACT_WITH_WOODCUTTER = registerCustom("interact_with_woodcutter", IStatFormatter.DEFAULT);
 	public static final ResourceLocation DAMAGE_BLOCKED_BY_WEAPON = registerCustom("damage_blocked_by_weapon", IStatFormatter.DIVIDE_BY_TEN);
 
-//		private static ResourceLocation registerCustom(String key, IStatFormatter formatter) {
-//			ResourceLocation resourcelocation = Combat.getInstance().location(key);
-//			StatType<ResourceLocation> statType = new StatType<>(Registry.CUSTOM_STAT);
-//			statType.setRegistryName(resourcelocation);
-//			Stats.CUSTOM.get(resourcelocation, formatter);
-//			CStats.STATTYPES.add(statType);
-//			return resourcelocation;
-//		}
-
 	private static ResourceLocation registerCustom(String key, IStatFormatter formatter) {
 		ResourceLocation resourcelocation = Combat.getInstance().location(key);
 		Registry.register(Registry.CUSTOM_STAT, key, resourcelocation);

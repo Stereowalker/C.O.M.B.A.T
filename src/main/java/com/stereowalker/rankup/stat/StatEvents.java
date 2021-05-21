@@ -37,11 +37,11 @@ public class StatEvents {
 	public static void sendPlayerToClient(ServerPlayerEntity player) {
 		Combat.getInstance().channel.sendTo(new SPlayerStatsPacket(player), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
 	}
-	
+
 	public static void sendEntityToClient(ServerPlayerEntity player, LivingEntity target) {
 		Combat.getInstance().channel.sendTo(new SEntityStatsPacket(target), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
 	}
-	
+
 	public static void sendStatsToClient(ServerPlayerEntity player) {
 		for (Stat stat : Rankup.statsManager.STATS.keySet()) {
 			Combat.getInstance().channel.sendTo(new SStatManagerPacket(stat, Rankup.statsManager.STATS.get(stat)), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
@@ -58,6 +58,7 @@ public class StatEvents {
 		}
 		PlayerAttributeLevels.setLevel(player, PlayerAttributeLevels.getLevel(original));
 		PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(original));
+		PlayerAttributeLevels.setUpgradePoints(player, PlayerAttributeLevels.getUpgradePoints(original));
 	}
 
 	public static int getExperienceCost(int level) {
@@ -82,6 +83,7 @@ public class StatEvents {
 		PlayerAttributeLevels.addLevel(player);
 		if (sendMessage) new SPlayerLevelUpPacket(PlayerAttributeLevels.getLevel(player)).send((ServerPlayerEntity)player);
 		IFormattableTextComponent upText = new StringTextComponent("You are now at Level "+PlayerAttributeLevels.getLevel(player)+" and have recieved [").mergeStyle(TextFormatting.AQUA);
+		int upPoints = 0;
 		for (Stat stat : CombatRegistries.STATS) {
 			int min = Rankup.statsManager.STATS.get(stat).getMinPointsPerLevel();
 			int max = Rankup.statsManager.STATS.get(stat).getMaxPointsPerLevel();
@@ -90,8 +92,17 @@ public class StatEvents {
 				i = min + new Random().nextInt(MathHelper.clamp(max - min, 0, max));
 			else
 				i = 0;
-			PlayerAttributeLevels.addStatPoints(player, stat, i);
-			upText.appendSibling(stat.getName().appendString("+"+i).mergeStyle(TextFormatting.GREEN)).appendString(", ");
+
+			if (Config.RPG_COMMON.levelUpType.get() == LevelType.ASSIGN_POINTS) {
+				PlayerAttributeLevels.addStatPoints(player, stat, i);
+				upText.appendSibling(stat.getName().appendString("+"+i).mergeStyle(TextFormatting.GREEN)).appendString(", ");
+			} else {
+				upPoints += Rankup.statsManager.STATS.get(stat).getUpgradePointsPerLevel();
+			}
+		}
+		if (Config.RPG_COMMON.levelUpType.get() == LevelType.UPGRADE_POINTS) {
+			PlayerAttributeLevels.addUpgradePoints(player, upPoints);
+			upText.appendSibling(new StringTextComponent("Upgrade Points +"+upPoints).mergeStyle(TextFormatting.GREEN));
 		}
 		if (sendMessage) new SPlayerDisplayStatPacket(upText.appendString("]").mergeStyle(TextFormatting.AQUA)).send((ServerPlayerEntity)player);
 	}

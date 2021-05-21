@@ -111,7 +111,6 @@ public class RankEvents {
 
 	@SubscribeEvent
 	public static void deletePlayer(LivingDeathEvent event) {
-		System.out.println("Current Level - "+PlayerAttributeLevels.getLevel(event.getEntityLiving()));
 		if (!event.isCanceled() && event.getEntity() instanceof PlayerEntity) {
 			PlayerAttributeLevels.setPlayerInitialization((PlayerEntity)event.getEntity(), false);
 		}

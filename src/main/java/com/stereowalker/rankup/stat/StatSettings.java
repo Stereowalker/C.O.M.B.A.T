@@ -24,6 +24,7 @@ public class StatSettings {
 	private final int defaultPoints;
 	private final int minPointsPerLevel;
 	private final int maxPointsPerLevel;
+	private final int upgradePointsPerLevel;
 	private final ImmutableMap<Attribute,Double> attributeMap;
 
 	public StatSettings(JsonObject object, ResourceLocation owner) {
@@ -32,6 +33,7 @@ public class StatSettings {
 		int defaultPointsIn = 0;
 		int minPointsPerLevelIn = 0;
 		int maxPointsPerLevelIn = 0;
+		int upgradePointsPerLevelIn = 0;
 		ImmutableMap.Builder<Attribute,Double> attributeMapIn = ImmutableMap.builder();
 
 		String NOTHING = "nothing";
@@ -40,6 +42,7 @@ public class StatSettings {
 		String DEFAULT_POINTS = "default_points";
 		String MAX_POINTS_PER_LEVEL = "maximum_points_earned_per_level";
 		String MIN_POINTS_PER_LEVEL = "minimum_points_earned_per_level";
+		String UPGRADE_POINTS_PER_LEVEL = "upgrade_points_earned_per_level";
 		String ATTRIBUTES = "attributes";
 
 
@@ -108,6 +111,12 @@ public class StatSettings {
 					minPointsPerLevelIn = object.get(MIN_POINTS_PER_LEVEL).getAsInt();
 					workingOn = NOTHING;
 				}
+				
+				if(object.has(UPGRADE_POINTS_PER_LEVEL) && object.get(UPGRADE_POINTS_PER_LEVEL).isJsonPrimitive()) {
+					workingOn = UPGRADE_POINTS_PER_LEVEL;
+					upgradePointsPerLevelIn = object.get(UPGRADE_POINTS_PER_LEVEL).getAsInt();
+					workingOn = NOTHING;
+				}
 
 			} catch (ClassCastException e) {
 				Combat.getInstance().LOGGER.warn(STAT_SETTINGS,
@@ -123,6 +132,7 @@ public class StatSettings {
 		this.defaultPoints = defaultPointsIn;
 		this.minPointsPerLevel = minPointsPerLevelIn;
 		this.maxPointsPerLevel = maxPointsPerLevelIn;
+		this.upgradePointsPerLevel = upgradePointsPerLevelIn;
 		this.attributeMap = attributeMapIn.build();
 
 		if (minPointsPerLevel > maxPointsPerLevel) {
@@ -155,17 +165,10 @@ public class StatSettings {
 		return defaultPoints;
 	}
 
-	//	/**
-	//	 * @return the maxLevel
-	//	 */
-	//	public int getMaxPoints() {
-	//		return maxPoints;
-	//	}
-	//
-	//	public float getLevelModifier() {
-	//		return (float)(1.0F/(float)getMaxPoints());
-	//	}
-
+	public int getUpgradePointsPerLevel() {
+		return upgradePointsPerLevel;
+	}
+	
 	/**
 	 * @return the attributeMap
 	 */
@@ -194,6 +197,7 @@ public class StatSettings {
 		nbt.putInt("defaultPoints", this.defaultPoints);
 		nbt.putInt("minPointsPerLevel", this.minPointsPerLevel);
 		nbt.putInt("maxPointsPerLevel", this.maxPointsPerLevel);
+		nbt.putInt("upgradePointsPerLevel", this.upgradePointsPerLevel);
 		
 		ListNBT list = new ListNBT();
 		for (Attribute attribute : this.attributeMap.keySet()) {
@@ -214,6 +218,7 @@ public class StatSettings {
 		this.defaultPoints = nbt.getInt("defaultPoints");
 		this.minPointsPerLevel = nbt.getInt("minPointsPerLevel");
 		this.maxPointsPerLevel = nbt.getInt("maxPointsPerLevel");
+		this.upgradePointsPerLevel = nbt.getInt("upgradePointsPerLevel");
 		
 		ImmutableMap.Builder<Attribute,Double> attributeMapIn = ImmutableMap.builder();
 		for (INBT nbt3 : nbt.getList("attributeMap", NBT.TAG_COMPOUND)) {
