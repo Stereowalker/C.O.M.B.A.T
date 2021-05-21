@@ -64,14 +64,12 @@ public class SpellEntity extends AbstractMagicProjectileEntity {
 	/**
 	 * Called to update the entity's position/logic.
 	 */
-	int tick;
 	public void tick() {
-		tick++;
 		super.tick();
-		if (this.world.isRemote && !this.inGround) {
+		if (this.world.isRemote && !this.inGround && this.hasSetSpell) {
 			this.world.addParticle(((AbstractProjectileSpell)this.getSpell().getSpell()).trailParticles(), this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
 		}
-		if (tick > 4000) {
+		if (this.ticksExisted > 4000) {
 			this.remove();
 		}
 
