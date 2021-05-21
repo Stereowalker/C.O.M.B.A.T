@@ -39,12 +39,7 @@ public class MagicEvents {
 							shouldRegenerateMana = false;
 						}
 						if (OriginsCompat.hasAlteredRegeneration(player)) {
-							if (!CombatEntityStats.hasManabornBonus(player)) {
-								System.out.println("Max Mana = "+MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
-								CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
-								CombatEntityStats.setManabornBonus(player, true);
-							}
-							if (player.shouldHeal()) {
+							if (player.getHealth() > 0.0F && player.getHealth() < player.getMaxHealth()) {
 								if (player.getHealth() < player.getMaxHealth() - 1) {
 									player.heal(1.0F);
 									CombatEntityStats.addMana(player, -1.0F);
