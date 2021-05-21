@@ -399,7 +399,7 @@ public class GameEvents {
 		}
 		int runeDropChance = 3;
 		boolean flag = UnionMathHelper.probabilityCheck(runeDropChance);
-		if(!event.getEntityLiving().getEntityWorld().isRemote && ((event.getEntityLiving() instanceof MonsterEntity && flag) || !event.getEntityLiving().getType().isContained(CEntityTypeTags.BOSSES))) {
+		if(!event.getEntityLiving().getEntityWorld().isRemote && ((event.getEntityLiving() instanceof MonsterEntity && flag) || event.getEntityLiving().getType().isContained(CEntityTypeTags.BOSSES))) {
 			if(event.getSource().getTrueSource() instanceof PlayerEntity) {
 				Skill skill = PlayerSkills.generateRandomSkill((PlayerEntity)event.getSource().getTrueSource(), false);
 				if (skill != Skills.EMPTY) event.getEntityLiving().entityDropItem(SkillUtil.addSkillToItemStack(new ItemStack(CItems.SKILL_RUNESTONE), skill));
