@@ -31,11 +31,11 @@ public class ManaPillIem extends Item {
 						playerIn.getFoodStats().addStats(4, 2.0F);
 						itemStack.shrink(1);
 						Random rand = new Random();
-						int i = rand.nextInt(60);
+						int i = rand.nextInt(40);
 						if (i == 0) playerIn.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 1200));
-						if (i == 2) playerIn.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200));
-						if (i == 4) playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200));
-						if (i == 5) playerIn.addPotionEffect(new EffectInstance(Effects.SPEED, 1200));
+						if (i == 1) playerIn.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200));
+						if (i == 2) playerIn.addPotionEffect(new EffectInstance(Effects.HASTE, 1200));
+						if (i == 3) playerIn.addPotionEffect(new EffectInstance(Effects.SPEED, 1200));
 						return ActionResult.resultSuccess(itemStack); 
 					}
 				}
