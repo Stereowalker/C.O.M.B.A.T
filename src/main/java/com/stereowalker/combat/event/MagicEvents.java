@@ -77,7 +77,16 @@ public class MagicEvents {
 
 	public static void replenishManaOnSleep(IWorld iWorld) {
 		for (PlayerEntity player : iWorld.getPlayers()) {
-			CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
+			boolean shouldRegenerateMana = true;
+			if (ModList.get().isLoaded("origins")) {
+				if (OriginsCompat.hasNoManaAbsorbers(player)) {
+					if (!CombatEntityStats.hasManabornBonus(player)) {
+						shouldRegenerateMana = false;
+					}
+				}
+			}
+			if (shouldRegenerateMana)
+				CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
 		}
 	}
 }
