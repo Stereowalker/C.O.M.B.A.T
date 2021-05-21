@@ -25,6 +25,7 @@ import com.stereowalker.combat.particles.CParticleTypes;
 import com.stereowalker.combat.potion.CEffects;
 import com.stereowalker.combat.potion.CPotions;
 import com.stereowalker.combat.spell.Spells;
+import com.stereowalker.combat.stats.CStats;
 import com.stereowalker.combat.tileentity.CTileEntityType;
 import com.stereowalker.combat.util.CSoundEvents;
 import com.stereowalker.combat.village.CPointOfInterestType;
@@ -64,6 +65,7 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.stats.StatType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.village.PointOfInterestType;
@@ -110,7 +112,7 @@ public class CombatRegistryEvents
 		RegistryOverrides.overrideAttributes(event.getRegistry());
 		CAttributes.registerAll(event.getRegistry());
 	}
-	
+
 	@SubscribeEvent
 	public static void registerAttributes(EntityAttributeCreationEvent event) {
 		event.put(CEntityType.ROBIN, RobinEntity.registerAttributes().create());
@@ -122,7 +124,8 @@ public class CombatRegistryEvents
 		event.put(CEntityType.SKELETON_MINION, AbstractSkeletonEntity.registerAttributes().create());
 		event.put(CEntityType.ZOMBIE_MINION, ZombieEntity.func_234342_eQ_().create());
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public static void registerAttributes(EntityAttributeModificationEvent event) {
 		event.add(EntityType.PLAYER, CAttributes.HEALTH_REGENERATION);
@@ -131,13 +134,13 @@ public class CombatRegistryEvents
 		event.add(EntityType.PLAYER, CAttributes.MANA_REGENERATION);
 		event.add(EntityType.PLAYER, CAttributes.MAX_MANA);
 		event.add(EntityType.PLAYER, CAttributes.ATTACK_REACH);
-		
+
 		ForgeRegistries.ENTITIES.forEach((type) -> {
 			if (GlobalEntityTypeAttributes.doesEntityHaveAttributes(type)) {
 				event.add((EntityType<? extends LivingEntity>) type, CAttributes.PHYSICAL_RESISTANCE);
 			}
 		});
-		
+
 
 	}
 
@@ -259,10 +262,10 @@ public class CombatRegistryEvents
 		CRecipeSerializer.registerAll(event.getRegistry());
 	}
 
-	//	@SubscribeEvent
-	//	public static void registerStats(final RegistryEvent.Register<StatType<?>> event) {
-	//		CStats.registerAll(event.getRegistry());
-	//	}
+	@SubscribeEvent
+	public static void registerStats(final RegistryEvent.Register<StatType<?>> event) {
+		CStats.registerAll(event.getRegistry());
+	}
 
 
 	//Village Regirtres

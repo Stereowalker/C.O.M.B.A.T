@@ -1154,8 +1154,10 @@
 	"container.woodcutter": "Woodcutter",
 	"container.fletching": "Fletching",
 ///////////////////////////////////////////////////////////[STATS]///////////////////////////////////////////////////////////
-	"stat.combat.shots_fired": "Shots Fired",
+	"stat.combat.damage_blocked_by_weapon": "Damage Blocked by Weapon",
 	"stat.combat.guns_reloaded": "Guns Reloaded",
+	"stat.combat.interact_with_woodcutter": "Interactions with Woodcutter",
+	"stat.combat.shots_fired": "Shots Fired",
 	"stat.combat.spells_casted": "Spells Casted",
 ///////////////////////////////////////////////////////////[ATTRIBUTES]///////////////////////////////////////////////////////////
 	"attribute.name.combat.max_mana": "Max Mana",

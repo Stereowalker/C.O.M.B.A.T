@@ -17,6 +17,7 @@ import com.stereowalker.combat.config.Config;
 import com.stereowalker.combat.enchantment.CEnchantmentHelper;
 import com.stereowalker.combat.entity.ai.CAttributes;
 import com.stereowalker.combat.item.ItemFilters;
+import com.stereowalker.combat.stats.CStats;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -255,7 +256,7 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/criterion/EntityHurtPlayerTrigger;trigger(Lnet/minecraft/entity/player/ServerPlayerEntity;Lnet/minecraft/util/DamageSource;FFZ)V", shift = Shift.AFTER), method = "attackEntityFrom", locals = LocalCapture.CAPTURE_FAILHARD)
 	public void blockStats(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir, float f, boolean flag, float f1, boolean flag1, Entity entity1, boolean flag2) {
 		if (amount > 0.0F && amount < 3.4028235E37F && ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND))) {
-			((ServerPlayerEntity)(Object)this).addStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(amount * 10.0F));
+			((ServerPlayerEntity)(Object)this).addStat(CStats.DAMAGE_BLOCKED_BY_WEAPON, Math.round(amount * 10.0F));
 		}
 	}
 
