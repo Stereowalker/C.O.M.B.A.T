@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "": [
+            { "model": "combat:block/caltas" },
+            { "model": "combat:block/caltas", "y": 90 },
+            { "model": "combat:block/caltas", "y": 180 },
+            { "model": "combat:block/caltas", "y": 270 }
+        ]
+    }
+}

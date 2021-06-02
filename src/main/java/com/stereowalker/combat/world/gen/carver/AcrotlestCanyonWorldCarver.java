@@ -24,7 +24,7 @@ public class AcrotlestCanyonWorldCarver extends CanyonWorldCarver {
 	protected static final BlockState TSUNE = CBlocks.BLUE_TSUNE.getDefaultState();
 	public AcrotlestCanyonWorldCarver(Codec<ProbabilityConfig> p_i231917_1_) {
 		super(p_i231917_1_);
-		this.carvableBlocks = ImmutableSet.of(Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, Blocks.GRASS_BLOCK, CBlocks.MEZEPINE);
+		this.carvableBlocks = ImmutableSet.of(CBlocks.PURIFIED_DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, CBlocks.PURIFIED_GRASS_BLOCK, CBlocks.MEZEPINE);
 		this.carvableFluids = ImmutableSet.of(CFluids.BIABLE);
 	}
 

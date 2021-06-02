@@ -44,6 +44,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class CItems {
 	public static final List<Item> ITEMS = new ArrayList<Item>();
 	//Block Items
+	public static final Item CALTAS = register(CBlocks.CALTAS, CItemGroup.BUILDING_BLOCKS);
+	//Ores
 	public static final Item COPPER_ORE = register(CBlocks.COPPER_ORE, CItemGroup.BUILDING_BLOCKS);
 	public static final Item CASSITERITE = register(CBlocks.CASSITERITE, CItemGroup.BUILDING_BLOCKS);
 	public static final Item PASQUEM_ORE = register(CBlocks.PASQUEM_ORE, CItemGroup.BUILDING_BLOCKS);

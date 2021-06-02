@@ -24,6 +24,7 @@ public abstract class CFeature {
 	//	public static final Structure<NoFeatureConfig> BLUE_ICE_TOWER = register("blue_ice_tower", new BlueIceTowerStructure(NoFeatureConfig::deserialize));
 
 	public static final Feature<BaseTreeFeatureConfig> ACROTLEST_TREE = register("acrotlest_tree", new AcrotlestTreeFeature(BaseTreeFeatureConfig.CODEC));
+	public static final Feature<BaseTreeFeatureConfig> MAGIC_TREE = register("magic_tree", new MagicTreeFeature(BaseTreeFeatureConfig.CODEC));
 	public static final Feature<NoFeatureConfig> TSUNE_SPIKE = register("tsune_spike", new TsuneSpikeFeature(NoFeatureConfig.CODEC));
 	public static final Feature<NoFeatureConfig> MAGENTA_TSUNE_COLUMN = register("magenta_tsune_spike", new TsuneColumnFeature(NoFeatureConfig.CODEC));
 	public static final Feature<ReplaceBlockConfig> RUBY_ORE = register("ruby_ore", new ReplaceBlockFeature(ReplaceBlockConfig.CODEC));

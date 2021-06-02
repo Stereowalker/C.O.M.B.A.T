@@ -90,7 +90,7 @@ public class CBlocks {
 	public static final Block AUSLDINE_PLANKS = register("ausldine_planks", CItemGroup.BUILDING_BLOCKS, new Block(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_PODIUM = register("ausldine_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.CYAN_TERRACOTTA).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final Block AUSLDINE_PRESSURE_PLATE = register("ausldine_pressure_plate", ItemGroup.REDSTONE, new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.create(Material.WOOD, MaterialColor.CYAN_TERRACOTTA).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
-	public static final Block AUSLDINE_SAPLING = register("ausldine_sapling", CItemGroup.MISC, new SaplingBlock(new AusldineTree(), Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().sound(SoundType.PLANT)));
+	public static final Block AUSLDINE_SAPLING = register("ausldine_sapling", CItemGroup.MISC, new MagicSaplingBlock(new AusldineTree(), Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().sound(SoundType.PLANT)));
 	public static final Block AUSLDINE_SIGN = register("ausldine_sign", new CStandingSignBlock(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD), CWoodType.AUSLDINE));
 	public static final Block AUSLDINE_SLAB = register("ausldine_slab", CItemGroup.BUILDING_BLOCKS, new SlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.CYAN_TERRACOTTA).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_STAIRS = register("ausldine_stairs", CItemGroup.BUILDING_BLOCKS, new StairsBlock(() -> CBlocks.AUSLDINE_PLANKS.getDefaultState(), Block.Properties.from(CBlocks.AUSLDINE_PLANKS)));
@@ -143,7 +143,7 @@ public class CBlocks {
 	public static final Block REZAL_LOG = register("rezal_log", CItemGroup.BUILDING_BLOCKS, createLogBlock(MaterialColor.RED, MaterialColor.GREEN));
 	public static final Block REZAL_PLANKS = register("rezal_planks", CItemGroup.BUILDING_BLOCKS, new Block(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block REZAL_WOOD = register("rezal_wood", CItemGroup.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.GREEN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	
+
 	//Minecraft Wood
 	//Oak
 	public static final Block OAK_BEAM = register("oak_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
@@ -304,6 +304,8 @@ public class CBlocks {
 	public static final Block MEZEPINE_BRICK_STAIRS = register("mezepine_brick_stairs", new StairsBlock(() -> CBlocks.MEZEPINE_BRICKS.getDefaultState(), Block.Properties.from(CBlocks.MEZEPINE_BRICKS)));
 	public static final Block PURIFIED_DIRT = register("purified_dirt", CItemGroup.BUILDING_BLOCKS, new Block(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.4F).harvestTool(ToolType.SHOVEL).sound(SoundType.GROUND)));
 	public static final Block PURIFIED_GRASS_BLOCK = register("purified_grass_block", CItemGroup.BUILDING_BLOCKS, new GrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.PLANT)));
+	public static final Block ELYCEN_BLOCK = register("elycen_block", CItemGroup.BUILDING_BLOCKS, new GrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.PLANT)));
+	public static final Block CALTAS = register("caltas", new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND)));
 	public static final Block WOODCUTTER = register("woodcutter", new WoodcutterBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F)));
 	public static final Block PYRANITE_FIRE = register("pyranite_fire", new PyraniteFireBlock(Block.Properties.create(Material.FIRE, MaterialColor.TNT).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().setLightLevel((p_235418_0_) -> {
 		return 13;
@@ -338,7 +340,7 @@ public class CBlocks {
 	public static final Block DISENCHANTING_TABLE = register("disenchanting_table", new DisenchantingTableBlock(Block.Properties.create(Material.ROCK, MaterialColor.BLUE).hardnessAndResistance(5.0F, 1200.0F)));
 	public static final Block HOMSE = register("homse", new SandBlock(0Xfff98f, Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.7F).sound(SoundType.GROUND)));
 	public static final Block BATTERY_CHARGER = register("battery_charger", new BatteryChargerBlock(Block.Properties.create(Material.IRON)));
-	
+
 	private static ToIntFunction<BlockState> getLightValueLit(int lightValue) {
 		return (p_235421_1_) -> {
 			return p_235421_1_.get(BlockStateProperties.LIT) ? lightValue : 0;

@@ -114,7 +114,7 @@ public class CBiomeMaker {
 		mobspawninfo$builder.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 10, 1, 4));
 		mobspawninfo$builder.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.WITCH, 5, 1, 1));
 
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder()).withSurfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG));
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder()).withSurfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.DEFAULT, CSurfaceBuilder.ELYCEN_CALTAS_GRAVEL_CONFIG));
 		DefaultBiomeFeatures.withCavesAndCanyons(biomegenerationsettings$builder);
 		DefaultBiomeFeatures.withFrozenTopLayer(biomegenerationsettings$builder);
 		biomegenerationsettings$builder.withStructure(StructureFeatures.RUINED_PORTAL);

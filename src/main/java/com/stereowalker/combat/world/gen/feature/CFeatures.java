@@ -9,6 +9,8 @@ import com.google.common.collect.ImmutableList;
 import com.stereowalker.combat.block.CBlocks;
 import com.stereowalker.combat.config.Config;
 import com.stereowalker.combat.world.gen.placement.CPlacement;
+import com.stereowalker.combat.world.gen.trunkplacer.AcrotlestStraightTrunkPlacer;
+import com.stereowalker.combat.world.gen.trunkplacer.MagicStraightTrunkPlacer;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
@@ -35,10 +37,10 @@ import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 public abstract class CFeatures {
 	public static final List<Pair<String,ConfiguredFeature<?, ?>>> CONFIGURED_FEATURES = new ArrayList<Pair<String,ConfiguredFeature<?, ?>>>();
 
-	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> AUSLDINE = register("ausldine", Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CBlocks.AUSLDINE_LOG.getDefaultState()), new SimpleBlockStateProvider(CBlocks.AUSLDINE_LEAVES.getDefaultState()), new BlobFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 3), new StraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1))).setIgnoreVines().build()));
+	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> AUSLDINE = register("ausldine", CFeature.MAGIC_TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CBlocks.AUSLDINE_LOG.getDefaultState()), new SimpleBlockStateProvider(CBlocks.AUSLDINE_LEAVES.getDefaultState()), new BlobFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 3), new MagicStraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1))).setIgnoreVines().build()));
 	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> DEAD_OAK = register("dead_oak", Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CBlocks.DEAD_OAK_LOG.getDefaultState()), new SimpleBlockStateProvider(Blocks.AIR.getDefaultState()), new BlobFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 3), new StraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1))).setIgnoreVines().build()));
-	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> REZAL = register("rezal", Feature.TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CBlocks.REZAL_LOG.getDefaultState()), new SimpleBlockStateProvider(CBlocks.REZAL_LEAVES.getDefaultState()), new BlobFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 3), new StraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1))).setIgnoreVines().build()));
-	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> MONORIS = register("monoris", CFeature.ACROTLEST_TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CBlocks.MONORIS_LOG.getDefaultState()), new SimpleBlockStateProvider(CBlocks.MONORIS_LEAVES.getDefaultState()), new BlobFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 3), new StraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1))).setIgnoreVines().build()));
+	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> REZAL = register("rezal", CFeature.MAGIC_TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CBlocks.REZAL_LOG.getDefaultState()), new SimpleBlockStateProvider(CBlocks.REZAL_LEAVES.getDefaultState()), new BlobFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 3), new MagicStraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1))).setIgnoreVines().build()));
+	public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> MONORIS = register("monoris", CFeature.ACROTLEST_TREE.withConfiguration((new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CBlocks.MONORIS_LOG.getDefaultState()), new SimpleBlockStateProvider(CBlocks.MONORIS_LEAVES.getDefaultState()), new BlobFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 3), new AcrotlestStraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1))).setIgnoreVines().build()));
 
 	public static final ConfiguredFeature<?, ?> TSUNE_SPIKE = register("tsune_spike", CFeature.TSUNE_SPIKE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).count(3));
 	public static final ConfiguredFeature<?, ?> MAGENTA_TSUNE_COLUMN = register("magenta_tsune_column", CFeature.MAGENTA_TSUNE_COLUMN.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).count(1));

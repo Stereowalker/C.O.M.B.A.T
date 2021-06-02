@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "snowy=false": [
+            { "model": "combat:block/elycen_block" },
+            { "model": "combat:block/elycen_block", "y": 90 },
+            { "model": "combat:block/elycen_block", "y": 180 },
+            { "model": "combat:block/elycen_block", "y": 270 }
+        ],
+        "snowy=true":  [
+            { "model": "combat:block/elycen_block" },
+            { "model": "combat:block/elycen_block", "y": 90 },
+            { "model": "combat:block/elycen_block", "y": 180 },
+            { "model": "combat:block/elycen_block", "y": 270 }
+        ]
+    }
+}
