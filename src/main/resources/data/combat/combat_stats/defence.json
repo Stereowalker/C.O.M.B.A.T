@@ -5,6 +5,8 @@
 	"maximum_points_earned_per_level": 10,
 	"minimum_points_earned_per_level": 5,
 	"upgrade_points_earned_per_level": 5,
+	"effort_stat": "minecraft:damage_absorbed",
+	"effort_value": 10,
 	"attributes": [
 		{
 			"attribute": "combat:generic.physical_resistance",

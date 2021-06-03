@@ -83,4 +83,8 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 	public int getAdditionalPoints(PlayerEntity player) {
 		return PlayerAttributeLevels.getStatPoints(player, this).getModifierPoints();
 	}
+	
+	public int getEffortPoints(PlayerEntity player) {
+		return PlayerAttributeLevels.getStatPoints(player, this).getEffortPoints();
+	}
 }

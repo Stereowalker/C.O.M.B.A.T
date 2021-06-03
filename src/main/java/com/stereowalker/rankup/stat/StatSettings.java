@@ -25,6 +25,8 @@ public class StatSettings {
 	private final int minPointsPerLevel;
 	private final int maxPointsPerLevel;
 	private final int upgradePointsPerLevel;
+	private final ResourceLocation effortStat;
+	private final double effortValue;
 	private final ImmutableMap<Attribute,Double> attributeMap;
 
 	public StatSettings(JsonObject object, ResourceLocation owner) {
@@ -34,6 +36,9 @@ public class StatSettings {
 		int minPointsPerLevelIn = 0;
 		int maxPointsPerLevelIn = 0;
 		int upgradePointsPerLevelIn = 0;
+		ResourceLocation effortStatIn = null;
+		double effortValueIn = 0;
+		
 		ImmutableMap.Builder<Attribute,Double> attributeMapIn = ImmutableMap.builder();
 
 		String NOTHING = "nothing";
@@ -44,7 +49,8 @@ public class StatSettings {
 		String MIN_POINTS_PER_LEVEL = "minimum_points_earned_per_level";
 		String UPGRADE_POINTS_PER_LEVEL = "upgrade_points_earned_per_level";
 		String ATTRIBUTES = "attributes";
-
+		String EFFORT_STAT = "effort_stat";
+		String EFFORT_VALUE = "effort_value";
 
 		if(object != null && object.entrySet().size() != 0) {
 			String workingOn = NOTHING;
@@ -118,6 +124,18 @@ public class StatSettings {
 					workingOn = NOTHING;
 				}
 
+				if(object.has(EFFORT_STAT) && object.get(EFFORT_STAT).isJsonPrimitive()) {
+					workingOn = EFFORT_STAT;
+					effortStatIn = new ResourceLocation(object.get(EFFORT_STAT).getAsString());
+					workingOn = NOTHING;
+				}
+				
+				if(object.has(EFFORT_VALUE) && object.get(EFFORT_VALUE).isJsonPrimitive()) {
+					workingOn = EFFORT_VALUE;
+					effortValueIn = object.get(EFFORT_VALUE).getAsDouble();
+					workingOn = NOTHING;
+				}
+
 			} catch (ClassCastException e) {
 				Combat.getInstance().LOGGER.warn(STAT_SETTINGS,
 						"Loading stat settings $s from JSON: Parsing element %s: element was wrong type!", e, owner, workingOn);
@@ -134,6 +152,8 @@ public class StatSettings {
 		this.maxPointsPerLevel = maxPointsPerLevelIn;
 		this.upgradePointsPerLevel = upgradePointsPerLevelIn;
 		this.attributeMap = attributeMapIn.build();
+		this.effortStat = effortStatIn;
+		this.effortValue = effortValueIn;
 
 		if (minPointsPerLevel > maxPointsPerLevel) {
 			throw new IllegalArgumentException("Minimum value cannot be bigger than maximum value!");
@@ -189,6 +209,14 @@ public class StatSettings {
 	public int getMaxPointsPerLevel() {
 		return maxPointsPerLevel;
 	}
+	
+	public ResourceLocation getEffortStat() {
+		return effortStat;
+	}
+
+	public double getEffortValueModifier() {
+		return effortValue;
+	}
 
 	public CompoundNBT serialize() {
 		CompoundNBT nbt = new CompoundNBT();
@@ -198,6 +226,8 @@ public class StatSettings {
 		nbt.putInt("minPointsPerLevel", this.minPointsPerLevel);
 		nbt.putInt("maxPointsPerLevel", this.maxPointsPerLevel);
 		nbt.putInt("upgradePointsPerLevel", this.upgradePointsPerLevel);
+		nbt.putString("effortStat", this.effortStat.toString());
+		nbt.putDouble("effortValue", this.effortValue);
 		
 		ListNBT list = new ListNBT();
 		for (Attribute attribute : this.attributeMap.keySet()) {
@@ -219,6 +249,8 @@ public class StatSettings {
 		this.minPointsPerLevel = nbt.getInt("minPointsPerLevel");
 		this.maxPointsPerLevel = nbt.getInt("maxPointsPerLevel");
 		this.upgradePointsPerLevel = nbt.getInt("upgradePointsPerLevel");
+		this.effortStat = new ResourceLocation(nbt.getString("effortStat"));
+		this.effortValue = nbt.getDouble("effortValue");
 		
 		ImmutableMap.Builder<Attribute,Double> attributeMapIn = ImmutableMap.builder();
 		for (INBT nbt3 : nbt.getList("attributeMap", NBT.TAG_COMPOUND)) {

@@ -120,6 +120,15 @@ public class StatEvents {
 		for (Stat stat : CombatRegistries.STATS) {
 			StatSettings statSettings = Rankup.statsManager.STATS.get(stat);
 			double addition = StatProfile.getTotalPoints(entity, stat);
+			
+			if (entity instanceof ServerPlayerEntity) {
+				ServerPlayerEntity player = (ServerPlayerEntity) entity;
+				
+				if (Config.RPG_COMMON.enableTraining.get() && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints() * statSettings.getEffortValueModifier()) {
+					StatProfile.setEffortPoints(player, stat, PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints()+1);
+				}
+				
+			}
 
 			statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
 

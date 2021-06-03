@@ -5,6 +5,8 @@
 	"maximum_points_earned_per_level": 10,
 	"minimum_points_earned_per_level": 5,
 	"upgrade_points_earned_per_level": 5,
+	"effort_stat": "minecraft:damage_taken",
+	"effort_value": 10,
 	"attributes": [
 		{
 			"attribute": "minecraft:generic.max_health",

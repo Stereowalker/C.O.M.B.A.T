@@ -22,6 +22,7 @@ public class RpgCommonConfig {
 
 	public  UnionValues.BooleanValue takeXpFromKilledPlayers;
 
+	public  UnionValues.BooleanValue enableTraining;
 	RpgCommonConfig(ForgeConfigSpec.Builder common) {
 		if (common != null) {
 			enableLevelingSystem = UnionValues.BooleanValue.build(common
@@ -47,6 +48,9 @@ public class RpgCommonConfig {
 			useXPToUpgrade = UnionValues.BooleanValue.build(common
 					.comment("Should we use XP to upgrade stats instead of upgrade points?")
 					.define("Leveling Stats.Use XP To Upgrade Stats", false));
+			enableTraining = UnionValues.BooleanValue.build(common
+					.comment("Should the player be able to increase their stats via sheer training")
+					.define("Leveling Stats.Enable Training", true));
 			levelUpType = UnionValues.EnumValue.build(common
 					.comment("How do you suppose you want to level up?")
 					.defineEnum("Leveling Stats.Use XP To Upgrade Stats", LevelType.ASSIGN_POINTS));
