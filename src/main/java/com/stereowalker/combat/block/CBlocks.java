@@ -305,7 +305,7 @@ public class CBlocks {
 	public static final Block PURIFIED_DIRT = register("purified_dirt", CItemGroup.BUILDING_BLOCKS, new Block(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.4F).harvestTool(ToolType.SHOVEL).sound(SoundType.GROUND)));
 	public static final Block PURIFIED_GRASS_BLOCK = register("purified_grass_block", CItemGroup.BUILDING_BLOCKS, new GrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.PLANT)));
 	public static final Block ELYCEN_BLOCK = register("elycen_block", CItemGroup.BUILDING_BLOCKS, new GrassBlock(Block.Properties.create(Material.ORGANIC).tickRandomly().hardnessAndResistance(0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.PLANT)));
-	public static final Block CALTAS = register("caltas", new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND)));
+	public static final Block CALTAS = register("caltas", new Block(AbstractBlock.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.5F).sound(SoundType.GROUND).harvestTool(ToolType.SHOVEL)));
 	public static final Block WOODCUTTER = register("woodcutter", new WoodcutterBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.5F)));
 	public static final Block PYRANITE_FIRE = register("pyranite_fire", new PyraniteFireBlock(Block.Properties.create(Material.FIRE, MaterialColor.TNT).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().setLightLevel((p_235418_0_) -> {
 		return 13;

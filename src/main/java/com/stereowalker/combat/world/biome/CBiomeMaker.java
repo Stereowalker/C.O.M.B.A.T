@@ -243,7 +243,7 @@ public class CBiomeMaker {
 	}
 
 	public static BiomeAmbience getMagicAmbience() {		//R-2,G+1,B+0			<-----				//R-2,G+1,B+1				<----				//R-2,G-2,B+1				<------
-		return new BiomeAmbience.Builder().setWaterFogColor(0xfd01ff).setWaterColor(0xfd01ff).setFogColor(0x3A31CE).withSkyColor(0x3A31CE).withGrassColor(0x3A2DCE).withFoliageColor(0x3A2DCE).setMoodSound(MoodSoundAmbience.DEFAULT_CAVE).build();
+		return new BiomeAmbience.Builder().setWaterFogColor(0xf903ff).setWaterColor(0xf903ff).setFogColor(0x3633D0).withSkyColor(0x3633D0).withGrassColor(0x3629D0).withFoliageColor(0x3629D0).setMoodSound(MoodSoundAmbience.DEFAULT_CAVE).build();
 	}
 
 	public static BiomeAmbience getAcrotlestAmbience() {

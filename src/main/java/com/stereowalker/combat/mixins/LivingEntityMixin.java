@@ -235,7 +235,7 @@ public abstract class LivingEntityMixin extends Entity {
 	 * @param amount
 	 * @return
 	 */
-	@ModifyVariable(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/DamageSource;isProjectile()Z", shift = Shift.BY, by = -3), method = "attackEntityFrom", name = "amount", print = false)
+	@ModifyVariable(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/DamageSource;isProjectile()Z", shift = Shift.BY, by = -3), method = "attackEntityFrom", /*name = "amount"*/ ordinal = 0, print = false)
 	public float blockWithSword(float amount) {
 		if (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND))) {
 			return storedDamage/2;
