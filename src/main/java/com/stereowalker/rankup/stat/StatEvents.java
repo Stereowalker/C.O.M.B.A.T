@@ -124,9 +124,8 @@ public class StatEvents {
 			
 			if (entity instanceof ServerPlayerEntity) {
 				ServerPlayerEntity player = (ServerPlayerEntity) entity;
-				if (net.minecraft.stats.Stats.CUSTOM.contains(statSettings.getEffortStat())) {
-					net.minecraft.stats.Stat<ResourceLocation> re = net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat());
-					if (Config.RPG_COMMON.enableTraining.get() && player.getStats().getValue(re) > PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints() * statSettings.getEffortValueModifier()) {
+				if (statSettings.getEffortStat() != null) {
+					if (Config.RPG_COMMON.enableTraining.get() && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints() * statSettings.getEffortValueModifier()) {
 						StatProfile.setEffortPoints(player, stat, PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints()+1);
 					}
 				}

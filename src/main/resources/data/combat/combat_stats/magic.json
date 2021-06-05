@@ -6,7 +6,7 @@
 	"minimum_points_earned_per_level": 5,
 	"upgrade_points_earned_per_level": 5,
 	"effort_stat": "combat:spells_casted",
-	"effort_value": 10,
+	"effort_value": 100,
 	"attributes": [
 		{
 			"attribute": "combat:generic.max_mana",

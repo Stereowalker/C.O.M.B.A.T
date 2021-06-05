@@ -120,14 +120,23 @@ public class StatsRowList extends AbstractOptionList<StatsRowList.Row> {
 				widget.y = top;
 				if (Config.RPG_COMMON.levelUpType.get() == LevelType.UPGRADE_POINTS)
 					widget.render(matrixStack, mouseX, mouseY, partialTicks);
-				IFormattableTextComponent normalStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player))).appendSibling(new StringTextComponent(" +"+stat.getEffortPoints(player)).mergeStyle(TextFormatting.YELLOW));
+				IFormattableTextComponent normalStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player)));
 				if (Config.RPG_COMMON.enableTraining.get())
 					normalStatDisplay = (stat.getName().appendString(": "+stat.getCurrentPoints(player))).appendSibling(new StringTextComponent(" +"+stat.getEffortPoints(player)).mergeStyle(TextFormatting.YELLOW));
 				IFormattableTextComponent lockedStatDisplay = (stat.getName().appendString(": Locked"));
-				IFormattableTextComponent bonusStatDisplay = normalStatDisplay.appendSibling(new StringTextComponent(" +"+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.GREEN));
-				IFormattableTextComponent debuffStatDisplay = normalStatDisplay.appendSibling(new StringTextComponent(" "+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.RED));
-
-				AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled() ? lockedStatDisplay : stat.getAdditionalPoints(player) > 0 ? bonusStatDisplay : stat.getAdditionalPoints(player) < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-160, top+5, 0xffffff);
+				IFormattableTextComponent bonusStatDisplay = (new StringTextComponent("").appendSibling(normalStatDisplay)).appendSibling(new StringTextComponent(" +"+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.GREEN));
+				IFormattableTextComponent debuffStatDisplay = (new StringTextComponent("").appendSibling(normalStatDisplay)).appendSibling(new StringTextComponent(" "+stat.getAdditionalPoints(player)).mergeStyle(TextFormatting.RED));
+				
+				
+				if (stat.getAdditionalPoints(player) == 0) {
+					AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled() ? lockedStatDisplay : normalStatDisplay, widget.x-160, top+5, 0xffffff);
+				}
+				else if (stat.getAdditionalPoints(player) > 0) {
+					AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled() ? lockedStatDisplay : bonusStatDisplay, widget.x-160, top+5, 0xffffff);
+				}
+				else if (stat.getAdditionalPoints(player) < 0) {
+					AbstractGui.drawString(matrixStack, Minecraft.getInstance().fontRenderer, !Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled() ? lockedStatDisplay : debuffStatDisplay, widget.x-160, top+5, 0xffffff);
+				}
 			});
 		}
 
