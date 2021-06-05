@@ -26,9 +26,10 @@ public enum SpellCategory {
 	ENHANCEMENT("enhancement", TextFormatting.DARK_AQUA, ClassType.SPECIAL, 0.0F, 0.667F, 0.667F),
 //	ADVANCED9,
 //	NULL("Null", TextFormatting.GRAY);
-	BLOOD("blood", TextFormatting.DARK_RED, ClassType.UNCLASSED, 0.667F, 0.0F, 0.0F);
+	//MISCELLANEOUS
+	BLOOD("blood", TextFormatting.DARK_RED, ClassType.UNCLASSED, 0.667F, 0.0F, 0.0F),
+	HOLY("holy", TextFormatting.GOLD, ClassType.UNCLASSED, 1.0F, 0.667F, 0.0F);
 //	BLACK("BLACK", '0', 0, 0),
-//	GOLD("GOLD", '6', 6, 16755200),
 	
 	private TextFormatting categoryColor;
 	private ClassType classType;;
