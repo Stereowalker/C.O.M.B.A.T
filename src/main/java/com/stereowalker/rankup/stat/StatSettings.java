@@ -226,7 +226,7 @@ public class StatSettings {
 		nbt.putInt("minPointsPerLevel", this.minPointsPerLevel);
 		nbt.putInt("maxPointsPerLevel", this.maxPointsPerLevel);
 		nbt.putInt("upgradePointsPerLevel", this.upgradePointsPerLevel);
-		nbt.putString("effortStat", this.effortStat.toString());
+		nbt.putString("effortStat", this.effortStat+"");
 		nbt.putDouble("effortValue", this.effortValue);
 		
 		ListNBT list = new ListNBT();

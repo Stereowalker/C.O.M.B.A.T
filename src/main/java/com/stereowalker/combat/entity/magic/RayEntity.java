@@ -18,6 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -105,77 +106,82 @@ public class RayEntity extends Entity {
 	private int ticks = 0;
 	@Override
 	public void tick() {
-		int secs = ticks%20;
-		if (secs == 0) {
-			if ((this.getOwner() instanceof PlayerEntity && !((PlayerEntity)this.getOwner()).abilities.isCreativeMode) || !(this.getOwner() instanceof PlayerEntity)) {
-				if (!CombatEntityStats.addMana(this.getOwner(), -this.getSpell().getSpell().getCost())) {
-					this.remove();
-				}
-			}
-		}
-		if (this.getOwner() instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity)this.getOwner();
-			List<Entity> surroundingEntities = this.world.getEntitiesWithinAABB(Entity.class, this.getBoundingBox());
-			surroundingEntities.remove(this);
-			for(Entity entity : surroundingEntities) {
-				if(entity instanceof RayEntity) {
-					RayEntity ray = (RayEntity)entity;
-					if(ray.getOwnerId() == this.getOwnerId() && ray != this) {
-						ray.remove();
+		if (!this.world.isRemote) {
+			int secs = ticks%20;
+			if (secs == 0) {
+				if ((this.getOwner() instanceof PlayerEntity && !((PlayerEntity)this.getOwner()).abilities.isCreativeMode) || !(this.getOwner() instanceof PlayerEntity)) {
+					if (!CombatEntityStats.addMana(this.getOwner(), -this.getSpell().getSpell().getCost())) {
 						this.remove();
 					}
 				}
 			}
-			AbstractMagicCastingItem wand;
-			Hand hand;
-			if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof AbstractMagicCastingItem) {
-				wand = (AbstractMagicCastingItem)player.getHeldItem(Hand.MAIN_HAND).getItem();
-				hand = Hand.MAIN_HAND;
-			} else if (player.getHeldItem(Hand.OFF_HAND).getItem() instanceof AbstractMagicCastingItem) {
-				wand = (AbstractMagicCastingItem)player.getHeldItem(Hand.OFF_HAND).getItem();
-				hand = Hand.OFF_HAND;
-			} else {
-				wand = null;
-				hand = null;
-			}
-			if (hand != null && wand != null) {
-				if(AbstractSpellBookItem.getMainSpellBookItem(player).getCurrentSpell(player.getHeldItem(hand)) == this.getSpell().getSpell()) {
-					int distance = 3;
-					Vector3d vec3d = player.getEyePosition(1.0F);
-					Vector3d vec3d1 = player.getLook(1.0F).scale((double)distance);
-					Vector3d vec3d2 = vec3d.add(vec3d1);
-					AxisAlignedBB axisalignedbb = player.getBoundingBox().expand(vec3d1).grow(1.0D);
-					int i = distance * distance;
-					Predicate<Entity> predicate = (p_217727_0_) -> {
-						return !p_217727_0_.isSpectator() && p_217727_0_.canBeCollidedWith();
-					};
-					EntityRayTraceResult entityraytraceresult = rayTraceEntities(player, vec3d, vec3d2, axisalignedbb, predicate, (double)i);
-					RayTraceResult res;
-					if (entityraytraceresult != null) {
-						res = entityraytraceresult;
+			if (this.getOwner() instanceof PlayerEntity) {
+				PlayerEntity player = (PlayerEntity)this.getOwner();
+				List<Entity> surroundingEntities = this.world.getEntitiesWithinAABB(Entity.class, this.getBoundingBox());
+				surroundingEntities.remove(this);
+				for(Entity entity : surroundingEntities) {
+					if(entity instanceof RayEntity) {
+						RayEntity ray = (RayEntity)entity;
+						if(ray.getOwnerId() == this.getOwnerId() && ray != this) {
+							ray.remove();
+							this.remove();
+						}
 					}
-					else res = player.pick(distance, 1.0F, false);
-					this.setPosition(res.getHitVec().x, res.getHitVec().y, res.getHitVec().z);
-					if (res.getType() == RayTraceResult.Type.ENTITY) {
-						if (((EntityRayTraceResult)res).getEntity() instanceof LivingEntity && ((EntityRayTraceResult)res).getEntity()!=null) {
-							List<LivingEntity> affectedEntities = this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(new Vector3d(this.getPosX() - 0.25D, this.getPosY() - 0.25D, this.getPosZ() - 0.25D), new Vector3d(this.getPosX() + 0.25D, this.getPosY() + 0.25D, this.getPosZ() + 0.25D)));
-							affectedEntities.remove(this.getOwner());
-							for (LivingEntity living : affectedEntities) {
-								this.getSpell().executeExtensionSpell(player, living);
+				}
+				AbstractMagicCastingItem wand;
+				Hand hand;
+				if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof AbstractMagicCastingItem) {
+					wand = (AbstractMagicCastingItem)player.getHeldItem(Hand.MAIN_HAND).getItem();
+					hand = Hand.MAIN_HAND;
+				} else if (player.getHeldItem(Hand.OFF_HAND).getItem() instanceof AbstractMagicCastingItem) {
+					wand = (AbstractMagicCastingItem)player.getHeldItem(Hand.OFF_HAND).getItem();
+					hand = Hand.OFF_HAND;
+				} else {
+					wand = null;
+					hand = null;
+				}
+				if (hand != null && wand != null) {
+					ItemStack book = AbstractSpellBookItem.getMainSpellBook(player);
+					if (!CombatEntityStats.isHoldFlagActive(player)) {
+						this.remove();
+					} else if(AbstractSpellBookItem.getMainSpellBookItem(player).getCurrentSpell(book) == this.getSpell().getSpell()) {
+						int distance = 3;
+						Vector3d vec3d = player.getEyePosition(1.0F);
+						Vector3d vec3d1 = player.getLook(1.0F).scale((double)distance);
+						Vector3d vec3d2 = vec3d.add(vec3d1);
+						AxisAlignedBB axisalignedbb = player.getBoundingBox().expand(vec3d1).grow(1.0D);
+						int i = distance * distance;
+						Predicate<Entity> predicate = (p_217727_0_) -> {
+							return !p_217727_0_.isSpectator() && p_217727_0_.canBeCollidedWith();
+						};
+						EntityRayTraceResult entityraytraceresult = rayTraceEntities(player, vec3d, vec3d2, axisalignedbb, predicate, (double)i);
+						RayTraceResult res;
+						if (entityraytraceresult != null) {
+							res = entityraytraceresult;
+						}
+						else res = player.pick(distance, 1.0F, false);
+						this.setPosition(res.getHitVec().x, res.getHitVec().y, res.getHitVec().z);
+						if (res.getType() == RayTraceResult.Type.ENTITY) {
+							if (((EntityRayTraceResult)res).getEntity() instanceof LivingEntity && ((EntityRayTraceResult)res).getEntity()!=null) {
+								List<LivingEntity> affectedEntities = this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(new Vector3d(this.getPosX() - 0.25D, this.getPosY() - 0.25D, this.getPosZ() - 0.25D), new Vector3d(this.getPosX() + 0.25D, this.getPosY() + 0.25D, this.getPosZ() + 0.25D)));
+								affectedEntities.remove(this.getOwner());
+								for (LivingEntity living : affectedEntities) {
+									this.getSpell().executeExtensionSpell(player, living);
+								}
 							}
 						}
+					} else {
+						this.remove();
+					}
+					if(player.isSneaking()) {
+						this.remove();
 					}
 				} else {
 					this.remove();
 				}
-				if(player.isSneaking()) {
-					this.remove();
-				}
-			} else {
-				this.remove();
 			}
+			super.tick();
 		}
-		super.tick();
 	}
 
 	@Override

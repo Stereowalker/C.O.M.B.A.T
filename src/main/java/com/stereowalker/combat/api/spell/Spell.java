@@ -110,6 +110,10 @@ public abstract class Spell extends ForgeRegistryEntry<Spell>{
 	public boolean isClientSpell() {
 		return false;
 	}
+	
+	public boolean isHeld() {
+		return false;
+	}
 
 	public abstract boolean spellProgram(LivingEntity caster, double strength, Vector3d location, Hand hand);
 

@@ -22,6 +22,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -123,9 +124,11 @@ public class StatEvents {
 			
 			if (entity instanceof ServerPlayerEntity) {
 				ServerPlayerEntity player = (ServerPlayerEntity) entity;
-				
-				if (Config.RPG_COMMON.enableTraining.get() && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints() * statSettings.getEffortValueModifier()) {
-					StatProfile.setEffortPoints(player, stat, PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints()+1);
+				if (net.minecraft.stats.Stats.CUSTOM.contains(statSettings.getEffortStat())) {
+					net.minecraft.stats.Stat<ResourceLocation> re = net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat());
+					if (Config.RPG_COMMON.enableTraining.get() && player.getStats().getValue(re) > PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints() * statSettings.getEffortValueModifier()) {
+						StatProfile.setEffortPoints(player, stat, PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints()+1);
+					}
 				}
 				
 			}

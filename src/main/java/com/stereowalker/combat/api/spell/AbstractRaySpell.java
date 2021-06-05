@@ -25,4 +25,9 @@ public abstract class AbstractRaySpell extends TargetedSpell implements IExtensi
 		spellEntity.setSpell(new SpellInstance(this, strength, location, hand, caster.getUniqueID()));
 		return caster.world.addEntity(spellEntity);
 	}
+	
+	@Override
+	public boolean isHeld() {
+		return true;
+	}
 }

@@ -15,6 +15,7 @@ import com.stereowalker.combat.config.Config;
 import com.stereowalker.combat.entity.CombatEntityStats;
 import com.stereowalker.combat.entity.ai.CAttributes;
 import com.stereowalker.combat.spell.Spells;
+import com.stereowalker.combat.stats.CStats;
 import com.stereowalker.combat.util.UUIDS;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -77,7 +78,7 @@ public abstract class AbstractMagicCastingItem extends Item implements IVanishab
 		CompoundNBT nbt = new CompoundNBT();
 		return nbt;
 	}
-
+	
 	public abstract boolean canCast(PlayerEntity player, ItemStack wand);
 
 	/**
@@ -88,21 +89,51 @@ public abstract class AbstractMagicCastingItem extends Item implements IVanishab
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 		Spell currentSpell = AbstractSpellBookItem.getMainSpellBookItem(playerIn)!=null?AbstractSpellBookItem.getMainSpellBookItem(playerIn).getCurrentSpell(playerIn):Spells.NONE;
-		boolean flag = !AbstractSpellBookItem.getMainSpellBook(playerIn).isEmpty();
-		boolean flag2 = SpellUtil.canEntityCastSpell(playerIn, currentSpell, getCostModifier());
-		boolean flag3 = canCast(playerIn, itemstack);
-		//		ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(itemstack, worldIn, playerIn, handIn, flag);
-		//		if (ret != null) return ret;		
-
-		if (!(flag && flag2 && flag3)) {
-			if(worldIn.isRemote)SpellUtil.printErrorMessages(playerIn, itemstack, currentSpell);
-			return ActionResult.resultFail(itemstack);
+		if (currentSpell.isHeld()) {
+			ItemStack book = AbstractSpellBookItem.getMainSpellBook(playerIn);
+			if (!book.isEmpty()/* && CombatEntityStats.isHoldFlagActive(playerIn) */)
+			{
+				if (playerIn.getHeldItemOffhand().getItem() instanceof AbstractSpellBookItem) {
+					return ActionResult.resultFail(itemstack);
+				}
+				RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.NONE);
+				currentSpell.setRayTraceResult(raytraceresult);
+				double addStrength = (double)CombatEntityStats.getSpellStats(playerIn, currentSpell).getTimesCast()/100000.0d;
+				if (!Config.MAGIC_COMMON.enableSpellTraining.get()) addStrength = 0.0d;
+				SpellInstance spell = new SpellInstance(currentSpell, playerIn.getAttributeValue(CAttributes.MAGIC_STRENGTH)+addStrength, raytraceresult.getHitVec(), playerIn.getActiveHand(), playerIn.getUniqueID());
+				if(spell.executeSpell(playerIn)) {
+					if (worldIn.isRemote) SpellUtil.addEffects(playerIn, currentSpell);
+					SpellUtil.spellItemEffects(playerIn, itemstack, currentSpell);
+					playerIn.addStat(CStats.SPELLS_CASTED);
+					itemstack.damageItem(1, playerIn, (p_220045_0_) -> {
+						p_220045_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+					});
+					CombatEntityStats.setHoldFlag(playerIn, true);
+					playerIn.setActiveHand(handIn);
+					return ActionResult.resultConsume(itemstack);
+				} else {
+					return ActionResult.resultFail(itemstack);
+				}
+			} else {
+				return ActionResult.resultFail(itemstack);
+			}
 		} else {
-			playerIn.setActiveHand(handIn);
-			return ActionResult.resultConsume(itemstack);
+			boolean flag = !AbstractSpellBookItem.getMainSpellBook(playerIn).isEmpty();
+			boolean flag2 = SpellUtil.canEntityCastSpell(playerIn, currentSpell, getCostModifier());
+			boolean flag3 = canCast(playerIn, itemstack);
+			//		ActionResult<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(itemstack, worldIn, playerIn, handIn, flag);
+			//		if (ret != null) return ret;		
+			
+			if (!(flag && flag2 && flag3)) {
+				if(worldIn.isRemote)SpellUtil.printErrorMessages(playerIn, itemstack, currentSpell);
+				return ActionResult.resultFail(itemstack);
+			} else {
+				playerIn.setActiveHand(handIn);
+				return ActionResult.resultConsume(itemstack);
+			}
 		}
 	}
-
+	
 	/**
 	 * How long it takes to use or consume an item
 	 */
@@ -120,6 +151,7 @@ public abstract class AbstractMagicCastingItem extends Item implements IVanishab
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
 		if (entityLiving instanceof PlayerEntity) {
+			CombatEntityStats.setHoldFlag(entityLiving, false);
 			PlayerEntity playerIn = (PlayerEntity)entityLiving;
 			ItemStack book = AbstractSpellBookItem.getMainSpellBook(playerIn);
 			Spell currentSpell = AbstractSpellBookItem.getMainSpellBookItem(playerIn).getCurrentSpell(book);
@@ -127,7 +159,7 @@ public abstract class AbstractMagicCastingItem extends Item implements IVanishab
 			//			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, playerIn, i, !itemstack.isEmpty() || flag);
 			if (i < currentSpell.getCastTime()) return;
 
-			if (!book.isEmpty())
+			if (!book.isEmpty() && !currentSpell.isHeld())
 			{
 				if (playerIn.getHeldItemOffhand().getItem() instanceof AbstractSpellBookItem) {
 					return;
@@ -140,7 +172,7 @@ public abstract class AbstractMagicCastingItem extends Item implements IVanishab
 				if(spell.executeSpell(playerIn)) {
 					if (worldIn.isRemote) SpellUtil.addEffects(playerIn, currentSpell);
 					SpellUtil.spellItemEffects(playerIn, stack, currentSpell);
-					//TODO:playerIn.addStat(CStats.SPELLS_CASTED);
+					playerIn.addStat(CStats.SPELLS_CASTED);
 					stack.damageItem(1, playerIn, (p_220045_0_) -> {
 						p_220045_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
 					});

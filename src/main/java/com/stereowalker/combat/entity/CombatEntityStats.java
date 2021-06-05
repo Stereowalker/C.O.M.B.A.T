@@ -68,6 +68,8 @@ public class CombatEntityStats {
 	
 	public static String resistID = "Resist";
 	
+	public static String holdFlagID = "HoldFlag";
+	
 	public static SpellStats getSpellStats(LivingEntity entity, Spell spell) {
 		if(entity != null) {
 			CompoundNBT compound = getModNBT(entity);
@@ -152,6 +154,14 @@ public class CombatEntityStats {
 		if(entity != null) {
 			CompoundNBT compound = getModNBT(entity);
 			return compound.getBoolean(limiterId);
+		}
+		return false;
+	}
+
+	public static boolean isHoldFlagActive(LivingEntity entity) {
+		if(entity != null) {
+			CompoundNBT compound = getModNBT(entity);
+			return compound.getBoolean(holdFlagID);
 		}
 		return false;
 	}
@@ -408,6 +418,12 @@ public class CombatEntityStats {
 		compound.putFloat(lockedPitchID, rotationPitch);
 	}
 
+	public static void setHoldFlag(Entity entity, boolean hold) {
+		CompoundNBT compound = getModNBT(entity);
+		System.out.println("Hold = "+hold);
+		compound.putBoolean(holdFlagID, hold);
+	}
+
 	//Adders
 
 	public static boolean addMana(LivingEntity entity, float mana) {
@@ -459,6 +475,9 @@ public class CombatEntityStats {
 				}
 				if (!compound.contains(limiterId)) {
 					setLimiter(player, false);
+				}
+				if (!compound.contains(holdFlagID)) {
+					setHoldFlag(player, false);
 				}
 				if (!compound.contains(vampireId)) {
 					setVampire(player, false);

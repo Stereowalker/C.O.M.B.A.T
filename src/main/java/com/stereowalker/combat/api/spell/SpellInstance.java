@@ -53,6 +53,8 @@ public class SpellInstance {
 	}
 	
 	public Hand getHand() {
+		if (hand == null)
+			hand = Hand.MAIN_HAND;
 		return hand;
 	}
 	
@@ -68,7 +70,7 @@ public class SpellInstance {
 		nbt.putString("Spell", this.getSpell().getKey());
 		nbt.putDouble("Strength", this.getStrength());
 		nbt.put("Location", NBTHelper.newDoubleNBTList(this.getLocation().getX(), this.getLocation().getY(), this.getLocation().getZ()));
-		nbt.putInt("Hand", this.hand.ordinal());
+		nbt.putInt("Hand", this.getHand().ordinal());
 		nbt.putUniqueId("CasterID", this.getCasterID());
 		return nbt;
 	}
