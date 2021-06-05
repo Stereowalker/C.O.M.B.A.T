@@ -138,7 +138,7 @@ public class CBiomeMaker {
 		//		DefaultBiomeFeatures.withSparseBerries(biomegenerationsettings$builder);
 
 
-		return (new Biome.Builder())/**/.depth(depth).downfall(50F).precipitation(RainType.SNOW).scale(0.10F).temperature(0.001F).category(isPlains?Category.PLAINS:Category.FOREST)/**/.setEffects(getMagicAmbience()).withMobSpawnSettings(mobspawninfo$builder.build()).withGenerationSettings(biomegenerationsettings$builder.build()).build();
+		return (new Biome.Builder())/**/.depth(depth).downfall(50F).precipitation(RainType.RAIN).scale(0.10F).temperature(0.1F).category(isPlains?Category.PLAINS:Category.FOREST)/**/.setEffects(getMagicAmbience()).withMobSpawnSettings(mobspawninfo$builder.build()).withGenerationSettings(biomegenerationsettings$builder.build()).build();
 	}
 	
 	public static Biome makeAcrotlestForestBiome() {
