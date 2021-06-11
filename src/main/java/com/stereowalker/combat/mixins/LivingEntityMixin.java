@@ -24,6 +24,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -153,6 +154,11 @@ public abstract class LivingEntityMixin extends Entity {
 	
 	@Shadow
 	public void wakeUp() {}
+
+    @Inject(method = "registerAttributes",at = @At("RETURN"))
+    private static void initAttributes(CallbackInfoReturnable<AttributeModifierMap.MutableAttribute> ci) {
+        ci.getReturnValue().createMutableAttribute(CAttributes.PHYSICAL_RESISTANCE);
+    }
 
 	/**
 	 * Reduces damage, depending on potions

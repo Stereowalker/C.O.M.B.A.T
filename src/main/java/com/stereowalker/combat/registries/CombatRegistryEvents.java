@@ -48,10 +48,8 @@ import net.minecraft.client.particle.SplashParticle;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.item.PaintingType;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.ZombieEntity;
@@ -86,7 +84,6 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryBuilder;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD, modid = "combat")
@@ -125,7 +122,6 @@ public class CombatRegistryEvents
 		event.put(CEntityType.ZOMBIE_MINION, ZombieEntity.func_234342_eQ_().create());
 	}
 
-	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public static void registerAttributes(EntityAttributeModificationEvent event) {
 		event.add(EntityType.PLAYER, CAttributes.HEALTH_REGENERATION);
@@ -134,14 +130,6 @@ public class CombatRegistryEvents
 		event.add(EntityType.PLAYER, CAttributes.MANA_REGENERATION);
 		event.add(EntityType.PLAYER, CAttributes.MAX_MANA);
 		event.add(EntityType.PLAYER, CAttributes.ATTACK_REACH);
-
-		ForgeRegistries.ENTITIES.forEach((type) -> {
-			if (GlobalEntityTypeAttributes.doesEntityHaveAttributes(type)) {
-				event.add((EntityType<? extends LivingEntity>) type, CAttributes.PHYSICAL_RESISTANCE);
-			}
-		});
-
-
 	}
 
 	@SubscribeEvent
