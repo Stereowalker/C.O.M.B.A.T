@@ -30,10 +30,12 @@ public class CDImensionRenderInfo {
 			super(100.0F, false, DimensionRenderInfo.FogType.NORMAL, false, true);
 		}
 
+		@Override
 		public Vector3d func_230494_a_(Vector3d p_230494_1_, float p_230494_2_) {
 			return p_230494_1_.mul((double)(p_230494_2_ * 0.94F + 0.06F), (double)(p_230494_2_ * 0.94F + 0.06F), (double)(p_230494_2_ * 0.91F + 0.09F));
 		}
 
+		@Override
 		public boolean func_230493_a_(int p_230493_1_, int p_230493_2_) {
 			return false;
 		}
