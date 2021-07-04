@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.stereowalker.combat.api.spell.Spell.CastType;
 import com.stereowalker.combat.entity.CombatEntityStats;
+import com.stereowalker.combat.spell.SpellStats;
 import com.stereowalker.combat.spell.Spells;
 import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.CGameRules;
@@ -27,7 +28,7 @@ public class SpellInstance {
 	private Vector3d location;
 	private Hand hand;
 	private UUID casterID;
-	
+
 	public SpellInstance(Spell spellIn, double strengthIn, Vector3d locationIn, Hand handIn, UUID casterIDIn) {
 		this.spell = spellIn;
 		this.strength = strengthIn;
@@ -35,37 +36,37 @@ public class SpellInstance {
 		this.hand = handIn;
 		this.casterID = casterIDIn;
 	}
-	
+
 	public SpellInstance(Spell spellIn) {
 		this(spellIn, 1.0D, Vector3d.ZERO, Hand.MAIN_HAND, UUIDS.EMPTY);
 	}
-	
+
 	public Spell getSpell() {
 		return spell != null ? spell : Spells.NONE;
 	}
-	
+
 	public double getStrength() {
 		return strength;
 	}
-	
+
 	public Vector3d getLocation() {
 		return location;
 	}
-	
+
 	public Hand getHand() {
 		if (hand == null)
 			hand = Hand.MAIN_HAND;
 		return hand;
 	}
-	
+
 	public BlockPos getBlockPosLocation() {
 		return new BlockPos(this.getLocation());
 	}
-	
+
 	public UUID getCasterID() {
 		return casterID;
 	}
-	
+
 	public CompoundNBT write(CompoundNBT nbt) {
 		nbt.putString("Spell", this.getSpell().getKey());
 		nbt.putDouble("Strength", this.getStrength());
@@ -74,25 +75,39 @@ public class SpellInstance {
 		nbt.putUniqueId("CasterID", this.getCasterID());
 		return nbt;
 	}
-	
+
 	public static SpellInstance read(CompoundNBT nbt) {
 		return new SpellInstance(SpellUtil.getSpellFromName(nbt.getString("Spell")), nbt.getDouble("Strength"), new Vector3d(nbt.getList("Location", 6).getDouble(0), nbt.getList("Location", 6).getDouble(1), nbt.getList("Location", 6).getDouble(2)), Hand.values()[nbt.getInt("Hand")], nbt.getUniqueId("CasterID"));
 	}
-	
+
 	public boolean executeSpell(LivingEntity caster) {
 		if (caster != null) {
-			if(this.getSpell().spellProgram(caster, this.getStrength(), this.getLocation(), this.getHand())) {
-				return true;
-			}
-			else{
-				if (caster.world.isRemote) {
-					if (this.getSpell().getFailedMessage(caster) != null) caster.sendMessage(this.getSpell().getFailedMessage(caster), Util.DUMMY_UUID);
+			if (this.getSpell().canBePrimed() && !CombatEntityStats.getSpellStats(caster, this.getSpell()).isPrimed()) {
+				if(this.getSpell().primingProgram(caster, this.getStrength(), this.getLocation(), this.getHand())) {
+					SpellStats.setSpellPrimed(caster, this.getSpell(), true);
+					return true;
 				}
-				return false;
+				else {
+					return false;
+				}
+			} 
+			else {
+				if(this.getSpell().spellProgram(caster, this.getStrength(), this.getLocation(), this.getHand())) {
+					if (this.getSpell().canBePrimed()) {
+						SpellStats.setSpellPrimed(caster, this.getSpell(), false);
+					}
+					return true;
+				}
+				else{
+					if (caster.world.isRemote) {
+						if (this.getSpell().getFailedMessage(caster) != null) caster.sendMessage(this.getSpell().getFailedMessage(caster), Util.DUMMY_UUID);
+					}
+					return false;
+				}
 			}
 		} else return false;
 	}
-	
+
 	public boolean executeExtensionSpell(LivingEntity caster, @Nullable Entity target) {
 		if (caster != null) {
 			if (this.getSpell() instanceof IExtensionSpell) {
@@ -104,14 +119,14 @@ public class SpellInstance {
 		}
 		return false;
 	}
-	
+
 	public boolean executeCommandSpell(LivingEntity caster) {
 		if (this.getSpell().getCastType() != CastType.RAY && !this.getSpell().isClientSpell()) {
 			return this.getSpell().spellProgram(caster, this.getStrength(), this.getLocation(), this.getHand());
 		}
 		return false;
 	}
-	
+
 	public boolean canTargetEntity(LivingEntity caster, Entity target) {
 		if (this.getSpell() instanceof TargetedSpell) {
 			TargetedSpell spell = (TargetedSpell) getSpell();
@@ -147,28 +162,28 @@ public class SpellInstance {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		String s;
-//	      if (this.amplifier > 0) {
-//	         s = this.getSpell().getDefaultTranslationKey() + " x " + (this.amplifier + 1) + ", Duration: " + this.duration;
-//	      } else {
-	         s = this.getSpell().getDefaultTranslationKey() + ", Strength: " + this.strength;
-//	      }
+		//	      if (this.amplifier > 0) {
+		//	         s = this.getSpell().getDefaultTranslationKey() + " x " + (this.amplifier + 1) + ", Duration: " + this.duration;
+		//	      } else {
+		s = this.getSpell().getDefaultTranslationKey() + ", Strength: " + this.strength;
+		//	      }
 
-//	      if (this.isSplashPotion) {
-//	         s = s + ", Splash: true";
-//	      }
-//
-//	      if (!this.showParticles) {
-//	         s = s + ", Particles: false";
-//	      }
-//
-//	      if (!this.showIcon) {
-//	         s = s + ", Show Icon: false";
-//	      }
+		//	      if (this.isSplashPotion) {
+		//	         s = s + ", Splash: true";
+		//	      }
+		//
+		//	      if (!this.showParticles) {
+		//	         s = s + ", Particles: false";
+		//	      }
+		//
+		//	      if (!this.showIcon) {
+		//	         s = s + ", Show Icon: false";
+		//	      }
 
-	      return s;
+		return s;
 	}
 }

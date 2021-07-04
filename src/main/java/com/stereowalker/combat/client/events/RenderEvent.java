@@ -411,6 +411,9 @@ public class RenderEvent {
 			if (playerentity.getHeldItemMainhand().getItem() instanceof AbstractMagicCastingItem) {
 				int time = playerentity.getActiveItemStack() != playerentity.getHeldItemMainhand() ? 0 : (playerentity.getHeldItemMainhand().getUseDuration() - playerentity.getItemInUseCount());
 				float q = (float)time/(float)cSpell.getCastTime();
+				if (CombatEntityStats.getSpellStats(playerentity, cSpell).isPrimed()) {
+					q = 1;
+				}
 				int tWidth = MathHelper.clamp((int) (q * 60),0,60);
 				startSection("spellLeft");
 				int i10 = (int) ((gui().scaledWidth/scale) - mc.fontRenderer.getStringPropertyWidth(s));

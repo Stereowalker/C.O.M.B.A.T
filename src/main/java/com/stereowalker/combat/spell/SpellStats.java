@@ -13,25 +13,28 @@ import net.minecraft.nbt.CompoundNBT;
 public class SpellStats {
 	private Spell spell;
 	private boolean isKnown;
+	private boolean isPrimed;
 	private int cooldown;
 	private int maxCooldown;
 	private int timesCast;
 	
-	public SpellStats (Spell spell, boolean isKnown, int cooldown, int maxCooldown, int timesCast) {
+	public SpellStats (Spell spell, boolean isKnown, boolean isPrimed, int cooldown, int maxCooldown, int timesCast) {
 		this.spell = spell;
 		this.cooldown = cooldown;
 		this.isKnown = isKnown;
+		this.isPrimed = isPrimed;;
 		this.maxCooldown = maxCooldown;
 		this.timesCast = timesCast;
 	}
 	
 	public static SpellStats read(CompoundNBT nbt) {
-		return new SpellStats(SpellUtil.getSpellFromNBT(nbt), nbt.getBoolean("IsKnown"), nbt.getInt("Cooldown"), nbt.getInt("MaxCooldown"), nbt.getInt("TimesCast"));
+		return new SpellStats(SpellUtil.getSpellFromNBT(nbt), nbt.getBoolean("IsKnown"), nbt.getBoolean("IsPrimed"), nbt.getInt("Cooldown"), nbt.getInt("MaxCooldown"), nbt.getInt("TimesCast"));
 	}
 	
 	public CompoundNBT write(CompoundNBT nbt) {
 		nbt.putString("Spell", spell.getKey());
 		nbt.putBoolean("IsKnown", isKnown);
+		nbt.putBoolean("IsPrimed", this.isPrimed);
 		nbt.putInt("Cooldown", cooldown);
 		nbt.putInt("MaxCooldown", maxCooldown);
 		nbt.putInt("TimesCast", timesCast);
@@ -44,6 +47,10 @@ public class SpellStats {
 
 	public boolean isKnown() {
 		return isKnown;
+	}
+
+	public boolean isPrimed() {
+		return isPrimed;
 	}
 
 	public int getCooldown() {
@@ -69,21 +76,27 @@ public class SpellStats {
 		return cooldown > 0;
 	}
 	
-	public static void setSpellStatus(LivingEntity entity, Spell spell, boolean known) {
+	public static void setSpellKnown(LivingEntity entity, Spell spell, boolean known) {
 		SpellStats current = CombatEntityStats.getSpellStats(entity, spell);
-		SpellStats updated = new SpellStats(spell, known, current.getCooldown(), current.getMaxCooldown(), current.getTimesCast());
+		SpellStats updated = new SpellStats(spell, known, current.isPrimed(), current.getCooldown(), current.getMaxCooldown(), current.getTimesCast());
+		CombatEntityStats.setSpellStats(entity, updated);
+	}
+	
+	public static void setSpellPrimed(LivingEntity entity, Spell spell, boolean primed) {
+		SpellStats current = CombatEntityStats.getSpellStats(entity, spell);
+		SpellStats updated = new SpellStats(spell, current.isKnown(), primed, current.getCooldown(), current.getMaxCooldown(), current.getTimesCast());
 		CombatEntityStats.setSpellStats(entity, updated);
 	}
 	
 	public static void setCooldown(LivingEntity entity, Spell spell, int cooldown, boolean preserveMax) {
 		SpellStats current = CombatEntityStats.getSpellStats(entity, spell);
-		SpellStats updated = new SpellStats(spell, current.isKnown(), cooldown, preserveMax?current.getMaxCooldown():cooldown, current.getTimesCast());
+		SpellStats updated = new SpellStats(spell, current.isKnown(), current.isPrimed(), cooldown, preserveMax?current.getMaxCooldown():cooldown, current.getTimesCast());
 		CombatEntityStats.setSpellStats(entity, updated);
 	}
 	
 	public static void addTimesCast(LivingEntity entity, Spell spell) {
 		SpellStats current = CombatEntityStats.getSpellStats(entity, spell);
-		SpellStats updated = new SpellStats(spell, current.isKnown(), current.getCooldown(), current.getMaxCooldown(), current.getTimesCast()+1);
+		SpellStats updated = new SpellStats(spell, current.isKnown(), current.isPrimed(), current.getCooldown(), current.getMaxCooldown(), current.getTimesCast()+1);
 		CombatEntityStats.setSpellStats(entity, updated);
 	}
 	

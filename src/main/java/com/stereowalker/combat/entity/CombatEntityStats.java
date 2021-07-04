@@ -82,7 +82,7 @@ public class CombatEntityStats {
 				}
 			}
 		}
-		return new SpellStats(spell, false, 0, 0, 0);
+		return new SpellStats(spell, false, false, 0, 0, 0);
 	}
 	
 	public static Map<Spell,SpellStats> getSpellStats(LivingEntity entity) {
@@ -420,7 +420,6 @@ public class CombatEntityStats {
 
 	public static void setHoldFlag(Entity entity, boolean hold) {
 		CompoundNBT compound = getModNBT(entity);
-		System.out.println("Hold = "+hold);
 		compound.putBoolean(holdFlagID, hold);
 	}
 
@@ -464,7 +463,7 @@ public class CombatEntityStats {
 					setLockedYaw(player, 0);
 				}
 				if (!compound.contains(spellStatsID)) {
-					setSpellStats(player, new SpellStats(Spells.NONE, false, 0, 0, 0));
+					setSpellStats(player, new SpellStats(Spells.NONE, false, false, 0, 0, 0));
 				}
 				if (!compound.contains(lockedPitchID)) {
 					setLockedPitch(player, 0);

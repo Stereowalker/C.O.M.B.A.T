@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.api.spell.SpellCategory;
 import com.stereowalker.combat.api.spell.EffectSpell;
 import com.stereowalker.combat.api.spell.Rank;
 import com.stereowalker.combat.api.spell.Spell;
 import com.stereowalker.combat.api.spell.Spell.CastType;
+import com.stereowalker.combat.api.spell.SpellCategory;
 import com.stereowalker.combat.entity.CEntityType;
 import com.stereowalker.combat.item.CItems;
 import com.stereowalker.combat.potion.CEffects;

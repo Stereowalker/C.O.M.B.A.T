@@ -375,14 +375,14 @@ public class SpellUtil {
 		AbstractMagicCastingItem stackItem = (AbstractMagicCastingItem) stack.getItem();
 		if (!caster.world.isRemote) {
 			if (!CombatEntityStats.getSpellStats(caster, spell).isKnown()) {
-				SpellStats.setSpellStatus(caster, spell, true);
+				SpellStats.setSpellKnown(caster, spell, true);
 			}
 			SpellStats.addTimesCast(caster, spell);
 			if (spell.getCategory() == SpellCategory.BLOOD) {
 				caster.attackEntityFrom(CDamageSource.BLOOD_MAGIC, getModifiedSpellCost(spell, stackItem.getCostModifier()));
 			}
 			else {
-				if(!((PlayerEntity)caster).abilities.isCreativeMode && stackItem.getTier() != Rank.GOD) {
+				if(!((PlayerEntity)caster).abilities.isCreativeMode && stackItem.getTier() != Rank.GOD && !CombatEntityStats.getSpellStats(caster, spell).isPrimed()) {
 					CombatEntityStats.addMana(caster, -getModifiedSpellCost(spell, stackItem.getCostModifier()));
 					if (!CEnchantmentHelper.hasNoCooldown(stack)) {
 						int lvl = CEnchantmentHelper.getCooldownReductionModifier(stack);

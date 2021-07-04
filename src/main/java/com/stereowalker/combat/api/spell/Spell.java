@@ -114,7 +114,14 @@ public abstract class Spell extends ForgeRegistryEntry<Spell>{
 	public boolean isHeld() {
 		return false;
 	}
+	
+	public boolean canBePrimed() {
+		return false;
+	}
 
+	public boolean primingProgram(LivingEntity caster, double strength, Vector3d location, Hand hand) {
+		return true;
+	}
 	public abstract boolean spellProgram(LivingEntity caster, double strength, Vector3d location, Hand hand);
 
 	public ITextComponent getFailedMessage(LivingEntity caster) {

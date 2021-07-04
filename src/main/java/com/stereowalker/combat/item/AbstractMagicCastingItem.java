@@ -157,7 +157,7 @@ public abstract class AbstractMagicCastingItem extends Item implements IVanishab
 			Spell currentSpell = AbstractSpellBookItem.getMainSpellBookItem(playerIn).getCurrentSpell(book);
 			int i = this.getUseDuration(stack) - timeLeft;
 			//			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, playerIn, i, !itemstack.isEmpty() || flag);
-			if (i < currentSpell.getCastTime()) return;
+			if (i < currentSpell.getCastTime() && !CombatEntityStats.getSpellStats(playerIn, currentSpell).isPrimed()) return;
 
 			if (!book.isEmpty() && !currentSpell.isHeld())
 			{
