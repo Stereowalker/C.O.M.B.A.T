@@ -1,6 +1,0 @@
-{
-    "parent": "combat:block/vertical_slab_south",
-    "textures": {
-        "texture": "combat:block/dead_oak_planks"
-    }
-}

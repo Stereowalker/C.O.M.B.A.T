@@ -44,8 +44,5 @@ public abstract class BipedArmorLayerMixin<T extends LivingEntity, M extends Bip
 	}
 
 	@Shadow
-	protected void setModelSlotVisible(A modelIn, EquipmentSlotType slotIn) {}
-
-	@Shadow
 	private boolean isLegSlot(EquipmentSlotType slotIn) {return false;}
 }

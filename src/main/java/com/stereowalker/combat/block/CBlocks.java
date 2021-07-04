@@ -95,7 +95,6 @@ public class CBlocks {
 	public static final Block AUSLDINE_SLAB = register("ausldine_slab", CItemGroup.BUILDING_BLOCKS, new SlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.CYAN_TERRACOTTA).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_STAIRS = register("ausldine_stairs", CItemGroup.BUILDING_BLOCKS, new StairsBlock(() -> CBlocks.AUSLDINE_PLANKS.getDefaultState(), Block.Properties.from(CBlocks.AUSLDINE_PLANKS)));
 	public static final Block AUSLDINE_TRAPDOOR = register("ausldine_trapdoor", CItemGroup.MISC, new TrapDoorBlock(Block.Properties.create(Material.WOOD, MaterialColor.CYAN_TERRACOTTA).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
-	public static final Block AUSLDINE_VERTICAL_SLAB = register("ausldine_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_WALL_SIGN = register("ausldine_wall_sign", new CWallSignBlock(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD).lootFrom(() -> AUSLDINE_SIGN), CWoodType.AUSLDINE));
 	public static final Block AUSLDINE_WOOD = register("ausldine_wood", CItemGroup.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.CYAN_TERRACOTTA).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final Block STRIPPED_AUSLDINE_LOG = register("stripped_ausldine_log", CItemGroup.BUILDING_BLOCKS, createLogBlock(MaterialColor.CYAN_TERRACOTTA, MaterialColor.CYAN_TERRACOTTA));
@@ -115,7 +114,6 @@ public class CBlocks {
 	public static final Block DEAD_OAK_SLAB = register("dead_oak_slab", CItemGroup.BUILDING_BLOCKS, new SlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.CYAN_TERRACOTTA).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block DEAD_OAK_STAIRS = register("dead_oak_stairs", CItemGroup.BUILDING_BLOCKS, new StairsBlock(() -> CBlocks.DEAD_OAK_PLANKS.getDefaultState(), Block.Properties.from(CBlocks.DEAD_OAK_PLANKS)));
 	public static final Block DEAD_OAK_TRAPDOOR = register("dead_oak_trapdoor", CItemGroup.MISC, new TrapDoorBlock(Block.Properties.create(Material.WOOD, MaterialColor.BLACK).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
-	public static final Block DEAD_OAK_VERTICAL_SLAB = register("dead_oak_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block DEAD_OAK_WALL_SIGN = register("dead_oak_wall_sign", new CWallSignBlock(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD).lootFrom(() -> DEAD_OAK_SIGN), CWoodType.DEAD_OAK));
 	public static final Block DEAD_OAK_WOOD = register("dead_oak_wood", CItemGroup.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.BLACK).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final Block STRIPPED_DEAD_OAK_LOG = register("stripped_dead_oak_log", CItemGroup.BUILDING_BLOCKS, createLogBlock(MaterialColor.BLACK, MaterialColor.BLACK));
@@ -133,7 +131,6 @@ public class CBlocks {
 	public static final Block MONORIS_SAPLING = register("monoris_sapling", CItemGroup.MISC, new AcrotlestSaplingBlock(new MonorisTree(), Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().zeroHardnessAndResistance().sound(SoundType.PLANT)));
 	public static final Block MONORIS_SLAB = register("monoris_slab", CItemGroup.BUILDING_BLOCKS, new SlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.SNOW).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block MONORIS_STAIRS = register("monoris_stairs", CItemGroup.BUILDING_BLOCKS, new StairsBlock(() -> CBlocks.MONORIS_PLANKS.getDefaultState(), Block.Properties.from(CBlocks.MONORIS_PLANKS)));
-	public static final Block MONORIS_VERTICAL_SLAB = register("monoris_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block MONORIS_WOOD = register("monoris_wood", CItemGroup.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.SNOW).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final Block STRIPPED_MONORIS_LOG = register("stripped_monoris_log", CItemGroup.BUILDING_BLOCKS, createLogBlock(MaterialColor.SNOW, MaterialColor.SNOW));
 	public static final Block STRIPPED_MONORIS_WOOD = register("stripped_monoris_wood", CItemGroup.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.SNOW).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
@@ -147,80 +144,61 @@ public class CBlocks {
 	//Minecraft Wood
 	//Oak
 	public static final Block OAK_BEAM = register("oak_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block OAK_VERTICAL_SLAB = register("oak_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block OAK_PODIUM = register("oak_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Spruce
 	public static final Block SPRUCE_BEAM = register("spruce_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block SPRUCE_VERTICAL_SLAB = register("spruce_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block SPRUCE_PODIUM = register("spruce_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Birch
 	public static final Block BIRCH_BEAM = register("birch_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block BIRCH_VERTICAL_SLAB = register("birch_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block BIRCH_PODIUM = register("birch_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Jungle
 	public static final Block JUNGLE_BEAM = register("jungle_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block JUNGLE_VERTICAL_SLAB = register("jungle_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block JUNGLE_PODIUM = register("jungle_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Acacia
 	public static final Block ACACIA_BEAM = register("acacia_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block ACACIA_VERTICAL_SLAB = register("acacia_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block ACACIA_PODIUM = register("acacia_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Dark Oak
 	public static final Block DARK_OAK_BEAM = register("dark_oak_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block DARK_OAK_VERTICAL_SLAB = register("dark_oak_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block DARK_OAK_PODIUM = register("dark_oak_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Crimson
 	public static final Block CRIMSON_BEAM = register("crimson_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block CRIMSON_VERTICAL_SLAB = register("crimson_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block CRIMSON_PODIUM = register("crimson_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Warped
 	public static final Block WARPED_BEAM = register("warped_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block WARPED_VERTICAL_SLAB = register("warped_vertical_slab", CItemGroup.BUILDING_BLOCKS, new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block WARPED_PODIUM = register("warped_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//BOP Wood
 	//Fir
 	public static final Block FIR_BEAM = registerModded(Combat.isBOPLoaded(true), "fir_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block FIR_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "fir_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block FIR_PODIUM = registerModded(Combat.isBOPLoaded(true), "fir_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Redwood
 	public static final Block REDWOOD_BEAM = registerModded(Combat.isBOPLoaded(true), "redwood_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block REDWOOD_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "redwood_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block REDWOOD_PODIUM = registerModded(Combat.isBOPLoaded(true), "redwood_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Cherry
 	public static final Block CHERRY_BEAM = registerModded(Combat.isBOPLoaded(true), "cherry_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block CHERRY_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "cherry_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block CHERRY_PODIUM = registerModded(Combat.isBOPLoaded(true), "cherry_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Mahogany
 	public static final Block MAHOGANY_BEAM = registerModded(Combat.isBOPLoaded(true), "mahogany_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block MAHOGANY_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "mahogany_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block MAHOGANY_PODIUM = registerModded(Combat.isBOPLoaded(true), "mahogany_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Jacaranda
 	public static final Block JACARANDA_BEAM = registerModded(Combat.isBOPLoaded(true), "jacaranda_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block JACARANDA_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "jacaranda_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block JACARANDA_PODIUM = registerModded(Combat.isBOPLoaded(true), "jacaranda_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Palm
 	public static final Block PALM_BEAM = registerModded(Combat.isBOPLoaded(true), "palm_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block PALM_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "palm_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block PALM_PODIUM = registerModded(Combat.isBOPLoaded(true), "palm_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Willow
 	public static final Block WILLOW_BEAM = registerModded(Combat.isBOPLoaded(true), "willow_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block WILLOW_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "willow_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block WILLOW_PODIUM = registerModded(Combat.isBOPLoaded(true), "willow_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Dead
 	public static final Block DEAD_BEAM = registerModded(Combat.isBOPLoaded(true), "dead_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block DEAD_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "dead_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block DEAD_PODIUM = registerModded(Combat.isBOPLoaded(true), "dead_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Magic
 	public static final Block MAGIC_BEAM = registerModded(Combat.isBOPLoaded(true), "magic_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block MAGIC_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "magic_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block MAGIC_PODIUM = registerModded(Combat.isBOPLoaded(true), "magic_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Umbran
 	public static final Block UMBRAN_BEAM = registerModded(Combat.isBOPLoaded(true), "umbran_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block UMBRAN_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "umbran_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block UMBRAN_PODIUM = registerModded(Combat.isBOPLoaded(true), "umbran_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 	//Hellbark
 	public static final Block HELLBARK_BEAM = registerModded(Combat.isBOPLoaded(true), "hellbark_beam", new BeamBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(1.0F, 2.0F)));
-	public static final Block HELLBARK_VERTICAL_SLAB = registerModded(Combat.isBOPLoaded(true), "hellbark_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.WOOD)));
 	public static final Block HELLBARK_PODIUM = registerModded(Combat.isBOPLoaded(true), "hellbark_podium", new PodiumBlock(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD).notSolid()));
 
 	//-Crops-\\

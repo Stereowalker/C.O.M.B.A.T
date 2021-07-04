@@ -1,6 +1,0 @@
-{
-    "parent": "combat:block/vertical_slab_east",
-    "textures": {
-        "texture": "biomesoplenty:block/dead_planks"
-    }
-}

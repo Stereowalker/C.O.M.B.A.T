@@ -139,17 +139,6 @@ public class CItems {
 	public static final Item UMBRAN_BEAM = registerBOP(CBlocks.UMBRAN_BEAM, CItemGroup.BUILDING_BLOCKS);
 	public static final Item HELLBARK_BEAM = registerBOP(CBlocks.HELLBARK_BEAM, CItemGroup.BUILDING_BLOCKS);
 
-	public static final Item FIR_VERTICAL_SLAB = registerBOP(CBlocks.FIR_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item REDWOOD_VERTICAL_SLAB = registerBOP(CBlocks.REDWOOD_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item CHERRY_VERTICAL_SLAB = registerBOP(CBlocks.CHERRY_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item MAHOGANY_VERTICAL_SLAB = registerBOP(CBlocks.MAHOGANY_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item JACARANDA_VERTICAL_SLAB = registerBOP(CBlocks.JACARANDA_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item PALM_VERTICAL_SLAB = registerBOP(CBlocks.PALM_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item WILLOW_VERTICAL_SLAB = registerBOP(CBlocks.WILLOW_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item DEAD_VERTICAL_SLAB = registerBOP(CBlocks.DEAD_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item MAGIC_VERTICAL_SLAB = registerBOP(CBlocks.MAGIC_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item UMBRAN_VERTICAL_SLAB = registerBOP(CBlocks.UMBRAN_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
-	public static final Item HELLBARK_VERTICAL_SLAB = registerBOP(CBlocks.HELLBARK_VERTICAL_SLAB, CItemGroup.BUILDING_BLOCKS);
 	//Tech
 	public static final Item LIGHT_SABER = register("light_saber", new LightSaberItem(7, 3.0F, new Item.Properties().group(CItemGroup.TECHNOLOGY).maxDamage(500)));
 
