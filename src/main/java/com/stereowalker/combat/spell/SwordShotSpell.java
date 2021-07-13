@@ -23,7 +23,6 @@ public class SwordShotSpell extends Spell {
 	@Override
 	public boolean primingProgram(LivingEntity caster, double strength, Vector3d location, Hand hand) {
 		if (!caster.world.isRemote) {
-			System.out.println("PRIMED");
 			ProjectileSwordEntity proj = new ProjectileSwordEntity(caster.world, caster.getPosX() + 1, caster.getPosY() + 4, caster.getPosZ());
 			proj.setShooter(caster);
 			proj.setNoGravity(true);

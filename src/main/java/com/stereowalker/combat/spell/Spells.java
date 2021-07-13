@@ -83,21 +83,23 @@ public class Spells {
 //----------------------------------------[Earth]----------------------------------------\\
 	//Basic
 	public static final Spell ROCK_SHOT = register("rock_shot", new BoltSpell(SpellCategory.EARTH, Rank.BASIC, 2.5F, 0));
+	public static final Spell REFORGE_STONE = register("reforge_stone", new ReforgeSpell(Rank.BASIC, 2.5F, 0, 20));
+	public static final Spell STONE_SWORD_SHOT = register("stone_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.BASIC, CastType.SELF, 36.0F, 150, 20, Items.STONE_SWORD));
 	//Novice
 	public static final Spell SMALL_METEOR = register("small_meteor", new MeteorSpell(Rank.NOVICE, 2.5F, 0, 20));
-	public static final Spell REFORGE_STONE = register("reforge_stone", new ReforgeSpell(Rank.NOVICE, 2.5F, 0, 20));
-	public static final Spell STONE_SWORD_SHOT = register("stone_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.NOVICE, CastType.SELF, 38.0F, 150, 20, Items.STONE_SWORD));
+	public static final Spell REFORGE_GOLD = register("reforge_gold", new ReforgeSpell(Rank.NOVICE, 5.0F, 0, 20));
+	public static final Spell GOLD_SWORD_SHOT = register("gold_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.NOVICE, CastType.SELF, 36.0F*2, 150, 20, Items.GOLDEN_SWORD));
 	//Apprentice
 	public static final Spell METEOR = register("meteor", new MeteorSpell(Rank.APPRENTICE, 5.0F, 0, 20));
-	public static final Spell REFORGE_GOLD = register("reforge_gold", new ReforgeSpell(Rank.APPRENTICE, 5.0F, 0, 20));
-	public static final Spell GOLD_SWORD_SHOT = register("gold_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.APPRENTICE, CastType.SELF, 38.0F*2, 150, 20, Items.GOLDEN_SWORD));
+	public static final Spell REFORGE_IRON = register("reforge_iron", new ReforgeSpell(Rank.APPRENTICE, 10.0F, 0, 20));
+	public static final Spell IRON_SWORD_SHOT = register("iron_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.APPRENTICE, CastType.SELF, 36.0F*4, 150, 20, Items.IRON_SWORD));
 	//Advanced
 	public static final Spell LARGE_METEOR = register("large_meteor", new MeteorSpell(Rank.ADVANCED, 10.0F, 0, 20));
-	public static final Spell REFORGE_IRON = register("reforge_iron", new ReforgeSpell(Rank.ADVANCED, 10.0F, 0, 20));
-	public static final Spell IRON_SWORD_SHOT = register("iron_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.ADVANCED, CastType.SELF, 38.0F*4, 150, 20, Items.IRON_SWORD));
+	public static final Spell REFORGE_DIAMOND = register("reforge_diamond", new ReforgeSpell(Rank.ADVANCED, 20.0F, 0, 20));
+	public static final Spell DIAMOND_SWORD_SHOT = register("diamond_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.ADVANCED, CastType.SELF, 36.0F*8, 150, 20, Items.DIAMOND_SWORD));
 	//Master
-	public static final Spell REFORGE_DIAMOND = register("reforge_diamond", new ReforgeSpell(Rank.MASTER, 20.0F, 0, 20));
-	public static final Spell DIAMOND_SWORD_SHOT = register("diamond_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.MASTER, CastType.SELF, 38.0F*8, 150, 20, Items.DIAMOND_SWORD));
+	public static final Spell REFORGE_NETHERITE = register("reforge_netherite", new ReforgeSpell(Rank.MASTER, 40.0F, 0, 20));
+	public static final Spell NETHERITE_SWORD_SHOT = register("netherite_sword_shot", new SwordShotSpell(SpellCategory.EARTH, Rank.MASTER, CastType.SELF, 36.0F*16, 150, 20, Items.NETHERITE_SWORD));
 	//God
 	public static final Spell METEOR_SHOWER = register("meteor_shower", new MeteorSpell(Rank.GOD, 40.0F, 150, 20));
 //----------------------------------------[Wind]----------------------------------------\\

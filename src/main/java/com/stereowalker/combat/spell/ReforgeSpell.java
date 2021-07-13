@@ -70,13 +70,26 @@ public class ReforgeSpell extends Spell {
 				stack.getItem()  == CItems.DIAMOND_CHAKRAM;
 	};
 
+	public static final Predicate<Item> NETHERITE = (stack) -> {
+		return stack.getItem() == Items.NETHERITE_SWORD || 
+				stack.getItem()  == Items.NETHERITE_PICKAXE || 
+				stack.getItem()  == Items.NETHERITE_HOE || 
+				stack.getItem()  == Items.NETHERITE_SHOVEL || 
+				stack.getItem()  == Items.NETHERITE_AXE || 
+//				stack.getItem()  == CItems.NETHERITE_HAMMER || 
+				stack.getItem()  == CItems.NETHERITE_KATANA || 
+				stack.getItem()  == CItems.NETHERITE_DAGGER;
+//				stack.getItem()  == CItems.NETHERITE_CHAKRAM;
+	};
+
 	@Override
 	public boolean spellProgram(LivingEntity caster, double strength, Vector3d location, Hand hand) {
 		//TODO: Use Configs to specify stone, wood, gold and diamond items
-		if (this.getRank() == Rank.NOVICE && STONE.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
-		if (this.getRank() == Rank.APPRENTICE && GOLDEN.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
-		if (this.getRank() == Rank.ADVANCED && IRON.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
-		if (this.getRank() == Rank.MASTER && DIAMOND.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
+		if (this.getRank() == Rank.BASIC && STONE.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
+		if (this.getRank() == Rank.NOVICE && GOLDEN.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
+		if (this.getRank() == Rank.APPRENTICE && IRON.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
+		if (this.getRank() == Rank.ADVANCED && DIAMOND.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
+		if (this.getRank() == Rank.MASTER && NETHERITE.test(caster.getHeldItemOffhand().getItem())) return reforge(caster, strength);
 		return false;
 	}
 
@@ -88,10 +101,11 @@ public class ReforgeSpell extends Spell {
 	@Override
 	public ITextComponent getFailedMessage(LivingEntity caster) {
 		String message = "";
-		if (this.getRank() == Rank.NOVICE && !STONE.test(caster.getHeldItemOffhand().getItem())) message = "No Stone Tool In Offhand";
-		if (this.getRank() == Rank.APPRENTICE && !GOLDEN.test(caster.getHeldItemOffhand().getItem())) message = "No Golden Tool In Offhand";
-		if (this.getRank() == Rank.ADVANCED && !IRON.test(caster.getHeldItemOffhand().getItem())) message = "No Iron Tool In Offhand";
-		if (this.getRank() == Rank.MASTER && !DIAMOND.test(caster.getHeldItemOffhand().getItem())) message = "No Diamond Tool In Offhand";
+		if (this.getRank() == Rank.BASIC && STONE.test(caster.getHeldItemOffhand().getItem())) message = "No Stone Tool In Offhand";
+		if (this.getRank() == Rank.NOVICE && GOLDEN.test(caster.getHeldItemOffhand().getItem())) message = "No Golden Tool In Offhand";
+		if (this.getRank() == Rank.APPRENTICE && IRON.test(caster.getHeldItemOffhand().getItem())) message = "No Iron Tool In Offhand";
+		if (this.getRank() == Rank.ADVANCED && DIAMOND.test(caster.getHeldItemOffhand().getItem())) message = "No Diamond Tool In Offhand";
+		if (this.getRank() == Rank.MASTER && NETHERITE.test(caster.getHeldItemOffhand().getItem())) message = "No Netherite Tool In Offhand";
 		return new TranslationTextComponent(message);
 	}
 
