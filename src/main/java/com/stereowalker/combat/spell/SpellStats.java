@@ -105,4 +105,8 @@ public class SpellStats {
 				|| (player != null && player.isCreative()) 
 				|| !Config.MAGIC_COMMON.enableSpellKnowledge.get();
 	}
+	
+	public static boolean getSpellPrimed(PlayerEntity player, Spell spell) {
+		return CombatEntityStats.getSpellStats(player, spell).isPrimed();
+	}
 }

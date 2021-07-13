@@ -75,7 +75,7 @@ public abstract class AbstractThrowableItemEntity extends CustomArrowEntity {
 			this.dealtDamage = true;
 		}
 
-		Entity entity = this./*getShooter*/getShooter();
+		Entity entity = this.getShooter();
 		if ((this.dealtDamage || this.getNoClip()) && entity != null) {
 			int i = this.dataManager.get(BOOMERANG_LEVEL) > boomerangAlternative(entity) ? this.dataManager.get(BOOMERANG_LEVEL) : boomerangAlternative(entity);
 			if (i > 0 && !this.shouldReturnToThrower()) {

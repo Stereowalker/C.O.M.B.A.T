@@ -1095,6 +1095,8 @@
 	"spell.combat.ignite.desc": "Set fire to the selected block",
 	"spell.combat.air_bullet": "Air Bullet",
 	"spell.combat.air_bullet.desc": "Fires compressed air at your enemies",
+	"spell.combat.stone_sword_shot": "Stone Sword Shot",
+	"spell.combat.stone_sword_shot.desc": "Create and fire stone swords as projectiles at your enemies",
 ///////////////////////////////////////////////////////////[DEATH_MESSAGES]///////////////////////////////////////////////////////////
 	"death.attack.staked": "%1$s was staked by %2$s",
 	"death.attack.staked.item": "%1$s was staked by %2$s with %3$s",

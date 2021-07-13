@@ -24,6 +24,7 @@ import com.stereowalker.combat.entity.projectile.GoldenArrowEntity;
 import com.stereowalker.combat.entity.projectile.IronArrowEntity;
 import com.stereowalker.combat.entity.projectile.MjolnirLightningEntity;
 import com.stereowalker.combat.entity.projectile.ObsidianArrowEntity;
+import com.stereowalker.combat.entity.projectile.ProjectileSwordEntity;
 import com.stereowalker.combat.entity.projectile.QuartzArrowEntity;
 import com.stereowalker.combat.entity.projectile.ShurikenEntity;
 import com.stereowalker.combat.entity.projectile.SoulArrowEntity;
@@ -171,6 +172,14 @@ public class EntityRendererHandler
 			public EntityRenderer<? super MjolnirLightningEntity> createRenderFor(EntityRendererManager manager) 
 			{
 				return new MjolnirLightningRenderer(manager);
+			}
+		});
+		RenderingRegistry.registerEntityRenderingHandler(CEntityType.PROJECTILE_SWORD, new IRenderFactory<ProjectileSwordEntity>()
+		{
+			@Override
+			public EntityRenderer<? super ProjectileSwordEntity> createRenderFor(EntityRendererManager manager) 
+			{
+				return new ProjectileSwordRenderer(manager);
 			}
 		});
 		RenderingRegistry.registerEntityRenderingHandler(CEntityType.BIOG, new IRenderFactory<BiogEntity>()

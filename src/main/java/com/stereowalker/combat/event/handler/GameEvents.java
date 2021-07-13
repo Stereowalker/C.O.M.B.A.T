@@ -29,6 +29,7 @@ import com.stereowalker.combat.item.LongbowItem;
 import com.stereowalker.combat.item.ScytheItem;
 import com.stereowalker.combat.item.SoulBowItem;
 import com.stereowalker.combat.item.SpearItem;
+import com.stereowalker.combat.network.client.play.CClientMotionPacket;
 import com.stereowalker.combat.network.server.SPlayerStatsPacket;
 import com.stereowalker.combat.potion.CEffects;
 import com.stereowalker.combat.tags.CEntityTypeTags;
@@ -251,6 +252,7 @@ public class GameEvents {
 	@SubscribeEvent
 	public static void livingUpdateOnClient(LivingUpdateEvent event) {
 		if (event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ClientPlayerEntity) {
+			new CClientMotionPacket(event.getEntityLiving().getMotion()).send();
 		}
 	}
 

@@ -27,6 +27,7 @@ import com.stereowalker.combat.entity.projectile.GoldenArrowEntity;
 import com.stereowalker.combat.entity.projectile.IronArrowEntity;
 import com.stereowalker.combat.entity.projectile.MjolnirLightningEntity;
 import com.stereowalker.combat.entity.projectile.ObsidianArrowEntity;
+import com.stereowalker.combat.entity.projectile.ProjectileSwordEntity;
 import com.stereowalker.combat.entity.projectile.QuartzArrowEntity;
 import com.stereowalker.combat.entity.projectile.ShurikenEntity;
 import com.stereowalker.combat.entity.projectile.SoulArrowEntity;
@@ -52,6 +53,7 @@ public class CEntityType extends net.minecraftforge.registries.ForgeRegistryEntr
 	public static final EntityType<ArchArrowEntity> ARCH_ARROW = register("arch_arrow", EntityType.Builder.<ArchArrowEntity>create(ArchArrowEntity::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory((spawnEntity, world) -> CEntityType.ARCH_ARROW.create(world)));
 	public static final EntityType<BoatModEntity> BOAT = register("boat_mod", EntityType.Builder.<BoatModEntity>create(BoatModEntity::new, EntityClassification.MISC).size(1.375F, 0.5625F).setCustomClientFactory((spawnEntity, world) -> CEntityType.BOAT.create(world)));
 	public static final EntityType<MjolnirLightningEntity> MJOLNIR_LIGHTNING = register("mjolnir_lightning", EntityType.Builder.<MjolnirLightningEntity>create(MjolnirLightningEntity::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory((spawnEntity, world) -> CEntityType.MJOLNIR_LIGHTNING.create(world)));
+	public static final EntityType<ProjectileSwordEntity> PROJECTILE_SWORD = register("projectile_sword", EntityType.Builder.<ProjectileSwordEntity>create(ProjectileSwordEntity::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory((spawnEntity, world) -> CEntityType.PROJECTILE_SWORD.create(world)));
 	public static final EntityType<SpearEntity> SPEAR = register("spear", EntityType.Builder.<SpearEntity>create(SpearEntity::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory((spawnEntity, world) -> CEntityType.SPEAR.create(world)));
 	public static final EntityType<MeteorEntity> METEOR = register("meteor", EntityType.Builder.<MeteorEntity>create(MeteorEntity::new, EntityClassification.MISC).size(1.0F, 1.0F).setCustomClientFactory((spawnEntity, world) -> CEntityType.METEOR.create(world)));
 	public static final EntityType<TrapSpellCircleEntity> TRAP_SPELL_CIRCLE = register("trap_spell_circle", EntityType.Builder.<TrapSpellCircleEntity>create(TrapSpellCircleEntity::new, EntityClassification.MISC).size(3.0F, 0.05F).setCustomClientFactory((spawnEntity, world) -> CEntityType.TRAP_SPELL_CIRCLE.create(world)));

@@ -77,7 +77,11 @@ public class SpellInstance {
 	}
 
 	public static SpellInstance read(CompoundNBT nbt) {
-		return new SpellInstance(SpellUtil.getSpellFromName(nbt.getString("Spell")), nbt.getDouble("Strength"), new Vector3d(nbt.getList("Location", 6).getDouble(0), nbt.getList("Location", 6).getDouble(1), nbt.getList("Location", 6).getDouble(2)), Hand.values()[nbt.getInt("Hand")], nbt.getUniqueId("CasterID"));
+		UUID casterID = null;
+		if (nbt.hasUniqueId("CasterID")) {
+			casterID = nbt.getUniqueId("CasterID");
+		}
+		return new SpellInstance(SpellUtil.getSpellFromName(nbt.getString("Spell")), nbt.getDouble("Strength"), new Vector3d(nbt.getList("Location", 6).getDouble(0), nbt.getList("Location", 6).getDouble(1), nbt.getList("Location", 6).getDouble(2)), Hand.values()[nbt.getInt("Hand")], casterID);
 	}
 
 	public boolean executeSpell(LivingEntity caster) {

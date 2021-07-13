@@ -2,6 +2,8 @@ package com.stereowalker.combat.util;
 
 import javax.annotation.Nullable;
 
+import com.stereowalker.combat.entity.projectile.AbstractMagicProjectileEntity;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
@@ -55,6 +57,13 @@ public class CDamageSource extends DamageSource {
 
 	public static DamageSource causeSpearDamage(Entity source, @Nullable Entity indirectEntityIn) {
 		return (new IndirectEntityDamageSource("spear", source, indirectEntityIn)).setProjectile();
+	}
+
+	/**
+	 * returns EntityDamageSourceIndirect of an arrow
+	 */
+	public static DamageSource causeMagicProjectileDamage(AbstractMagicProjectileEntity arrow, @Nullable Entity indirectEntityIn) {
+		return (new IndirectEntityDamageSource("magic_projectile", arrow, indirectEntityIn)).setProjectile();
 	}
 
 	/**

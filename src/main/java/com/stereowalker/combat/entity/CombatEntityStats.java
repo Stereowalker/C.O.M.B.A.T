@@ -11,8 +11,8 @@ import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.api.spell.Spell;
 import com.stereowalker.combat.api.spell.SpellCategory;
 import com.stereowalker.combat.api.spell.SpellCategory.ClassType;
-import com.stereowalker.combat.config.Config;
 import com.stereowalker.combat.api.spell.SpellUtil;
+import com.stereowalker.combat.config.Config;
 import com.stereowalker.combat.entity.AbominationEnums.AbominationType;
 import com.stereowalker.combat.entity.ai.CAttributes;
 import com.stereowalker.combat.network.server.SAbominationPacket;
@@ -35,6 +35,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.NetworkDirection;
 
@@ -67,6 +68,7 @@ public class CombatEntityStats {
 	public static String lockedPitchID = "lockedPitch";
 	
 	public static String resistID = "Resist";
+	public static String motionID = "Motion";
 	
 	public static String holdFlagID = "HoldFlag";
 	
@@ -304,6 +306,17 @@ public class CombatEntityStats {
 		return 0;
 	}
 
+	public static Vector3d getClientMotion(Entity entity) {
+		if(entity != null) {
+			CompoundNBT compound = getModNBT((LivingEntity) entity);
+			ListNBT listnbt = compound.getList(motionID, 6);
+			if (compound != null && compound.contains(motionID)) {
+				return new Vector3d(listnbt.getDouble(0), listnbt.getDouble(1), listnbt.getDouble(2));
+			}
+		}
+		return Vector3d.ZERO;
+	}
+
 	//--Setters--\\
 	
 	public static void setSpellStats(LivingEntity entity, SpellStats spellStats) {
@@ -423,6 +436,11 @@ public class CombatEntityStats {
 		compound.putBoolean(holdFlagID, hold);
 	}
 
+	public static void setClientMotion(LivingEntity entity, Vector3d pos) {
+		CompoundNBT compound = getModNBT(entity);
+		compound.put(motionID, NBTHelper.newDoubleNBTList(pos.getX(), pos.getY(), pos.getZ()));
+	}
+
 	//Adders
 
 	public static boolean addMana(LivingEntity entity, float mana) {
@@ -489,6 +507,9 @@ public class CombatEntityStats {
 				}
 				if (!compound.contains(etherionTowerPositionID)) {
 					setNearestEtherionTowerPos(player, BlockPos.ZERO);
+				}
+				if (!compound.contains(motionID)) {
+					setClientMotion(player, Vector3d.ZERO);
 				}
 				if (!compound.contains(inAcrotlestPortalID)) {
 					setInAcrotlestPortal(player, false);

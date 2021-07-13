@@ -19,6 +19,7 @@ import com.stereowalker.combat.fluid.CFluids;
 import com.stereowalker.combat.item.CItemModelsProperties;
 import com.stereowalker.combat.loot.functions.CLootFunctionManager;
 import com.stereowalker.combat.network.client.play.CBackItemPacket;
+import com.stereowalker.combat.network.client.play.CClientMotionPacket;
 import com.stereowalker.combat.network.client.play.CGunPacket;
 import com.stereowalker.combat.network.client.play.CHeldItemStackNBTPacket;
 import com.stereowalker.combat.network.client.play.CMageSetupPacket;
@@ -125,6 +126,7 @@ public class Combat extends UnionMod
 		PacketRegistry.registerMessage(channel, netID++, CSetLimiterPacket.class, (packetBuffer) -> {return new CSetLimiterPacket(packetBuffer);});
 		PacketRegistry.registerMessage(channel, netID++, CStoreItemPacket.class, (packetBuffer) -> {return new CStoreItemPacket(packetBuffer);});
 		PacketRegistry.registerMessage(channel, netID++, CPronePacket.class, (packetBuffer) -> {return new CPronePacket(packetBuffer);});
+		PacketRegistry.registerMessage(channel, netID++, CClientMotionPacket.class, (packetBuffer) -> {return new CClientMotionPacket(packetBuffer);});
 		channel.registerMessage(netID++, CHeldItemStackNBTPacket.class, CHeldItemStackNBTPacket::encode, CHeldItemStackNBTPacket::decode, CHeldItemStackNBTPacket::handle);
 		channel.registerMessage(netID++, CRequestStatsPacket.class, CRequestStatsPacket::encode, CRequestStatsPacket::decode, CRequestStatsPacket::handle);
 		channel.registerMessage(netID++, CSpellbookNBTPacket.class, CSpellbookNBTPacket::encode, CSpellbookNBTPacket::decode, CSpellbookNBTPacket::handle);
