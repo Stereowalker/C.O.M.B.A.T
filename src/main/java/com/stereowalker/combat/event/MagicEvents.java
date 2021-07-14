@@ -59,7 +59,6 @@ public class MagicEvents {
 						else multiplier = 0.1D;
 						if (!player.getFoodStats().needFood()) multiplier*=5.0D;
 						float mana = (float) (multiplier*player.getAttributeValue(CAttributes.MANA_REGENERATION));
-						System.out.println("Mana "+mana+" "+multiplier);
 						CombatEntityStats.addMana(entity, mana);
 					}
 				}

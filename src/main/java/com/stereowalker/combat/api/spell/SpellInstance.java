@@ -126,7 +126,22 @@ public class SpellInstance {
 
 	public boolean executeCommandSpell(LivingEntity caster) {
 		if (this.getSpell().getCastType() != CastType.RAY && !this.getSpell().isClientSpell()) {
-			return this.getSpell().spellProgram(caster, this.getStrength(), this.getLocation(), this.getHand());
+			if (this.getSpell().canBePrimed() && !CombatEntityStats.getSpellStats(caster, this.getSpell()).isPrimed()) {
+				if(this.getSpell().primingProgram(caster, this.getStrength(), this.getLocation(), this.getHand())) {
+					SpellStats.setSpellPrimed(caster, this.getSpell(), true);
+					return true;
+				}
+				else return false;
+			} 
+			else {
+				if(this.getSpell().spellProgram(caster, this.getStrength(), this.getLocation(), this.getHand())) {
+					if (this.getSpell().canBePrimed()) {
+						SpellStats.setSpellPrimed(caster, this.getSpell(), false);
+					}
+					return true;
+				}
+				else return false;
+			}
 		}
 		return false;
 	}

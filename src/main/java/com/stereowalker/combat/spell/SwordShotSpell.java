@@ -33,11 +33,12 @@ public class SwordShotSpell extends Spell {
 				proj.setEjectedSword(false);
 				proj.setSword(new ItemStack(this.sword));
 				proj.setSpell(new SpellInstance(this, strength/(double)num, location, hand, caster.getUniqueID()));
-				float mod = (float)i/(float)num;
-				if (i == 0)
-					proj.setSwordPosition(-60);
-				else
-					proj.setSwordPosition(-(60 + 60*mod));
+				float mod;
+				if (num > 1)
+					mod = (float)(i-1)/(float)(num-1);
+				else 
+					mod = 0;
+				proj.setSwordPosition(-(60 + 60*mod));
 				caster.world.addEntity(proj);
 			}
 		}
