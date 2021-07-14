@@ -382,9 +382,10 @@ public class SpellUtil {
 				caster.attackEntityFrom(CDamageSource.BLOOD_MAGIC, getModifiedSpellCost(spell, stackItem.getCostModifier()));
 			}
 			else {
-				if(!((PlayerEntity)caster).abilities.isCreativeMode && stackItem.getTier() != Rank.GOD && !CombatEntityStats.getSpellStats(caster, spell).isPrimed()) {
-					CombatEntityStats.addMana(caster, -getModifiedSpellCost(spell, stackItem.getCostModifier()));
-					if (!CEnchantmentHelper.hasNoCooldown(stack)) {
+				if(!((PlayerEntity)caster).abilities.isCreativeMode && stackItem.getTier() != Rank.GOD) {
+					if (!spell.canBePrimed() || (spell.canBePrimed() && CombatEntityStats.getSpellStats(caster, spell).isPrimed()))
+						CombatEntityStats.addMana(caster, -getModifiedSpellCost(spell, stackItem.getCostModifier()));
+					if (!CEnchantmentHelper.hasNoCooldown(stack) && (!spell.canBePrimed() || (spell.canBePrimed() && !CombatEntityStats.getSpellStats(caster, spell).isPrimed()))) {
 						int lvl = CEnchantmentHelper.getCooldownReductionModifier(stack);
 						lvl = MathHelper.clamp(lvl, 0, 4);
 						float removedCooldown = spell.getCooldown() * (lvl * 0.2F);

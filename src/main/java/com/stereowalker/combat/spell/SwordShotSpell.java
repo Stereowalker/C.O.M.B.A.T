@@ -10,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class SwordShotSpell extends Spell {
@@ -19,18 +20,26 @@ public class SwordShotSpell extends Spell {
 		super(category, tier, type, cost, cooldown, castTime);
 		this.sword = sword;
 	}
-	
+
 	@Override
 	public boolean primingProgram(LivingEntity caster, double strength, Vector3d location, Hand hand) {
 		if (!caster.world.isRemote) {
-			ProjectileSwordEntity proj = new ProjectileSwordEntity(caster.world, caster.getPosX() + 1, caster.getPosY() + 4, caster.getPosZ());
-			proj.setShooter(caster);
-			proj.setNoGravity(true);
-			proj.setSpinMidAir(false);
-			proj.setEjectedSword(false);
-			proj.setSword(new ItemStack(this.sword));
-			proj.setSpell(new SpellInstance(this, strength, location, hand, caster.getUniqueID()));
-			caster.world.addEntity(proj);
+			int num = MathHelper.clamp(MathHelper.floor(strength), 1, 10);
+			for (int i = 1; i <= num; i++) {
+				ProjectileSwordEntity proj = new ProjectileSwordEntity(caster.world, caster.getPosX() + 1, caster.getPosY() + 4, caster.getPosZ());
+				proj.setShooter(caster);
+				proj.setNoGravity(true);
+				proj.setSpinMidAir(false);
+				proj.setEjectedSword(false);
+				proj.setSword(new ItemStack(this.sword));
+				proj.setSpell(new SpellInstance(this, strength/(double)num, location, hand, caster.getUniqueID()));
+				float mod = (float)i/(float)num;
+				if (i == 0)
+					proj.setSwordPosition(-60);
+				else
+					proj.setSwordPosition(-(60 + 60*mod));
+				caster.world.addEntity(proj);
+			}
 		}
 		return super.primingProgram(caster, strength, location, hand);
 	}
@@ -46,7 +55,7 @@ public class SwordShotSpell extends Spell {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean canBePrimed() {
 		return true;

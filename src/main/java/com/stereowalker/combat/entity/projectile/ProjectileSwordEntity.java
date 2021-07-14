@@ -34,6 +34,7 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 	private static final DataParameter<Boolean> CONNECTED_TO_SHOOTER = EntityDataManager.createKey(AbstractMagicProjectileEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<ItemStack> THROWN_STACK = EntityDataManager.createKey(AbstractMagicProjectileEntity.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<CompoundNBT> SPELL = EntityDataManager.createKey(AbstractMagicProjectileEntity.class, DataSerializers.COMPOUND_NBT);
+	private static final DataParameter<Float> POSITION = EntityDataManager.createKey(AbstractMagicProjectileEntity.class, DataSerializers.FLOAT);
 	public ProjectileSwordEntity(EntityType<? extends ProjectileSwordEntity> type, World worldIn) {
 		super(type, worldIn);
 		this.dataManager.set(CONNECTED_TO_SHOOTER, true);
@@ -55,6 +56,7 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 		this.dataManager.register(CONNECTED_TO_SHOOTER, true);
 		this.dataManager.register(SPELL, new CompoundNBT());
 		this.dataManager.register(THROWN_STACK, new ItemStack(Items.AIR));
+		this.dataManager.register(POSITION, 1.0F);
 	}
 
 	/**
@@ -77,7 +79,7 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 	public void setEjectedSword(boolean value) {
 		this.dataManager.set(EJECTED_SWORD, value);
 	}
-	
+
 	public boolean isConnectedToCaster() {
 		return this.dataManager.get(CONNECTED_TO_SHOOTER);
 	}
@@ -85,7 +87,15 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 	public void setConnectedToShooter(boolean value) {
 		this.dataManager.set(CONNECTED_TO_SHOOTER, value);
 	}
-	
+
+	public float getSwordPosition() {
+		return this.dataManager.get(POSITION);
+	}
+
+	public void setSwordPosition(float value) {
+		this.dataManager.set(POSITION, value);
+	}
+
 	public ItemStack getSword() {
 		return this.dataManager.get(THROWN_STACK);
 	}
@@ -93,7 +103,7 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 	public void setSword(ItemStack value) {
 		this.dataManager.set(THROWN_STACK, value);
 	}
-	
+
 	public SpellInstance getSpellInstance() {
 		return SpellInstance.read(this.dataManager.get(SPELL));
 	}
@@ -109,13 +119,18 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 		if (caster != null) {
 			if (SpellStats.getSpellPrimed(caster, this.getSpellInstance().getSpell()) && !this.hasEjectedSword()) {
 				double radius = 2.0d;
-				double angle = (caster.rotationYaw - 60) % 360;
+				double angle = (caster.rotationYaw + this.getSwordPosition()) % 360;
 				double x = caster.getPosX() + (radius * Math.cos(Math.toRadians(angle)));
 				double z = caster.getPosZ() + (radius * Math.sin(Math.toRadians(angle)));
 				this.setPosition(x, caster.getPosY() + 2.5, z);
 				this.setRotation(-caster.rotationYaw, this.rotationPitch+10);
 			} else if (this.isConnectedToCaster()) {
-				if (!this.world.isRemote)this.shoot(caster, caster.rotationPitch, caster.rotationYaw, 0.0F, 1.0F, 0);
+				if (!this.world.isRemote) {
+					if (caster.isSneaking())
+						this.shoot(caster, caster.rotationPitch, caster.rotationYaw, 0.0F, -1.0F, 0);
+					else
+						this.shoot(caster, caster.rotationPitch, caster.rotationYaw, 0.0F, 1.0F, 0);
+				}
 				if (this.getPositionVec().distanceTo(caster.getPositionVec()) >= 100) {
 					this.setConnectedToShooter(false);
 				}
@@ -142,7 +157,7 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 
 		Entity entity1 = this.getShooter();
 		DamageSource damagesource = CDamageSource.causeMagicProjectileDamage(this, (Entity)(entity1 == null ? this : entity1));
-//		this.dealtDamage = true;
+		//		this.dealtDamage = true;
 		SoundEvent soundevent = SoundEvents.ENTITY_ARROW_HIT;
 		if (entity.attackEntityFrom(damagesource, f) && entity instanceof LivingEntity) {
 			LivingEntity livingentity1 = (LivingEntity)entity;
@@ -172,6 +187,6 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 	@Override
 	void magicHit(LivingEntity living) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

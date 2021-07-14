@@ -28,11 +28,10 @@ public class MagicEvents {
 					if (!player.isPotionActive(Effects.WEAKNESS)) player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 1, false, false, false));
 				}
 				if (player.ticksExisted%40 == 20) {
-					boolean shouldRegenerateMana = true;
+					boolean shouldRegenerateMana = CombatEntityStats.getMana(player) < player.getAttributeValue(CAttributes.MAX_MANA);
 					if (ModList.get().isLoaded("origins")) {
 						if (OriginsCompat.hasNoManaAbsorbers(player)) {
 							if (!CombatEntityStats.hasManabornBonus(player)) {
-								System.out.println("Max Mana = "+MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
 								CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
 								CombatEntityStats.setManabornBonus(player, true);
 							}
@@ -55,11 +54,12 @@ public class MagicEvents {
 						if (CombatEntityStats.getMana(player) > MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA))) {
 							CombatEntityStats.setMana(player, MathHelper.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
 						}
-						float multiplier;
-						if (CBiomes.getMagicBiomes().contains(entity.world.getBiome(entity.getPosition()).getRegistryName())) multiplier = 10;
-						else multiplier = 0.02F;
-						if (!player.getFoodStats().needFood()) multiplier*=5;
-						float mana = multiplier*MathHelper.floor(player.getAttributeValue(CAttributes.MANA_REGENERATION));
+						double multiplier;
+						if (CBiomes.getMagicBiomes().contains(entity.world.getBiome(entity.getPosition()).getRegistryName())) multiplier = 1.0D;
+						else multiplier = 0.1D;
+						if (!player.getFoodStats().needFood()) multiplier*=5.0D;
+						float mana = (float) (multiplier*player.getAttributeValue(CAttributes.MANA_REGENERATION));
+						System.out.println("Mana "+mana+" "+multiplier);
 						CombatEntityStats.addMana(entity, mana);
 					}
 				}
