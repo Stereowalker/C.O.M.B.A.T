@@ -303,7 +303,7 @@ public abstract class AbstractMagicProjectileEntity extends /* Projectile */Enti
 	public boolean spinMidAir() {
 		return dataManager.get(SPIN_MIDAIR);
 	}
-	
+
 	public void setSpinMidAir(boolean value) {
 		dataManager.set(SPIN_MIDAIR, value);
 	}
@@ -361,11 +361,13 @@ public abstract class AbstractMagicProjectileEntity extends /* Projectile */Enti
 	 */
 	protected void onEntityHit(EntityRayTraceResult result) {
 		Entity entity = result.getEntity();
-		if (entity instanceof LivingEntity) {
-			LivingEntity livingentity = (LivingEntity)entity;
-			this.magicHit(livingentity);
+		if (entity != this.getShooter()) {
+			if (entity instanceof LivingEntity) {
+				LivingEntity livingentity = (LivingEntity)entity;
+				this.magicHit(livingentity);
+			}
+			this.remove();
 		}
-		this.remove();
 	}
 
 	abstract void magicHit(LivingEntity living);

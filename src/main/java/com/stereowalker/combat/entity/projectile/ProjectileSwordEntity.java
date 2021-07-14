@@ -141,37 +141,39 @@ public class ProjectileSwordEntity extends AbstractMagicProjectileEntity {
 	@Override
 	protected void onEntityHit(EntityRayTraceResult result) {
 		Entity entity = result.getEntity();
-		float f;
-		if (this.getSword().getItem() instanceof TieredItem) {
-			f = 4.0F + ((TieredItem)this.getSword().getItem()).getTier().getAttackDamage() + (float)(CEnchantmentHelper.getPenetrationModifier(this.getSword())/2);
-		} else {
-			f = 4.0F;
-		}
-		if (this.isConnectedToCaster() && entity instanceof LivingEntity) {
-			f*=this.getSpellInstance().getStrength();
-		}
-		if (entity instanceof LivingEntity) {
-			LivingEntity livingentity = (LivingEntity)entity;
-			f += EnchantmentHelper.getModifierForCreature(this.getSword(), livingentity.getCreatureAttribute());
-		}
-
-		Entity entity1 = this.getShooter();
-		DamageSource damagesource = CDamageSource.causeMagicProjectileDamage(this, (Entity)(entity1 == null ? this : entity1));
-		//		this.dealtDamage = true;
-		SoundEvent soundevent = SoundEvents.ENTITY_ARROW_HIT;
-		if (entity.attackEntityFrom(damagesource, f) && entity instanceof LivingEntity) {
-			LivingEntity livingentity1 = (LivingEntity)entity;
-			if (entity1 instanceof LivingEntity) {
-				EnchantmentHelper.applyThornEnchantments(livingentity1, entity1);
-				EnchantmentHelper.applyArthropodEnchantments((LivingEntity)entity1, livingentity1);
+		if (entity != this.getShooter()) {
+			float f;
+			if (this.getSword().getItem() instanceof TieredItem) {
+				f = 4.0F + ((TieredItem)this.getSword().getItem()).getTier().getAttackDamage() + (float)(CEnchantmentHelper.getPenetrationModifier(this.getSword())/2);
+			} else {
+				f = 4.0F;
+			}
+			if (this.isConnectedToCaster() && entity instanceof LivingEntity) {
+				f*=this.getSpellInstance().getStrength();
+			}
+			if (entity instanceof LivingEntity) {
+				LivingEntity livingentity = (LivingEntity)entity;
+				f += EnchantmentHelper.getModifierForCreature(this.getSword(), livingentity.getCreatureAttribute());
 			}
 
-			this.magicHit(livingentity1);
-		}
+			Entity entity1 = this.getShooter();
+			DamageSource damagesource = CDamageSource.causeMagicProjectileDamage(this, (Entity)(entity1 == null ? this : entity1));
+			//		this.dealtDamage = true;
+			SoundEvent soundevent = SoundEvents.ENTITY_ARROW_HIT;
+			if (entity.attackEntityFrom(damagesource, f) && entity instanceof LivingEntity) {
+				LivingEntity livingentity1 = (LivingEntity)entity;
+				if (entity1 instanceof LivingEntity) {
+					EnchantmentHelper.applyThornEnchantments(livingentity1, entity1);
+					EnchantmentHelper.applyArthropodEnchantments((LivingEntity)entity1, livingentity1);
+				}
 
-		this.setMotion(this.getMotion().mul(-0.01D, -0.1D, -0.01D));
-		float f1 = 1.0F;
-		this.playSound(soundevent, f1, 1.0F);
+				this.magicHit(livingentity1);
+			}
+
+			this.setMotion(this.getMotion().mul(-0.01D, -0.1D, -0.01D));
+			float f1 = 1.0F;
+			this.playSound(soundevent, f1, 1.0F);
+		}
 	}
 
 	@Override
