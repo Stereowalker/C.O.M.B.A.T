@@ -1214,6 +1214,11 @@
 	"commands.skill.revoke.success.single": "Successfully took the %2$s skill from %1$s",
 	"commands.skill.revoke.failed.multiple": "Failed to take the %2$s skill from %1$s players because they don't have the skill",
 	"commands.skill.revoke.success.multiple": "Successfully took the %2$s skill from %1$s players",
+	"commands.level.query": "%1$s is currently at level %2$s",
+	"commands.level.add.success.single": "Sucessfully added %1$s levels to %2$s",
+	"commands.level.add.success.multiple": "Sucessfully added %1$s levels to %2$s players",
+	"commands.level.add.failed.single": "Failed to add %1$s levels to %2$s",
+	"commands.level.add.failed.multiple": "Failed to add %1$s levels to %2$s players",
 ///////////////////////////////////////////////////////////[RECIPE_HANDLERS]///////////////////////////////////////////////////////////
 	"combat.recipes.woodcutting": "Woodcutting",
 	"combat.recipes.fletching": "Fletching",

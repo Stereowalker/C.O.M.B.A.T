@@ -81,7 +81,7 @@ public class StatSettings {
 								attributeMapIn.put(attribute, value);
 							}
 						} else {
-							Combat.getInstance().LOGGER.warn("Loading stat settings %s from JSON: Attribute %d isn't a json object", owner,  i);
+							Combat.getInstance().getLogger().warn("Loading stat settings %s from JSON: Attribute %d isn't a json object", owner,  i);
 						}
 						i++;
 					}
@@ -137,10 +137,10 @@ public class StatSettings {
 				}
 
 			} catch (ClassCastException e) {
-				Combat.getInstance().LOGGER.warn(STAT_SETTINGS,
+				Combat.getInstance().getLogger().warn(STAT_SETTINGS,
 						"Loading stat settings $s from JSON: Parsing element %s: element was wrong type!", e, owner, workingOn);
 			} catch (NumberFormatException e) {
-				Combat.getInstance().LOGGER.warn(STAT_SETTINGS,
+				Combat.getInstance().getLogger().warn(STAT_SETTINGS,
 						"Loading drink data $s from JSON: Parsing element %s: element was an invalid number!", e, owner, workingOn);
 			}
 		}

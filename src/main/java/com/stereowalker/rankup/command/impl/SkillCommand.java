@@ -1,4 +1,4 @@
-package com.stereowalker.combat.command.impl;
+package com.stereowalker.rankup.command.impl;
 
 import java.util.Collection;
 

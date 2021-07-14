@@ -1,6 +1,5 @@
 package com.stereowalker.combat.compat;
 
-import com.stereowalker.survive.config.Config;
 import com.stereowalker.survive.potion.SEffects;
 
 import net.minecraft.entity.LivingEntity;
@@ -13,10 +12,10 @@ public class SurviveCompat {
 	}
 	
 	public static boolean isThirstEnabled() {
-		return Config.enable_thirst;
+		return com.stereowalker.survive.config.Config.enable_thirst;
 	}
 	
 	public static boolean isStaminaEnabled() {
-		return Config.enable_stamina;
+		return com.stereowalker.survive.config.Config.enable_stamina;
 	}
 }

@@ -42,7 +42,7 @@ public class SpellEntity extends AbstractMagicProjectileEntity {
 	public void setSpell(SpellInstance spell) {
 		this.hasSetSpell = true;
 		if (!(spell.getSpell() instanceof AbstractProjectileSpell)) {
-			Combat.getInstance().LOGGER.error("This Spell "+spell.getSpell()+" Is Not An Instance Of A Projectile Spell");
+			Combat.getInstance().getLogger().error("This Spell "+spell.getSpell()+" Is Not An Instance Of A Projectile Spell");
 		}
 		this.dataManager.set(SPELL, spell.write(new CompoundNBT()));
 	}

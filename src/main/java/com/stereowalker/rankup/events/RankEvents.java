@@ -78,11 +78,8 @@ public class RankEvents {
 		//In order to prevent players from getting experience from other players
 		if (event.getAttackingPlayer() != null && !(event.getEntityLiving() instanceof PlayerEntity)) {
 			int i = event.getDroppedExperience();
-			System.out.println("Previous XP = "+i);
 
 			i *= Math.max((PlayerAttributeLevels.getLevel(event.getEntityLiving()))-(PlayerAttributeLevels.getLevel(event.getAttackingPlayer())), 1);
-			System.out.println("Multiplier = "+Math.max((PlayerAttributeLevels.getLevel(event.getEntityLiving()))-(PlayerAttributeLevels.getLevel(event.getAttackingPlayer())), 1));
-			System.out.println("New XP = "+i);
 
 			PlayerAttributeLevels.setExperience(event.getAttackingPlayer(), PlayerAttributeLevels.getExperience(event.getAttackingPlayer())+i);
 		}

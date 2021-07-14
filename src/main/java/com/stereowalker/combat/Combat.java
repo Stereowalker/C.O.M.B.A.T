@@ -12,7 +12,9 @@ import com.stereowalker.combat.client.keybindings.KeyBindings;
 import com.stereowalker.combat.client.renderer.CRenderType;
 import com.stereowalker.combat.client.renderer.entity.EntityRendererHandler;
 import com.stereowalker.combat.client.renderer.tileentity.CombatTileEntityRender;
-import com.stereowalker.combat.command.CCommands;
+import com.stereowalker.combat.command.impl.AffinityCommand;
+import com.stereowalker.combat.command.impl.AllyCommand;
+import com.stereowalker.combat.command.impl.CastCommand;
 import com.stereowalker.combat.compat.curios.CuriosEvents;
 import com.stereowalker.combat.config.Config;
 import com.stereowalker.combat.fluid.CFluids;
@@ -38,6 +40,8 @@ import com.stereowalker.combat.world.CDImensionRenderInfo;
 import com.stereowalker.combat.world.CDimensionType;
 import com.stereowalker.combat.world.CGameRules;
 import com.stereowalker.rankup.Rankup;
+import com.stereowalker.rankup.command.impl.LevelCommand;
+import com.stereowalker.rankup.command.impl.SkillCommand;
 import com.stereowalker.unionlib.mod.UnionMod;
 import com.stereowalker.unionlib.network.PacketRegistry;
 import com.stereowalker.unionlib.util.ModHelper;
@@ -110,6 +114,7 @@ public class Combat extends UnionMod
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueue);
+		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 		//MinecraftForge.EVENT_BUS.register(this);
 	}
 	
@@ -139,7 +144,7 @@ public class Combat extends UnionMod
 	}
 
 	public static void debug(Object message) {
-		if (Config.COMMON.debug_mode.get())Combat.getInstance().LOGGER.debug(message);
+		if (Config.COMMON.debug_mode.get())Combat.getInstance().getLogger().debug(message);
 	}
 
 	private void setup(final FMLCommonSetupEvent event)
@@ -224,9 +229,17 @@ public class Combat extends UnionMod
 		}
 	} 
 
-	@SubscribeEvent
 	public void registerCommands(RegisterCommandsEvent event) {
-		CCommands.registerAll(event.getDispatcher());
+		//Combat
+		CastCommand.register(event.getDispatcher());
+		AffinityCommand.register(event.getDispatcher());
+		AllyCommand.register(event.getDispatcher());
+		Combat.debug("Registered All Commands");
+		if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+			SkillCommand.register(event.getDispatcher());
+			LevelCommand.register(event.getDispatcher());
+			Combat.debug("Registered All Commands for Rankup");
+		}
 	}
 
 	@SubscribeEvent
