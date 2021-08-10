@@ -9,7 +9,8 @@
   	"ItemMixin"
   ],
   "client": [
-    "BipedArmorLayerMixin"
+    "BipedArmorLayerMixin",
+    "CreateWorldScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
