@@ -11,7 +11,7 @@ import net.minecraft.util.text.StringTextComponent;
 public class EnergyUtils {
 	public enum EnergyType{
 		MAGIC_ENERGY("Magic Energy"),
-		TECHNO_ENERGY("Techno Energy");
+		DIVINE_ENERGY("Divine Energy");
 		
 		String displayName;
 		String abbreviation;
