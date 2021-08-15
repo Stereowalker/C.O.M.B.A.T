@@ -27,6 +27,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.GameRules;
 import net.minecraftforge.fml.network.NetworkDirection;
 
 public class StatEvents {
@@ -54,11 +55,13 @@ public class StatEvents {
 		if (!wasDeath) {
 			CombatEntityStats.setLimiter(player, CombatEntityStats.isLimiterOn(original));
 		}
+		if (player.world.getGameRules().get(GameRules.KEEP_INVENTORY).get() || !wasDeath) {
+			PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(original));
+		}
 		for (Stat levels : CombatRegistries.STATS) {
 			PlayerAttributeLevels.setStatProfile(player, levels, PlayerAttributeLevels.getStatPoints(original, levels));
 		}
 		PlayerAttributeLevels.setLevel(player, PlayerAttributeLevels.getLevel(original));
-		PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(original));
 		PlayerAttributeLevels.setUpgradePoints(player, PlayerAttributeLevels.getUpgradePoints(original));
 	}
 
@@ -121,7 +124,7 @@ public class StatEvents {
 		for (Stat stat : CombatRegistries.STATS) {
 			StatSettings statSettings = Rankup.statsManager.STATS.get(stat);
 			double addition = StatProfile.getTotalPoints(entity, stat);
-			
+
 			if (entity instanceof ServerPlayerEntity) {
 				ServerPlayerEntity player = (ServerPlayerEntity) entity;
 				if (statSettings.getEffortStat() != null) {
@@ -129,7 +132,7 @@ public class StatEvents {
 						StatProfile.setEffortPoints(player, stat, PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints()+1);
 					}
 				}
-				
+
 			}
 
 			statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
