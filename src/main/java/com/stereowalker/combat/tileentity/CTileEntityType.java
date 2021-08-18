@@ -46,7 +46,7 @@ public class CTileEntityType extends net.minecraftforge.registries.ForgeRegistry
 			CBlocks.MAGIC_PODIUM, 
 			CBlocks.UMBRAN_PODIUM, 
 			CBlocks.HELLBARK_PODIUM));
-	public static final TileEntityType<BatteryChargerTileEntity> BATTERY_CHARGER = register("battery_charger", TileEntityType.Builder.create(BatteryChargerTileEntity::new, CBlocks.BATTERY_CHARGER));
+	public static final TileEntityType<MythrilChargerTileEntity> MYTHRIL_CHARGER = register("mythril_charger", TileEntityType.Builder.create(MythrilChargerTileEntity::new, CBlocks.MYTHRIL_CHARGER));
 			
 
 	public static void registerAll(IForgeRegistry<TileEntityType<?>> registry) {

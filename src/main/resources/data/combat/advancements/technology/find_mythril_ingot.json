@@ -1,0 +1,35 @@
+{
+  "parent": "combat:technology/root",
+  "display": {
+    "icon": {
+      "item": "combat:mythril_ingot"
+    },
+    "title": {
+      "translate": "advancements.technology.find_mythril_ingot.title"
+    },
+    "description": {
+      "translate": "advancements.technology.find_mythril_ingot.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_mythril_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:mythril_ingot"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_mythril_ingot"
+    ]
+  ]
+}

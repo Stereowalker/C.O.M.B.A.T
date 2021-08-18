@@ -32,6 +32,13 @@ public enum CItemTier implements IItemTier
 	LOZYNE(3, 2342, 12.0F, 4.5F, 15, () -> {
 	      return Ingredient.fromItems(CItems.LOZYNE_INGOT);
 	   }),
+	//Endgame Metals
+	MYTHRIL(2, 5513, 7.1F, 4.0F, 3, () -> {
+		return Ingredient.fromItems(CItems.MYTHRIL_INGOT);
+	}),
+	POWERED_MYTHRIL(4, 5513, 14.2F, 8.0F, 3, () -> {
+		return Ingredient.fromItems(CItems.MYTHRIL_INGOT);
+	}),
 	ETHERION(4, 7286, 16.9F, 6.1F, 29, () -> {
 	      return Ingredient.fromItems(CItems.ETHERION_INGOT);
 	   }),

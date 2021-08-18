@@ -1,0 +1,8 @@
+{
+    "variants": {
+		"facing=north": { "model": "combat:block/mythril_charger" },
+		"facing=south": { "model": "combat:block/mythril_charger", "y": 180},
+		"facing=east": { "model": "combat:block/mythril_charger", "y": 90},
+		"facing=west": { "model": "combat:block/mythril_charger", "y": 270}
+	}
+}

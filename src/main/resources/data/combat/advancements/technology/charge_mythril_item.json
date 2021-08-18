@@ -1,0 +1,41 @@
+{
+  "parent": "combat:technology/find_mythril_ingot",
+  "display": {
+    "icon": {
+      "item": "combat:mythril_axe"
+    },
+    "title": {
+      "translate": "advancements.technology.charge_mythril_item.title"
+    },
+    "description": {
+      "translate": "advancements.technology.charge_mythril_item.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_mythril_ingot": {
+      "trigger": "combat:item_electrically_charged",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:mythril_sword"
+          },
+          {
+            "item": "combat:mythril_axe"
+          },
+          {
+            "item": "combat:mythril_pickaxe"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_mythril_ingot"
+    ]
+  ]
+}

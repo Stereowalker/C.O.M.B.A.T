@@ -80,6 +80,7 @@ public class CItems {
 	public static final Item MANA_GENERATOR = register(CBlocks.MANA_GENERATOR, CItemGroup.TECHNOLOGY);
 	public static final Item CONNECTOR = register(CBlocks.CONNECTOR, CItemGroup.TECHNOLOGY);
 	public static final Item ELECTRIC_FURNACE = register(CBlocks.ELECTRIC_FURNACE, CItemGroup.TECHNOLOGY);
+	public static final Item MYTHRIL_CHARGER = register(CBlocks.MYTHRIL_CHARGER, CItemGroup.TECHNOLOGY);
 	public static final Item GROPAPY = register(CBlocks.GROPAPY, CItemGroup.MISC);
 	public static final Item MEZEPINE_BRICKS = register(CBlocks.MEZEPINE_BRICKS, CItemGroup.BUILDING_BLOCKS);
 	public static final Item MEZEPINE_SLAB = register(CBlocks.MEZEPINE_SLAB, CItemGroup.BUILDING_BLOCKS);
@@ -207,8 +208,6 @@ public class CItems {
 	public static final Item POISON_CLEANSING_AMULET = register("poison_cleansing_amulet", new PoisonClensingAmulet(new Item.Properties().group(CItemGroup.MAGIC).maxStackSize(1)));
 	public static final Item RECONFIGURATION_SOUP = register("reconfiguration_soup", new ReconfigurationSoupItem(new Item.Properties().group(CItemGroup.MAGIC).maxStackSize(1)));
 	public static final Item SKILL_RUNESTONE = register("skill_runestone", new SkillRunestoneItem(new Item.Properties().group(CItemGroup.MAGIC).maxStackSize(1)));
-	public static final Item MAGISTEEL_SWORD = register("magisteel_sword", new MagisteelSwordItem(CItemTier.MAGISTEEL, 3, -2.4F, new Item.Properties().group(CItemGroup.MAGIC)));
-	public static final Item MAGISTEEL_AXE = register("magisteel_axe", new MagisteelAxeItem(CItemTier.MAGISTEEL, 5.0F, -3.2F, new Item.Properties().group(CItemGroup.MAGIC)));
 
 	//Legendary Items
 	public static final Item DESERT_DRAGON = register("desert_dragon", new DesertDragonItem(new Item.Properties().group(CItemGroup.MAGIC)));
@@ -219,7 +218,7 @@ public class CItems {
 	public static final Item FROSTBITE_SWORD = register("frostbite_sword", new FrostbiteSword(new Item.Properties().group(CItemGroup.MAGIC)));
 	public static final Item MANA_CUTTER = register("mana_cutter", new ManaCutter(new Item.Properties().group(CItemGroup.MAGIC)));
 	public static final Item GOD_WAND = register("god_wand", new GodWandItem(new Item.Properties().group(CItemGroup.MAGIC)));
-//	public static final Item ANGELS_WINGS = register("angels_wings", new FrostbiteSword(6, 6, new Item.Properties().group(CItemGroup.LEGENDARY).defaultMaxDamage(1000)));
+	//	public static final Item ANGELS_WINGS = register("angels_wings", new FrostbiteSword(6, 6, new Item.Properties().group(CItemGroup.LEGENDARY).defaultMaxDamage(1000)));
 	//	public static final Item DEATH_VEST = register("death_vest", new FrostbiteSword(6, 6, new Item.Properties().group(CItemGroup.LEGENDARY).defaultMaxDamage(1000)));
 	//Battle
 	public static final Item DAGGER_HANDLE = register("dagger_handle", new Item(new Item.Properties().group(CItemGroup.MISC)));
@@ -235,11 +234,13 @@ public class CItems {
 
 	public static final Item BRONZE_SWORD = register("bronze_sword", new SwordItem(CItemTier.BRONZE, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item STEEL_SWORD = register("steel_sword", new SwordItem(CItemTier.STEEL, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item MAGISTEEL_SWORD = register("magisteel_sword", new MagisteelSwordItem(CItemTier.MAGISTEEL, 3, -2.4F, new Item.Properties().group(CItemGroup.MAGIC)));
 	public static final Item PASQUEM_SWORD = register("pasquem_sword", new SwordItem(CItemTier.PASQUEM, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item PELGAN_SWORD = register("pelgan_sword", new SwordItem(CItemTier.PELGAN, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item SERABLE_SWORD = register("serable_sword", new SwordItem(CItemTier.SERABLE, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item LOZYNE_SWORD = register("lozyne_sword", new SwordItem(CItemTier.LOZYNE, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE)));
-	public static final Item ETHERION_SWORD = register("etherion_sword", new SwordItem(CItemTier.ETHERION, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE)));
+	public static final Item MYTHRIL_SWORD = register("mythril_sword", new MythrilSwordItem(CItemTier.MYTHRIL, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE).isImmuneToFire()));
+	public static final Item ETHERION_SWORD = register("etherion_sword", new SwordItem(CItemTier.ETHERION, 3, -2.4F, new Item.Properties().group(CItemGroup.BATTLE).isImmuneToFire()));
 
 	public static final Item WOODEN_DAGGER = register("wooden_dagger", new DaggerItem(ItemTier.WOOD, 1, -1.2F, new Item.Properties().group(CItemGroup.BATTLE)));
 	public static final Item STONE_DAGGER = register("stone_dagger", new DaggerItem(ItemTier.STONE, 1, -1.2F, new Item.Properties().group(CItemGroup.BATTLE)));
@@ -414,10 +415,12 @@ public class CItems {
 	//Tools
 	public static final Item BRONZE_AXE = register("bronze_axe", new AxeItem(CItemTier.BRONZE, 6.0F, -3.2F, new Item.Properties().group(CItemGroup.TOOLS)));
 	public static final Item STEEL_AXE = register("steel_axe", new AxeItem(CItemTier.STEEL, 5.0F, -3.2F, new Item.Properties().group(CItemGroup.TOOLS)));
+	public static final Item MAGISTEEL_AXE = register("magisteel_axe", new MagisteelAxeItem(CItemTier.MAGISTEEL, 5.0F, -3.2F, new Item.Properties().group(CItemGroup.MAGIC)));
 	public static final Item PASQUEM_AXE = register("pasquem_axe", new AxeItem(CItemTier.PASQUEM, 7.0F, -3.1F, new Item.Properties().group(CItemGroup.TOOLS)));
 	public static final Item PELGAN_AXE = register("pelgan_axe", new AxeItem(CItemTier.PELGAN, 6.0F, -3.0F, new Item.Properties().group(CItemGroup.TOOLS)));
 	public static final Item SERABLE_AXE = register("serable_axe", new AxeItem(CItemTier.SERABLE, 5.0F, -2.9F, new Item.Properties().group(CItemGroup.TOOLS)));
 	public static final Item LOZYNE_AXE = register("lozyne_axe", new AxeItem(CItemTier.LOZYNE, 7.0F, -3.2F, new Item.Properties().group(CItemGroup.TOOLS)));
+	public static final Item MYTHRIL_AXE = register("mythril_axe", new MythrilAxeItem(CItemTier.MYTHRIL, 7.0F, -3.1F, new Item.Properties().group(CItemGroup.TOOLS).isImmuneToFire()));
 	public static final Item ETHERION_AXE = register("etherion_axe", new AxeItem(CItemTier.ETHERION, 6.0F, -3.1F, new Item.Properties().group(CItemGroup.TOOLS).isImmuneToFire()));
 
 	public static final Item BRONZE_HOE = register("bronze_hoe", new HoeItem(CItemTier.BRONZE, -2, -2.0F, new Item.Properties().group(CItemGroup.TOOLS)));
@@ -426,6 +429,7 @@ public class CItems {
 	public static final Item PELGAN_HOE = register("pelgan_hoe", new HoeItem(CItemTier.PELGAN, -1, -1.0F, new Item.Properties().group(CItemGroup.TOOLS)));
 	public static final Item SERABLE_HOE = register("serable_hoe", new HoeItem(CItemTier.SERABLE, 0, -1.0F, new Item.Properties().group(CItemGroup.TOOLS)));
 	public static final Item LOZYNE_HOE = register("lozyne_hoe", new HoeItem(CItemTier.LOZYNE, -4, 0.0F, new Item.Properties().group(CItemGroup.TOOLS)));
+	public static final Item MYTHRIL_HOE = register("mythril_hoe", new MythrilHoeItem(CItemTier.MYTHRIL, -7, 0.0F, new Item.Properties().group(CItemGroup.TOOLS).isImmuneToFire()));
 	public static final Item ETHERION_HOE = register("etherion_hoe", new HoeItem(CItemTier.ETHERION, -6, 0.0F, new Item.Properties().group(CItemGroup.TOOLS).isImmuneToFire()));
 
 	public static final Item BRONZE_PICKAXE = register("bronze_pickaxe", new PickaxeItem(CItemTier.BRONZE, 1, -2.8F, new Item.Properties().group(CItemGroup.TOOLS)));
@@ -434,6 +438,7 @@ public class CItems {
 	public static final Item PELGAN_PICKAXE = register("pelgan_pickaxe", new PickaxeItem(CItemTier.PELGAN, 1, -2.8F, new Item.Properties().group(CItemGroup.TOOLS)));
 	public static final Item SERABLE_PICKAXE = register("serable_pickaxe", new PickaxeItem(CItemTier.SERABLE, 1, -2.8F, new Item.Properties().group(CItemGroup.TOOLS)));
 	public static final Item LOZYNE_PICKAXE = register("lozyne_pickaxe", new PickaxeItem(CItemTier.LOZYNE, 1, -2.8F, new Item.Properties().group(CItemGroup.TOOLS)));
+	public static final Item MYTHRIL_PICKAXE = register("mythril_pickaxe", new MythrilPickaxeItem(CItemTier.MYTHRIL, 1, -2.8F, new Item.Properties().group(CItemGroup.TOOLS).isImmuneToFire()));
 	public static final Item ETHERION_PICKAXE = register("etherion_pickaxe", new PickaxeItem(CItemTier.ETHERION, 1, -2.8F, new Item.Properties().group(CItemGroup.TOOLS).isImmuneToFire()));
 
 	public static final Item BRONZE_SHOVEL = register("bronze_shovel", new ShovelItem(CItemTier.BRONZE, 1.5F, -3.0F, new Item.Properties().group(CItemGroup.TOOLS)));
@@ -464,6 +469,7 @@ public class CItems {
 	public static final Item SERABLE_INGOT = register("serable_ingot", new Item(new Item.Properties().group(CItemGroup.MISC)));
 	public static final Item ETHERION_INGOT = register("etherion_ingot", new Item(new Item.Properties().group(CItemGroup.MISC)));
 	public static final Item MAGISTEEL_INGOT = register("magisteel_ingot", new Item(new Item.Properties().group(CItemGroup.MISC)));
+	public static final Item MYTHRIL_INGOT = register("mythril_ingot", new Item(new Item.Properties().group(CItemGroup.MISC)));
 	public static final Item COPPER_NUGGET = register("copper_nugget", new Item(new Item.Properties().group(CItemGroup.MISC)));
 	public static final Item BRONZE_NUGGET = register("bronze_nugget", new Item(new Item.Properties().group(CItemGroup.MISC)));
 	public static final Item SERABLE_NUGGET = register("serable_nugget", new Item(new Item.Properties().group(CItemGroup.MISC)));

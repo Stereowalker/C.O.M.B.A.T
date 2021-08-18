@@ -4,7 +4,7 @@ package com.stereowalker.combat.tileentity;
 import javax.annotation.Nullable;
 
 import com.stereowalker.combat.inventory.container.BatteryChargerContainer;
-import com.stereowalker.combat.item.LightSaberItem;
+import com.stereowalker.combat.item.IMythrilItem;
 import com.stereowalker.combat.util.EnergyUtils;
 import com.stereowalker.combat.util.EnergyUtils.EnergyType;
 
@@ -25,12 +25,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class BatteryChargerTileEntity  extends AbstractEnergyConsumerTileEntity implements INamedContainerProvider, ITickableTileEntity {
+public class MythrilChargerTileEntity  extends AbstractEnergyConsumerTileEntity implements INamedContainerProvider, ITickableTileEntity {
 	private NonNullList<ItemStack> inventory = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
 	protected String customName;
 
-	public BatteryChargerTileEntity() {
-		super(CTileEntityType.BATTERY_CHARGER, 1000);
+	public MythrilChargerTileEntity() {
+		super(CTileEntityType.MYTHRIL_CHARGER, 1000);
 	}
 
 	public boolean isEmpty() {
@@ -46,7 +46,7 @@ public class BatteryChargerTileEntity  extends AbstractEnergyConsumerTileEntity 
 		public int get(int index) {
 			switch(index) {
 			case 0:
-				return BatteryChargerTileEntity.this.energy;
+				return MythrilChargerTileEntity.this.energy;
 			default:
 				return 0;
 			}
@@ -55,7 +55,7 @@ public class BatteryChargerTileEntity  extends AbstractEnergyConsumerTileEntity 
 		public void set(int index, int value) {
 			switch(index) {
 			case 0:
-				BatteryChargerTileEntity.this.energy = value;
+				MythrilChargerTileEntity.this.energy = value;
 			}
 
 		}
@@ -93,10 +93,11 @@ public class BatteryChargerTileEntity  extends AbstractEnergyConsumerTileEntity 
 	@Override
 	public void tick() {
 		if (!this.world.isRemote) {
+			ItemStack stack = inventory.get(0);
 			if (!this.isDrained()) {
-				if (inventory.get(0).getItem() instanceof LightSaberItem) {
-					if (EnergyUtils.getEnergy(inventory.get(0), EnergyType.TECHNO_ENERGY) < EnergyUtils.getMaxEnergy(inventory.get(0), EnergyType.TECHNO_ENERGY)) {
-						EnergyUtils.addEnergyToItem(inventory.get(0), 1, EnergyType.TECHNO_ENERGY);
+				if (stack.getItem() instanceof IMythrilItem) {
+					if (!EnergyUtils.isFull(inventory.get(0), EnergyType.DIVINE_ENERGY)) {
+						EnergyUtils.addEnergyToItem(inventory.get(0), 1, EnergyType.DIVINE_ENERGY);
 						energy--;
 						this.markDirty();
 					}

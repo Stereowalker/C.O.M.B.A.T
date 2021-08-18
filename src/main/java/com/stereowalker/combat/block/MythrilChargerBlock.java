@@ -3,7 +3,7 @@ package com.stereowalker.combat.block;
 import javax.annotation.Nullable;
 
 import com.stereowalker.combat.inventory.container.BatteryChargerContainer;
-import com.stereowalker.combat.tileentity.BatteryChargerTileEntity;
+import com.stereowalker.combat.tileentity.MythrilChargerTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -34,9 +34,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class BatteryChargerBlock extends ContainerBlock {
+public class MythrilChargerBlock extends ContainerBlock {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-	protected BatteryChargerBlock(Block.Properties builder) {
+	protected MythrilChargerBlock(Block.Properties builder) {
 		super(builder);
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
@@ -64,8 +64,8 @@ public class BatteryChargerBlock extends ContainerBlock {
 			if(tile == null) {
 				return 0;
 			}
-			if(tile instanceof BatteryChargerTileEntity) {
-				BatteryChargerTileEntity gen = (BatteryChargerTileEntity)tile;
+			if(tile instanceof MythrilChargerTileEntity) {
+				MythrilChargerTileEntity gen = (MythrilChargerTileEntity)tile;
 				return gen.getEnergyStored() / (200/3);
 			}
 		}
@@ -74,7 +74,7 @@ public class BatteryChargerBlock extends ContainerBlock {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader worldIn) {
-		return new BatteryChargerTileEntity();
+		return new MythrilChargerTileEntity();
 	}
 
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
@@ -82,8 +82,8 @@ public class BatteryChargerBlock extends ContainerBlock {
 			TileEntity tile = worldIn.getTileEntity(pos);
 			if(tile == null) {
 			}
-			if(tile instanceof BatteryChargerTileEntity) {
-				NetworkHooks.openGui((ServerPlayerEntity)player, (BatteryChargerTileEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
+			if(tile instanceof MythrilChargerTileEntity) {
+				NetworkHooks.openGui((ServerPlayerEntity)player, (MythrilChargerTileEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
 			}
 		}
 		return ActionResultType.SUCCESS;
@@ -94,8 +94,8 @@ public class BatteryChargerBlock extends ContainerBlock {
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if(state.getBlock() != newState.getBlock()) {
 			TileEntity te = worldIn.getTileEntity(pos);
-			if(te instanceof BatteryChargerTileEntity) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (BatteryChargerTileEntity)te);
+			if(te instanceof MythrilChargerTileEntity) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (MythrilChargerTileEntity)te);
 				worldIn.updateComparatorOutputLevel(pos, this);
 			}
 			super.onReplaced(state, worldIn, pos, newState, isMoving);
@@ -105,7 +105,7 @@ public class BatteryChargerBlock extends ContainerBlock {
 	@Nullable
 	public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
-		if (tileentity instanceof BatteryChargerTileEntity) {
+		if (tileentity instanceof MythrilChargerTileEntity) {
 			ITextComponent itextcomponent = ((INameable)tileentity).getDisplayName();
 			return new SimpleNamedContainerProvider((p_220147_2_, p_220147_3_, p_220147_4_) -> {
 				return new BatteryChargerContainer(p_220147_2_, p_220147_3_);
@@ -121,8 +121,8 @@ public class BatteryChargerBlock extends ContainerBlock {
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (stack.hasDisplayName()) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
-			if (tileentity instanceof BatteryChargerTileEntity) {
-				((BatteryChargerTileEntity)tileentity).setCustomName(stack.getDisplayName());
+			if (tileentity instanceof MythrilChargerTileEntity) {
+				((MythrilChargerTileEntity)tileentity).setCustomName(stack.getDisplayName());
 			}
 		}
 

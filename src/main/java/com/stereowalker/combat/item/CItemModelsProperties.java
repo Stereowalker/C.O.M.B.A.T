@@ -212,7 +212,7 @@ public class CItemModelsProperties {
 			}
 		});
 		ItemModelsProperties.registerProperty(CItems.LIGHT_SABER, new ResourceLocation("drawn"), (itemStack, world, living) -> {
-			return LightSaberItem.isSaberActive(itemStack) ? 1.0F : 0.0F;
+			return ((IMythrilItem)itemStack.getItem()).isUsingEnergy(itemStack) ? 1.0F : 0.0F;
 		});
 		ItemModelsProperties.registerProperty(CItems.MAGISTEEL_SWORD, new ResourceLocation("powered"), (itemStack, world, living) -> {
 			return ((IMagisteelItem)itemStack.getItem()).isUsingMana(itemStack) ? 1.0F : 0.0F;

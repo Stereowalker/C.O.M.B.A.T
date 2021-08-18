@@ -1,7 +1,5 @@
 package com.stereowalker.combat.item;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
@@ -11,9 +9,7 @@ import com.stereowalker.combat.util.EnergyUtils.EnergyType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.IVanishable;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -26,10 +22,9 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
-public class LightSaberItem extends Item implements IVanishable, IDyeableWeaponItem {
+public class LightSaberItem extends Item implements IVanishable, IDyeableWeaponItem, IMythrilItem {
 	private final float attackDamage;
 	/** Modifiers applied when the item is in the mainhand of a user. */
 	private final Multimap<Attribute, AttributeModifier> attributeModifiers;
@@ -50,12 +45,12 @@ public class LightSaberItem extends Item implements IVanishable, IDyeableWeaponI
 	}
 
 	public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
-		return !player.isCreative() && isSaberActive(player.getHeldItemMainhand());
+		return !player.isCreative() && isUsingEnergy(player.getHeldItemMainhand());
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if (EnergyUtils.getEnergy(playerIn.getHeldItem(handIn), EnergyType.TECHNO_ENERGY) > 0) {
+		if (EnergyUtils.getEnergy(playerIn.getHeldItem(handIn), EnergyType.DIVINE_ENERGY) > 0) {
 			switchActivity(playerIn.getHeldItem(handIn), playerIn);
 			return ActionResult.resultSuccess(playerIn.getHeldItem(handIn));
 		} else {
@@ -78,7 +73,7 @@ public class LightSaberItem extends Item implements IVanishable, IDyeableWeaponI
 	 */
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (!attacker.world.isRemote && (!(attacker instanceof PlayerEntity) || !((PlayerEntity)attacker).abilities.isCreativeMode)) {
-			EnergyUtils.addEnergyToItem(stack, -20, EnergyType.TECHNO_ENERGY);
+			EnergyUtils.addEnergyToItem(stack, -20, EnergyType.DIVINE_ENERGY);
 		}
 		return true;
 	}
@@ -89,49 +84,11 @@ public class LightSaberItem extends Item implements IVanishable, IDyeableWeaponI
 	public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
 		if (state.getBlockHardness(worldIn, pos) != 0.0F) {
 			if (!entityLiving.world.isRemote && (!(entityLiving instanceof PlayerEntity) || !((PlayerEntity)entityLiving).abilities.isCreativeMode)) {
-				EnergyUtils.addEnergyToItem(stack, -20, EnergyType.TECHNO_ENERGY);
+				EnergyUtils.addEnergyToItem(stack, -20, EnergyType.DIVINE_ENERGY);
 			}
 		}
 
 		return true;
-	}
-
-	public static boolean isSaberActive(ItemStack stack) {
-		return stack.getOrCreateTag().getBoolean("SaberActive");
-	}
-
-	public static void switchActivity(ItemStack stack, LivingEntity livingEntity) {
-		stack.getOrCreateTag().putBoolean("SaberActive", !stack.getOrCreateTag().getBoolean("SaberActive"));
-		stack.damageItem(1, livingEntity, (p_220045_0_) -> {
-			p_220045_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-		});
-	}
-	
-	public static void setSaberActive(ItemStack stack, boolean activity) {
-		stack.getOrCreateTag().putBoolean("SaberActive", activity);
-	}
-
-	@Override
-	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		EnergyUtils.setMaxEnergy(stack, 1000, EnergyType.TECHNO_ENERGY);
-		if (isSelected) {
-			if (isSaberActive(stack) && entityIn.ticksExisted%20 == 0) {
-				EnergyUtils.addEnergyToItem(stack, -1, EnergyType.TECHNO_ENERGY);
-			}
-			if (entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).isCreative()) {
-				EnergyUtils.addEnergyToItem(stack, EnergyUtils.getMaxEnergy(stack, EnergyType.TECHNO_ENERGY), EnergyType.TECHNO_ENERGY);
-			}
-		}
-		if (EnergyUtils.isDrained(stack, EnergyType.TECHNO_ENERGY)) {
-			setSaberActive(stack, false);
-		}
-		super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(EnergyUtils.getEnergyComponent(stack, EnergyType.TECHNO_ENERGY));
 	}
 
 	/**
@@ -145,7 +102,7 @@ public class LightSaberItem extends Item implements IVanishable, IDyeableWeaponI
 	 * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
 	 */
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, ItemStack stack) {
-		return equipmentSlot == EquipmentSlotType.MAINHAND ? (isSaberActive(stack) ? this.attributeModifiers : this.sheathedAttributeModifiers) : super.getAttributeModifiers(equipmentSlot, stack);
+		return equipmentSlot == EquipmentSlotType.MAINHAND ? (isUsingEnergy(stack) ? this.attributeModifiers : this.sheathedAttributeModifiers) : super.getAttributeModifiers(equipmentSlot, stack);
 	}
 
 	@Override
@@ -156,5 +113,10 @@ public class LightSaberItem extends Item implements IVanishable, IDyeableWeaponI
 	@Override
 	public boolean usesDyeingRecipe() {
 		return true;
+	}
+
+	@Override
+	public int getMaxEnergy() {
+		return 1000;
 	}
 }

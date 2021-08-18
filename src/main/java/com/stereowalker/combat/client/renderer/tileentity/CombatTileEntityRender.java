@@ -14,5 +14,6 @@ public class CombatTileEntityRender {
 		ClientRegistry.bindTileEntityRenderer(CTileEntityType.PODIUM, PodiumTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(CTileEntityType.SIGN, SignTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(CTileEntityType.CONNECTOR, ConnectorTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(CTileEntityType.MYTHRIL_CHARGER, MythrilChargerTileEntityRenderer::new);
 	}
 }

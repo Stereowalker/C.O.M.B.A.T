@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "combat:mana_generator"
+    },
+    "title": {
+      "translate": "advancements.technology.root.title"
+    },
+    "description": {
+      "translate": "advancements.technology.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "combat:textures/gui/advancements/backgrounds/battle.png"
+  },
+  "criteria": {
+    "mythril_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:mythril_ingot"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "mythril_ingot"
+    ]
+  ]
+}

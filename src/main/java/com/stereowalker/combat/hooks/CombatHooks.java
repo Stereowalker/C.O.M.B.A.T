@@ -15,6 +15,7 @@ import com.stereowalker.combat.entity.ai.CAttributes;
 import com.stereowalker.combat.event.handler.GameEvents;
 import com.stereowalker.combat.item.CItems;
 import com.stereowalker.combat.item.ILegendaryGear;
+import com.stereowalker.combat.item.IMythrilItem;
 import com.stereowalker.combat.item.ScytheItem;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
@@ -242,9 +243,20 @@ public class CombatHooks {
 
 	//For rendering the legendary item glint
 	public static IVertexBuilder getArmorVertexBuilder(IRenderTypeBuffer buffer, RenderType renderType, boolean noEntity, boolean withGlint, ItemStack stack) {
+		if (stack.getItem() instanceof IMythrilItem) {
+			IMythrilItem mythrilItem = (IMythrilItem)stack.getItem();
+			if (mythrilItem.isUsingEnergy(stack)) {
+				if (stack.hasEffect()) {
+					return VertexBuilderUtils.newDelegate(buffer.getBuffer(noEntity ? CRenderType.getEncMythrilArmorGlint() : CRenderType.getEncMythrilArmorEntityGlint()), buffer.getBuffer(renderType));
+				} else {
+					return VertexBuilderUtils.newDelegate(buffer.getBuffer(noEntity ? CRenderType.getMythrilArmorGlint() : CRenderType.getMythrilArmorEntityGlint()), buffer.getBuffer(renderType));
+				}
+			} else {
+				return buffer.getBuffer(renderType);
+			}
+		}
 		if (stack.getItem() instanceof ILegendaryGear) {
-			withGlint = true;
-			return withGlint ? VertexBuilderUtils.newDelegate(buffer.getBuffer(noEntity ? CRenderType.getArmorGlint() : CRenderType.getArmorEntityGlint()), buffer.getBuffer(renderType)) : buffer.getBuffer(renderType);
+			return VertexBuilderUtils.newDelegate(buffer.getBuffer(noEntity ? CRenderType.getLegendaryArmorGlint() : CRenderType.getLegendaryArmorEntityGlint()), buffer.getBuffer(renderType));
 		}
 		//What it is by default Opcodes 
 		//InsnNode
@@ -254,13 +266,20 @@ public class CombatHooks {
 
 	public static IVertexBuilder getBuffer(IRenderTypeBuffer bufferIn, RenderType renderTypeIn, boolean isItemIn, ItemStack stack) {
 		boolean glintIn = stack.hasEffect();
-		if (stack.getItem() instanceof ILegendaryGear) {
-			glintIn = true;
-			if (glintIn) {
-				return Minecraft.isFabulousGraphicsEnabled() && renderTypeIn == Atlases.getItemEntityTranslucentCullType() ? VertexBuilderUtils.newDelegate(bufferIn.getBuffer(CRenderType.getGlintTranslucent()), bufferIn.getBuffer(renderTypeIn)) : VertexBuilderUtils.newDelegate(bufferIn.getBuffer(isItemIn ? CRenderType.getGlint() : CRenderType.getEntityGlint()), bufferIn.getBuffer(renderTypeIn));
+		if (stack.getItem() instanceof IMythrilItem) {
+			IMythrilItem mythrilItem = (IMythrilItem)stack.getItem();
+			if (mythrilItem.isUsingEnergy(stack)) {
+				if (stack.hasEffect()) {
+					return Minecraft.isFabulousGraphicsEnabled() && renderTypeIn == Atlases.getItemEntityTranslucentCullType() ? VertexBuilderUtils.newDelegate(bufferIn.getBuffer(CRenderType.getEncMythrilGlintTranslucent()), bufferIn.getBuffer(renderTypeIn)) : VertexBuilderUtils.newDelegate(bufferIn.getBuffer(isItemIn ? CRenderType.getEncMythrilGlint() : CRenderType.getEnchantedMythrilEntityGlint()), bufferIn.getBuffer(renderTypeIn));
+				} else {
+					return Minecraft.isFabulousGraphicsEnabled() && renderTypeIn == Atlases.getItemEntityTranslucentCullType() ? VertexBuilderUtils.newDelegate(bufferIn.getBuffer(CRenderType.getMythrilGlintTranslucent()), bufferIn.getBuffer(renderTypeIn)) : VertexBuilderUtils.newDelegate(bufferIn.getBuffer(isItemIn ? CRenderType.getMythrilGlint() : CRenderType.getMythrilEntityGlint()), bufferIn.getBuffer(renderTypeIn));
+				}
 			} else {
 				return bufferIn.getBuffer(renderTypeIn);
 			}
+		} 
+		if (stack.getItem() instanceof ILegendaryGear) {
+			return Minecraft.isFabulousGraphicsEnabled() && renderTypeIn == Atlases.getItemEntityTranslucentCullType() ? VertexBuilderUtils.newDelegate(bufferIn.getBuffer(CRenderType.getLegendaryGlintTranslucent()), bufferIn.getBuffer(renderTypeIn)) : VertexBuilderUtils.newDelegate(bufferIn.getBuffer(isItemIn ? CRenderType.getLegendaryGlint() : CRenderType.getLegendaryEntityGlint()), bufferIn.getBuffer(renderTypeIn));
 		} 
 		//What it is by default
 		return ItemRenderer.getBuffer(bufferIn, renderTypeIn, isItemIn, glintIn);
@@ -268,9 +287,21 @@ public class CombatHooks {
 
 	public static IVertexBuilder getEntityGlintVertexBuilder(IRenderTypeBuffer buffer, RenderType renderType, boolean noEntity, ItemStack stack) {
 		boolean withGlint = stack.hasEffect();
+		if (stack.getItem() instanceof IMythrilItem) {
+			IMythrilItem mythrilItem = (IMythrilItem)stack.getItem();
+			if (mythrilItem.isUsingEnergy(stack)) {
+				if (stack.hasEffect()) {
+					return VertexBuilderUtils.newDelegate(buffer.getBuffer(noEntity ? CRenderType.getEncMythrilGlintDirect() : CRenderType.getEncMythrilEntityGlintDirect()), buffer.getBuffer(renderType));	
+				} else {
+					return VertexBuilderUtils.newDelegate(buffer.getBuffer(noEntity ? CRenderType.getMythrilGlintDirect() : CRenderType.getMythrilEntityGlintDirect()), buffer.getBuffer(renderType));	
+				}
+			} else {
+				return buffer.getBuffer(renderType);
+			}
+		}
 		if (stack.getItem() instanceof ILegendaryGear) {
 			withGlint = true;
-			return withGlint ? VertexBuilderUtils.newDelegate(buffer.getBuffer(noEntity ? CRenderType.getGlintDirect() : CRenderType.getEntityGlintDirect()), buffer.getBuffer(renderType)) : buffer.getBuffer(renderType);	
+			return withGlint ? VertexBuilderUtils.newDelegate(buffer.getBuffer(noEntity ? CRenderType.getLegendaryGlintDirect() : CRenderType.getLegendaryEntityGlintDirect()), buffer.getBuffer(renderType)) : buffer.getBuffer(renderType);	
 		}
 		//What it is by default
 		return ItemRenderer.getEntityGlintVertexBuilder(buffer, renderType, noEntity, withGlint);

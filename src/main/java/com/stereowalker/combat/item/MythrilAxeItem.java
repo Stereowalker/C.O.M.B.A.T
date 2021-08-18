@@ -7,7 +7,6 @@ import com.stereowalker.combat.util.EnergyUtils;
 import com.stereowalker.combat.util.EnergyUtils.EnergyType;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -17,31 +16,24 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class MagisteelAxeItem extends AxeItem implements IMagisteelItem {
+public class MythrilAxeItem extends AxeItem implements IMythrilItem {
 
 	private float attackSpeed;
 
-	public MagisteelAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
+	public MythrilAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 		this.attackSpeed = attackSpeedIn;
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (isUsingMana(stack)) {
-			Material material = state.getMaterial();
-			return EFFECTIVE_ON_MATERIALS.contains(material) ? this.efficiency * 2.0F : super.getDestroySpeed(stack, state) * 2.0F;
-		} else {
-			return super.getDestroySpeed(stack, state);
-		}
+		return isUsingEnergy(stack) ? super.getDestroySpeed(stack, state) * 2.0F : super.getDestroySpeed(stack, state);
 	}
 
 	/**
@@ -49,7 +41,7 @@ public class MagisteelAxeItem extends AxeItem implements IMagisteelItem {
 	 */
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
-		if (isUsingMana(context.getItem())) {
+		if (isUsingEnergy(context.getItem())) {
 			World world = context.getWorld();
 			BlockPos blockpos = context.getPos();
 			BlockState blockstate = world.getBlockState(blockpos);
@@ -60,7 +52,7 @@ public class MagisteelAxeItem extends AxeItem implements IMagisteelItem {
 				if (!world.isRemote) {
 					world.setBlockState(blockpos, block, 11);
 					if (playerentity != null) {
-						EnergyUtils.addEnergyToItem(context.getItem(), -10, EnergyType.MAGIC_ENERGY);
+						EnergyUtils.addEnergyToItem(context.getItem(), -10, EnergyType.DIVINE_ENERGY);
 					}
 				}
 
@@ -70,16 +62,6 @@ public class MagisteelAxeItem extends AxeItem implements IMagisteelItem {
 			}
 		} else {
 			return super.onItemUse(context);
-		}
-	}
-
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if (EnergyUtils.getEnergy(playerIn.getHeldItem(handIn), EnergyType.MAGIC_ENERGY) > 0) {
-			switchActivity(playerIn.getHeldItem(handIn), playerIn);
-			return ActionResult.resultSuccess(playerIn.getHeldItem(handIn));
-		} else {
-			return ActionResult.resultFail(playerIn.getHeldItem(handIn));
 		}
 	}
 
@@ -95,17 +77,11 @@ public class MagisteelAxeItem extends AxeItem implements IMagisteelItem {
 		attributeModifiers = builder.build();
 
 
-		return equipmentSlot == EquipmentSlotType.MAINHAND && isUsingMana(stack) ? attributeModifiers : super.getAttributeModifiers(equipmentSlot, stack);
+		return equipmentSlot == EquipmentSlotType.MAINHAND && isUsingEnergy(stack) ? attributeModifiers : super.getAttributeModifiers(equipmentSlot, stack);
 	}
 
 	@Override
-	public int defaultColor(ItemStack stack) {
-		return 0x57536B;
+	public int getMaxEnergy() {
+		return 5000;
 	}
-
-	@Override
-	public boolean usesDyeingRecipe() {
-		return false;
-	}
-
 }

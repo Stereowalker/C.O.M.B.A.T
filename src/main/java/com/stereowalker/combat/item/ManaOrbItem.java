@@ -25,16 +25,14 @@ public class ManaOrbItem extends Item {
 		EnergyUtils.setMaxEnergy(stack, 1000, EnergyType.MAGIC_ENERGY);
 		
 		super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
-		if (isSelected) {
+		if ((isSelected || itemSlot == 0) && !EnergyUtils.isFull(stack, EnergyType.MAGIC_ENERGY)) {
 			if (entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).isCreative()) {
-				EnergyUtils.addEnergyToItem(stack, EnergyUtils.getMaxEnergy(stack, EnergyType.MAGIC_ENERGY), EnergyType.MAGIC_ENERGY);
+				EnergyUtils.fillToTheBrim(stack, EnergyType.MAGIC_ENERGY);
 			}
 			else if (entityIn instanceof LivingEntity) {
 				LivingEntity entity = (LivingEntity)entityIn;
-				if (stack.getDamage() > 0) {
-					if (CombatEntityStats.addMana(entity, -0.02F)) {
-						EnergyUtils.addEnergyToItem(stack, 1, EnergyType.MAGIC_ENERGY);
-					}
+				if (CombatEntityStats.addMana(entity, -0.02F)) {
+					EnergyUtils.addEnergyToItem(stack, 1, EnergyType.MAGIC_ENERGY);
 				}
 			}
 		}

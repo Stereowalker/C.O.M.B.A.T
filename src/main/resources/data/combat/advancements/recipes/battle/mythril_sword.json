@@ -1,0 +1,32 @@
+{
+  "parent": "combat:recipes/root",
+  "rewards": {
+    "recipes": [
+      "combat:mythril_sword"
+    ]
+  },
+  "criteria": {
+    "has_mythril": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "combat:mythril_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "combat:mythril_sword"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mythril",
+      "has_the_recipe"
+    ]
+  ]
+}

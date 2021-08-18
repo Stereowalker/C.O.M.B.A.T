@@ -16,15 +16,13 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class MagisteelSwordItem extends SwordItem implements IDyeableWeaponItem, IMagisteelItem {
+public class MythrilSwordItem extends SwordItem implements IMythrilItem {
 	private final float attackSpeed;
 
-	public MagisteelSwordItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
+	public MythrilSwordItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
 		this.attackSpeed = attackSpeedIn;
 	}
@@ -35,8 +33,8 @@ public class MagisteelSwordItem extends SwordItem implements IDyeableWeaponItem,
 	 */
 	@Override
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!attacker.world.isRemote && isUsingMana(stack) && !EnergyUtils.isDrained(stack, EnergyType.MAGIC_ENERGY) && (!(attacker instanceof PlayerEntity) || !((PlayerEntity)attacker).abilities.isCreativeMode)) {
-			EnergyUtils.addEnergyToItem(stack, -10, EnergyType.MAGIC_ENERGY);
+		if (!attacker.world.isRemote && isUsingEnergy(stack) && !EnergyUtils.isDrained(stack, EnergyType.DIVINE_ENERGY) && (!(attacker instanceof PlayerEntity) || !((PlayerEntity)attacker).abilities.isCreativeMode)) {
+			EnergyUtils.addEnergyToItem(stack, -10, EnergyType.DIVINE_ENERGY);
 		}
 		return super.hitEntity(stack, target, attacker);
 	}
@@ -47,22 +45,12 @@ public class MagisteelSwordItem extends SwordItem implements IDyeableWeaponItem,
 	@Override
 	public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
 		if (state.getBlockHardness(worldIn, pos) != 0.0F) {
-			if (!entityLiving.world.isRemote && isUsingMana(stack) && !EnergyUtils.isDrained(stack, EnergyType.MAGIC_ENERGY) && (!(entityLiving instanceof PlayerEntity) || !((PlayerEntity)entityLiving).abilities.isCreativeMode)) {
-				EnergyUtils.addEnergyToItem(stack, -10, EnergyType.MAGIC_ENERGY);
+			if (!entityLiving.world.isRemote && isUsingEnergy(stack) && !EnergyUtils.isDrained(stack, EnergyType.DIVINE_ENERGY) && (!(entityLiving instanceof PlayerEntity) || !((PlayerEntity)entityLiving).abilities.isCreativeMode)) {
+				EnergyUtils.addEnergyToItem(stack, -10, EnergyType.DIVINE_ENERGY);
 			}
 		}
 		
 		return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
-	}
-
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if (EnergyUtils.getEnergy(playerIn.getHeldItem(handIn), EnergyType.MAGIC_ENERGY) > 0) {
-			switchActivity(playerIn.getHeldItem(handIn), playerIn);
-			return ActionResult.resultSuccess(playerIn.getHeldItem(handIn));
-		} else {
-			return ActionResult.resultFail(playerIn.getHeldItem(handIn));
-		}
 	}
 
 	/**
@@ -72,22 +60,17 @@ public class MagisteelSwordItem extends SwordItem implements IDyeableWeaponItem,
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, ItemStack stack) {
 		Multimap<Attribute, AttributeModifier> attributeModifiers;
 		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.getAttackDamage() * 2, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.getAttackDamage() * 2.0F, AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)this.attackSpeed, AttributeModifier.Operation.ADDITION));
 		attributeModifiers = builder.build();
 
 
-		return equipmentSlot == EquipmentSlotType.MAINHAND && isUsingMana(stack) ? attributeModifiers : super.getAttributeModifiers(equipmentSlot, stack);
+		return equipmentSlot == EquipmentSlotType.MAINHAND && isUsingEnergy(stack) ? attributeModifiers : super.getAttributeModifiers(equipmentSlot, stack);
 	}
 
 	@Override
-	public int defaultColor(ItemStack stack) {
-		return 0x57536B;
-	}
-
-	@Override
-	public boolean usesDyeingRecipe() {
-		return false;
+	public int getMaxEnergy() {
+		return 5000;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.SortedMap;
 
 import com.google.common.collect.ImmutableMap.Builder;
+import com.stereowalker.combat.advancements.CCriteriaTriggers;
 import com.stereowalker.combat.block.CBlocks;
 import com.stereowalker.combat.block.PyraniteFireBlock;
 import com.stereowalker.combat.client.gui.screen.CombatConfigScreen;
@@ -155,6 +156,7 @@ public class Combat extends UnionMod
 		if (ModHelper.isCuriosLoaded())
 			MinecraftForge.EVENT_BUS.register(CuriosEvents.class);
 		BrewingPotion.registerBrewing();
+		CCriteriaTriggers.registerAll();
 		setBurnableBlocks();
 		CTags.init();
 		CEntityTypeTags.init();
@@ -207,13 +209,29 @@ public class Combat extends UnionMod
 
 		DimensionRenderInfo.field_239208_a_.put(CDimensionType.ACROTLEST_ID, new CDImensionRenderInfo.Acrotlest());
 		SortedMap<RenderType, BufferBuilder> fixedBuffers = Util.make(new Object2ObjectLinkedOpenHashMap<>(), (p_228485_1_) -> {
-			put(p_228485_1_, CRenderType.getArmorGlint());
-			put(p_228485_1_, CRenderType.getArmorEntityGlint());
-			put(p_228485_1_, CRenderType.getGlint());
-			put(p_228485_1_, CRenderType.getGlintDirect());
-			put(p_228485_1_, CRenderType.getGlintTranslucent());
-			put(p_228485_1_, CRenderType.getEntityGlint());
-			put(p_228485_1_, CRenderType.getEntityGlintDirect());
+			put(p_228485_1_, CRenderType.getLegendaryArmorGlint());
+			put(p_228485_1_, CRenderType.getLegendaryArmorEntityGlint());
+			put(p_228485_1_, CRenderType.getLegendaryGlint());
+			put(p_228485_1_, CRenderType.getLegendaryGlintDirect());
+			put(p_228485_1_, CRenderType.getLegendaryGlintTranslucent());
+			put(p_228485_1_, CRenderType.getLegendaryEntityGlint());
+			put(p_228485_1_, CRenderType.getLegendaryEntityGlintDirect());
+
+			put(p_228485_1_, CRenderType.getMythrilArmorGlint());
+			put(p_228485_1_, CRenderType.getMythrilArmorEntityGlint());
+			put(p_228485_1_, CRenderType.getMythrilGlint());
+			put(p_228485_1_, CRenderType.getMythrilGlintDirect());
+			put(p_228485_1_, CRenderType.getMythrilGlintTranslucent());
+			put(p_228485_1_, CRenderType.getMythrilEntityGlint());
+			put(p_228485_1_, CRenderType.getMythrilEntityGlintDirect());
+
+			put(p_228485_1_, CRenderType.getEncMythrilArmorGlint());
+			put(p_228485_1_, CRenderType.getEncMythrilArmorEntityGlint());
+			put(p_228485_1_, CRenderType.getEncMythrilGlint());
+			put(p_228485_1_, CRenderType.getEncMythrilGlintDirect());
+			put(p_228485_1_, CRenderType.getEncMythrilGlintTranslucent());
+			put(p_228485_1_, CRenderType.getEnchantedMythrilEntityGlint());
+			put(p_228485_1_, CRenderType.getEncMythrilEntityGlintDirect());
 		});
 		Minecraft.getInstance().getRenderTypeBuffers().fixedBuffers.putAll(fixedBuffers);
 	}

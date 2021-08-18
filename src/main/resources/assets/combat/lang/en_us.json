@@ -364,6 +364,11 @@
 	"item.combat.magisteel_sword": "Magisteel Sword",
 	"item.combat.magisteel_axe": "Magisteel Axe",
 	"item.combat.sheath": "Sheath",
+	"item.combat.mythril_ingot": "Mythril Ingot",
+	"item.combat.mythril_sword": "Mythril Sword",
+	"item.combat.mythril_axe": "Mythril Axe",
+	"item.combat.mythril_pickaxe": "Mythril Pickaxe",
+	"item.combat.mythril_hoe": "Mythril Hoe",
 ///////////////////////////////////////////////////////////[BLOCKS]///////////////////////////////////////////////////////////
 	"block.combat.copper_block": "Copper Block",
 	"block.combat.copper_door": "Copper Door",
@@ -532,6 +537,7 @@
 	"block.combat.rezal_leaves": "Rezal Leaves",
 	"block.combat.rezal_planks": "Rezal Planks",
 	"block.combat.rezal_wood": "Rezal Wood",
+	"block.combat.mythril_charger": "Mythril Charger",
 ///////////////////////////////////////////////////////////[BIOMES]///////////////////////////////////////////////////////////
 	"biome.combat.magic_forest": "Magic Forest",
 	"biome.combat.magic_plains": "Magic Plains",
@@ -921,6 +927,12 @@
 	"advancements.battle.root.description": "More weapons for everyone",
 	"advancements.battle.throw_spear.title": "A Throwaway Joke Part 2",
 	"advancements.battle.throw_spear.description": "Throw a spear at something.\nNote: Ignore the warning in the first version, spears were meant to be thrown.",
+	"advancements.technology.root.title": "Technology",
+	"advancements.technology.root.description": "Automate, Build, Create, Design and Engineer using every bit of tech to your advantage",
+	"advancements.technology.find_mythril_ingot.title": "How Old Is This?",
+	"advancements.technology.find_mythril_ingot.description": "Find a piece of ancient lost tech.",
+	"advancements.technology.charge_mythril_item.title": "Not Ao Devine Afterall",
+	"advancements.technology.charge_mythril_item.description": "Charge any mythril item",
 ///////////////////////////////////////////////////////////[KEYBINDS]///////////////////////////////////////////////////////////
 	"key.category.combat.general": "C.O.M.B.A.T.",
 	"key.combat.prev_spell": "Previous Spell",

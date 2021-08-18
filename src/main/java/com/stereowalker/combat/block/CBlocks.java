@@ -28,7 +28,6 @@ import net.minecraft.block.PaneBlock;
 import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SandBlock;
-import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.StairsBlock;
@@ -298,6 +297,7 @@ public class CBlocks {
 	public static final Block CONNECTOR = register("connector", new ConnectorBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).setRequiresTool().harvestLevel(2).hardnessAndResistance(2.0f, 3.0f).setLightLevel((p_235418_0_) -> {
 		return 3;
 	}).sound(SoundType.METAL)));
+	public static final Block MYTHRIL_CHARGER = register("mythril_charger", new MythrilChargerBlock(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).setRequiresTool().harvestLevel(2).hardnessAndResistance(2.0f, 3.0f).sound(SoundType.METAL)));
 	public static final Block ACROTLEST_FARMLAND = register("acrotlest_farmland", new FarmlandBlock(Block.Properties.create(Material.EARTH).tickRandomly().hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
 	public static final Block GROPAPY = register("gropapy", new GropapyBlock(Block.Properties.create(Material.ORGANIC, MaterialColor.ADOBE).slipperiness(0.8F).sound(SoundType.SLIME).notSolid()));
 	public static final Block PYRANITE_TORCH = register("pyranite_torch", new TorchBlock(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().zeroHardnessAndResistance().setLightLevel((p_235418_0_) -> {
@@ -317,7 +317,7 @@ public class CBlocks {
 	}).sound(SoundType.STONE)));
 	public static final Block DISENCHANTING_TABLE = register("disenchanting_table", new DisenchantingTableBlock(Block.Properties.create(Material.ROCK, MaterialColor.BLUE).hardnessAndResistance(5.0F, 1200.0F)));
 	public static final Block HOMSE = register("homse", new SandBlock(0Xfff98f, Block.Properties.create(Material.SAND, MaterialColor.STONE).hardnessAndResistance(0.7F).sound(SoundType.GROUND)));
-	public static final Block BATTERY_CHARGER = register("battery_charger", new BatteryChargerBlock(Block.Properties.create(Material.IRON)));
+//	public static final Block BATTERY_CHARGER = register("battery_charger", new MythrilChargerBlock(Block.Properties.create(Material.IRON)));
 
 	private static ToIntFunction<BlockState> getLightValueLit(int lightValue) {
 		return (p_235421_1_) -> {

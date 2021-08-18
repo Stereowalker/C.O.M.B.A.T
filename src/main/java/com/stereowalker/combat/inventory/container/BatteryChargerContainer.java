@@ -1,6 +1,6 @@
 package com.stereowalker.combat.inventory.container;
 
-import com.stereowalker.combat.tileentity.BatteryChargerTileEntity;
+import com.stereowalker.combat.tileentity.MythrilChargerTileEntity;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -18,7 +18,7 @@ public class BatteryChargerContainer extends Container {
    private final IIntArray data;
 
    public BatteryChargerContainer(int id, PlayerInventory playerInventory) {
-      this(id, new BatteryChargerTileEntity(), playerInventory, new IntArray(4));
+      this(id, new MythrilChargerTileEntity(), playerInventory, new IntArray(4));
    }
 
    public BatteryChargerContainer(int id, IInventory crateInventory, PlayerInventory playerInventory, IIntArray dataIn) {
