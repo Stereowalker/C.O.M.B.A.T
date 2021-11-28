@@ -39,7 +39,6 @@ import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.rankup.skill.api.SkillUtil;
-import com.stereowalker.unionlib.event.item.ItemAttributeEvent;
 import com.stereowalker.unionlib.util.EntityHelper;
 import com.stereowalker.unionlib.util.math.UnionMathHelper;
 
@@ -76,6 +75,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -117,9 +117,9 @@ public class GameEvents {
 	}
 
 	@SubscribeEvent
-	public static void modifyAttributes(ItemAttributeEvent event) {
-		if (getReach(event.getStack().getItem()) > 0 && (!(event.getStack().getItem() instanceof ArmorItem) && event.getEquipmentSlot() == EquipmentSlotType.MAINHAND) || (event.getStack().getItem() instanceof ArmorItem && ((ArmorItem)event.getStack().getItem()).getEquipmentSlot() == event.getEquipmentSlot())) {
-			event.getAttributeMap().put(CAttributes.ATTACK_REACH, new AttributeModifier(UUIDS.ATTACK_REACH_MODIFIER, "Weapon modifier", getReach(event.getStack().getItem()), AttributeModifier.Operation.ADDITION)); 
+	public static void modifyAttributes(ItemAttributeModifierEvent event) {
+		if (getReach(event.getItemStack().getItem()) > 0 && (!(event.getItemStack().getItem() instanceof ArmorItem) && event.getSlotType() == EquipmentSlotType.MAINHAND) || (event.getItemStack().getItem() instanceof ArmorItem && ((ArmorItem)event.getItemStack().getItem()).getEquipmentSlot() == event.getSlotType())) {
+			event.addModifier(CAttributes.ATTACK_REACH, new AttributeModifier(UUIDS.ATTACK_REACH_MODIFIER, "Weapon modifier", getReach(event.getItemStack().getItem()), AttributeModifier.Operation.ADDITION)); 
 		}
 	}
 
