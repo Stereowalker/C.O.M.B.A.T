@@ -1,27 +1,26 @@
 package com.stereowalker.combat.client.renderer.entity;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.client.renderer.entity.model.LichuModel;
-import com.stereowalker.combat.entity.monster.LichuEntity;
+import com.stereowalker.combat.client.model.LichuModel;
+import com.stereowalker.combat.client.model.geom.CModelLayers;
+import com.stereowalker.combat.world.entity.monster.Lichu;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class LichuRenderer extends MobRenderer<LichuEntity, LichuModel<LichuEntity>> {
-   private static final ResourceLocation LICHU_TEXTURES = Combat.getInstance().location("textures/entity/lichu.png");
+public class LichuRenderer extends MobRenderer<Lichu, LichuModel<Lichu>> {
+	private static final ResourceLocation LICHU_TEXTURES = Combat.getInstance().location("textures/entity/lichu.png");
 
-   public LichuRenderer(EntityRendererManager renderManagerIn) {
-      super(renderManagerIn, new LichuModel<>(), 0.7F);
-   }
+	public LichuRenderer(EntityRendererProvider.Context p_173964_) {
+		super(p_173964_, new LichuModel<>(p_173964_.bakeLayer(CModelLayers.LICHU)), 0.7F);
+	}
 
-   /**
-    * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-    */
-   public ResourceLocation getEntityTexture(LichuEntity entity) {
-      return LICHU_TEXTURES;
-   }
+	@Override
+	public ResourceLocation getTextureLocation(Lichu entity) {
+		return LICHU_TEXTURES;
+	}
 }

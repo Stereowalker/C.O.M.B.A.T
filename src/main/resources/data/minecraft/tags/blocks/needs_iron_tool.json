@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "combat:tridox_ore",
+    "combat:ruby_ore",
+    "combat:lozyne_ore",
+    "combat:serable_ore",
+    "combat:bronze_block",
+    "combat:tridox_block",
+    "combat:ruby_block",
+    "combat:lozyne_block",
+    "combat:steel_block",
+    "combat:serable_block",
+	"combat:alloy_furnace",
+	"combat:yellow_magic_cluster",
+	"combat:mana_generator",
+	"combat:mythril_charger",
+	"combat:electric_furnace",
+	"combat:connector"
+  ]
+}

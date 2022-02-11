@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "#forge:ores/copper",
     "#forge:ores/pasquem",
     "#forge:ores/pelgan",
     "#forge:ores/lozyne",
     "#forge:ores/pyranite",
+    "#forge:ores/tin",
     "#forge:ores/tridox"
   ]
 }

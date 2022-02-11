@@ -5,24 +5,24 @@ import java.util.List;
 
 import com.stereowalker.combat.Combat;
 
-import net.minecraft.stats.IStatFormatter;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.StatType;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class CStats {
 	private static final List<StatType<?>> STATTYPES = new ArrayList<StatType<?>>();
 	private static final List<ResourceLocation> CUSTOMSTATS = new ArrayList<ResourceLocation>();
 
-	public static final ResourceLocation SHOTS_FIRED = registerCustom("shots_fired", IStatFormatter.DEFAULT);
-	public static final ResourceLocation GUNS_RELOADED = registerCustom("guns_reloaded", IStatFormatter.DEFAULT);
-	public static final ResourceLocation SPELLS_CASTED = registerCustom("spells_casted", IStatFormatter.DEFAULT);
-	public static final ResourceLocation INTERACT_WITH_WOODCUTTER = registerCustom("interact_with_woodcutter", IStatFormatter.DEFAULT);
-	public static final ResourceLocation DAMAGE_BLOCKED_BY_WEAPON = registerCustom("damage_blocked_by_weapon", IStatFormatter.DIVIDE_BY_TEN);
+	public static final ResourceLocation SHOTS_FIRED = registerCustom("shots_fired", StatFormatter.DEFAULT);
+	public static final ResourceLocation GUNS_RELOADED = registerCustom("guns_reloaded", StatFormatter.DEFAULT);
+	public static final ResourceLocation SPELLS_CASTED = registerCustom("spells_casted", StatFormatter.DEFAULT);
+	public static final ResourceLocation INTERACT_WITH_WOODCUTTER = registerCustom("interact_with_woodcutter", StatFormatter.DEFAULT);
+	public static final ResourceLocation DAMAGE_BLOCKED_BY_WEAPON = registerCustom("damage_blocked_by_weapon", StatFormatter.DIVIDE_BY_TEN);
 
-	private static ResourceLocation registerCustom(String key, IStatFormatter formatter) {
+	private static ResourceLocation registerCustom(String key, StatFormatter formatter) {
 		ResourceLocation resourcelocation = Combat.getInstance().location(key);
 		Registry.register(Registry.CUSTOM_STAT, key, resourcelocation);
 		Stats.CUSTOM.get(resourcelocation, formatter);

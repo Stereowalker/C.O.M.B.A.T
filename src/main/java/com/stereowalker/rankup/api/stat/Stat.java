@@ -3,16 +3,16 @@ package com.stereowalker.rankup.api.stat;
 import java.util.UUID;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.config.Config;
-import com.stereowalker.rankup.stat.PlayerAttributeLevels;
+import com.stereowalker.old.combat.config.Config;
+import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.Util;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class Stat extends ForgeRegistryEntry<Stat>{
@@ -31,13 +31,13 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 		return getTranslationKey();
 	}
 
-	public IFormattableTextComponent getName() {
-		return new TranslationTextComponent(this.getTranslationKey());
+	public MutableComponent getName() {
+		return new TranslatableComponent(this.getTranslationKey());
 	}
 
 	protected String getDefaultTranslationKey() {
 		if (this.translationKey == null) {
-			this.translationKey = Util.makeTranslationKey("stat", this.getRegistryName());
+			this.translationKey = Util.makeDescriptionId("stat", this.getRegistryName());
 		}
 
 		return this.translationKey;
@@ -72,19 +72,19 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 		return total;
 	}
 	
-	public int getExperienceCost(PlayerEntity player) {
+	public int getExperienceCost(Player player) {
 		return getExperienceCost(PlayerAttributeLevels.getStatPoints(player, this).getPoints());
 	}
 	
-	public int getCurrentPoints(PlayerEntity player) {
+	public int getCurrentPoints(Player player) {
 		return PlayerAttributeLevels.getStatPoints(player, this).getPoints();
 	}
 	
-	public int getAdditionalPoints(PlayerEntity player) {
+	public int getAdditionalPoints(Player player) {
 		return PlayerAttributeLevels.getStatPoints(player, this).getModifierPoints();
 	}
 	
-	public int getEffortPoints(PlayerEntity player) {
+	public int getEffortPoints(Player player) {
 		return PlayerAttributeLevels.getStatPoints(player, this).getEffortPoints();
 	}
 }

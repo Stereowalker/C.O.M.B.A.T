@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:pelgan_ore",
+    "combat:cassiterite",
+    "combat:pelgan_block",
+	"combat:limestone"
+  ]
+}

@@ -1,6 +1,6 @@
 package com.stereowalker.combat.api.registries;
 
-import com.stereowalker.combat.api.spell.Spell;
+import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.skill.api.Skill;
 

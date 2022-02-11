@@ -2,57 +2,57 @@ package com.stereowalker.combat.client.events;
 
 import java.util.Random;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Vector3f;
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.api.spell.SpellCategory;
-import com.stereowalker.combat.api.spell.Spell;
-import com.stereowalker.combat.block.CBlocks;
+import com.stereowalker.combat.api.world.spellcraft.Spell;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.compat.SurviveCompat;
-import com.stereowalker.combat.config.Config;
-import com.stereowalker.combat.entity.CombatEntityStats;
-import com.stereowalker.combat.entity.ai.CAttributes;
-import com.stereowalker.combat.item.AbstractMagicCastingItem;
-import com.stereowalker.combat.item.AbstractSpellBookItem;
-import com.stereowalker.combat.item.GunItem;
-import com.stereowalker.combat.item.ItemFilters;
-import com.stereowalker.combat.item.ReinforcedCrossbowItem;
-import com.stereowalker.combat.potion.CEffects;
-import com.stereowalker.combat.spell.SpellStats;
+import com.stereowalker.combat.world.entity.CombatEntityStats;
+import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
+import com.stereowalker.combat.world.item.AbstractMagicCastingItem;
+import com.stereowalker.combat.world.item.AbstractSpellBookItem;
+import com.stereowalker.combat.world.item.GunItem;
+import com.stereowalker.combat.world.item.ItemFilters;
+import com.stereowalker.combat.world.item.ReinforcedCrossbowItem;
+import com.stereowalker.combat.world.level.block.CBlocks;
+import com.stereowalker.combat.world.spellcraft.SpellStats;
+import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.unionlib.util.ModHelper;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.IngameGui;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.potion.Effects;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -68,8 +68,8 @@ public class RenderEvent {
 	public static final ResourceLocation FROSTBITE_OVERLAY = Combat.getInstance().location("textures/misc/frostbite_overlay.png");
 
 	static Minecraft mc = Minecraft.getInstance();
-	static IngameGui gui() {
-		return mc.ingameGUI;
+	static Gui gui() {
+		return mc.gui;
 	}
 
 	static long healthUpdateCounter;
@@ -80,35 +80,35 @@ public class RenderEvent {
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void renderLayer(RenderLivingEvent<?, ?> event) {
-		if (event.getEntity() instanceof ClientPlayerEntity) {
-			ClientPlayerEntity clientPlayer = (ClientPlayerEntity) event.getEntity();
-			ItemStack itemstack = clientPlayer.getHeldItemMainhand();
-			ItemStack itemstack1 = clientPlayer.getHeldItemOffhand();
+		if (event.getEntity() instanceof LocalPlayer) {
+			LocalPlayer clientPlayer = (LocalPlayer) event.getEntity();
+			ItemStack itemstack = clientPlayer.getMainHandItem();
+			ItemStack itemstack1 = clientPlayer.getOffhandItem();
 			if ((itemstack.getItem() instanceof ReinforcedCrossbowItem ||itemstack.getItem() instanceof GunItem) 
 					|| (itemstack1.getItem() instanceof ReinforcedCrossbowItem ||itemstack1.getItem() instanceof GunItem)) {
 				PlayerRenderer playerRenderer = (PlayerRenderer) event.getRenderer();
-				PlayerModel<AbstractClientPlayerEntity> playermodel = playerRenderer.getEntityModel();
-				BipedModel.ArmPose bipedmodel$armpose = getArmPose(clientPlayer, itemstack, itemstack1, Hand.MAIN_HAND);
-				BipedModel.ArmPose bipedmodel$armpose1 = getArmPose(clientPlayer, itemstack, itemstack1, Hand.OFF_HAND);
-				if (clientPlayer.getPrimaryHand() == HandSide.RIGHT) {
-					if (!bipedmodel$armpose.equals(BipedModel.ArmPose.EMPTY) && !bipedmodel$armpose.equals(BipedModel.ArmPose.ITEM)) playermodel.rightArmPose = bipedmodel$armpose;
-					if (!bipedmodel$armpose1.equals(BipedModel.ArmPose.EMPTY) && !bipedmodel$armpose1.equals(BipedModel.ArmPose.ITEM)) playermodel.leftArmPose = bipedmodel$armpose1;
+				PlayerModel<AbstractClientPlayer> playermodel = playerRenderer.getModel();
+				HumanoidModel.ArmPose bipedmodel$armpose = getArmPose(clientPlayer, itemstack, itemstack1, InteractionHand.MAIN_HAND);
+				HumanoidModel.ArmPose bipedmodel$armpose1 = getArmPose(clientPlayer, itemstack, itemstack1, InteractionHand.OFF_HAND);
+				if (clientPlayer.getMainArm() == HumanoidArm.RIGHT) {
+					if (!bipedmodel$armpose.equals(HumanoidModel.ArmPose.EMPTY) && !bipedmodel$armpose.equals(HumanoidModel.ArmPose.ITEM)) playermodel.rightArmPose = bipedmodel$armpose;
+					if (!bipedmodel$armpose1.equals(HumanoidModel.ArmPose.EMPTY) && !bipedmodel$armpose1.equals(HumanoidModel.ArmPose.ITEM)) playermodel.leftArmPose = bipedmodel$armpose1;
 				} else {
-					if (!bipedmodel$armpose1.equals(BipedModel.ArmPose.EMPTY) && !bipedmodel$armpose1.equals(BipedModel.ArmPose.ITEM)) playermodel.rightArmPose = bipedmodel$armpose1;
-					if (!bipedmodel$armpose.equals(BipedModel.ArmPose.EMPTY) && !bipedmodel$armpose.equals(BipedModel.ArmPose.ITEM)) playermodel.leftArmPose = bipedmodel$armpose;
+					if (!bipedmodel$armpose1.equals(HumanoidModel.ArmPose.EMPTY) && !bipedmodel$armpose1.equals(HumanoidModel.ArmPose.ITEM)) playermodel.rightArmPose = bipedmodel$armpose1;
+					if (!bipedmodel$armpose.equals(HumanoidModel.ArmPose.EMPTY) && !bipedmodel$armpose.equals(HumanoidModel.ArmPose.ITEM)) playermodel.leftArmPose = bipedmodel$armpose;
 				}
 			}
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static BipedModel.ArmPose getArmPose(AbstractClientPlayerEntity player, ItemStack itemStackMain, ItemStack itemStackOff, Hand handIn) {
-		BipedModel.ArmPose bipedmodel$armpose = BipedModel.ArmPose.EMPTY;
-		ItemStack itemstack = handIn == Hand.MAIN_HAND ? itemStackMain : itemStackOff;
+	public static HumanoidModel.ArmPose getArmPose(AbstractClientPlayer player, ItemStack itemStackMain, ItemStack itemStackOff, InteractionHand handIn) {
+		HumanoidModel.ArmPose bipedmodel$armpose = HumanoidModel.ArmPose.EMPTY;
+		ItemStack itemstack = handIn == InteractionHand.MAIN_HAND ? itemStackMain : itemStackOff;
 		if (!itemstack.isEmpty()) {
-			bipedmodel$armpose = BipedModel.ArmPose.ITEM;
+			bipedmodel$armpose = HumanoidModel.ArmPose.ITEM;
 			if (itemstack.getItem() instanceof GunItem && !player.isSprinting()) {
-				bipedmodel$armpose = BipedModel.ArmPose.CROSSBOW_HOLD;
+				bipedmodel$armpose = HumanoidModel.ArmPose.CROSSBOW_HOLD;
 			}
 			else {
 				boolean flag3 = itemStackMain.getItem() instanceof ReinforcedCrossbowItem;
@@ -116,11 +116,11 @@ public class RenderEvent {
 				boolean flag1 = itemStackOff.getItem() instanceof ReinforcedCrossbowItem;
 				boolean flag2 = CrossbowItem.isCharged(itemStackOff);
 				if (flag3 && flag) {
-					bipedmodel$armpose = BipedModel.ArmPose.CROSSBOW_HOLD;
+					bipedmodel$armpose = HumanoidModel.ArmPose.CROSSBOW_HOLD;
 				}
 
-				if (flag1 && flag2 && itemStackMain.getItem().getUseAction(itemStackMain) == UseAction.NONE) {
-					bipedmodel$armpose = BipedModel.ArmPose.CROSSBOW_HOLD;
+				if (flag1 && flag2 && itemStackMain.getItem().getUseAnimation(itemStackMain) == UseAnim.NONE) {
+					bipedmodel$armpose = HumanoidModel.ArmPose.CROSSBOW_HOLD;
 				}
 			}
 		}
@@ -138,48 +138,48 @@ public class RenderEvent {
 	//		//	}
 	//	}
 
+	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void swordBlock(RenderHandEvent event) {
-		ClientPlayerEntity player = Minecraft.getInstance().player;
+		LocalPlayer player = Minecraft.getInstance().player;
 		ItemStack stack = event.getItemStack();
-		boolean flag = event.getHand() == Hand.MAIN_HAND;
-		HandSide handside = flag ? player.getPrimaryHand() : player.getPrimaryHand().opposite();
+		boolean flag = event.getHand() == InteractionHand.MAIN_HAND;
+		HumanoidArm handside = flag ? player.getMainArm() : player.getMainArm().getOpposite();
 		if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
-			if (player.isHandActive() && player.getItemInUseCount() > 0 && player.getActiveHand() == event.getHand()) {
-//				event.getMatrixStack().push();
-				boolean flag3 = handside == HandSide.RIGHT;
+			if (player.isUsingItem() && player.getUseItemRemainingTicks() > 0 && player.getUsedItemHand() == event.getHand()) {
+				//				event.getMatrixStack().pushPose();
+				boolean flag3 = handside == HumanoidArm.RIGHT;
 				transformBlockFirstPerson(event.getMatrixStack(), event.getPartialTicks(), handside, stack);
 				transformSideFirstPerson(event.getMatrixStack(), handside, event.getEquipProgress());
-				Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(player, stack, flag3 ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !flag3, event.getMatrixStack(), event.getBuffers(), event.getLight());
+				Minecraft.getInstance().getItemInHandRenderer().renderItem(player, stack, flag3 ? ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !flag3, event.getMatrixStack(), event.getBuffers(), event.getLight());
 				event.setCanceled(false);
-//				event.getMatrixStack().pop();
+				//				event.getMatrixStack().popPose();
 			}
 		}
 	}
 
-	private static void transformBlockFirstPerson(MatrixStack matrixStackIn, float partialTicks, HandSide handIn, ItemStack stack) {
-		int i = handIn == HandSide.RIGHT ? 1 : -1;
-		matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(70 * i));
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90 * i));
+	private static void transformBlockFirstPerson(PoseStack matrixStackIn, float partialTicks, HumanoidArm handIn, ItemStack stack) {
+		int i = handIn == HumanoidArm.RIGHT ? 1 : -1;
+		matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(70 * i));
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90 * i));
 		matrixStackIn.translate(0.0d, -0.1d * i, 0.5d);
 	}
 
-	private static void transformSideFirstPerson(MatrixStack matrixStackIn, HandSide handIn, float equippedProg) {
-		int i = handIn == HandSide.RIGHT ? 1 : -1;
+	private static void transformSideFirstPerson(PoseStack matrixStackIn, HumanoidArm handIn, float equippedProg) {
+		int i = handIn == HumanoidArm.RIGHT ? 1 : -1;
 		matrixStackIn.translate((double)((float)i * 0.56F), (double)(-0.52F + equippedProg * -0.6F), (double)-0.72F);
 	}
 
-	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void renderHUD(RenderGameOverlayEvent.Post event) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		Random rand = new Random();
 		//Render Mana Bar
-		PlayerEntity playerentity = gui().getRenderViewPlayer();
+		Player playerentity = gui().getCameraPlayer();
 		LivingEntity living;
 		if (playerentity != null) {
-			Entity entity = playerentity.getRidingEntity();
+			Entity entity = playerentity.getVehicle();
 			if (entity == null) {
 				living = null;
 			}
@@ -191,32 +191,32 @@ public class RenderEvent {
 
 		living = null;
 		if (playerentity != null) {
-			ModifiableAttributeInstance iattributemaxHealth = playerentity.getAttribute(Attributes.MAX_HEALTH);
-			ModifiableAttributeInstance iattributemaxMana = playerentity.getAttribute(CAttributes.MAX_MANA);
+			AttributeInstance iattributemaxHealth = playerentity.getAttribute(Attributes.MAX_HEALTH);
+			AttributeInstance iattributemaxMana = playerentity.getAttribute(CAttributes.MAX_MANA);
 			double maxHealth = ModHelper.isMantleLoaded() ? Math.min(iattributemaxHealth.getValue(), 20) : iattributemaxHealth.getValue();
-			int absorption = ModHelper.isMantleLoaded() ? Math.min(MathHelper.ceil(playerentity.getAbsorptionAmount()), 20) : MathHelper.ceil(playerentity.getAbsorptionAmount());
+			int absorption = ModHelper.isMantleLoaded() ? Math.min(Mth.ceil(playerentity.getAbsorptionAmount()), 20) : Mth.ceil(playerentity.getAbsorptionAmount());
 			double totalHealth = maxHealth + absorption;
-			int i1 = gui().scaledWidth / 2 - 91;
-			int j1 = gui().scaledWidth / 2 + 91;
-			int k1 = gui().scaledHeight - 39;
+			int i1 = gui().screenWidth / 2 - 91;
+			int j1 = gui().screenWidth / 2 + 91;
+			int k1 = gui().screenHeight - 39;
 			float f = (float)maxHealth;
 			int l1 = absorption;
-			int i2 = MathHelper.ceil((f + (float)l1) / 2.0F / 10.0F);
+			int i2 = Mth.ceil((f + (float)l1) / 2.0F / 10.0F);
 			int j2 = Math.max(10 - (i2 - 2), 3);
 			int k2 = k1 - (i2 - 1) * j2 - 10;
-			int j3 = playerentity.getTotalArmorValue();
-			if (event.getType() == RenderGameOverlayEvent.ElementType.ARMOR) {
+			int j3 = playerentity.getArmorValue();
+			if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 				renderArmorOverlay(event.getMatrixStack(), maxHealth, absorption, playerentity, k1, i1);
 			}
-			if (event.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
+			if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 				renderSaturationOverlay(event.getMatrixStack(), living, playerentity, j1, k1, rand);
 			}
 			boolean needsAir = false;
-			int l6 = playerentity.getAir();
-			int j7 = playerentity.getMaxAir();
-			if (playerentity.areEyesInFluid(FluidTags.WATER) || l6 < j7) {
-				int j8 = MathHelper.ceil((double)(l6 - 2) * 10.0D / (double)j7);
-				int l8 = MathHelper.ceil((double)l6 * 10.0D / (double)j7) - j8;
+			int l6 = playerentity.getAirSupply();
+			int j7 = playerentity.getMaxAirSupply();
+			if (playerentity.isEyeInFluid(FluidTags.WATER) || l6 < j7) {
+				int j8 = Mth.ceil((double)(l6 - 2) * 10.0D / (double)j7);
+				int l8 = Mth.ceil((double)l6 * 10.0D / (double)j7) - j8;
 
 				for(int k5 = 0; k5 < j8 + l8; ++k5) {
 					if (k5 < j8) {
@@ -227,47 +227,40 @@ public class RenderEvent {
 				}
 			}
 
-			int x = gui().scaledWidth / 2 - 91;
-			if (event.getType() == RenderGameOverlayEvent.ElementType.ARMOR || event.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
+			int x = gui().screenWidth / 2 - 91;
+			if (event.getType() == RenderGameOverlayEvent.ElementType.ALL || event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 				renderManaOverlay(event.getMatrixStack(), needsAir, iattributemaxMana, playerentity, totalHealth, x, j3, k2);
 			}
 
 			if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 				renderSpellOverlay(event.getMatrixStack(), playerentity, k2);
 			}
-			if (playerentity.getHeldItemMainhand().getItem() instanceof GunItem) {
-				ItemStack itemStack = playerentity.getHeldItemMainhand();
-				GunItem item = (GunItem)playerentity.getHeldItemMainhand().getItem();
-				if (event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE) {
-					mc.getProfiler().startSection("ammo");
+			if (playerentity.getMainHandItem().getItem() instanceof GunItem) {
+				ItemStack itemStack = playerentity.getMainHandItem();
+				GunItem item = (GunItem)playerentity.getMainHandItem().getItem();
+				if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+					mc.getProfiler().push("ammo");
 					String s = item.getAmmo(itemStack) + "/" + item.getMagazineCapacity();
-					int i10 = gui().scaledWidth - mc.fontRenderer.getStringWidth(s);
-					if(Minecraft.isGuiEnabled() && !mc.playerController.isSpectatorMode()) {
-						mc.fontRenderer.drawString(event.getMatrixStack(), s, (float)(i10 - 10), 10, TextFormatting.YELLOW.getColor());
+					int i10 = gui().screenWidth - mc.font.width(s);
+					if(Minecraft.renderNames() && !mc.gameMode.isAlwaysFlying()) {
+						mc.font.draw(event.getMatrixStack(), s, (float)(i10 - 10), 10, ChatFormatting.YELLOW.getColor());
 					}
-					mc.getProfiler().endSection();
-				}
-			}
-
-			//Render Frostbite Overlay
-			if (event.getType() == RenderGameOverlayEvent.ElementType.VIGNETTE) {
-				if(playerentity.isPotionActive(CEffects.FROSTBITE)) {
-					renderFrostbiteOverlay();
+					mc.getProfiler().pop();
 				}
 			}
 
 			//Render Acrotlest Portal Overlay
-			if (playerentity.getBlockState().getBlock() == CBlocks.ACROTLEST_RUINED_PORTAL || playerentity.getBlockState().getBlock() == CBlocks.ACROTLEST_PORTAL) {
-				if (event.getType() == RenderGameOverlayEvent.ElementType.PORTAL) {
-					if (!mc.player.isPotionActive(Effects.NAUSEA)) {
-						float f1 = MathHelper.lerp(event.getPartialTicks(), mc.player.prevTimeInPortal, mc.player.timeInPortal);
+			if (playerentity.getFeetBlockState().getBlock() == CBlocks.ACROTLEST_RUINED_PORTAL || playerentity.getFeetBlockState().getBlock() == CBlocks.ACROTLEST_PORTAL) {
+				if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+					if (!mc.player.hasEffect(MobEffects.CONFUSION)) {
+						float f1 = Mth.lerp(event.getPartialTicks(), mc.player.oPortalTime, mc.player.portalTime);
 						if (f1 > 0.0F) {
 							renderPortal(f1);
 						}
 					}
 				}
 			}
-			//RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			//RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			//RenderSystem.enableBlend();
 			//RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 			//RenderSystem.disableAlphaTest();
@@ -275,10 +268,10 @@ public class RenderEvent {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void renderArmorOverlay(MatrixStack matrixStack, double maxHealth, int absorption, PlayerEntity playerentity, int k1, int i1) {
+	public static void renderArmorOverlay(PoseStack matrixStack, double maxHealth, int absorption, Player playerentity, int k1, int i1) {
 		float f0 = Combat.isFirstAidLoaded() ? 0.0f : (float)maxHealth;
 		int l10 = Combat.isFirstAidLoaded() ? 0 : absorption;
-		int i20 = MathHelper.ceil((f0 + (float)l10) / 2.0F / 10.0F);
+		int i20 = Mth.ceil((f0 + (float)l10) / 2.0F / 10.0F);
 		int j20 = Math.max(10 - (i20 - 2), 3);
 		int k20 = k1 - (i20 - 1) * j20 - 10;
 		int armorY = Combat.isFirstAidLoaded() ? k20-2 : k20;
@@ -289,17 +282,17 @@ public class RenderEvent {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void renderSaturationOverlay(MatrixStack matrixStack, LivingEntity living, PlayerEntity playerentity, int j1, int k1, Random rand) {
+	public static void renderSaturationOverlay(PoseStack matrixStack, LivingEntity living, Player playerentity, int j1, int k1, Random rand) {
 		LivingEntity livingentity = living;
-		int l = (int) (playerentity.getFoodStats().getSaturationLevel());
+		int l = (int) (playerentity.getFoodData().getSaturationLevel());
 		int j6 = func_212306_a(livingentity);
 		if (j6 == 0) {
-			startSection("saturation");
+			push("saturation");
 			for(int k6 = 0; k6 < 10; ++k6) {
 				int i7 = k1;
 				int k7 = 16;
 				int i8 = 0;
-				if (playerentity.getFoodStats().getSaturationLevel() <= 0.0F && gui().getTicks() % (l * 3 + 1) == 0) {
+				if (playerentity.getFoodData().getSaturationLevel() <= 0.0F && gui().getGuiTicks() % (l * 3 + 1) == 0) {
 					i7 = k1 + (rand.nextInt(3) - 1);
 				}
 
@@ -313,13 +306,12 @@ public class RenderEvent {
 					gui().blit(matrixStack, k8, i7, k7 + 45, 132, 9, 9);
 				}
 			}
-			endSection();
+			popPose();
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@OnlyIn(Dist.CLIENT)
-	public static void renderManaOverlay(MatrixStack matrixStack, boolean needsAir, ModifiableAttributeInstance iattributemaxMana, PlayerEntity playerentity, double totalHealth, int x, int j3, int k2) {
+	public static void renderManaOverlay(PoseStack matrixStack, boolean needsAir, AttributeInstance iattributemaxMana, Player playerentity, double totalHealth, int x, int j3, int k2) {
 		int moveUp = 0;
 		if (Combat.isSurviveLoaded()) {
 			if (SurviveCompat.isThirstEnabled() && SurviveCompat.isStaminaEnabled()) {
@@ -340,10 +332,10 @@ public class RenderEvent {
 		else {
 			if (j3 > 0 || needsAir && totalHealth < 20.0D) moveUp += 10;
 		}
-		startSection("manaBar");
+		push("manaBar");
 
-		int mana = MathHelper.floor(CombatEntityStats.getMana(playerentity));
-		int manaCap = iattributemaxMana != null ? MathHelper.floor(iattributemaxMana.getValue()) : 1;
+		int mana = Mth.floor(CombatEntityStats.getMana(playerentity));
+		int manaCap = iattributemaxMana != null ? Mth.floor(iattributemaxMana.getValue()) : 1;
 		int specialAffinity = 0;
 		int elementalAffinity = 0;
 		int lifeAffinity = 0;
@@ -365,31 +357,30 @@ public class RenderEvent {
 		}
 		int i = manaCap;
 		if (i > 0) {
-			matrixStack.push();
-			int k = MathHelper.clamp((int)(mana * 183.0F / manaCap), 0, 183);
-			if(Minecraft.isGuiEnabled() && mc.playerController.gameIsSurvivalOrAdventure())gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 0, 182, 6);
+			matrixStack.pushPose();
+			int k = Mth.clamp((int)(mana * 183.0F / manaCap), 0, 183);
+			if(Minecraft.renderNames() && mc.gameMode.hasExperience())gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 0, 182, 6);
 			if (k > 0) {
-				if (mc.playerController.gameIsSurvivalOrAdventure()) {
-					RenderSystem.color4f(CombatEntityStats.getElementalAffinity(playerentity).getrCOlor(), CombatEntityStats.getElementalAffinity(playerentity).getgCOlor(), CombatEntityStats.getElementalAffinity(playerentity).getbCOlor(), 1.0F);
+				if (mc.gameMode.hasExperience()) {
+					RenderSystem.setShaderColor(CombatEntityStats.getElementalAffinity(playerentity).getrCOlor(), CombatEntityStats.getElementalAffinity(playerentity).getgCOlor(), CombatEntityStats.getElementalAffinity(playerentity).getbCOlor(), 1.0F);
 					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 21 + elementalAffinity, k, 6);
 				}
-				if (mc.playerController.gameIsSurvivalOrAdventure()) {
-					RenderSystem.color4f(CombatEntityStats.getSpecialAffinity(playerentity).getrCOlor(), CombatEntityStats.getSpecialAffinity(playerentity).getgCOlor(), CombatEntityStats.getSpecialAffinity(playerentity).getbCOlor(), 1.0F);
+				if (mc.gameMode.hasExperience()) {
+					RenderSystem.setShaderColor(CombatEntityStats.getSpecialAffinity(playerentity).getrCOlor(), CombatEntityStats.getSpecialAffinity(playerentity).getgCOlor(), CombatEntityStats.getSpecialAffinity(playerentity).getbCOlor(), 1.0F);
 					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 7 + specialAffinity, k, 6);
 				}
-				if (mc.playerController.gameIsSurvivalOrAdventure()) {
-					RenderSystem.color4f(CombatEntityStats.getLifeAffinity(playerentity).getrCOlor(), CombatEntityStats.getLifeAffinity(playerentity).getgCOlor(), CombatEntityStats.getLifeAffinity(playerentity).getbCOlor(), 1.0F);
+				if (mc.gameMode.hasExperience()) {
+					RenderSystem.setShaderColor(CombatEntityStats.getLifeAffinity(playerentity).getrCOlor(), CombatEntityStats.getLifeAffinity(playerentity).getgCOlor(), CombatEntityStats.getLifeAffinity(playerentity).getbCOlor(), 1.0F);
 					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 35 + lifeAffinity, k, 6);
 				}
 			}
-			matrixStack.pop();
+			matrixStack.popPose();
 		}
-		endSection();
+		popPose();
 	}
 
-	@SuppressWarnings("deprecation")
 	@OnlyIn(Dist.CLIENT)
-	public static void renderSpellOverlay(MatrixStack matrixStack, PlayerEntity playerentity, int k2) {
+	public static void renderSpellOverlay(PoseStack matrixStack, Player playerentity, int k2) {
 		float scale = 0.8F;
 		float scale2 = scale-0.39F;
 		//Render Gun Ammo Overlay
@@ -401,92 +392,92 @@ public class RenderEvent {
 			Spell cSpell = item.getCurrentSpell(itemStack);
 			Spell nSpell = item.getNextSpell(itemStack);
 			Spell pSpell = item.getPreviousSpell(itemStack);
-			ITextComponent s = cSpell.getName(SpellStats.getSpellKnowledge(playerentity, cSpell));
-			ITextComponent s1 = nSpell.getName(SpellStats.getSpellKnowledge(playerentity, nSpell));
-			ITextComponent s2 = pSpell.getName(SpellStats.getSpellKnowledge(playerentity, pSpell));
+			Component s = cSpell.getName(SpellStats.getSpellKnowledge(playerentity, cSpell));
+			Component s1 = nSpell.getName(SpellStats.getSpellKnowledge(playerentity, nSpell));
+			Component s2 = pSpell.getName(SpellStats.getSpellKnowledge(playerentity, pSpell));
 			int cWidth = (int) ((CombatEntityStats.getSpellStats(playerentity, cSpell).cooldownColmpetion())*60);
 			int nWidth = (int) ((CombatEntityStats.getSpellStats(playerentity, nSpell).cooldownColmpetion())*60);
 			int pWidth = (int) ((CombatEntityStats.getSpellStats(playerentity, pSpell).cooldownColmpetion())*60);
 
-			if (playerentity.getHeldItemMainhand().getItem() instanceof AbstractMagicCastingItem) {
-				int time = playerentity.getActiveItemStack() != playerentity.getHeldItemMainhand() ? 0 : (playerentity.getHeldItemMainhand().getUseDuration() - playerentity.getItemInUseCount());
+			if (playerentity.getMainHandItem().getItem() instanceof AbstractMagicCastingItem) {
+				int time = playerentity.getUseItem() != playerentity.getMainHandItem() ? 0 : (playerentity.getMainHandItem().getUseDuration() - playerentity.getUseItemRemainingTicks());
 				float q = (float)time/(float)cSpell.getCastTime();
 				if (CombatEntityStats.getSpellStats(playerentity, cSpell).isPrimed()) {
 					q = 1;
 				}
-				int tWidth = MathHelper.clamp((int) (q * 60),0,60);
-				startSection("spellLeft");
-				int i10 = (int) ((gui().scaledWidth/scale) - mc.fontRenderer.getStringPropertyWidth(s));
-				int i11 = (int) ((gui().scaledWidth/scale2) - mc.fontRenderer.getStringPropertyWidth(s1));
-				int i12 = (int) ((gui().scaledWidth/scale2) - mc.fontRenderer.getStringPropertyWidth(s2));
-				if(Minecraft.isGuiEnabled() && !mc.playerController.isSpectatorMode()) {
-					gui().blit(matrixStack, gui().scaledWidth - 61, j10 - offset, 60, 49, 60, 30);
+				int tWidth = Mth.clamp((int) (q * 60),0,60);
+				push("spellLeft");
+				int i10 = (int) ((gui().screenWidth/scale) - mc.font.width(s));
+				int i11 = (int) ((gui().screenWidth/scale2) - mc.font.width(s1));
+				int i12 = (int) ((gui().screenWidth/scale2) - mc.font.width(s2));
+				if(Minecraft.renderNames() && !mc.gameMode.isAlwaysFlying()) {
+					gui().blit(matrixStack, gui().screenWidth - 61, j10 - offset, 60, 49, 60, 30);
 
-					RenderSystem.color4f(1.0f, 1.0f, 1.0f, 0.101F);
-					gui().blit(matrixStack, gui().scaledWidth - cWidth-1, j10 - offset + 10, 0, 82, cWidth, 10);
-					gui().blit(matrixStack, gui().scaledWidth - nWidth-1, j10 - offset + 21, 0, 82, nWidth, 8);
-					gui().blit(matrixStack, gui().scaledWidth - pWidth-1, j10 - offset + 01, 0, 82, pWidth, 8);
-					RenderSystem.color4f(1.0f-q, q, 0.0f, 0.101F);
-					gui().blit(matrixStack, gui().scaledWidth - tWidth-1, j10 - offset + 10, 0, 82, tWidth, 10);
+					RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 0.101F);
+					gui().blit(matrixStack, gui().screenWidth - cWidth-1, j10 - offset + 10, 0, 82, cWidth, 10);
+					gui().blit(matrixStack, gui().screenWidth - nWidth-1, j10 - offset + 21, 0, 82, nWidth, 8);
+					gui().blit(matrixStack, gui().screenWidth - pWidth-1, j10 - offset + 01, 0, 82, pWidth, 8);
+					RenderSystem.setShaderColor(1.0f-q, q, 0.0f, 0.101F);
+					gui().blit(matrixStack, gui().screenWidth - tWidth-1, j10 - offset + 10, 0, 82, tWidth, 10);
 
-					matrixStack.push();
+					matrixStack.pushPose();
 					matrixStack.scale(scale, scale, scale);
-					mc.fontRenderer.drawText(matrixStack, s, (float)i10 - (2 / scale) , (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
-					matrixStack.pop();
+					mc.font.draw(matrixStack, s, (float)i10 - (2 / scale) , (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.popPose();
 
-					matrixStack.push();
+					matrixStack.pushPose();
 					matrixStack.scale(scale2, scale2, scale2);
-					mc.fontRenderer.drawText(matrixStack, s1, (float)i11 - (2 / scale2), (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
-					matrixStack.pop();
+					mc.font.draw(matrixStack, s1, (float)i11 - (2 / scale2), (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.popPose();
 
-					matrixStack.push();
+					matrixStack.pushPose();
 					matrixStack.scale(scale2, scale2, scale2);
-					mc.fontRenderer.drawText(matrixStack, s2, (float)i12 - (2 / scale2), (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
-					matrixStack.pop();
+					mc.font.draw(matrixStack, s2, (float)i12 - (2 / scale2), (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.popPose();
 				}
-				endSection();
+				popPose();
 			}
 
-			else if (playerentity.getHeldItemOffhand().getItem() instanceof AbstractMagicCastingItem && !AbstractSpellBookItem.getMainSpellBook(playerentity).isEmpty()) {
-				int time = playerentity.getActiveItemStack() != playerentity.getHeldItemOffhand() ? 0 : (playerentity.getHeldItemOffhand().getUseDuration() - playerentity.getItemInUseCount());
+			else if (playerentity.getOffhandItem().getItem() instanceof AbstractMagicCastingItem && !AbstractSpellBookItem.getMainSpellBook(playerentity).isEmpty()) {
+				int time = playerentity.getUseItem() != playerentity.getOffhandItem() ? 0 : (playerentity.getOffhandItem().getUseDuration() - playerentity.getUseItemRemainingTicks());
 				float q = (float)time/(float)cSpell.getCastTime();
-				int tWidth = MathHelper.clamp((int) (q * 60),0,60);
-				startSection("spellRight");
-				if(Minecraft.isGuiEnabled() && !mc.playerController.isSpectatorMode()) {
+				int tWidth = Mth.clamp((int) (q * 60),0,60);
+				push("spellRight");
+				if(Minecraft.renderNames() && !mc.gameMode.isAlwaysFlying()) {
 					gui().blit(matrixStack, 1, j10 - offset, 0, 49, 60, 30);
 
-					RenderSystem.color4f(1.0f, 1.0f, 1.0f, 0.101F);
+					RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 0.101F);
 					gui().blit(matrixStack, 1, j10 - offset + 10, 0, 82, cWidth, 10);
 					gui().blit(matrixStack, 1, j10 - offset + 21, 0, 82, nWidth, 8);
 					gui().blit(matrixStack, 1, j10 - offset + 01, 0, 82, pWidth, 8);
-					RenderSystem.color4f(1.0f-q, q, 0.0f, 0.101F);
+					RenderSystem.setShaderColor(1.0f-q, q, 0.0f, 0.101F);
 					gui().blit(matrixStack, 1, j10 - offset + 10, 0, 82, tWidth, 10);
 
-					matrixStack.push();
+					matrixStack.pushPose();
 					matrixStack.scale(scale, scale, scale);
-					mc.fontRenderer.drawText(matrixStack, s, 2 / scale, (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
-					matrixStack.pop();
+					mc.font.draw(matrixStack, s, 2 / scale, (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.popPose();
 
-					matrixStack.push();
+					matrixStack.pushPose();
 					matrixStack.scale(scale2, scale2, scale2);
-					mc.fontRenderer.drawText(matrixStack, s1, 2 / scale2, (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
-					matrixStack.pop();
+					mc.font.draw(matrixStack, s1, 2 / scale2, (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.popPose();
 
-					matrixStack.push();
+					matrixStack.pushPose();
 					matrixStack.scale(scale2, scale2, scale2);
-					mc.fontRenderer.drawText(matrixStack, s2, 2 / scale2, (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
-					matrixStack.pop();
+					mc.font.draw(matrixStack, s2, 2 / scale2, (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
+					matrixStack.popPose();
 				}
-				endSection();
+				popPose();
 			}
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void renderArmor(MatrixStack matrixStack, double attributeValue, int armorSub, String section, int yValue, int i1, int k2, PlayerEntity playerentity) {
-		int j3 = MathHelper.floor(attributeValue);
+	public static void renderArmor(PoseStack matrixStack, double attributeValue, int armorSub, String section, int yValue, int i1, int k2, Player playerentity) {
+		int j3 = Mth.floor(attributeValue);
 		int subbedArmor = j3 - armorSub;
-		startSection(section);
+		push(section);
 		for(int l3 = 0; l3 < 10; ++l3) {
 			if (subbedArmor > 0) {
 				int i4 = i1 + l3 * 8;
@@ -503,23 +494,24 @@ public class RenderEvent {
 				}
 			}
 		}
-		endSection();
+		popPose();
 	}
 
-	public static void startSection(String section) {
-		mc.getProfiler().startSection(section);
-		mc.getTextureManager().bindTexture(GUI_ICONS);
+	public static void push(String section) {
+		mc.getProfiler().push(section);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, GUI_ICONS);
 	}
 
-	@SuppressWarnings("deprecation")
-	public static void endSection() {
-		RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-		mc.getProfiler().endSection();
-		mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+	public static void popPose() {
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		mc.getProfiler().pop();
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
 	}
 
 	private static int func_212306_a(LivingEntity p_212306_1_) {
-		if (p_212306_1_ != null && p_212306_1_.isLiving()) {
+		if (p_212306_1_ != null && p_212306_1_.showVehicleHealth()) {
 			float f = p_212306_1_.getMaxHealth();
 			int i = (int)(f + 0.5F) / 2;
 			if (i > 30) {
@@ -534,62 +526,36 @@ public class RenderEvent {
 
 	@SuppressWarnings("deprecation")
 	@OnlyIn(Dist.CLIENT)
-	protected static void renderFrostbiteOverlay() {
-		int scaledWidth = mc.getMainWindow().getScaledWidth();
-		int scaledHeight = mc.getMainWindow().getScaledHeight();
-		RenderSystem.disableDepthTest();
-		RenderSystem.depthMask(false);
-		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.disableAlphaTest();
-		mc.getTextureManager().bindTexture(FROSTBITE_OVERLAY);
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(0.0D, (double)scaledHeight, -90.0D).tex(0.0F, 1.0F).endVertex();
-		bufferbuilder.pos((double)scaledWidth, (double)scaledHeight, -90.0D).tex(1.0F, 1.0F).endVertex();
-		bufferbuilder.pos((double)scaledWidth, 0.0D, -90.0D).tex(1.0F, 0.0F).endVertex();
-		bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0F, 0.0F).endVertex();
-		tessellator.draw();
-		RenderSystem.depthMask(true);
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-	}
-
-	@SuppressWarnings("deprecation")
-	@OnlyIn(Dist.CLIENT)
-	protected static void renderPortal(float timeInPortal) {
-		int scaledWidth = mc.getMainWindow().getScaledWidth();
-		int scaledHeight = mc.getMainWindow().getScaledHeight();
-		if (timeInPortal < 1.0F) {
-			timeInPortal = timeInPortal * timeInPortal;
-			timeInPortal = timeInPortal * timeInPortal;
-			timeInPortal = timeInPortal * 0.8F + 0.2F;
+	protected static void renderPortal(float pTimeInPortal) {
+		int screenWidth = mc.getWindow().getGuiScaledWidth();
+		int screenHeight = mc.getWindow().getGuiScaledHeight();
+		if (pTimeInPortal < 1.0F) {
+			pTimeInPortal = pTimeInPortal * pTimeInPortal;
+			pTimeInPortal = pTimeInPortal * pTimeInPortal;
+			pTimeInPortal = pTimeInPortal * 0.8F + 0.2F;
 		}
 
-		RenderSystem.disableAlphaTest();
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, timeInPortal);
-		mc.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-		TextureAtlasSprite textureatlassprite = mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(CBlocks.ACROTLEST_RUINED_PORTAL.getDefaultState());
-		float f = textureatlassprite.getMinU();
-		float f1 = textureatlassprite.getMinV();
-		float f2 = textureatlassprite.getMaxU();
-		float f3 = textureatlassprite.getMaxV();
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(0.0D, (double)scaledHeight, -90.0D).tex(f, f3).endVertex();
-		bufferbuilder.pos((double)scaledWidth, (double)scaledHeight, -90.0D).tex(f2, f3).endVertex();
-		bufferbuilder.pos((double)scaledWidth, 0.0D, -90.0D).tex(f2, f1).endVertex();
-		bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(f, f1).endVertex();
-		tessellator.draw();
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, pTimeInPortal);
+		RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		TextureAtlasSprite textureatlassprite = mc.getBlockRenderer().getBlockModelShaper().getParticleIcon(CBlocks.ACROTLEST_RUINED_PORTAL.defaultBlockState());
+		float f = textureatlassprite.getU0();
+		float f1 = textureatlassprite.getV0();
+		float f2 = textureatlassprite.getU1();
+		float f3 = textureatlassprite.getV1();
+		Tesselator tesselator = Tesselator.getInstance();
+		BufferBuilder bufferbuilder = tesselator.getBuilder();
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		bufferbuilder.vertex(0.0D, (double)screenHeight, -90.0D).uv(f, f3).endVertex();
+		bufferbuilder.vertex((double)screenWidth, (double)screenHeight, -90.0D).uv(f2, f3).endVertex();
+		bufferbuilder.vertex((double)screenWidth, 0.0D, -90.0D).uv(f2, f1).endVertex();
+		bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(f, f1).endVertex();
+		tesselator.end();
 		RenderSystem.depthMask(true);
 		RenderSystem.enableDepthTest();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

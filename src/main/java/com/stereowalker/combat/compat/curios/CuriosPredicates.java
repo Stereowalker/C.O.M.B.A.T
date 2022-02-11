@@ -4,23 +4,23 @@ import java.util.function.Predicate;
 
 import com.stereowalker.combat.tags.CTags;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class CuriosPredicates {
 	public static final Predicate<ItemStack> ALL_RINGS = (stack) -> {
-		return stack.getItem().isIn(CTags.ItemCTags.RINGS);
+		return stack.is(CTags.ItemCTags.RINGS);
 	};
 	
 	public static final Predicate<ItemStack> ALL_CHARMS = (stack) -> {
-		return stack.getItem().isIn(CTags.ItemCTags.CHARMS);
+		return stack.is(CTags.ItemCTags.CHARMS);
 	};
 	
 	public static final Predicate<ItemStack> ALL_NECKLACES = (stack) -> {
-		return stack.getItem().isIn(CTags.ItemCTags.NECKLACES);
+		return stack.is(CTags.ItemCTags.NECKLACES);
 	};
 	
 	public static final Predicate<ItemStack> ALL_BRACELETS = (stack) -> {
-		return stack.getItem().isIn(CTags.ItemCTags.BRACELETS);
+		return stack.is(CTags.ItemCTags.BRACELETS);
 	};
 	
 	public static final Predicate<ItemStack> ALL_ACCESSORIES = (stack) -> {

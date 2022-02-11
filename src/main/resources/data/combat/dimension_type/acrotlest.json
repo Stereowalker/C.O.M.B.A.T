@@ -9,7 +9,9 @@
 	"bed_works": true,
 	"respawn_anchor_works": false,
 	"has_raids": true,
-	"logical_height": 255,
+  	"logical_height": 496,
 	"infiniburn": "infiniburn_overworld",
-	"effects": "combat:acrotlest"
+	"effects": "combat:acrotlest",
+  	"min_y": -192,
+  	"height": 496
 }

@@ -3,19 +3,19 @@ package com.stereowalker.rankup.events;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.stereowalker.combat.config.Config;
+import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.AccessoryModifiers;
 import com.stereowalker.rankup.AccessoryStats;
 import com.stereowalker.rankup.api.stat.Stat;
-import com.stereowalker.rankup.stat.StatProfile;
+import com.stereowalker.rankup.world.stat.StatProfile;
 import com.stereowalker.unionlib.UnionLib;
 import com.stereowalker.unionlib.item.AccessoryItem;
 import com.stereowalker.unionlib.item.AccessoryItem.AccessorySlotType;
 import com.stereowalker.unionlib.util.ModHelper;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -31,8 +31,8 @@ public class UnionEvents {
 	@SubscribeEvent
 	public static void addEffectsToAccessories(LivingUpdateEvent event) {
 		if (!ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
-				addEffectsToAccessory((PlayerEntity) event.getEntityLiving());
+			if (event.getEntityLiving() instanceof Player) {
+				addEffectsToAccessory((Player) event.getEntityLiving());
 			}
 		}
 	}
@@ -40,7 +40,7 @@ public class UnionEvents {
 	@SubscribeEvent
 	public static void addEffectsToChestItems(PlayerContainerEvent.Open event) {
 		if (Config.RPG_COMMON.enableLevelingSystem.get()) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
+			if (event.getEntityLiving() instanceof Player) {
 				AccessoryStats.addEffectsToChestItems(event.getContainer());
 			}
 		}
@@ -50,7 +50,7 @@ public class UnionEvents {
 	@OnlyIn(Dist.CLIENT)
 	public static void modifierTooltip(ItemTooltipEvent event) {
 		if (Config.RPG_COMMON.enableLevelingSystem.get()) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
+			if (event.getEntityLiving() instanceof Player) {
 				AccessoryStats.modifierTooltip(event.getToolTip(), event.getItemStack());
 			}
 		}
@@ -59,25 +59,25 @@ public class UnionEvents {
 	@SubscribeEvent
 	public static void addModifiers(LivingUpdateEvent event) {
 		if (!ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
-				addModifiers((PlayerEntity) event.getEntityLiving());
+			if (event.getEntityLiving() instanceof Player) {
+				addModifiers((Player) event.getEntityLiving());
 			}
 		}
 	}
 	
-	public static void addEffectsToAccessory(PlayerEntity player) {
+	public static void addEffectsToAccessory(Player player) {
 		if (player != null) {
 			if (!UnionLib.getAccessoryInventory(player).getFirstRing().isEmpty())
 				AccessoryStats.addModifier(UnionLib.getAccessoryInventory(player).getFirstRing());
 			if (!UnionLib.getAccessoryInventory(player).getSecondRing().isEmpty())
 				AccessoryStats.addModifier(UnionLib.getAccessoryInventory(player).getSecondRing());
-			if (player.getHeldItem(Hand.OFF_HAND).getItem() instanceof AccessoryItem && useable_ids.contains(((AccessoryItem)player.getHeldItem(Hand.OFF_HAND).getItem()).getAccessoryType())) {
-				AccessoryStats.addModifier(player.getHeldItem(Hand.OFF_HAND));
-			} else if (player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof AccessoryItem && useable_ids.contains(((AccessoryItem)player.getHeldItem(Hand.MAIN_HAND).getItem()).getAccessoryType())) {
-				AccessoryStats.addModifier(player.getHeldItem(Hand.MAIN_HAND));
+			if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof AccessoryItem && useable_ids.contains(((AccessoryItem)player.getItemInHand(InteractionHand.OFF_HAND).getItem()).getAccessoryType())) {
+				AccessoryStats.addModifier(player.getItemInHand(InteractionHand.OFF_HAND));
+			} else if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AccessoryItem && useable_ids.contains(((AccessoryItem)player.getItemInHand(InteractionHand.MAIN_HAND).getItem()).getAccessoryType())) {
+				AccessoryStats.addModifier(player.getItemInHand(InteractionHand.MAIN_HAND));
 			} else {
-				for(int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-					ItemStack itemstack = player.inventory.getStackInSlot(i);
+				for(int i = 0; i < player.getInventory().getContainerSize(); ++i) {
+					ItemStack itemstack = player.getInventory().getItem(i);
 					if (itemstack.getItem() instanceof AccessoryItem && useable_ids.contains(((AccessoryItem)itemstack.getItem()).getAccessoryType())) {
 						AccessoryStats.addModifier(itemstack);
 					}
@@ -86,7 +86,7 @@ public class UnionEvents {
 		}
 	}
 
-	public static void addModifiers(PlayerEntity player) {
+	public static void addModifiers(Player player) {
 		if (player != null) {
 			for (AccessoryModifiers modifier : AccessoryModifiers.values()) {
 				if (modifier != AccessoryModifiers.NONE && modifier != null) {

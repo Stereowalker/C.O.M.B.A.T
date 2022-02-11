@@ -4,13 +4,18 @@
   "compatibilityLevel": "JAVA_16",
   "refmap": "combat.refmap.json",
   "mixins": [
-  	"PlayerEntityMixin",
+	"AnimalMixin",
+  	"PlayerMixin",
   	"LivingEntityMixin",
-  	"ItemMixin"
+  	"ItemMixin",
+	"BaseFireBlockMixin",
+	"NoiseBasedChunkGeneratorMixin"
   ],
   "client": [
-    "BipedArmorLayerMixin",
-    "CreateWorldScreenMixin"
+    "CreateWorldScreenMixin",
+    "HumanoidArmorLayerMixin",
+	"LayerDefinitionsMixin",
+	"MinecraftMixin"
   ],
   "injectors": {
     "defaultRequire": 1

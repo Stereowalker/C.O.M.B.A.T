@@ -2,22 +2,22 @@ package com.stereowalker.rankup.skill;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
-import com.stereowalker.rankup.network.server.SPlayerSkillsPacket;
+import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerSkillsPacket;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.Skill;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 
 @EventBusSubscriber
 public class SkillsEvents {
 
-	public static void restoreStats(PlayerEntity player, PlayerEntity original) {
+	public static void restoreStats(Player player, Player original) {
 		PlayerSkills.getOrCreateRankSkillNBT(player);
 		for (Skill skill : CombatRegistries.SKILLS) {
 			PlayerSkills.setSkill(player, skill, PlayerSkills.hasSkill(original, skill));
@@ -27,18 +27,18 @@ public class SkillsEvents {
 	
 	public static void tickSkillUpdate(LivingEntity entity) {
 		//Send to Client
-		if (!entity.world.isRemote && entity instanceof ServerPlayerEntity) {
-			ServerPlayerEntity player = (ServerPlayerEntity)entity;
-			Combat.getInstance().channel.sendTo(new SPlayerSkillsPacket(player), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+		if (!entity.level.isClientSide && entity instanceof ServerPlayer) {
+			ServerPlayer player = (ServerPlayer)entity;
+			Combat.getInstance().channel.sendTo(new ClientboundPlayerSkillsPacket(player), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 		}
 		//Add on spawn
-		if(entity instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity)entity;
+		if(entity instanceof Player) {
+			Player player = (Player)entity;
 			PlayerSkills.addSkillsOnSpawn(player);
 		}
 		//TIck skill
-		if (entity instanceof PlayerEntity) {
-			PlayerEntity playerEntity = (PlayerEntity) entity;
+		if (entity instanceof Player) {
+			Player playerEntity = (Player) entity;
 			for (Skill skill : CombatRegistries.SKILLS) {
 				if (PlayerSkills.hasSkill(playerEntity, skill)) {
 					skill.playerTick(playerEntity);
@@ -52,8 +52,8 @@ public class SkillsEvents {
 	
 	@SubscribeEvent
 	public static void attackSkillUpdate(AttackEntityEvent event) {
-		if (event.getEntityLiving() instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+		if (event.getEntityLiving() instanceof Player) {
+			Player player = (Player) event.getEntityLiving();
 			for (Skill skill : CombatRegistries.SKILLS) {
 				if (PlayerSkills.hasSkill(player, skill)) {
 					skill.onAttackEntity(player, event.getTarget());

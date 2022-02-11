@@ -4,10 +4,10 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.block.CBlocks;
-import com.stereowalker.combat.item.crafting.AbstractAlloyFurnaceRecipe;
+import com.stereowalker.combat.world.item.crafting.AbstractAlloyFurnaceRecipe;
+import com.stereowalker.combat.world.level.block.CBlocks;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -19,12 +19,12 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public class AlloySmeltingCategory implements IRecipeCategory<AbstractAlloyFurnaceRecipe> {
 	public static final ResourceLocation UID = Combat.getInstance().location("alloy_smelting");
@@ -33,7 +33,7 @@ public class AlloySmeltingCategory implements IRecipeCategory<AbstractAlloyFurna
 
 	private final IDrawable icon;
 
-	private final String localizedName;
+	private final Component localizedName;
 
 	private final IDrawableAnimated flame;
 
@@ -43,7 +43,7 @@ public class AlloySmeltingCategory implements IRecipeCategory<AbstractAlloyFurna
 		ResourceLocation location = Combat.getInstance().location("textures/gui/container/alloy_furnace.png");
 		this.background = guiHelper.createDrawable(location, 14, 14, 123, 57);
 		this.icon = guiHelper.createDrawableIngredient(new ItemStack(CBlocks.ALLOY_FURNACE));
-		this.localizedName = I18n.format("combat.recipes.alloy_smelting");
+		this.localizedName = new TranslatableComponent("combat.recipes.alloy_smelting");
 		flame = guiHelper.createAnimatedDrawable(guiHelper.createDrawable(location, 176, 0, 14, 14), 200, StartDirection.TOP, true);
 
 		this.cachedArrows = CacheBuilder.newBuilder().maximumSize(25L).build(new CacheLoader<Integer, IDrawableAnimated>() {
@@ -69,12 +69,12 @@ public class AlloySmeltingCategory implements IRecipeCategory<AbstractAlloyFurna
 		return AbstractAlloyFurnaceRecipe.class;
 	}
 
-	public String getTitle() {
+	public Component getTitle() {
 		return this.localizedName;
 	}
 
 	@Override
-	public void draw(AbstractAlloyFurnaceRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+	public void draw(AbstractAlloyFurnaceRecipe recipe, PoseStack matrixStack, double mouseX, double mouseY) {
 		IDrawableAnimated arrow = getArrow(recipe);
 		arrow.draw(matrixStack, 65, 20);
 		flame.draw(matrixStack, 24, 22);
@@ -82,24 +82,26 @@ public class AlloySmeltingCategory implements IRecipeCategory<AbstractAlloyFurna
 		drawCookTime(recipe, matrixStack, -28, 48);
 	}
 
-	protected void drawExperience(AbstractAlloyFurnaceRecipe recipe, MatrixStack matrixStack, int x, int y) {
+	@SuppressWarnings("resource")
+	protected void drawExperience(AbstractAlloyFurnaceRecipe recipe, PoseStack matrixStack, int x, int y) {
 		float experience = recipe.getExperience();
 		if (experience > 0.0F) {
-			TranslationTextComponent experienceString = new TranslationTextComponent("gui.jei.category.smelting.experience", new Object[] { Float.valueOf(experience) });
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			int stringWidth = fontRenderer.getStringPropertyWidth((ITextProperties)experienceString);
-			fontRenderer.drawText(matrixStack, experienceString, (this.background.getWidth() - stringWidth) + x, y, -8355712);
+			TranslatableComponent experienceString = new TranslatableComponent("gui.jei.category.smelting.experience", new Object[] { Float.valueOf(experience) });
+			Font font = Minecraft.getInstance().font;
+			int stringWidth = font.width((FormattedText)experienceString);
+			font.draw(matrixStack, experienceString, (this.background.getWidth() - stringWidth) + x, y, -8355712);
 		} 
 	}
 
-	protected void drawCookTime(AbstractAlloyFurnaceRecipe recipe, MatrixStack matrixStack, int x, int y) {
+	@SuppressWarnings("resource")
+	protected void drawCookTime(AbstractAlloyFurnaceRecipe recipe, PoseStack matrixStack, int x, int y) {
 		int cookTime = recipe.getCookTime();
 		if (cookTime > 0) {
 			int cookTimeSeconds = cookTime / 20;
-			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", new Object[] { Integer.valueOf(cookTimeSeconds) });
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			int stringWidth = fontRenderer.getStringPropertyWidth((ITextProperties)timeString);
-			fontRenderer.drawText(matrixStack, timeString, (this.background.getWidth() - stringWidth) + x, y, -8355712);
+			TranslatableComponent timeString = new TranslatableComponent("gui.jei.category.smelting.time.seconds", new Object[] { Integer.valueOf(cookTimeSeconds) });
+			Font font = Minecraft.getInstance().font;
+			int stringWidth = font.width((FormattedText)timeString);
+			font.draw(matrixStack, timeString, (this.background.getWidth() - stringWidth) + x, y, -8355712);
 		} 
 	}
 
@@ -113,9 +115,9 @@ public class AlloySmeltingCategory implements IRecipeCategory<AbstractAlloyFurna
 
 	public void setIngredients(AbstractAlloyFurnaceRecipe recipe, IIngredients ingredients) {
 		if (recipe.has1Result()) {
-			ingredients.setOutputs(VanillaTypes.ITEM, Lists.newArrayList(recipe.getRecipeOutput()));
+			ingredients.setOutputs(VanillaTypes.ITEM, Lists.newArrayList(recipe.getResultItem()));
 		} else {
-			ingredients.setOutputs(VanillaTypes.ITEM, Lists.newArrayList(recipe.getRecipeOutput(), recipe.getRecipeOutput2()));
+			ingredients.setOutputs(VanillaTypes.ITEM, Lists.newArrayList(recipe.getResultItem(), recipe.getResultItem2()));
 		}
 		
 		if (recipe.has2Ingredients()) {

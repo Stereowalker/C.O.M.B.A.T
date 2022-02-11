@@ -1,12 +1,12 @@
 package com.stereowalker.combat.event.handler;
 
-import com.stereowalker.combat.world.biome.CBiomes;
-import com.stereowalker.combat.world.biome.CombatBiomeFeatures;
+import com.stereowalker.combat.data.worldgen.BiomeCombatFeatures;
+import com.stereowalker.combat.world.level.biome.CBiomes;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome.Category;
-import net.minecraft.world.biome.Biomes;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -20,35 +20,34 @@ public class ModdedBiomeGeneration
 	public static void setupBiomeGeneration(BiomeLoadingEvent event)
 	{	
 		//TODO: Use The Helper Method For This Case
-		if ((event.getCategory() != Category.NETHER && event.getCategory() != Category.THEEND) || hasType(event, BiomeDictionary.Type.OVERWORLD)) {
-			if (event.getName().toString().equalsIgnoreCase(Biomes.LUKEWARM_OCEAN.getLocation().toString()) || 
-					event.getName().toString().equalsIgnoreCase(Biomes.WARM_OCEAN.getLocation().toString()) || 
-					event.getName().toString().equalsIgnoreCase(Biomes.DEEP_LUKEWARM_OCEAN.getLocation().toString()) || 
-					event.getName().toString().equalsIgnoreCase(Biomes.DEEP_WARM_OCEAN.getLocation().toString())) {
-				CombatBiomeFeatures.withLimestone(event.getGeneration());
+		if ((event.getCategory() != Biome.BiomeCategory.NETHER && event.getCategory() != Biome.BiomeCategory.THEEND) || hasType(event, BiomeDictionary.Type.OVERWORLD)) {
+			if (event.getName().toString().equalsIgnoreCase(Biomes.LUKEWARM_OCEAN.location().toString()) || 
+					event.getName().toString().equalsIgnoreCase(Biomes.WARM_OCEAN.location().toString()) || 
+					event.getName().toString().equalsIgnoreCase(Biomes.DEEP_LUKEWARM_OCEAN.location().toString()) || 
+					event.getName().toString().equalsIgnoreCase(Biomes.DEEP_WARM_OCEAN.location().toString())) {
+				BiomeCombatFeatures.addLimestone(event.getGeneration());
 			}
-			CombatBiomeFeatures.withPasquem(event.getGeneration(), CBiomes.getDeadBiomes().contains(event.getName()));
-			CombatBiomeFeatures.withTridox(event.getGeneration(), CBiomes.getMagicBiomes().contains(event.getName()));
-			CombatBiomeFeatures.withYellowMagicClusters(event.getGeneration(), CBiomes.getMagicBiomes().contains(event.getName()));
-			CombatBiomeFeatures.withCopper(event.getGeneration(), CBiomes.getDeadBiomes().contains(event.getName()));
-			CombatBiomeFeatures.withCassiterite(event.getGeneration());
-			CombatBiomeFeatures.withMagicStoneDeposits(event.getGeneration());
+			BiomeCombatFeatures.addPasquem(event.getGeneration(), CBiomes.getDeadBiomes().contains(event.getName()));
+			BiomeCombatFeatures.addTridox(event.getGeneration(), CBiomes.getMagicBiomes().contains(event.getName()));
+			BiomeCombatFeatures.addYellowMagicClusters(event.getGeneration(), CBiomes.getMagicBiomes().contains(event.getName()));
+			BiomeCombatFeatures.addCassiterite(event.getGeneration());
+			BiomeCombatFeatures.addMagicStoneDeposits(event.getGeneration());
 			
-			if (hasTypeWithCategory(event, BiomeDictionary.Type.FOREST, Category.FOREST)) 
-				CombatBiomeFeatures.withVampires(event.getSpawns());
+			if (hasTypeWithCategory(event, BiomeDictionary.Type.FOREST, Biome.BiomeCategory.FOREST)) 
+				BiomeCombatFeatures.addVampires(event.getSpawns());
 			
-			if (hasTypeWithCategory(event, BiomeDictionary.Type.PLAINS, Category.PLAINS) || hasTypeWithCategory(event, BiomeDictionary.Type.FOREST, Category.FOREST) || 
-					hasTypeWithCategory(event, BiomeDictionary.Type.SANDY, Category.DESERT) || hasTypeWithCategory(event, BiomeDictionary.Type.CONIFEROUS, Category.TAIGA)) 
-				CombatBiomeFeatures.withRubies(event.getGeneration());
+			if (hasTypeWithCategory(event, BiomeDictionary.Type.PLAINS, Biome.BiomeCategory.PLAINS) || hasTypeWithCategory(event, BiomeDictionary.Type.FOREST, Biome.BiomeCategory.FOREST) || 
+					hasTypeWithCategory(event, BiomeDictionary.Type.SANDY, Biome.BiomeCategory.DESERT) || hasTypeWithCategory(event, BiomeDictionary.Type.CONIFEROUS, Biome.BiomeCategory.TAIGA)) 
+				BiomeCombatFeatures.addRubies(event.getGeneration());
 			
-			if (!hasTypeWithCategory(event, BiomeDictionary.Type.OCEAN, Category.OCEAN) && 
-					!hasTypeWithCategory(event, BiomeDictionary.Type.RIVER, Category.RIVER)) 
-				CombatBiomeFeatures.withEtherionTower(event.getGeneration(), CBiomes.getAcrotlestBiomes().contains(event.getName()));
+			if (!hasTypeWithCategory(event, BiomeDictionary.Type.OCEAN, Biome.BiomeCategory.OCEAN) && 
+					!hasTypeWithCategory(event, BiomeDictionary.Type.RIVER, Biome.BiomeCategory.RIVER)) 
+				BiomeCombatFeatures.addEtherionTower(event.getGeneration(), CBiomes.getAcrotlestBiomes().contains(event.getName()));
 			
-			if (event.getCategory() != Category.OCEAN && 
-					event.getCategory() != Category.RIVER && 
-					event.getCategory() == Category.ICY) 
-				CombatBiomeFeatures.withAcrotlestPortal(event.getGeneration(), CBiomes.getAcrotlestBiomes().contains(event.getName()));
+			if (event.getCategory() != Biome.BiomeCategory.OCEAN && 
+					event.getCategory() != Biome.BiomeCategory.RIVER && 
+					event.getCategory() == Biome.BiomeCategory.ICY) 
+				BiomeCombatFeatures.addAcrotlestPortal(event.getGeneration(), CBiomes.getAcrotlestBiomes().contains(event.getName()));
 		}
 		//TODO: Re Add Structures
 //		for(Biome biome : ForgeRegistries.BIOMES)
@@ -65,10 +64,10 @@ public class ModdedBiomeGeneration
 	}
 	
 	public static boolean hasType(BiomeLoadingEvent biome, BiomeDictionary.Type type) {
-		return BiomeDictionary.hasType(RegistryKey.getOrCreateKey(Registry.BIOME_KEY, biome.getName()), type);
+		return BiomeDictionary.hasType(ResourceKey.create(Registry.BIOME_REGISTRY, biome.getName()), type);
 	}
 	
-	public static boolean hasTypeWithCategory(BiomeLoadingEvent biome, BiomeDictionary.Type type, Category cat) {
+	public static boolean hasTypeWithCategory(BiomeLoadingEvent biome, BiomeDictionary.Type type, Biome.BiomeCategory cat) {
 		return hasType(biome, type) || biome.getCategory() == cat;
 	}
 }

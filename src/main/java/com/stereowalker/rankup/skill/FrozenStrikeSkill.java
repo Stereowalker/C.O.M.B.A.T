@@ -1,10 +1,10 @@
 package com.stereowalker.rankup.skill;
 
-import com.stereowalker.combat.api.spell.SpellUtil;
+import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.rankup.skill.api.Skill;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 
 public class FrozenStrikeSkill extends Skill {
 
@@ -13,7 +13,7 @@ public class FrozenStrikeSkill extends Skill {
 	}
 	
 	@Override
-	public void onAttackEntity(PlayerEntity player, Entity target) {
+	public void onAttackEntity(Player player, Entity target) {
 		super.onAttackEntity(player, target);
 		SpellUtil.setIce(target, 10);
 	}

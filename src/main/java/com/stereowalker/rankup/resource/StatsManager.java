@@ -15,13 +15,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.api.stat.Stat;
-import com.stereowalker.rankup.stat.StatSettings;
+import com.stereowalker.rankup.world.stat.StatSettings;
 import com.stereowalker.unionlib.resource.IResourceReloadListener;
 
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResource;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
 
 /**
  * Loads stat settings from json files
@@ -33,7 +33,7 @@ public class StatsManager implements IResourceReloadListener<Map<Stat,StatSettin
 	public ImmutableMap<Stat,StatSettings> STATS = ImmutableMap.of();
 
 	@Override
-	public CompletableFuture<Map<Stat,StatSettings>> load(IResourceManager manager, IProfiler profiler, Executor executor) {
+	public CompletableFuture<Map<Stat,StatSettings>> load(ResourceManager manager, ProfilerFiller profiler, Executor executor) {
 		return CompletableFuture.supplyAsync(() -> {
 			Map<Stat,StatSettings> statMap = new HashMap<>();
 			
@@ -41,7 +41,7 @@ public class StatsManager implements IResourceReloadListener<Map<Stat,StatSettin
 				statMap.put(stat, null);
 			}
 
-			for (ResourceLocation id : manager.getAllResourceLocations("combat_stats", (s) -> s.endsWith(".json"))) {
+			for (ResourceLocation id : manager.listResources("combat_stats", (s) -> s.endsWith(".json"))) {
 				ResourceLocation statId = new ResourceLocation(
 						id.getNamespace(),
 						id.getPath().replace("combat_stats/", "").replace(".json", "")
@@ -49,7 +49,7 @@ public class StatsManager implements IResourceReloadListener<Map<Stat,StatSettin
 
 				if (CombatRegistries.STATS.containsKey(statId)) {
 					try {
-						IResource resource = manager.getResource(id);
+						Resource resource = manager.getResource(id);
 						try (InputStream stream = resource.getInputStream(); 
 								InputStreamReader reader = new InputStreamReader(stream)) {
 							
@@ -72,7 +72,7 @@ public class StatsManager implements IResourceReloadListener<Map<Stat,StatSettin
 	}
 
 	@Override
-	public CompletableFuture<Void> apply(Map<Stat,StatSettings> data, IResourceManager manager, IProfiler profiler, Executor executor) {
+	public CompletableFuture<Void> apply(Map<Stat,StatSettings> data, ResourceManager manager, ProfilerFiller profiler, Executor executor) {
 		return CompletableFuture.runAsync(() -> {
 			Map<Stat,StatSettings> statMap = new HashMap<>();
 			data.forEach((stat,setting) -> {

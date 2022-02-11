@@ -4,66 +4,65 @@ import java.util.Map;
 import java.util.SortedMap;
 
 import com.google.common.collect.ImmutableMap.Builder;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.stereowalker.combat.advancements.CCriteriaTriggers;
-import com.stereowalker.combat.block.CBlocks;
-import com.stereowalker.combat.block.PyraniteFireBlock;
-import com.stereowalker.combat.client.gui.screen.CombatConfigScreen;
-import com.stereowalker.combat.client.gui.screen.inventory.CScreens;
-import com.stereowalker.combat.client.keybindings.KeyBindings;
+import com.stereowalker.combat.client.KeyMappings;
+import com.stereowalker.combat.client.gui.screens.inventory.CScreens;
+import com.stereowalker.combat.client.model.geom.CModelLayers;
+import com.stereowalker.combat.client.renderer.CDimensionSpecialEffects;
 import com.stereowalker.combat.client.renderer.CRenderType;
+import com.stereowalker.combat.client.renderer.CombatBlockEntityWithoutLevelRenderer;
+import com.stereowalker.combat.client.renderer.blockentity.BlockEntityRenderHandler;
 import com.stereowalker.combat.client.renderer.entity.EntityRendererHandler;
-import com.stereowalker.combat.client.renderer.tileentity.CombatTileEntityRender;
-import com.stereowalker.combat.command.impl.AffinityCommand;
-import com.stereowalker.combat.command.impl.AllyCommand;
-import com.stereowalker.combat.command.impl.CastCommand;
+import com.stereowalker.combat.client.renderer.item.CItemProperties;
+import com.stereowalker.combat.commands.CCommands;
+import com.stereowalker.combat.compat.curios.CuriosCompat;
 import com.stereowalker.combat.compat.curios.CuriosEvents;
-import com.stereowalker.combat.config.Config;
-import com.stereowalker.combat.config.RpgClientConfig;
-import com.stereowalker.combat.fluid.CFluids;
-import com.stereowalker.combat.item.CItemModelsProperties;
-import com.stereowalker.combat.loot.functions.CLootFunctionManager;
-import com.stereowalker.combat.network.client.play.CBackItemPacket;
-import com.stereowalker.combat.network.client.play.CClientMotionPacket;
-import com.stereowalker.combat.network.client.play.CGunPacket;
-import com.stereowalker.combat.network.client.play.CHeldItemStackNBTPacket;
-import com.stereowalker.combat.network.client.play.CMageSetupPacket;
-import com.stereowalker.combat.network.client.play.CPronePacket;
-import com.stereowalker.combat.network.client.play.CRequestStatsPacket;
-import com.stereowalker.combat.network.client.play.CSetLimiterPacket;
-import com.stereowalker.combat.network.client.play.CSpellbookNBTPacket;
-import com.stereowalker.combat.network.client.play.CStoreItemPacket;
-import com.stereowalker.combat.network.server.SAbominationPacket;
-import com.stereowalker.combat.network.server.SPlayerStatsPacket;
-import com.stereowalker.combat.potion.BrewingPotion;
-import com.stereowalker.combat.registries.RegistryOverrides;
+import com.stereowalker.combat.core.registries.RegistryOverrides;
+import com.stereowalker.combat.network.protocol.game.ClientboundAbominationPacket;
+import com.stereowalker.combat.network.protocol.game.ClientboundPlayerStatsPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundBackItemPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundClientMotionPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundGunPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundHeldItemStackNBTPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundMageSetupPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundPronePacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundRequestStatsPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundSetLimiterPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundSpellbookNBTPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundStoreItemPacket;
 import com.stereowalker.combat.tags.CEntityTypeTags;
 import com.stereowalker.combat.tags.CTags;
-import com.stereowalker.combat.world.CDImensionRenderInfo;
-import com.stereowalker.combat.world.CDimensionType;
-import com.stereowalker.combat.world.CGameRules;
+import com.stereowalker.combat.world.item.alchemy.BrewingPotion;
+import com.stereowalker.combat.world.level.CGameRules;
+import com.stereowalker.combat.world.level.block.CBlocks;
+import com.stereowalker.combat.world.level.block.PyraniteFireBlock;
+import com.stereowalker.combat.world.level.dimension.CDimensionType;
+import com.stereowalker.combat.world.level.material.CFluids;
+import com.stereowalker.combat.world.level.storage.loot.functions.CLootItemFunctions;
+import com.stereowalker.old.combat.config.Config;
+import com.stereowalker.old.combat.config.RpgClientConfig;
 import com.stereowalker.rankup.Rankup;
-import com.stereowalker.rankup.command.impl.LevelCommand;
-import com.stereowalker.rankup.command.impl.SkillCommand;
+import com.stereowalker.unionlib.client.gui.screens.config.MinecraftModConfigsScreen;
 import com.stereowalker.unionlib.config.ConfigBuilder;
-import com.stereowalker.unionlib.mod.UnionMod;
+import com.stereowalker.unionlib.mod.MinecraftMod;
 import com.stereowalker.unionlib.network.PacketRegistry;
 import com.stereowalker.unionlib.util.ModHelper;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FireBlock;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.MainMenuScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.RenderSkyboxCube;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.renderer.CubeMap;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.item.AxeItem;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -75,18 +74,19 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 
 @Mod(value = "combat")
-public class Combat extends UnionMod
+public class Combat extends MinecraftMod
 {
 	private static Combat combatInstance;
 	public static Rankup rankupInstance;
+	public static CombatBlockEntityWithoutLevelRenderer itemStackRender;
 
 	public static boolean disableConfig() {
 		return false;
@@ -111,7 +111,7 @@ public class Combat extends UnionMod
 		super("combat", new ResourceLocation("combat", "textures/icon.png"), LoadType.BOTH);
 		combatInstance = this;
 		rankupInstance = new Rankup();
-		CLootFunctionManager.registerAll();
+		CLootItemFunctions.registerAll();
 		ConfigBuilder.registerConfig(RpgClientConfig.class);
 		RegistryOverrides.override();
 		if (!Combat.disableConfig()) Config.registerConfigs();
@@ -126,25 +126,25 @@ public class Combat extends UnionMod
 	public void registerMessages(SimpleChannel channel) {
 		int netID = -1;
 		//server
-		channel.registerMessage(netID++, SAbominationPacket.class, SAbominationPacket::encode, SAbominationPacket::decode, SAbominationPacket::handle);
-		channel.registerMessage(netID++, SPlayerStatsPacket.class, SPlayerStatsPacket::encode, SPlayerStatsPacket::decode, SPlayerStatsPacket::handle);
+		channel.registerMessage(netID++, ClientboundAbominationPacket.class, ClientboundAbominationPacket::encode, ClientboundAbominationPacket::decode, ClientboundAbominationPacket::handle);
+		channel.registerMessage(netID++, ClientboundPlayerStatsPacket.class, ClientboundPlayerStatsPacket::encode, ClientboundPlayerStatsPacket::decode, ClientboundPlayerStatsPacket::handle);
 		//client
-		PacketRegistry.registerMessage(channel, netID++, CBackItemPacket.class, (packetBuffer) -> {return new CBackItemPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, CGunPacket.class, (packetBuffer) -> {return new CGunPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, CMageSetupPacket.class, (packetBuffer) -> {return new CMageSetupPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, CSetLimiterPacket.class, (packetBuffer) -> {return new CSetLimiterPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, CStoreItemPacket.class, (packetBuffer) -> {return new CStoreItemPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, CPronePacket.class, (packetBuffer) -> {return new CPronePacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, CClientMotionPacket.class, (packetBuffer) -> {return new CClientMotionPacket(packetBuffer);});
-		channel.registerMessage(netID++, CHeldItemStackNBTPacket.class, CHeldItemStackNBTPacket::encode, CHeldItemStackNBTPacket::decode, CHeldItemStackNBTPacket::handle);
-		channel.registerMessage(netID++, CRequestStatsPacket.class, CRequestStatsPacket::encode, CRequestStatsPacket::decode, CRequestStatsPacket::handle);
-		channel.registerMessage(netID++, CSpellbookNBTPacket.class, CSpellbookNBTPacket::encode, CSpellbookNBTPacket::decode, CSpellbookNBTPacket::handle);
+		PacketRegistry.registerMessage(channel, netID++, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
+		PacketRegistry.registerMessage(channel, netID++, ServerboundGunPacket.class, (packetBuffer) -> {return new ServerboundGunPacket(packetBuffer);});
+		PacketRegistry.registerMessage(channel, netID++, ServerboundMageSetupPacket.class, (packetBuffer) -> {return new ServerboundMageSetupPacket(packetBuffer);});
+		PacketRegistry.registerMessage(channel, netID++, ServerboundSetLimiterPacket.class, (packetBuffer) -> {return new ServerboundSetLimiterPacket(packetBuffer);});
+		PacketRegistry.registerMessage(channel, netID++, ServerboundStoreItemPacket.class, (packetBuffer) -> {return new ServerboundStoreItemPacket(packetBuffer);});
+		PacketRegistry.registerMessage(channel, netID++, ServerboundPronePacket.class, (packetBuffer) -> {return new ServerboundPronePacket(packetBuffer);});
+		PacketRegistry.registerMessage(channel, netID++, ServerboundClientMotionPacket.class, (packetBuffer) -> {return new ServerboundClientMotionPacket(packetBuffer);});
+		channel.registerMessage(netID++, ServerboundHeldItemStackNBTPacket.class, ServerboundHeldItemStackNBTPacket::encode, ServerboundHeldItemStackNBTPacket::decode, ServerboundHeldItemStackNBTPacket::handle);
+		channel.registerMessage(netID++, ServerboundRequestStatsPacket.class, ServerboundRequestStatsPacket::encode, ServerboundRequestStatsPacket::decode, ServerboundRequestStatsPacket::handle);
+		channel.registerMessage(netID++, ServerboundSpellbookNBTPacket.class, ServerboundSpellbookNBTPacket::encode, ServerboundSpellbookNBTPacket::decode, ServerboundSpellbookNBTPacket::handle);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public Screen getConfigScreen(Minecraft mc, Screen previousScreen) {
-		return new CombatConfigScreen(mc, previousScreen);
+		return /* new CombatConfigScreen(mc, previousScreen) */new MinecraftModConfigsScreen(previousScreen, null, Combat.class);
 	}
 
 	public static void debug(Object message) {
@@ -165,49 +165,51 @@ public class Combat extends UnionMod
 				.put(CBlocks.AUSLDINE_WOOD, CBlocks.STRIPPED_AUSLDINE_WOOD).put(CBlocks.AUSLDINE_LOG, CBlocks.STRIPPED_AUSLDINE_LOG)
 				.put(CBlocks.DEAD_OAK_WOOD, CBlocks.STRIPPED_DEAD_OAK_WOOD).put(CBlocks.DEAD_OAK_LOG, CBlocks.STRIPPED_DEAD_OAK_LOG)
 				.put(CBlocks.MONORIS_WOOD, CBlocks.STRIPPED_MONORIS_WOOD).put(CBlocks.MONORIS_LOG, CBlocks.STRIPPED_MONORIS_LOG)
-				.putAll(AxeItem.BLOCK_STRIPPING_MAP)
+				.putAll(AxeItem.STRIPPABLES)
 				.build();
-		AxeItem.BLOCK_STRIPPING_MAP = STRIP_MAP;
+		AxeItem.STRIPPABLES = STRIP_MAP;
 	}
 
+	@SuppressWarnings("resource")
 	public void clientRegistries(final FMLClientSetupEvent event)
 	{
-		CItemModelsProperties.register();
+		CItemProperties.register();
 		boolean useMain = false;
-		EntityRendererHandler.registerEntityRenders();
-		KeyBindings.registerKeyBindings();
-		CombatTileEntityRender.registerRenders();
+		CModelLayers.init();
+		EntityRendererHandler.bootStrap();
+		KeyMappings.registerKeyBindings();
+		BlockEntityRenderHandler.registerRenders();
 		CScreens.registerScreens();
 		if (Config.CLIENT.toggle_custom_main_menu.get())
-			MainMenuScreen.PANORAMA_RESOURCES = new RenderSkyboxCube(Combat.getInstance().location("textures/gui/title/background/panorama"));
-		if (useMain) MainMenuScreen.PANORAMA_OVERLAY_TEXTURES = Combat.getInstance().location("textures/gui/title/background/combat_overlay.png");
-		RenderType rendertype = RenderType.getCutoutMipped();
-		RenderTypeLookup.setRenderLayer(CBlocks.AUSLDINE_LEAVES, rendertype);
-		RenderTypeLookup.setRenderLayer(CBlocks.MONORIS_LEAVES, rendertype);
-		RenderType rendertype1 = RenderType.getCutout();
-		RenderTypeLookup.setRenderLayer(CBlocks.EMPTY_ROBIN_SUMMONER, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.AUSLDINE_SAPLING, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.MONORIS_SAPLING, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.POTTED_AUSLDINE_SAPLING, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.POTTED_MONORIS_SAPLING, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.PYRANITE_FIRE, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.TORCH_LEVER, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.WALL_TORCH_LEVER, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.CORN, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.WOODCUTTER, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.PYRANITE_TORCH, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.PYRANITE_WALL_TORCH, rendertype1);
-		RenderTypeLookup.setRenderLayer(CBlocks.PYRANITE_LANTERN, rendertype1);
-		RenderType rendertype2 = RenderType.getTranslucent();
-		RenderTypeLookup.setRenderLayer(CBlocks.ACROTLEST_RUINED_PORTAL, rendertype2);
-		RenderTypeLookup.setRenderLayer(CBlocks.ACROTLEST_PORTAL, rendertype2);
-		RenderTypeLookup.setRenderLayer(CBlocks.GROPAPY, rendertype2);
+			TitleScreen.CUBE_MAP = new CubeMap(Combat.getInstance().location("textures/gui/title/background/panorama"));
+		if (useMain) TitleScreen.PANORAMA_OVERLAY = Combat.getInstance().location("textures/gui/title/background/combat_overlay.png");
+		RenderType rendertype = RenderType.cutoutMipped();
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.AUSLDINE_LEAVES, rendertype);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.MONORIS_LEAVES, rendertype);
+		RenderType rendertype1 = RenderType.cutout();
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.EMPTY_ROBIN_SUMMONER, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.AUSLDINE_SAPLING, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.MONORIS_SAPLING, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.POTTED_AUSLDINE_SAPLING, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.POTTED_MONORIS_SAPLING, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.PYRANITE_FIRE, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.TORCH_LEVER, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.WALL_TORCH_LEVER, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.CORN, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.WOODCUTTER, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.PYRANITE_TORCH, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.PYRANITE_WALL_TORCH, rendertype1);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.PYRANITE_LANTERN, rendertype1);
+		RenderType rendertype2 = RenderType.translucent();
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.ACROTLEST_RUINED_PORTAL, rendertype2);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.ACROTLEST_PORTAL, rendertype2);
+		ItemBlockRenderTypes.setRenderLayer(CBlocks.GROPAPY, rendertype2);
 
-		RenderType frendertype = RenderType.getTranslucent();
-		RenderTypeLookup.setRenderLayer(CFluids.BIABLE, frendertype);
-		RenderTypeLookup.setRenderLayer(CFluids.OIL, frendertype);
+		RenderType frendertype = RenderType.translucent();
+		ItemBlockRenderTypes.setRenderLayer(CFluids.BIABLE, frendertype);
+		ItemBlockRenderTypes.setRenderLayer(CFluids.OIL, frendertype);
 
-		DimensionRenderInfo.field_239208_a_.put(CDimensionType.ACROTLEST_ID, new CDImensionRenderInfo.Acrotlest());
+		DimensionSpecialEffects.EFFECTS.put(CDimensionType.ACROTLEST_ID, new CDimensionSpecialEffects.Acrotlest());
 		SortedMap<RenderType, BufferBuilder> fixedBuffers = Util.make(new Object2ObjectLinkedOpenHashMap<>(), (p_228485_1_) -> {
 			put(p_228485_1_, CRenderType.getLegendaryArmorGlint());
 			put(p_228485_1_, CRenderType.getLegendaryArmorEntityGlint());
@@ -233,12 +235,14 @@ public class Combat extends UnionMod
 			put(p_228485_1_, CRenderType.getEnchantedMythrilEntityGlint());
 			put(p_228485_1_, CRenderType.getEncMythrilEntityGlintDirect());
 		});
-		Minecraft.getInstance().getRenderTypeBuffers().fixedBuffers.putAll(fixedBuffers);
+		Minecraft.getInstance().renderBuffers().fixedBuffers.putAll(fixedBuffers);
+		if (ModHelper.isCuriosLoaded())
+			CuriosCompat.registerCurioRenders();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public void put(Object2ObjectLinkedOpenHashMap<RenderType, BufferBuilder> mapBuildersIn, RenderType renderTypeIn) {
-		mapBuildersIn.put(renderTypeIn, new BufferBuilder(renderTypeIn.getBufferSize()));
+		mapBuildersIn.put(renderTypeIn, new BufferBuilder(renderTypeIn.bufferSize()));
 	}
 
 	public void enqueue(final InterModEnqueueEvent event) {
@@ -251,16 +255,7 @@ public class Combat extends UnionMod
 	} 
 
 	public void registerCommands(RegisterCommandsEvent event) {
-		//Combat
-		CastCommand.register(event.getDispatcher());
-		AffinityCommand.register(event.getDispatcher());
-		AllyCommand.register(event.getDispatcher());
-		Combat.debug("Registered All Commands");
-		if (Config.RPG_COMMON.enableLevelingSystem.get()) {
-			SkillCommand.register(event.getDispatcher());
-			LevelCommand.register(event.getDispatcher());
-			Combat.debug("Registered All Commands for Rankup");
-		}
+		CCommands.registerCommands(event.getDispatcher());
 	}
 
 	@SubscribeEvent
@@ -272,48 +267,33 @@ public class Combat extends UnionMod
 	}
 
 	public static void setBurnableBlocks() {
-		FireBlock fire = (FireBlock)Blocks.FIRE;
-		fire.setFireInfo(CBlocks.AUSLDINE_PLANKS, 5, 20);
-		fire.setFireInfo(CBlocks.DEAD_OAK_PLANKS, 5, 20);
-		fire.setFireInfo(CBlocks.AUSLDINE_SLAB, 5, 20);
-		fire.setFireInfo(CBlocks.DEAD_OAK_SLAB, 5, 20);
-		fire.setFireInfo(CBlocks.AUSLDINE_FENCE_GATE, 5, 20);
-		fire.setFireInfo(CBlocks.DEAD_OAK_FENCE_GATE, 5, 20);
-		fire.setFireInfo(CBlocks.AUSLDINE_FENCE, 5, 20);
-		fire.setFireInfo(CBlocks.DEAD_OAK_FENCE, 5, 20);
-		fire.setFireInfo(CBlocks.AUSLDINE_STAIRS, 5, 20);
-		fire.setFireInfo(CBlocks.DEAD_OAK_STAIRS, 5, 20);
-		fire.setFireInfo(CBlocks.AUSLDINE_LOG, 5, 5);
-		fire.setFireInfo(CBlocks.DEAD_OAK_LOG, 5, 5);
-		fire.setFireInfo(CBlocks.STRIPPED_AUSLDINE_LOG, 5, 5);
-		fire.setFireInfo(CBlocks.STRIPPED_DEAD_OAK_LOG, 5, 5);
-		fire.setFireInfo(CBlocks.STRIPPED_AUSLDINE_WOOD, 5, 5);
-		fire.setFireInfo(CBlocks.STRIPPED_DEAD_OAK_WOOD, 5, 5);
-		fire.setFireInfo(CBlocks.AUSLDINE_WOOD, 5, 5);
-		fire.setFireInfo(CBlocks.DEAD_OAK_WOOD, 5, 5);
-		fire.setFireInfo(CBlocks.AUSLDINE_LEAVES, 30, 60);
-		fire.setFireInfo(CBlocks.OIL, 50, 100);
+		setFlammable(CBlocks.AUSLDINE_PLANKS, 5, 20);
+		setFlammable(CBlocks.DEAD_OAK_PLANKS, 5, 20);
+		setFlammable(CBlocks.AUSLDINE_SLAB, 5, 20);
+		setFlammable(CBlocks.DEAD_OAK_SLAB, 5, 20);
+		setFlammable(CBlocks.AUSLDINE_FENCE_GATE, 5, 20);
+		setFlammable(CBlocks.DEAD_OAK_FENCE_GATE, 5, 20);
+		setFlammable(CBlocks.AUSLDINE_FENCE, 5, 20);
+		setFlammable(CBlocks.DEAD_OAK_FENCE, 5, 20);
+		setFlammable(CBlocks.AUSLDINE_STAIRS, 5, 20);
+		setFlammable(CBlocks.DEAD_OAK_STAIRS, 5, 20);
+		setFlammable(CBlocks.AUSLDINE_LOG, 5, 5);
+		setFlammable(CBlocks.DEAD_OAK_LOG, 5, 5);
+		setFlammable(CBlocks.STRIPPED_AUSLDINE_LOG, 5, 5);
+		setFlammable(CBlocks.STRIPPED_DEAD_OAK_LOG, 5, 5);
+		setFlammable(CBlocks.STRIPPED_AUSLDINE_WOOD, 5, 5);
+		setFlammable(CBlocks.STRIPPED_DEAD_OAK_WOOD, 5, 5);
+		setFlammable(CBlocks.AUSLDINE_WOOD, 5, 5);
+		setFlammable(CBlocks.DEAD_OAK_WOOD, 5, 5);
+		setFlammable(CBlocks.AUSLDINE_LEAVES, 30, 60);
+		setFlammable(CBlocks.OIL, 50, 100);
+	}
+	
+	public static void setFlammable(Block blockIn, int encouragement, int flammability) {
 		PyraniteFireBlock pyranitefire = (PyraniteFireBlock)CBlocks.PYRANITE_FIRE;
-		pyranitefire.setFireInfo(CBlocks.AUSLDINE_PLANKS, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.DEAD_OAK_PLANKS, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.AUSLDINE_SLAB, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.DEAD_OAK_SLAB, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.AUSLDINE_FENCE_GATE, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.DEAD_OAK_FENCE_GATE, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.AUSLDINE_FENCE, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.DEAD_OAK_FENCE, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.AUSLDINE_STAIRS, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.DEAD_OAK_STAIRS, 5, 20);
-		pyranitefire.setFireInfo(CBlocks.AUSLDINE_LOG, 5, 5);
-		pyranitefire.setFireInfo(CBlocks.DEAD_OAK_LOG, 5, 5);
-		pyranitefire.setFireInfo(CBlocks.STRIPPED_AUSLDINE_LOG, 5, 5);
-		pyranitefire.setFireInfo(CBlocks.STRIPPED_DEAD_OAK_LOG, 5, 5);
-		pyranitefire.setFireInfo(CBlocks.STRIPPED_AUSLDINE_WOOD, 5, 5);
-		pyranitefire.setFireInfo(CBlocks.STRIPPED_DEAD_OAK_WOOD, 5, 5);
-		pyranitefire.setFireInfo(CBlocks.AUSLDINE_WOOD, 5, 5);
-		pyranitefire.setFireInfo(CBlocks.DEAD_OAK_WOOD, 5, 5);
-		pyranitefire.setFireInfo(CBlocks.AUSLDINE_LEAVES, 30, 60);
-		pyranitefire.setFireInfo(CBlocks.OIL, 50, 100);
+		pyranitefire.setFlammable(blockIn, encouragement, flammability);
+		FireBlock fire = (FireBlock)Blocks.FIRE;
+		fire.setFlammable(blockIn, encouragement, flammability);
 	}
 	
 	public static Combat getInstance() {

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:purified_dirt",
+    "combat:purified_grass_block",
+    "combat:elycen_block",
+	"combat:caltas"
+  ]
+}

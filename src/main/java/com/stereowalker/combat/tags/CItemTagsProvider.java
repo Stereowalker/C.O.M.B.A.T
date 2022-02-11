@@ -1,3 +1,4 @@
+package com.stereowalker.combat.tags;
 //package com.stereowalker.combat.tags;
 //
 //import java.nio.file.Path;

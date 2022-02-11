@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "combat:ausldine_beam",
+    "combat:dead_oak_beam",
+    "combat:monoris_beam",
+    "combat:acacia_beam",
+    "combat:dark_oak_beam",
+    "combat:oak_beam",
+    "combat:birch_beam",
+    "combat:spruce_beam",
+    "combat:jungle_beam",
+    "combat:crimson_beam",
+    "combat:warped_beam",
+    "combat:fir_beam",
+    "combat:redwood_beam",
+    "combat:cherry_beam",
+    "combat:mahogany_beam",
+    "combat:jacaranda_beam",
+    "combat:palm_beam",
+    "combat:willow_beam",
+    "combat:dead_beam",
+    "combat:magic_beam",
+    "combat:umbran_beam",
+    "combat:hellbark_beam"
+  ]
+}

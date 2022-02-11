@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import com.stereowalker.rankup.api.stat.Stat;
-import com.stereowalker.rankup.stat.Stats;
+import com.stereowalker.rankup.world.stat.Stats;
 
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 
 public enum AccessoryModifiers {
 	NONE (null, -1, null, null, Rarity.VERY_COMMON),

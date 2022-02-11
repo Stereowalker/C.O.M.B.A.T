@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "combat:pasquem_ore",
+    "combat:pasquem_block",
+    "combat:etherion_block",
+    "combat:white_tsune",
+    "combat:orange_tsune",
+    "combat:magenta_tsune",
+    "combat:light_blue_tsune",
+    "combat:yellow_tsune",
+    "combat:lime_tsune",
+    "combat:pink_tsune",
+    "combat:gray_tsune",
+    "combat:light_gray_tsune",
+    "combat:cyan_tsune",
+    "combat:purple_tsune",
+    "combat:blue_tsune",
+    "combat:brown_tsune",
+    "combat:green_tsune",
+    "combat:red_tsune",
+    "combat:black_tsune",
+	"combat:magic_stone"
+  ]
+}

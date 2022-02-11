@@ -3,10 +3,9 @@ package com.stereowalker.rankup.skill;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.Skill;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 
 public class AdreanalineSkill extends Skill {
 
@@ -22,11 +21,11 @@ public class AdreanalineSkill extends Skill {
 		if (flag1 || flag2/* || flag3 */) {
 			float health = entity.getHealth();
 			if (health <= 4.0F && getLevel() == 1) {
-				entity.addPotionEffect(new EffectInstance(Effects.SPEED, 20));
+				entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 20));
 			}
 			if (health <= 4.0F && getLevel() == 2) {
-				entity.addPotionEffect(new EffectInstance(Effects.SPEED, 20));
-				entity.addPotionEffect(new EffectInstance(Effects.STRENGTH, 20));
+				entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 20));
+				entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 20));
 			}
 		}
 		super.playerTick(entity);

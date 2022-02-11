@@ -1,18 +1,14 @@
 package com.stereowalker.combat.compat.curios;
 
-import com.stereowalker.combat.config.Config;
-import com.stereowalker.combat.enchantment.CEnchantmentHelper;
-import com.stereowalker.combat.item.InventoryItem;
 import com.stereowalker.combat.mixinshooks.IBackItemHolder;
+import com.stereowalker.combat.world.item.InventoryItem;
+import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
+import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.compat.curios.accessories.CuriosAccesories;
 import com.stereowalker.unionlib.util.ModHelper;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.event.DropRulesEvent;
@@ -22,8 +18,8 @@ public class CuriosEvents {
 	@SubscribeEvent
 	public static void addEffectsToAccessories(LivingUpdateEvent event) {
 		if (ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
-				CuriosAccesories.addEffectsToAccessory((PlayerEntity) event.getEntityLiving());
+			if (event.getEntityLiving() instanceof Player) {
+				CuriosAccesories.addEffectsToAccessory((Player) event.getEntityLiving());
 			}
 		}
 	}
@@ -31,8 +27,8 @@ public class CuriosEvents {
 	@SubscribeEvent
 	public static void addModifiers(LivingUpdateEvent event) {
 		if (ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
-			if (event.getEntityLiving() instanceof PlayerEntity) {
-				CuriosAccesories.addModifiers((PlayerEntity) event.getEntityLiving());
+			if (event.getEntityLiving() instanceof Player) {
+				CuriosAccesories.addModifiers((Player) event.getEntityLiving());
 			}
 		}
 	}

@@ -5,13 +5,13 @@ import javax.annotation.Nullable;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.compat.curios.CuriosCompat;
-import com.stereowalker.combat.tileentity.AbstractEnergyContainerTileEntity;
-import com.stereowalker.combat.tileentity.CustomEnergyStorage;
+import com.stereowalker.combat.world.level.block.entity.AbstractEnergyContainerBlockEntity;
+import com.stereowalker.combat.world.level.block.entity.CustomEnergyStorage;
 import com.stereowalker.unionlib.util.ModHelper;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -32,15 +32,15 @@ public class AttachCapabilityEvent {
 	}
 	
 	@SubscribeEvent
-	public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
-		if (attachSupportForTE(event.getObject()) != null) {
-			event.addCapability(Combat.getInstance().location("tile_entity"), attachSupportForTE(event.getObject()));
+	public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<BlockEntity> event) {
+		if (attachSupportForBE(event.getObject()) != null) {
+			event.addCapability(Combat.getInstance().location("tile_entity"), attachSupportForBE(event.getObject()));
 		}
 	}
 	
-	public static ICapabilityProvider attachSupportForTE(TileEntity te) {
-		if (te instanceof AbstractEnergyContainerTileEntity) {
-			AbstractEnergyContainerTileEntity container = (AbstractEnergyContainerTileEntity) te;
+	public static ICapabilityProvider attachSupportForBE(BlockEntity te) {
+		if (te instanceof AbstractEnergyContainerBlockEntity) {
+			AbstractEnergyContainerBlockEntity container = (AbstractEnergyContainerBlockEntity) te;
 			CustomEnergyStorage storage = new CustomEnergyStorage(container.getMaxEnergyStored(), container.canReceive()?10:0, container.canExtract()?10:0, container.getEnergyStored(), container);
 			ICapabilityProvider provider = new ICapabilityProvider() {
 				private final LazyOptional<IEnergyStorage> energyOpt = LazyOptional.of(() -> storage);

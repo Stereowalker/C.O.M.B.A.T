@@ -1,42 +1,45 @@
 package com.stereowalker.combat.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.client.renderer.entity.model.SpearModel;
-import com.stereowalker.combat.entity.projectile.SpearEntity;
+import com.stereowalker.combat.client.model.SpearModel;
+import com.stereowalker.combat.client.model.geom.CModelLayers;
+import com.stereowalker.combat.world.entity.projectile.ThrownSpear;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SpearRenderer extends EntityRenderer<SpearEntity> {
+public class SpearRenderer extends EntityRenderer<ThrownSpear> {
 	public static final ResourceLocation SPEAR = Combat.getInstance().location("textures/entity/projectiles/spear.png");
-	   private final SpearModel spearModel = new SpearModel();
+	private final SpearModel spearModel;
 
-	   public SpearRenderer(EntityRendererManager renderManagerIn) {
-	      super(renderManagerIn);
-	   }
+	public SpearRenderer(EntityRendererProvider.Context p_173964_) {
+		super(p_173964_);
+		this.spearModel = new SpearModel(p_173964_.bakeLayer(CModelLayers.SPEAR));
+	}
 
-	   @Override
-	   public void render(SpearEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer typeBuffer, int packedLight) {
-	      matrixStack.push();
-	      matrixStack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 90.0F));
-	      matrixStack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch) + 90.0F));
-	      IVertexBuilder ivertexbuilder = net.minecraft.client.renderer.ItemRenderer.getBuffer(typeBuffer, this.spearModel.getRenderType(this.getEntityTexture(entity)), false, entity.func_226572_w_());
-	      this.spearModel.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-	      matrixStack.pop();
-	      super.render(entity, entityYaw, partialTicks, matrixStack, typeBuffer, packedLight);
-	   }
+	@Override
+	public void render(ThrownSpear entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource typeBuffer, int packedLight) {
+		matrixStack.pushPose();
+		matrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+		matrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 90.0F));
+		VertexConsumer ivertexbuilder = net.minecraft.client.renderer.entity.ItemRenderer.getFoilBuffer(typeBuffer, this.spearModel.renderType(this.getTextureLocation(entity)), false, entity.isFoil());
+		this.spearModel.renderToBuffer(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		matrixStack.popPose();
+		super.render(entity, entityYaw, partialTicks, matrixStack, typeBuffer, packedLight);
+	}
 
-	   public ResourceLocation getEntityTexture(SpearEntity entity) {
-	      return SPEAR;
-	   }
+	@Override
+	public ResourceLocation getTextureLocation(ThrownSpear entity) {
+		return SPEAR;
+	}
 }

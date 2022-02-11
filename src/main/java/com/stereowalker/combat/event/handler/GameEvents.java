@@ -7,34 +7,34 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.api.spell.SpellCategory;
-import com.stereowalker.combat.api.spell.SpellUtil;
-import com.stereowalker.combat.config.Config;
-import com.stereowalker.combat.enchantment.CEnchantmentHelper;
-import com.stereowalker.combat.entity.CombatEntityStats;
-import com.stereowalker.combat.entity.ai.CAttributes;
-import com.stereowalker.combat.entity.item.BoatModEntity;
-import com.stereowalker.combat.entity.monster.VampireEntity;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
+import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.event.AbominationEvents;
 import com.stereowalker.combat.event.LegendaryWeaponEvents;
 import com.stereowalker.combat.event.MagicEvents;
-import com.stereowalker.combat.inventory.container.FletchingContainer;
-import com.stereowalker.combat.item.AccessoryItemCheck;
-import com.stereowalker.combat.item.ArchItem;
-import com.stereowalker.combat.item.CItems;
-import com.stereowalker.combat.item.DaggerItem;
-import com.stereowalker.combat.item.HalberdItem;
-import com.stereowalker.combat.item.ILegendaryGear;
-import com.stereowalker.combat.item.LongbowItem;
-import com.stereowalker.combat.item.ScytheItem;
-import com.stereowalker.combat.item.SoulBowItem;
-import com.stereowalker.combat.item.SpearItem;
-import com.stereowalker.combat.network.client.play.CClientMotionPacket;
-import com.stereowalker.combat.network.server.SPlayerStatsPacket;
-import com.stereowalker.combat.potion.CEffects;
+import com.stereowalker.combat.network.protocol.game.ClientboundPlayerStatsPacket;
+import com.stereowalker.combat.network.protocol.game.ServerboundClientMotionPacket;
 import com.stereowalker.combat.tags.CEntityTypeTags;
 import com.stereowalker.combat.util.UUIDS;
-import com.stereowalker.combat.world.gen.feature.structure.CStructure;
+import com.stereowalker.combat.world.effect.CMobEffects;
+import com.stereowalker.combat.world.entity.CombatEntityStats;
+import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
+import com.stereowalker.combat.world.entity.monster.Vampire;
+import com.stereowalker.combat.world.entity.vehicle.BoatMod;
+import com.stereowalker.combat.world.inventory.FletchingMenu;
+import com.stereowalker.combat.world.item.AccessoryItemCheck;
+import com.stereowalker.combat.world.item.ArchItem;
+import com.stereowalker.combat.world.item.CItems;
+import com.stereowalker.combat.world.item.DaggerItem;
+import com.stereowalker.combat.world.item.HalberdItem;
+import com.stereowalker.combat.world.item.LegendaryGear;
+import com.stereowalker.combat.world.item.LongbowItem;
+import com.stereowalker.combat.world.item.ScytheItem;
+import com.stereowalker.combat.world.item.SoulBowItem;
+import com.stereowalker.combat.world.item.SpearItem;
+import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
+import com.stereowalker.combat.world.level.levelgen.feature.CStructureFeature;
+import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.Skill;
@@ -42,36 +42,36 @@ import com.stereowalker.rankup.skill.api.SkillUtil;
 import com.stereowalker.unionlib.util.EntityHelper;
 import com.stereowalker.unionlib.util.math.UnionMathHelper;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CropsBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.RabbitEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.TridentItem;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -91,20 +91,20 @@ import net.minecraftforge.event.world.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = "combat")
 public class GameEvents {
 
 	public static Predicate<LivingEntity> jumpingEntities = (entities) -> {
-		return (entities instanceof PlayerEntity || entities instanceof PlayerEntity) && !(entities instanceof RabbitEntity || entities instanceof RabbitEntity) ;
+		return (entities instanceof Player || entities instanceof Player) && !(entities instanceof Rabbit || entities instanceof Rabbit) ;
 	};
 
 	@SubscribeEvent
 	public static void dropXPFromFarming(BreakEvent event) {
-		if (event.getState().getBlock() instanceof CropsBlock) {
-			CropsBlock crop = (CropsBlock)event.getState().getBlock();
+		if (event.getState().getBlock() instanceof CropBlock) {
+			CropBlock crop = (CropBlock)event.getState().getBlock();
 			if (crop.isMaxAge(event.getState())) {
 				if (Config.COMMON.xpFromFarming.get() != 0)event.setExpToDrop(Config.COMMON.xpFromFarming.get());
 			}
@@ -118,7 +118,7 @@ public class GameEvents {
 
 	@SubscribeEvent
 	public static void modifyAttributes(ItemAttributeModifierEvent event) {
-		if (getReach(event.getItemStack().getItem()) > 0 && (!(event.getItemStack().getItem() instanceof ArmorItem) && event.getSlotType() == EquipmentSlotType.MAINHAND) || (event.getItemStack().getItem() instanceof ArmorItem && ((ArmorItem)event.getItemStack().getItem()).getEquipmentSlot() == event.getSlotType())) {
+		if (getReach(event.getItemStack().getItem()) > 0 && (!(event.getItemStack().getItem() instanceof ArmorItem) && event.getSlotType() == EquipmentSlot.MAINHAND) || (event.getItemStack().getItem() instanceof ArmorItem && ((ArmorItem)event.getItemStack().getItem()).getSlot() == event.getSlotType())) {
 			event.addModifier(CAttributes.ATTACK_REACH, new AttributeModifier(UUIDS.ATTACK_REACH_MODIFIER, "Weapon modifier", getReach(event.getItemStack().getItem()), AttributeModifier.Operation.ADDITION)); 
 		}
 	}
@@ -149,23 +149,23 @@ public class GameEvents {
 
 	@SubscribeEvent
 	public static void collectBlood(EntityInteract event) {
-		ItemStack bottle = event.getPlayer().getHeldItem(Hand.OFF_HAND);
-		ItemStack dagger = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
+		ItemStack bottle = event.getPlayer().getItemInHand(InteractionHand.OFF_HAND);
+		ItemStack dagger = event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND);
 		if (bottle.getItem() == Items.GLASS_BOTTLE && dagger.getItem() instanceof DaggerItem) {
 			boolean flag = false;
-			if (event.getTarget() instanceof VampireEntity) {
-				event.getPlayer().addItemStackToInventory(new ItemStack(CItems.VAMPIRE_BLOOD));
+			if (event.getTarget() instanceof Vampire) {
+				event.getPlayer().addItem(new ItemStack(CItems.VAMPIRE_BLOOD));
 				flag = true;
-			} else if (event.getTarget() instanceof LivingEntity && !((LivingEntity)event.getTarget()).getCreatureAttribute().equals(CreatureAttribute.UNDEAD)) {
-				event.getPlayer().addItemStackToInventory(new ItemStack(CItems.BLOOD));
+			} else if (event.getTarget() instanceof LivingEntity && !((LivingEntity)event.getTarget()).getMobType().equals(MobType.UNDEAD)) {
+				event.getPlayer().addItem(new ItemStack(CItems.BLOOD));
 				flag = true;
 			}
-			if (!event.getPlayer().abilities.isCreativeMode && flag) {
+			if (!event.getPlayer().getAbilities().instabuild && flag) {
 				bottle.shrink(1);
 			}
 			if (flag) {
 				event.setCanceled(true);
-				event.setCancellationResult(ActionResultType.SUCCESS);
+				event.setCancellationResult(InteractionResult.SUCCESS);
 			}
 		}
 	}
@@ -175,41 +175,41 @@ public class GameEvents {
 		boolean isActive = false;
 		LivingEntity living = event.getEntityLiving();
 		if (living != null) {
-			if (living.isPotionActive(CEffects.PARALYSIS)) isActive = true;
+			if (living.hasEffect(CMobEffects.PARALYSIS)) isActive = true;
 			if (jumpingEntities.test(living) || isActive) {
 				//Cancels the actual jumping motion of the entity
 				float actualJumpHeight = EntityHelper.getJumpUpwardsMotion(event.getEntityLiving()) ;
-				if (event.getEntityLiving().isPotionActive(Effects.JUMP_BOOST)) {
-					actualJumpHeight += 0.1F * (float)(event.getEntityLiving().getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1);
+				if (event.getEntityLiving().hasEffect(MobEffects.JUMP)) {
+					actualJumpHeight += 0.1F * (float)(event.getEntityLiving().getEffect(MobEffects.JUMP).getAmplifier() + 1);
 				}
 				if (isActive) actualJumpHeight = 100.0F;
-				Vector3d vec3d = event.getEntityLiving().getMotion();
-				event.getEntityLiving().setMotion(vec3d.x, (double)-actualJumpHeight , vec3d.z);
+				Vec3 vec3d = event.getEntityLiving().getDeltaMovement();
+				event.getEntityLiving().setDeltaMovement(vec3d.x, (double)-actualJumpHeight , vec3d.z);
 			}
 
 			if (jumpingEntities.test(living)) {
 				//Implements the modded version of this via the Attribute system
 				double modifiedJumpHeight = EntityHelper.getJumpUpwardsMotion(event.getEntityLiving()) + (living.getAttributeValue(CAttributes.JUMP_STRENGTH) - 0.2D);
-				Vector3d vec3d2 = event.getEntityLiving().getMotion();
-				event.getEntityLiving().setMotion(vec3d2.x, modifiedJumpHeight , vec3d2.z);
+				Vec3 vec3d2 = event.getEntityLiving().getDeltaMovement();
+				event.getEntityLiving().setDeltaMovement(vec3d2.x, modifiedJumpHeight , vec3d2.z);
 			}
 
 			if (isActive) {
 				//Prevents the entity from moving by jumping and moving
 				if (event.getEntityLiving().isSprinting()) {
-					float f1 = event.getEntityLiving().rotationYaw * ((float)Math.PI / 180F);
-					double x = (double)(-MathHelper.sin(f1) * 0.2F);
-					double z = (double)(MathHelper.cos(f1) * 0.2F);
-					event.getEntityLiving().setMotion(event.getEntityLiving().getMotion().add(-x, 0.0D, -z));
+					float f1 = event.getEntityLiving().getYRot() * ((float)Math.PI / 180F);
+					double x = (double)(-Mth.sin(f1) * 0.2F);
+					double z = (double)(Mth.cos(f1) * 0.2F);
+					event.getEntityLiving().setDeltaMovement(event.getEntityLiving().getDeltaMovement().add(-x, 0.0D, -z));
 				}
-				event.getEntityLiving().isAirBorne = false;
+				event.getEntityLiving().hasImpulse = false;
 			}
 		}
 	}
 
 	@SubscribeEvent
 	public static void setupHealthRegenerationAttribute(LivingHealEvent event) {
-		if (event.getEntityLiving() instanceof PlayerEntity) {
+		if (event.getEntityLiving() instanceof Player) {
 			event.setAmount((float) (event.getAmount() * event.getEntityLiving().getAttributeValue(CAttributes.HEALTH_REGENERATION)));
 		}
 	}
@@ -218,41 +218,41 @@ public class GameEvents {
 	@SubscribeEvent
 	public static void xpRingStorage(PlayerXpEvent.PickupXp event) {
 		if (AccessoryItemCheck.isEquipped(event.getPlayer(), CItems.XP_STORAGE_RING)) {
-			CombatEntityStats.addStoredXP(event.getPlayer(), event.getOrb().getXpValue());
-			event.getOrb().xpValue = 0;
+			CombatEntityStats.addStoredXP(event.getPlayer(), event.getOrb().getValue());
+			event.getOrb().value = 0;
 		}
 	}
 
 	@SubscribeEvent
 	public static void livingUpdate(LivingUpdateEvent event) {
-		if (event.getEntityLiving() instanceof MonsterEntity) {
-			AbominationEvents.updateAbomination((MonsterEntity)event.getEntityLiving());
+		if (event.getEntityLiving() instanceof Monster) {
+			AbominationEvents.updateAbomination((Monster)event.getEntityLiving());
 		}
-		if (event.getEntityLiving() instanceof PlayerEntity) {
-			LegendaryWeaponEvents.legendaryCollection((PlayerEntity) event.getEntityLiving());
+		if (event.getEntityLiving() instanceof Player) {
+			LegendaryWeaponEvents.legendaryCollection((Player) event.getEntityLiving());
 		}
-		if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity) {
-			setTower((ServerPlayerEntity) event.getEntityLiving());
+		if (!event.getEntityLiving().level.isClientSide && event.getEntityLiving() instanceof ServerPlayer) {
+			setTower((ServerPlayer) event.getEntityLiving());
 		}
 		MagicEvents.manaUpdate(event.getEntityLiving());
 		//Set the players stats once when they spawn into the world
-		if(event.getEntityLiving() instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity)event.getEntityLiving();
+		if(event.getEntityLiving() instanceof Player) {
+			Player player = (Player)event.getEntityLiving();
 			CombatEntityStats.addStatsToPlayerOnSpawn(player);
 		}
 		//Send tickets to the client containing every stat for the player
-		if (!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ServerPlayerEntity) {
-			ServerPlayerEntity player = (ServerPlayerEntity)event.getEntityLiving();
+		if (!event.getEntityLiving().level.isClientSide && event.getEntityLiving() instanceof ServerPlayer) {
+			ServerPlayer player = (ServerPlayer)event.getEntityLiving();
 			CombatEntityStats.setResist(player, player.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue()*10);
-			Combat.getInstance().channel.sendTo(new SPlayerStatsPacket(player), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+			Combat.getInstance().channel.sendTo(new ClientboundPlayerStatsPacket(player), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void livingUpdateOnClient(LivingUpdateEvent event) {
-		if (event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof ClientPlayerEntity) {
-			new CClientMotionPacket(event.getEntityLiving().getMotion()).send();
+		if (event.getEntityLiving().level.isClientSide && event.getEntityLiving() instanceof LocalPlayer) {
+			new ServerboundClientMotionPacket(event.getEntityLiving().getDeltaMovement()).send();
 		}
 	}
 
@@ -264,8 +264,8 @@ public class GameEvents {
 	@SubscribeEvent
 	public static void fovUpdate(FOVUpdateEvent event) {
 		float f = 1.0F;
-		if (event.getEntity().isHandActive() && event.getEntity().getActiveItemStack().getItem() instanceof LongbowItem) {
-			int i = event.getEntity().getItemInUseMaxCount();
+		if (event.getEntity().isUsingItem() && event.getEntity().getUseItem().getItem() instanceof LongbowItem) {
+			int i = event.getEntity().getTicksUsingItem();
 			float f1 = (float)i / 30.0F;
 			if (f1 > 1.5F) {
 				f1 = 2.25F;
@@ -277,8 +277,8 @@ public class GameEvents {
 			event.setNewfov(f);
 		}
 
-		if (event.getEntity().isHandActive() && event.getEntity().getActiveItemStack().getItem() instanceof SoulBowItem) {
-			int i = event.getEntity().getItemInUseMaxCount();
+		if (event.getEntity().isUsingItem() && event.getEntity().getUseItem().getItem() instanceof SoulBowItem) {
+			int i = event.getEntity().getTicksUsingItem();
 			float f1 = (float)i / 20.0F;
 			if (f1 > 1.0F) {
 				f1 = 1.0F;
@@ -290,8 +290,8 @@ public class GameEvents {
 			event.setNewfov(f);
 		}
 
-		if (event.getEntity().isHandActive() && event.getEntity().getActiveItemStack().getItem() instanceof ArchItem) {
-			int i = event.getEntity().getItemInUseMaxCount();
+		if (event.getEntity().isUsingItem() && event.getEntity().getUseItem().getItem() instanceof ArchItem) {
+			int i = event.getEntity().getTicksUsingItem();
 			float f1 = (float)i / 20.0F;
 			if (f1 > 1.0F) {
 				f1 = 1.0F;
@@ -304,8 +304,8 @@ public class GameEvents {
 		}
 	}
 
-	public static void setTower(ServerPlayerEntity player) {
-		BlockPos blockpos = player.getServerWorld().getChunkProvider().getChunkGenerator().func_235956_a_(player.getServerWorld(), CStructure.ETHERION_TOWER, player.getPosition(), 100, false);
+	public static void setTower(ServerPlayer player) {
+		BlockPos blockpos = player.getLevel().getChunkSource().getGenerator().findNearestMapFeature(player.getLevel(), CStructureFeature.ETHERION_TOWER, player.blockPosition(), 100, false);
 		if (blockpos == null) blockpos = BlockPos.ZERO;
 		if (CombatEntityStats.getNearestEtherionTowerPos(player) != blockpos) CombatEntityStats.setNearestEtherionTowerPos(player, blockpos);
 	}
@@ -328,14 +328,14 @@ public class GameEvents {
 		CombatEntityStats.setStoredXP(event.getPlayer(), CombatEntityStats.getStoredXP(event.getOriginal()));
 	}
 
-	private static ItemStack findSoulGem(PlayerEntity player) {
-		if (isSoulGem(player.getHeldItem(Hand.OFF_HAND))) {
-			return player.getHeldItem(Hand.OFF_HAND);
-		} else if (isSoulGem(player.getHeldItem(Hand.MAIN_HAND))) {
-			return player.getHeldItem(Hand.MAIN_HAND);
+	private static ItemStack findSoulGem(Player player) {
+		if (isSoulGem(player.getItemInHand(InteractionHand.OFF_HAND))) {
+			return player.getItemInHand(InteractionHand.OFF_HAND);
+		} else if (isSoulGem(player.getItemInHand(InteractionHand.MAIN_HAND))) {
+			return player.getItemInHand(InteractionHand.MAIN_HAND);
 		} else {
-			for(int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-				ItemStack itemstack = player.inventory.getStackInSlot(i);
+			for(int i = 0; i < player.getInventory().getContainerSize(); ++i) {
+				ItemStack itemstack = player.getInventory().getItem(i);
 				if (isSoulGem(itemstack)) {
 					return itemstack;
 				}
@@ -352,82 +352,83 @@ public class GameEvents {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void rowBoat(LivingUpdateEvent event) {
-		if(event.getEntityLiving() instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity)event.getEntityLiving();
-			if (player.getRidingEntity() instanceof BoatModEntity) {
-				ClientPlayerEntity psp = Minecraft.getInstance().player;
-				BoatModEntity entityboat = (BoatModEntity)player.getRidingEntity();
+		if(event.getEntityLiving() instanceof Player) {
+			Player player = (Player)event.getEntityLiving();
+			if (player.getVehicle() instanceof BoatMod) {
+				LocalPlayer psp = Minecraft.getInstance().player;
+				BoatMod entityboat = (BoatMod)player.getVehicle();
 				if(psp != null && player != null && entityboat != null) {
-					entityboat.updateInputs(psp.movementInput.leftKeyDown, psp.movementInput.rightKeyDown, psp.movementInput.forwardKeyDown, psp.movementInput.backKeyDown);
+					entityboat.setInput(psp.input.left, psp.input.right, psp.input.up, psp.input.down);
 				}
 			}
 		}
 	}
 
+	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void entityKill(LivingDeathEvent event) {
-		if (event.getEntityLiving() instanceof MonsterEntity) {
-			AbominationEvents.abominationDeath(event.getSource(), (MonsterEntity)event.getEntityLiving());
+		if (event.getEntityLiving() instanceof Monster) {
+			AbominationEvents.abominationDeath(event.getSource(), (Monster)event.getEntityLiving());
 		}
 		Random rand = new Random();
 		ItemStack itemIn = new ItemStack(CItems.SCROLL);
 		ItemStack itemIn1 = new ItemStack(CItems.EMPTY_SOUL_GEM);
-		if(!event.getEntityLiving().getEntityWorld().isRemote && (event.getEntityLiving() instanceof LivingEntity)) {
-			if(event.getSource().getTrueSource() instanceof PlayerEntity) {
-				PlayerEntity player = (PlayerEntity)event.getSource().getTrueSource();
-				if (event.getEntityLiving().getCreatureAttribute() != CreatureAttribute.UNDEAD) {
-					if (CEnchantmentHelper.hasSoulSealing(player.getHeldItemMainhand()) || UnionMathHelper.probabilityCheck(50)) {
+		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && (event.getEntityLiving() instanceof LivingEntity)) {
+			if(event.getSource().getEntity() instanceof Player) {
+				Player player = (Player)event.getSource().getEntity();
+				if (event.getEntityLiving().getMobType() != MobType.UNDEAD) {
+					if (CEnchantmentHelper.hasSoulSealing(player.getMainHandItem()) || UnionMathHelper.probabilityCheck(50)) {
 						if (!findSoulGem(player).isEmpty()) {
 							findSoulGem(player).shrink(1);
-							player.addItemStackToInventory(new ItemStack(CItems.SOUL_GEM));
+							player.addItem(new ItemStack(CItems.SOUL_GEM));
 						}
 					}
 				}
-				if (event.getEntityLiving().getCreatureAttribute() == CreatureAttribute.UNDEAD) {
-					if (UnionMathHelper.probabilityCheck(100) || CEnchantmentHelper.hasContainerExtraction(player.getHeldItemMainhand())) event.getEntityLiving().entityDropItem(itemIn1);
+				if (event.getEntityLiving().getMobType() == MobType.UNDEAD) {
+					if (UnionMathHelper.probabilityCheck(100) || CEnchantmentHelper.hasContainerExtraction(player.getMainHandItem())) event.getEntityLiving().spawnAtLocation(itemIn1);
 				}
 			}
 		}
-		if(!event.getEntityLiving().getEntityWorld().isRemote && event.getEntityLiving() instanceof MonsterEntity) {
-			if(event.getSource().getTrueSource() instanceof PlayerEntity) {
+		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && event.getEntityLiving() instanceof Monster) {
+			if(event.getSource().getEntity() instanceof Player) {
 				if(UnionMathHelper.probabilityCheck(Config.MAGIC_COMMON.scrollDropChanceFromKill.get())) {
-					event.getEntityLiving().entityDropItem(SpellUtil.addSpellToStack(itemIn, SpellUtil.getWeightedRandomSpell(rand)));
+					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, SpellUtil.getWeightedRandomSpell(rand)));
 				}
 			} else {
 				if(UnionMathHelper.probabilityCheck(Config.MAGIC_COMMON.scrollDropChance.get())) {
-					event.getEntityLiving().entityDropItem(SpellUtil.addSpellToStack(itemIn, SpellUtil.getWeightedRandomSpell(rand)));
+					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, SpellUtil.getWeightedRandomSpell(rand)));
 				}
 			}
 		}
 		int runeDropChance = 3;
 		boolean flag = UnionMathHelper.probabilityCheck(runeDropChance);
-		if(!event.getEntityLiving().getEntityWorld().isRemote && ((event.getEntityLiving() instanceof MonsterEntity && flag) || event.getEntityLiving().getType().isContained(CEntityTypeTags.BOSSES))) {
-			if(event.getSource().getTrueSource() instanceof PlayerEntity) {
-				Skill skill = PlayerSkills.generateRandomSkill((PlayerEntity)event.getSource().getTrueSource(), false);
-				if (skill != Skills.EMPTY) event.getEntityLiving().entityDropItem(SkillUtil.addSkillToItemStack(new ItemStack(CItems.SKILL_RUNESTONE), skill));
+		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && ((event.getEntityLiving() instanceof Monster && flag) || event.getEntityLiving().getType().is(CEntityTypeTags.BOSSES))) {
+			if(event.getSource().getEntity() instanceof Player) {
+				Skill skill = PlayerSkills.generateRandomSkill((Player)event.getSource().getEntity(), false);
+				if (skill != Skills.EMPTY) event.getEntityLiving().spawnAtLocation(SkillUtil.addSkillToItemStack(new ItemStack(CItems.SKILL_RUNESTONE), skill));
 			}
 		}
 
-		if(!event.getEntityLiving().getEntityWorld().isRemote && event.getEntityLiving().getType().isContained(CEntityTypeTags.BOSSES)) {
-			if(event.getSource().getTrueSource() instanceof PlayerEntity) {
+		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && event.getEntityLiving().getType().is(CEntityTypeTags.BOSSES)) {
+			if(event.getSource().getEntity() instanceof Player) {
 				//				for (EntityType<?> entity : ForgeRegistries.ENTITIES) {
 				//					if (entity.getRegistryName().toString() == "c") {
 				//						
 				//					}
 				//				}
-				PlayerEntity player = (PlayerEntity)event.getSource().getTrueSource();
+				Player player = (Player)event.getSource().getEntity();
 				double luck = player.getAttributeValue(Attributes.LUCK);
 				double maxLuck = 10;
 				double luckMod = luck/maxLuck;
 				if(rand.nextDouble() < luckMod) {
 					List<Item> legendaryItems = new ArrayList<Item>();
 					for (Item item : ForgeRegistries.ITEMS) {
-						if (item instanceof ILegendaryGear) {
+						if (item instanceof LegendaryGear) {
 							legendaryItems.add(item);
 						}
 					}
 					int legendrand = rand.nextInt(legendaryItems.size());
-					event.getEntityLiving().entityDropItem(new ItemStack(legendaryItems.get(legendrand)));
+					event.getEntityLiving().spawnAtLocation(new ItemStack(legendaryItems.get(legendrand)));
 				}
 			}
 		}
@@ -436,8 +437,8 @@ public class GameEvents {
 	@SubscribeEvent
 	public static void abominationXP(LivingExperienceDropEvent event) {
 		int i = event.getDroppedExperience();
-		if (event.getEntityLiving() instanceof MonsterEntity) {
-			i = AbominationEvents.abominationXP((MonsterEntity) event.getEntityLiving(), i);
+		if (event.getEntityLiving() instanceof Monster) {
+			i = AbominationEvents.abominationXP((Monster) event.getEntityLiving(), i);
 		}
 		if (i != event.getDroppedExperience()) {
 			event.setDroppedExperience(i);
@@ -449,12 +450,12 @@ public class GameEvents {
 	public static void openFletchingTable(RightClickBlock event) {
 		if (!event.getPlayer().isCrouching()) {
 			if (Config.COMMON.enable_fletching.get()) {
-				TranslationTextComponent CONTAINER_NAME = new TranslationTextComponent("container.fletching");
+				TranslatableComponent CONTAINER_NAME = new TranslatableComponent("container.fletching");
 				if (event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.FLETCHING_TABLE) {
 					event.setCanceled(true);
-					event.setCancellationResult(ActionResultType.FAIL);
-					event.getPlayer().openContainer(new SimpleNamedContainerProvider((p_220270_2_, p_220270_3_, p_220270_4_) -> {
-						return new FletchingContainer(p_220270_2_, p_220270_3_, IWorldPosCallable.of(event.getWorld(), event.getPos()));
+					event.setCancellationResult(InteractionResult.FAIL);
+					event.getPlayer().openMenu(new SimpleMenuProvider((p_220270_2_, p_220270_3_, p_220270_4_) -> {
+						return new FletchingMenu(p_220270_2_, p_220270_3_, ContainerLevelAccess.create(event.getWorld(), event.getPos()));
 					}, CONTAINER_NAME));
 				}
 			}
@@ -463,8 +464,8 @@ public class GameEvents {
 
 	@SubscribeEvent
 	public static void entityJoinWorld(EntityJoinWorldEvent event) {
-		if (event.getEntity() instanceof ServerPlayerEntity) {
-			ServerPlayerEntity player = (ServerPlayerEntity)event.getEntity();
+		if (event.getEntity() instanceof ServerPlayer) {
+			ServerPlayer player = (ServerPlayer)event.getEntity();
 			if (CombatEntityStats.getElementalAffinity(player) == SpellCategory.NONE) {
 				//				player.sendMessage(new StringTextComponent("Use /affinitiy to set your Elemental, Life and Special Affinity. You won't be able to cast magic until you do"), Util.DUMMY_UUID);
 			}

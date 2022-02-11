@@ -4,50 +4,50 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
-import com.stereowalker.combat.entity.AbominationEnums.AbominationType;
-import com.stereowalker.combat.entity.CombatEntityStats;
-import com.stereowalker.combat.item.CItems;
+import com.stereowalker.combat.world.entity.CombatEntityStats;
+import com.stereowalker.combat.world.entity.AbominationEnums.AbominationType;
+import com.stereowalker.combat.world.item.CItems;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 public class AbominationEvents {
 	static Random random = new Random();
 
-	public static void updateAbomination(MonsterEntity monster) {
+	public static void updateAbomination(Monster monster) {
 		CombatEntityStats.addStatsToMonstersOnSpawn(monster, random);
 	}
 
 	public static final List<ItemStack> getAbominationLoot() {
 		return Lists.newArrayList(
-				EnchantmentHelper.addRandomEnchantment(random, new ItemStack(Items.BOOK), random.nextInt(100), true), 
+				EnchantmentHelper.enchantItem(random, new ItemStack(Items.BOOK), random.nextInt(100), true), 
 				new ItemStack(CItems.XP_STORAGE_RING), 
 				new ItemStack(CItems.POISON_CLEANSING_AMULET),
 				new ItemStack(CItems.PYROMANCER_RING),
 				new ItemStack(CItems.TERRAMANCER_RING));
 	}
 
-	public static void abominationDeath(DamageSource damageSource, MonsterEntity monster) {
-		CompoundNBT compound = CombatEntityStats.getModNBT(monster);
+	public static void abominationDeath(DamageSource damageSource, Monster monster) {
+		CompoundTag compound = CombatEntityStats.getModNBT(monster);
 		if (compound.contains(CombatEntityStats.abominationID)) {
 			if (CombatEntityStats.getAbomination(monster) != AbominationType.NORMAL) {
-				if (damageSource.getTrueSource() instanceof PlayerEntity) {
+				if (damageSource.getEntity() instanceof Player) {
 					int randomDrop = random.nextInt(getAbominationLoot().size());
-					monster.entityDropItem(getAbominationLoot().get(randomDrop));
-					CombatEntityStats.addMana((LivingEntity) damageSource.getTrueSource(), 20.0F);
+					monster.spawnAtLocation(getAbominationLoot().get(randomDrop));
+					CombatEntityStats.addMana((LivingEntity) damageSource.getEntity(), 20.0F);
 				}
 			}
 		}
 	}
 
-	public static int abominationXP(MonsterEntity monster, int xp) {
-		CompoundNBT compound = CombatEntityStats.getModNBT(monster);
+	public static int abominationXP(Monster monster, int xp) {
+		CompoundTag compound = CombatEntityStats.getModNBT(monster);
 		if (compound.contains(CombatEntityStats.abominationID)) {
 			if (CombatEntityStats.getAbomination(monster) != AbominationType.NORMAL) {
 				return xp * 100;

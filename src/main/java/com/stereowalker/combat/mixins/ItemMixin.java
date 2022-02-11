@@ -12,38 +12,37 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.stereowalker.combat.config.Config;
-import com.stereowalker.combat.item.IMagisteelItem;
-import com.stereowalker.combat.item.IMythrilItem;
-import com.stereowalker.combat.item.ItemFilters;
-import com.stereowalker.combat.util.EnergyUtils;
-import com.stereowalker.combat.util.EnergyUtils.EnergyType;
-
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import com.stereowalker.combat.core.EnergyUtils;
+import com.stereowalker.combat.world.item.Magisteel;
+import com.stereowalker.combat.world.item.ItemFilters;
+import com.stereowalker.combat.world.item.Mythril;
+import com.stereowalker.old.combat.config.Config;
+	
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
 
 @Mixin(Item.class)
-public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Item> implements IItemProvider, net.minecraftforge.common.extensions.IForgeItem {
+public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Item> implements ItemLike, net.minecraftforge.common.extensions.IForgeItem {
 
 	/**
 	 * returns the action that specifies what animation to play when the items is being used
 	 */
 	@Overwrite
-	public UseAction getUseAction(ItemStack stack) {
+	public UseAnim getUseAnimation(ItemStack stack) {
 		if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
-			return UseAction.BLOCK;
+			return UseAnim.BLOCK;
 		} else {
-			return stack.getItem().isFood() ? UseAction.EAT : UseAction.NONE;
+			return stack.getItem().isEdible() ? UseAnim.EAT : UseAnim.NONE;
 		}
 	}
 
@@ -52,8 +51,8 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	 */
 	@Overwrite
 	public int getUseDuration(ItemStack stack) {
-		if (stack.getItem().isFood()) {
-			return this.getFood().isFastEating() ? 16 : 32;
+		if (stack.getItem().isEdible()) {
+			return this.getFoodProperties().isFastFood() ? 16 : 32;
 		} else if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
 			return 40;
 		} else {
@@ -61,54 +60,54 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 		}
 	}
 	
-	@Inject(at = @At(value = "HEAD"), method = "addInformation")
-	public void displayEnergy(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, CallbackInfo info) {
-		if (this instanceof IMythrilItem) {
-			tooltip.add(EnergyUtils.getEnergyComponent(stack, EnergyType.DIVINE_ENERGY));
+	@Inject(at = @At(value = "HEAD"), method = "appendHoverText")
+	public void displayEnergy(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn, CallbackInfo info) {
+		if (this instanceof Mythril) {
+			tooltip.add(EnergyUtils.getEnergyComponent(stack, EnergyUtils.EnergyType.DIVINE_ENERGY));
 		}
-		if (this instanceof IMagisteelItem) {
-			tooltip.add(EnergyUtils.getEnergyComponent(stack, EnergyType.MAGIC_ENERGY));
+		if (this instanceof Magisteel) {
+			tooltip.add(EnergyUtils.getEnergyComponent(stack, EnergyUtils.EnergyType.MAGIC_ENERGY));
 		}
 	}
 	
 	@Inject(at = @At(value = "HEAD"), method = "inventoryTick")
-	public void inventoryTicking(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected, CallbackInfo info) {
-		if (this instanceof IMythrilItem) {
-			((IMythrilItem)this).handleInInventory(stack, entityIn);
+	public void inventoryTicking(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected, CallbackInfo info) {
+		if (this instanceof Mythril) {
+			((Mythril)this).handleInInventory(stack, entityIn);
 		}
-		if (this instanceof IMagisteelItem) {
-			((IMagisteelItem)this).handleInInventory(stack, entityIn);
+		if (this instanceof Magisteel) {
+			((Magisteel)this).handleInInventory(stack, entityIn);
 		}
 	}
 	
-	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;resultPass(Ljava/lang/Object;)Lnet/minecraft/util/ActionResult;"), method = "onItemRightClick")
-	public ActionResult<ItemStack> onItemRightClickMixin(Object type, World worldIn, PlayerEntity playerIn, Hand handIn) {
-		ItemStack itemstack = playerIn.getHeldItem(handIn);
-		if (playerIn.isSneaking()) {
-			if (this instanceof IMythrilItem) {
-				if (EnergyUtils.getEnergy(itemstack, EnergyType.DIVINE_ENERGY) > 0) {
-					((IMythrilItem)this).switchActivity(itemstack, playerIn);
-					return ActionResult.resultSuccess(itemstack);
+	@Redirect(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResultHolder;pass(Ljava/lang/Object;)Lnet/minecraft/world/InteractionResultHolder;"))
+	public InteractionResultHolder<ItemStack> onItemRightClickMixin(Object type, Level worldIn, Player playerIn, InteractionHand handIn) {
+		ItemStack itemstack = playerIn.getItemInHand(handIn);
+		if (playerIn.isShiftKeyDown()) {
+			if (this instanceof Mythril) {
+				if (EnergyUtils.getEnergy(itemstack, EnergyUtils.EnergyType.DIVINE_ENERGY) > 0) {
+					((Mythril)this).switchActivity(itemstack, playerIn);
+					return InteractionResultHolder.success(itemstack);
 				} else {
-					return ActionResult.resultFail(itemstack);
+					return InteractionResultHolder.fail(itemstack);
 				}
 			} else {
-				return ActionResult.resultPass(playerIn.getHeldItem(handIn));
+				return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 			}
 		} else {
 			if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(itemstack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(itemstack))) {
-				playerIn.setActiveHand(handIn);
-				return ActionResult.resultConsume(itemstack);
+				playerIn.startUsingItem(handIn);
+				return InteractionResultHolder.consume(itemstack);
 			} else {
-				return ActionResult.resultPass(itemstack);
+				return InteractionResultHolder.pass(itemstack);
 			}
 		}
 	}
 
 	@Nullable
 	@Shadow
-	public Food getFood() {return null;}
+	public FoodProperties getFoodProperties() {return null;}
 
 	@Shadow
-	public boolean isFood() {return true;}
+	public boolean isEdible() {return true;}
 }

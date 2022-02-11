@@ -7,13 +7,13 @@ import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.skill.Skills;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.Util;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class Skill extends ForgeRegistryEntry<Skill> {
@@ -65,13 +65,13 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 		return getTranslationKey();
 	}
 
-	public IFormattableTextComponent getName() {
-		return new TranslationTextComponent(this.getTranslationKey());
+	public MutableComponent getName() {
+		return new TranslatableComponent(this.getTranslationKey());
 	}
 
 	protected String getDefaultTranslationKey() {
 		if (this.translationKey == null) {
-			this.translationKey = Util.makeTranslationKey("skill", this.getRegistryName());
+			this.translationKey = Util.makeDescriptionId("skill", this.getRegistryName());
 		}
 
 		return this.translationKey;
@@ -113,7 +113,7 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 	 * @param player - The one attacking
 	 * @param target - The one being attacked
 	 */
-	public void onAttackEntity(PlayerEntity player, Entity target) {
+	public void onAttackEntity(Player player, Entity target) {
 		
 	}
 	

@@ -1,68 +1,86 @@
 package com.stereowalker.combat.client.renderer.entity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.client.renderer.entity.model.BoatModModel;
-import com.stereowalker.combat.entity.item.BoatModEntity;
+import java.util.Map;
+import java.util.stream.Stream;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.google.common.collect.ImmutableMap;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+import com.stereowalker.combat.Combat;
+import com.stereowalker.combat.client.model.BoatModModel;
+import com.stereowalker.combat.client.model.geom.CModelLayers;
+import com.stereowalker.combat.world.entity.vehicle.BoatMod;
+
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BoatModRenderer extends EntityRenderer<BoatModEntity> {
-	private static final ResourceLocation[] BOAT_TEXTURES = new ResourceLocation[]{Combat.getInstance().location("textures/entity/boat/dead_oak.png"), Combat.getInstance().location("textures/entity/boat/ausldine.png"), Combat.getInstance().location("textures/entity/boat/monoris.png")};
-	protected BoatModModel modelBoat = new BoatModModel();
+public class BoatModRenderer extends EntityRenderer<BoatMod> {
+   private final Map<BoatMod.Type, Pair<ResourceLocation, BoatModModel>> boatResources;
 
-	public BoatModRenderer(EntityRendererManager renderManagerIn) {
-		super(renderManagerIn);
-		this.shadowSize = 0.5F;
-	}
+   public BoatModRenderer(EntityRendererProvider.Context p_173936_) {
+      super(p_173936_);
+      this.shadowRadius = 0.8F;
+      this.boatResources = Stream.of(BoatMod.Type.values()).collect(ImmutableMap.toImmutableMap((p_173938_) -> {
+         return p_173938_;
+      }, (p_173941_) -> {
+         return Pair.of(Combat.getInstance().location("textures/entity/boat/" + p_173941_.getName() + ".png"), new BoatModModel(p_173936_.bakeLayer(CModelLayers.createModdedBoatModelName(p_173941_))));
+      }));
+   }
 
-	@Override
-	public void render(BoatModEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		matrixStackIn.push();
-		matrixStackIn.translate(0.0D, 0.375D, 0.0D);
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F - entityYaw));
-		float f = (float)entityIn.getTimeSinceHit() - partialTicks;
-		float f1 = entityIn.getDamageTaken() - partialTicks;
-		if (f1 < 0.0F) {
-			f1 = 0.0F;
-		}
+   public void render(BoatMod pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
+      pMatrixStack.pushPose();
+      pMatrixStack.translate(0.0D, 0.375D, 0.0D);
+      pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - pEntityYaw));
+      float f = (float)pEntity.getHurtTime() - pPartialTicks;
+      float f1 = pEntity.getDamage() - pPartialTicks;
+      if (f1 < 0.0F) {
+         f1 = 0.0F;
+      }
 
-		if (f > 0.0F) {
-			matrixStackIn.rotate(Vector3f.XP.rotationDegrees(MathHelper.sin(f) * f * f1 / 10.0F * (float)entityIn.getForwardDirection()));
-		}
+      if (f > 0.0F) {
+         pMatrixStack.mulPose(Vector3f.XP.rotationDegrees(Mth.sin(f) * f * f1 / 10.0F * (float)pEntity.getHurtDir()));
+      }
 
-		float f2 = entityIn.getRockingAngle(partialTicks);
-		if (!MathHelper.epsilonEquals(f2, 0.0F)) {
-			matrixStackIn.rotate(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), entityIn.getRockingAngle(partialTicks), true));
-		}
+      float f2 = pEntity.getBubbleAngle(pPartialTicks);
+      if (!Mth.equal(f2, 0.0F)) {
+         pMatrixStack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), pEntity.getBubbleAngle(pPartialTicks), true));
+      }
 
-		matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90.0F));
-		this.modelBoat.setRotationAngles(entityIn, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
-		IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.modelBoat.getRenderType(this.getEntityTexture(entityIn)));
-		this.modelBoat.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getWaterMask());
-		this.modelBoat.func_228245_c_().render(matrixStackIn, ivertexbuilder1, packedLightIn, OverlayTexture.NO_OVERLAY);
-		matrixStackIn.pop();
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-	}
+      Pair<ResourceLocation, BoatModModel> pair = getModelWithLocation(pEntity);
+      ResourceLocation resourcelocation = pair.getFirst();
+      BoatModModel boatmodel = pair.getSecond();
+      pMatrixStack.scale(-1.0F, -1.0F, 1.0F);
+      pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+      boatmodel.setupAnim(pEntity, pPartialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
+      VertexConsumer vertexconsumer = pBuffer.getBuffer(boatmodel.renderType(resourcelocation));
+      boatmodel.renderToBuffer(pMatrixStack, vertexconsumer, pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+      if (!pEntity.isUnderWater()) {
+         VertexConsumer vertexconsumer1 = pBuffer.getBuffer(RenderType.waterMask());
+         boatmodel.waterPatch().render(pMatrixStack, vertexconsumer1, pPackedLight, OverlayTexture.NO_OVERLAY);
+      }
 
-	/**
-	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-	 */
-	public ResourceLocation getEntityTexture(BoatModEntity entity) {
-		return BOAT_TEXTURES[entity.getBoatType().ordinal()];
-	}
+      pMatrixStack.popPose();
+      super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
+   }
+
+   /**
+    * Returns the location of an entity's texture.
+    */
+   @Deprecated // forge: override getModelWithLocation to change the texture / model
+   public ResourceLocation getTextureLocation(BoatMod pEntity) {
+      return getModelWithLocation(pEntity).getFirst();
+   }
+
+   public Pair<ResourceLocation, BoatModModel> getModelWithLocation(BoatMod boat) { return this.boatResources.get(boat.getModdedBoatType()); }
 }

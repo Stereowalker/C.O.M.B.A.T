@@ -1,33 +1,33 @@
 package com.stereowalker.combat.event;
 
-import com.stereowalker.combat.item.ILegendaryGear;
+import com.stereowalker.combat.world.item.LegendaryGear;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class LegendaryWeaponEvents {
 
-	public static void legendaryCollection(PlayerEntity player) {
-		if(!player.world.isRemote) {
+	public static void legendaryCollection(Player player) {
+		if(!player.level.isClientSide) {
 			ItemStack itemstack = findLegendaryItem(player);
 			ItemStack itemstack2 = findLegendaryItemInvert(player);
 			int itemstackLoc = findLegendaryItemLoc(player);
 			int itemstackLoc2 = findLegendaryItemInvertLoc(player);
-			if((!itemstack.isEmpty() && !itemstack2.isEmpty()) && (itemstackLoc != itemstackLoc2) && !player.isPotionActive(Effects.WITHER)) {
-				player.addPotionEffect(new EffectInstance(Effects.WITHER, 40, 1));
+			if((!itemstack.isEmpty() && !itemstack2.isEmpty()) && (itemstackLoc != itemstackLoc2) && !player.hasEffect(MobEffects.WITHER)) {
+				player.addEffect(new MobEffectInstance(MobEffects.WITHER, 40, 1));
 			}
 		}
 	}
 
-	private static ItemStack findLegendaryItem(PlayerEntity player) {
-		if (isLegendaryItem(player.getHeldItem(Hand.OFF_HAND))) {
-			return player.getHeldItem(Hand.OFF_HAND);
+	private static ItemStack findLegendaryItem(Player player) {
+		if (isLegendaryItem(player.getItemInHand(InteractionHand.OFF_HAND))) {
+			return player.getItemInHand(InteractionHand.OFF_HAND);
 		} else {
-			for(int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-				ItemStack itemstack = player.inventory.getStackInSlot(i);
+			for(int i = 0; i < player.getInventory().getContainerSize(); ++i) {
+				ItemStack itemstack = player.getInventory().getItem(i);
 				if (isLegendaryItem(itemstack)) {
 					return itemstack;
 				}
@@ -37,12 +37,12 @@ public class LegendaryWeaponEvents {
 		}
 	}
 
-	private static ItemStack findLegendaryItemInvert(PlayerEntity player) {
-		if (isLegendaryItem(player.getHeldItem(Hand.MAIN_HAND))) {
-			return player.getHeldItem(Hand.MAIN_HAND);
+	private static ItemStack findLegendaryItemInvert(Player player) {
+		if (isLegendaryItem(player.getItemInHand(InteractionHand.MAIN_HAND))) {
+			return player.getItemInHand(InteractionHand.MAIN_HAND);
 		} else {
-			for(int i = player.inventory.getSizeInventory(); i >= 0; --i) {
-				ItemStack itemstack = player.inventory.getStackInSlot(i);
+			for(int i = player.getInventory().getContainerSize(); i >= 0; --i) {
+				ItemStack itemstack = player.getInventory().getItem(i);
 				if (isLegendaryItem(itemstack)) {
 					return itemstack;
 				}
@@ -52,9 +52,9 @@ public class LegendaryWeaponEvents {
 		}
 	}
 
-	private static int findLegendaryItemLoc(PlayerEntity player) {
-		for(int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-			ItemStack itemstack = player.inventory.getStackInSlot(i);
+	private static int findLegendaryItemLoc(Player player) {
+		for(int i = 0; i < player.getInventory().getContainerSize(); ++i) {
+			ItemStack itemstack = player.getInventory().getItem(i);
 			if (isLegendaryItem(itemstack)) {
 				return i;
 			}
@@ -63,9 +63,9 @@ public class LegendaryWeaponEvents {
 		return 1000;
 	}
 
-	private static int findLegendaryItemInvertLoc(PlayerEntity player) {
-		for(int i = player.inventory.getSizeInventory(); i >= 0; --i) {
-			ItemStack itemstack = player.inventory.getStackInSlot(i);
+	private static int findLegendaryItemInvertLoc(Player player) {
+		for(int i = player.getInventory().getContainerSize(); i >= 0; --i) {
+			ItemStack itemstack = player.getInventory().getItem(i);
 			if (isLegendaryItem(itemstack)) {
 				return i;
 			}
@@ -75,6 +75,6 @@ public class LegendaryWeaponEvents {
 	}
 
 	protected static boolean isLegendaryItem(ItemStack stack) {
-		return stack.getItem() instanceof ILegendaryGear;
+		return stack.getItem() instanceof LegendaryGear;
 	}
 }

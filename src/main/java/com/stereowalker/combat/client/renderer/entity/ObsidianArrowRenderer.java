@@ -1,26 +1,24 @@
 package com.stereowalker.combat.client.renderer.entity;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.entity.projectile.ObsidianArrowEntity;
+import com.stereowalker.combat.world.entity.projectile.ObsidianArrow;
 
 import net.minecraft.client.renderer.entity.ArrowRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ObsidianArrowRenderer extends ArrowRenderer<ObsidianArrowEntity> {
+public class ObsidianArrowRenderer extends ArrowRenderer<ObsidianArrow> {
    public static final ResourceLocation RES_ARROW = Combat.getInstance().location("textures/entity/projectiles/obsidian_arrow.png");
 
-   public ObsidianArrowRenderer(EntityRendererManager manager) {
-      super(manager);
+   public ObsidianArrowRenderer(EntityRendererProvider.Context p_173917_) {
+      super(p_173917_);
    }
 
-   /**
-    * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-    */
-   public ResourceLocation getEntityTexture(ObsidianArrowEntity entity) {
+   @Override
+   public ResourceLocation getTextureLocation(ObsidianArrow entity) {
       return RES_ARROW;
    }
 }

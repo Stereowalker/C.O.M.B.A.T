@@ -1,7 +1,7 @@
 {
   "type": "combat:alloy_smelting_1_output_2_inputs",
   "ingredient1": {
-    "tag": "forge:ingots/copper"
+    "item": "minecraft:copper_ingot"
   },
   "ingredient2": {
     "item": "combat:tin_nugget"
