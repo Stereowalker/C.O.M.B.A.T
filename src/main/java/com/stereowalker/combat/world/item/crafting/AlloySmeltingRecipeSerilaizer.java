@@ -1,5 +1,6 @@
 package com.stereowalker.combat.world.item.crafting;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,11 +24,14 @@ public class AlloySmeltingRecipeSerilaizer<T extends AbstractAlloyFurnaceRecipe>
 	
 	@Override
 	public T fromJson(ResourceLocation recipeId, JsonObject json) {
-		Ingredient ingredient1 = Ingredient.fromJson(GsonHelper.convertToJsonObject(json, "ingredient1"));
-		Ingredient ingredient2 = Ingredient.fromJson(GsonHelper.convertToJsonObject(json, "ingredient2"));
-		Ingredient ingredient3 = !twoInputs ? Ingredient.fromJson(GsonHelper.convertToJsonObject(json, "ingredient3")) : Ingredient.EMPTY;
-		ItemStack itemstack1 = ShapedRecipe.itemStackFromJson(GsonHelper.convertToJsonObject(json, "result1"));
-		ItemStack itemstack2 = !oneOutput ? ShapedRecipe.itemStackFromJson(GsonHelper.convertToJsonObject(json, "result2")) : ItemStack.EMPTY;
+		JsonElement jsonelement1 = (JsonElement)(GsonHelper.isArrayNode(json, "ingredient1") ? GsonHelper.getAsJsonArray(json, "ingredient1") : GsonHelper.getAsJsonObject(json, "ingredient1"));
+		JsonElement jsonelement2 = (JsonElement)(GsonHelper.isArrayNode(json, "ingredient2") ? GsonHelper.getAsJsonArray(json, "ingredient2") : GsonHelper.getAsJsonObject(json, "ingredient2"));
+		JsonElement jsonelement3 = !twoInputs ? (JsonElement)(GsonHelper.isArrayNode(json, "ingredient3") ? GsonHelper.getAsJsonArray(json, "ingredient3") : GsonHelper.getAsJsonObject(json, "ingredient3")) : null;
+	    Ingredient ingredient1 = Ingredient.fromJson(jsonelement1);
+		Ingredient ingredient2 = Ingredient.fromJson(jsonelement2);
+		Ingredient ingredient3 = !twoInputs ? Ingredient.fromJson(jsonelement3) : Ingredient.EMPTY;
+		ItemStack itemstack1 = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result1"));
+		ItemStack itemstack2 = !oneOutput ? ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result2")) : ItemStack.EMPTY;
 		float f = GsonHelper.getAsFloat(json, "experience", 0.0F);
 		int i = GsonHelper.getAsInt(json, "cookingtime", 200);
 		return this.factory.create(recipeId, ingredient1, ingredient2, ingredient3, itemstack1, itemstack2, f, i);
