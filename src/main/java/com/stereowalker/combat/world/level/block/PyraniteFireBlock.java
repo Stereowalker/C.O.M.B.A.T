@@ -1,6 +1,6 @@
 package com.stereowalker.combat.world.level.block;
 
-import com.stereowalker.combat.tags.CTags.BlockCTags;
+import com.stereowalker.combat.tags.BlockCTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;

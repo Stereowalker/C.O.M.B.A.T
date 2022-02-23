@@ -2,7 +2,7 @@ package com.stereowalker.combat.world.level.block;
 
 import java.util.Map;
 
-import com.stereowalker.combat.tags.CTags.BlockCTags;
+import com.stereowalker.combat.tags.BlockCTags;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

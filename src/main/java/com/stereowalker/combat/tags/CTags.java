@@ -1,11 +1,9 @@
 package com.stereowalker.combat.tags;
 
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
 public class CTags {
@@ -17,16 +15,6 @@ public class CTags {
 		
 //		private static Tag<Fluid> bind(String p_206956_0_) {
 //		      return new FluidTags.Wrapper(Combat.location(p_206956_0_));
-//		}
-	}
-	public static class BlockCTags {
-//		public static Tag<Block> BEAMS = bind("beam");
-		public static Tag.Named<Block> BEAMS = BlockTags.bind("combat:beams");
-		public static Tag.Named<Block> WOODEN_BEAMS = BlockTags.bind("combat:wooden_beams");
-		public static Tag.Named<Block> PYRANITE_FIRE_BASE_BLOCKS = BlockTags.bind("combat:pyranite_fire_base");
-		
-//		private static Tag<Block> bind(String p_206956_0_) {
-//		      return new BlockTags.Wrapper(Combat.location(p_206956_0_));
 //		}
 	}
 	public static class ItemCTags {
@@ -57,7 +45,6 @@ public class CTags {
 		ItemCTags.NECKLACES = ItemTags.bind("curios:necklace");
 		ItemCTags.INGOTS_STEEL = ItemTags.bind("forge:ingots/steel");
 		ItemCTags.INGOTS_BRONZE = ItemTags.bind("forge:ingots/bronze");
-		BlockCTags.BEAMS = BlockTags.bind("combat:beams");
 	}
 	
 }

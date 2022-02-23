@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.Maps;
-import com.stereowalker.combat.tags.CTags.BlockCTags;
+import com.stereowalker.combat.tags.BlockCTags;
 import com.stereowalker.combat.world.level.block.state.properties.BlockStatePropertiesList;
 import com.stereowalker.combat.world.level.block.state.properties.CableConnectionType;
 
@@ -162,6 +162,7 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock {
 		return i;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public FluidState getFluidState(BlockState pState) {
 		return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
