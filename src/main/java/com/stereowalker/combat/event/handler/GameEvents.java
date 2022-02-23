@@ -80,7 +80,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
@@ -433,18 +432,6 @@ public class GameEvents {
 			}
 		}
 	}
-
-	@SubscribeEvent
-	public static void abominationXP(LivingExperienceDropEvent event) {
-		int i = event.getDroppedExperience();
-		if (event.getEntityLiving() instanceof Monster) {
-			i = AbominationEvents.abominationXP((Monster) event.getEntityLiving(), i);
-		}
-		if (i != event.getDroppedExperience()) {
-			event.setDroppedExperience(i);
-		}
-	}
-
 
 	@SubscribeEvent
 	public static void openFletchingTable(RightClickBlock event) {
