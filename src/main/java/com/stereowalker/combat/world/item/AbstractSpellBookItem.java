@@ -139,14 +139,12 @@ public abstract class AbstractSpellBookItem extends Item {
 
 	@OnlyIn(Dist.CLIENT)
 	public void openGrimoire(ItemStack book) {
-		SpellBookScreen screen = new SpellBookScreen(SpellBookScreen.IBookInfo.fromItem(book), book, true);
-		Minecraft.getInstance().setScreen(screen);
+		Minecraft.getInstance().setScreen(new SpellBookScreen(SpellBookScreen.IBookInfo.fromItem(book), book, true));
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public void openGrimoireInSlot(ItemStack book) {
-		SpellBookScreen screen = new SpellBookScreen(SpellBookScreen.IBookInfo.fromItem(book), book, false);
-		Minecraft.getInstance().setScreen(screen);
+		Minecraft.getInstance().setScreen(new SpellBookScreen(SpellBookScreen.IBookInfo.fromItem(book), book, false));
 	}
 
 	@OnlyIn(Dist.CLIENT)

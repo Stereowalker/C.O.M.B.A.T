@@ -56,7 +56,7 @@ public class ScrollItem extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		if (!AbstractSpellBookItem.getMainSpellBook(playerIn).isEmpty()) {
+		if (worldIn.isClientSide && !AbstractSpellBookItem.getMainSpellBook(playerIn).isEmpty()) {
 			ItemStack book =  AbstractSpellBookItem.getMainSpellBook(playerIn);
 			((AbstractSpellBookItem)book.getItem()).openGrimoireInSlot(book);
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, playerIn.getItemInHand(handIn));
