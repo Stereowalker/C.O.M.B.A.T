@@ -12,13 +12,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -44,7 +41,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public abstract class AbstractMagicProjectile extends  Projectile {
+public abstract class AbstractMagicProjectile extends Projectile {
 	private static final EntityDataAccessor<Byte> CRITICAL = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.BYTE);
 	protected static final EntityDataAccessor<Optional<UUID>> field_212362_a = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.OPTIONAL_UUID);
 	private static final EntityDataAccessor<Byte> PIERCE_LEVEL = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.BYTE);
@@ -61,7 +58,7 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 	@SuppressWarnings("unused")
 	private int knockbackStrength;
 	private SoundEvent hitSound = this.getHitSound();
-	private IntOpenHashSet piercedEntities;
+	private IntOpenHashSet piercingIgnoreEntityIds;
 	private List<Entity> hitEntities;
 
 	protected AbstractMagicProjectile(EntityType<? extends AbstractMagicProjectile> type, Level worldIn) {
@@ -75,7 +72,7 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 
 	protected AbstractMagicProjectile(EntityType<? extends AbstractMagicProjectile> type, LivingEntity shooter, Level worldIn) {
 		this(type, shooter.getX(), shooter.getEyeY() - (double)0.1F, shooter.getZ(), worldIn);
-		this.setShooter(shooter);
+		this.setOwner(shooter);
 
 	}
 
@@ -203,17 +200,17 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 			}
 
 			while(!this.isRemoved()) {
-				EntityHitResult entityraytraceresult = this.rayTraceEntities(Vector3d2, Vector3d3);
-				if (entityraytraceresult != null) {
-					raytraceresult = entityraytraceresult;
+				EntityHitResult entityhitresult = this.findHitEntity(Vector3d2, Vector3d3);
+				if (entityhitresult != null) {
+					raytraceresult = entityhitresult;
 				}
 
 				if (raytraceresult != null && raytraceresult.getType() == HitResult.Type.ENTITY) {
 					Entity entity = ((EntityHitResult)raytraceresult).getEntity();
-					Entity entity1 = this.getShooter();
+					Entity entity1 = this.getOwner();
 					if (entity instanceof Player && entity1 instanceof Player && !((Player)entity1).canHarmPlayer((Player)entity)) {
 						raytraceresult = null;
-						entityraytraceresult = null;
+						entityhitresult = null;
 					}
 				}
 
@@ -222,7 +219,7 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 					this.hasImpulse = true;
 				}
 
-				if (entityraytraceresult == null || this.getPierceLevel() <= 0) {
+				if (entityhitresult == null || this.getPierceLevel() <= 0) {
 					break;
 				}
 
@@ -244,16 +241,16 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 			double d2 = this.getZ() + d0;
 
 			double d41 = vector3d.horizontalDistance();
-	         if (flag) {
-	            this.setYRot((float)(Mth.atan2(-d5, -d1) * (double)(180F / (float)Math.PI)));
-	         } else {
-	            this.setYRot((float)(Mth.atan2(d5, d1) * (double)(180F / (float)Math.PI)));
-	         }
+			if (flag) {
+				this.setYRot((float)(Mth.atan2(-d5, -d1) * (double)(180F / (float)Math.PI)));
+			} else {
+				this.setYRot((float)(Mth.atan2(d5, d1) * (double)(180F / (float)Math.PI)));
+			}
 
-	         this.setXRot((float)(Mth.atan2(d4, d41) * (double)(180F / (float)Math.PI)));
-	         this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
-	         this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-			
+			this.setXRot((float)(Mth.atan2(d4, d41) * (double)(180F / (float)Math.PI)));
+			this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+			this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+
 			float f2 = 0.99F;
 			if (this.isInWater()) {
 				for(int j = 0; j < 4; ++j) {
@@ -296,8 +293,10 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 	protected void onHit(HitResult raytraceResultIn) {
 		HitResult.Type raytraceresult$type = raytraceResultIn.getType();
 		if (raytraceresult$type == HitResult.Type.ENTITY) {
+			System.out.println("ENTITID");
 			this.onEntityHit((EntityHitResult)raytraceResultIn);
 		} else if (raytraceresult$type == HitResult.Type.BLOCK) {
+			System.out.println("BLOCK");
 			BlockHitResult blockraytraceresult = (BlockHitResult)raytraceResultIn;
 			BlockState blockstate = this.level.getBlockState(blockraytraceresult.getBlockPos());
 			this.inBlockState = blockstate;
@@ -324,8 +323,8 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 			this.hitEntities.clear();
 		}
 
-		if (this.piercedEntities != null) {
-			this.piercedEntities.clear();
+		if (this.piercingIgnoreEntityIds != null) {
+			this.piercingIgnoreEntityIds.clear();
 		}
 
 	}
@@ -335,7 +334,7 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 	 */
 	protected void onEntityHit(EntityHitResult result) {
 		Entity entity = result.getEntity();
-		if (entity != this.getShooter()) {
+		if (entity != this.getOwner()) {
 			if (entity instanceof LivingEntity) {
 				LivingEntity livingentity = (LivingEntity)entity;
 				this.magicHit(livingentity);
@@ -355,10 +354,14 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 	 * Gets the EntityHitResult representing the entity hit
 	 */
 	@Nullable
-	protected EntityHitResult rayTraceEntities(Vec3 startVec, Vec3 endVec) {
-		return ProjectileUtil.getEntityHitResult(this.level, this, startVec, endVec, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_213871_1_) -> {
-			return !p_213871_1_.isSpectator() && p_213871_1_.isAlive() && p_213871_1_.canBeCollidedWith() && (p_213871_1_ != this.getShooter() || this.ticksInAir >= 5) && (this.piercedEntities == null || !this.piercedEntities.contains(p_213871_1_.getId()));
-		});
+	protected EntityHitResult findHitEntity(Vec3 startVec, Vec3 endVec) {
+		return ProjectileUtil.getEntityHitResult(this.level, this, startVec, endVec, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
+
+	}
+
+	@Override
+	protected boolean canHitEntity(Entity p_36743_) {
+		return super.canHitEntity(p_36743_) && (this.piercingIgnoreEntityIds == null || !this.piercingIgnoreEntityIds.contains(p_36743_.getId()));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -408,15 +411,6 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 		}
 
 		this.setShotFromCrossbow(compound.getBoolean("ShotFromCrossbow"));
-	}
-
-	public void setShooter(@Nullable Entity entityIn) {
-		this.shootingEntity = entityIn == null ? null : entityIn.getUUID();
-	}
-
-	@Nullable
-	public Entity getShooter() {
-		return this.shootingEntity != null && this.level instanceof ServerLevel ? ((ServerLevel)this.level).getEntity(this.shootingEntity) : null;
 	}
 
 	protected boolean func_225502_at_() {
@@ -536,10 +530,5 @@ public abstract class AbstractMagicProjectile extends  Projectile {
 	 */
 	public void setShotFromCrossbow(boolean fromCrossbow) {
 		this.setArrowFlag(4, fromCrossbow);
-	}
-
-	public Packet<?> createSpawnPacket() {
-		Entity entity = this.getShooter();
-		return new ClientboundAddEntityPacket(this, entity == null ? 0 : entity.getId());
 	}
 }

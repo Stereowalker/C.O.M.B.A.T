@@ -6,7 +6,6 @@ import com.stereowalker.combat.api.world.spellcraft.SpellInstance;
 import com.stereowalker.combat.world.entity.CEntityType;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,7 +13,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class ProjectileSpell extends AbstractMagicProjectile {
 	protected static final EntityDataAccessor<CompoundTag> SPELL = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.COMPOUND_TAG);
@@ -76,7 +74,7 @@ public class ProjectileSpell extends AbstractMagicProjectile {
 	@Override
 	protected void magicHit(LivingEntity living) {
 //		this.getSpell().getSpell().setCaster((LivingEntity) this.getShooter());
-		this.getSpell().executeExtensionSpell((LivingEntity)this.getShooter(), living);
+		this.getSpell().executeExtensionSpell((LivingEntity)this.getOwner(), living);
 	}
 
 	@Override
@@ -106,10 +104,5 @@ public class ProjectileSpell extends AbstractMagicProjectile {
 		super.writeAdditional(compound);
 		compound.putInt("Duration", this.duration);
 		compound.put("Spell", this.getSpell().write(new CompoundTag()));
-	}
-
-	@Override
-	public Packet<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

@@ -3,7 +3,6 @@ package com.stereowalker.combat.world.entity.projectile;
 import com.stereowalker.combat.world.entity.CEntityType;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class MjolnirLightning extends AbstractMagicProjectile {
 	public MjolnirLightning(EntityType<? extends MjolnirLightning> type, Level worldIn) {
@@ -52,7 +50,7 @@ public class MjolnirLightning extends AbstractMagicProjectile {
 				if (this.level.canSeeSky(this.blockPosition())) {
 					LightningBolt lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level);
 					lightningboltentity.moveTo(Vec3.atBottomCenterOf(this.blockPosition()));
-					lightningboltentity.setCause(this.getShooter() instanceof ServerPlayer ? (ServerPlayer)this.getShooter() : null);
+					lightningboltentity.setCause(this.getOwner() instanceof ServerPlayer ? (ServerPlayer)this.getOwner() : null);
 					this.level.addFreshEntity(lightningboltentity);
 				}
 			}
@@ -63,19 +61,14 @@ public class MjolnirLightning extends AbstractMagicProjectile {
 	@Override
 	protected void magicHit(LivingEntity living) {
 		if (this.level instanceof ServerLevel) {
-			living.hurt(DamageSource.thrown(this, this.getShooter()), 1);
+			living.hurt(DamageSource.thrown(this, this.getOwner()), 1);
 			if (this.level.canSeeSky(living.blockPosition())) {
 				LightningBolt lightningboltentity = EntityType.LIGHTNING_BOLT.create(this.level);
 				lightningboltentity.moveTo(Vec3.atBottomCenterOf(living.blockPosition()));
-				lightningboltentity.setCause(this.getShooter() instanceof ServerPlayer ? (ServerPlayer)this.getShooter() : null);
+				lightningboltentity.setCause(this.getOwner() instanceof ServerPlayer ? (ServerPlayer)this.getOwner() : null);
 				this.level.addFreshEntity(lightningboltentity);
 			}
 		}
-	}
-
-	@Override
-	public Packet<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override

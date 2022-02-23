@@ -8,7 +8,6 @@ import com.stereowalker.combat.world.spellcraft.SpellStats;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,14 +26,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class ProjectileSword extends AbstractMagicProjectile {
-	private static final EntityDataAccessor<Boolean> EJECTED_SWORD = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> CONNECTED_TO_SHOOTER = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<ItemStack> THROWN_STACK = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.ITEM_STACK);
-	private static final EntityDataAccessor<CompoundTag> SPELL = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.COMPOUND_TAG);
-	private static final EntityDataAccessor<Float> POSITION = SynchedEntityData.defineId(AbstractMagicProjectile.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Boolean> EJECTED_SWORD = SynchedEntityData.defineId(ProjectileSword.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> CONNECTED_TO_SHOOTER = SynchedEntityData.defineId(ProjectileSword.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<ItemStack> THROWN_STACK = SynchedEntityData.defineId(ProjectileSword.class, EntityDataSerializers.ITEM_STACK);
+	private static final EntityDataAccessor<CompoundTag> SPELL = SynchedEntityData.defineId(ProjectileSword.class, EntityDataSerializers.COMPOUND_TAG);
+	private static final EntityDataAccessor<Float> POSITION = SynchedEntityData.defineId(ProjectileSword.class, EntityDataSerializers.FLOAT);
 	public ProjectileSword(EntityType<? extends ProjectileSword> type, Level worldIn) {
 		super(type, worldIn);
 		this.entityData.set(CONNECTED_TO_SHOOTER, true);
@@ -114,7 +112,7 @@ public class ProjectileSword extends AbstractMagicProjectile {
 	@Override
 	public void tick() {
 		super.tick();
-		Player caster = (Player)this.getShooter();
+		Player caster = (Player)this.getOwner();
 		if (caster != null) {
 			if (SpellStats.getSpellPrimed(caster, this.getSpellInstance().getSpell()) && !this.hasEjectedSword()) {
 				double radius = 2.0d;
@@ -139,8 +137,9 @@ public class ProjectileSword extends AbstractMagicProjectile {
 
 	@Override
 	protected void onEntityHit(EntityHitResult result) {
+		System.out.println("FLying Sow");
 		Entity entity = result.getEntity();
-		if (entity != this.getShooter()) {
+		if (entity != this.getOwner()) {
 			float f;
 			if (this.getSword().getItem() instanceof TieredItem) {
 				f = 4.0F + ((TieredItem)this.getSword().getItem()).getTier().getAttackDamageBonus() + (float)(CEnchantmentHelper.getPenetrationModifier(this.getSword())/2);
@@ -155,7 +154,7 @@ public class ProjectileSword extends AbstractMagicProjectile {
 				f += EnchantmentHelper.getDamageBonus(this.getSword(), livingentity.getMobType());
 			}
 
-			Entity entity1 = this.getShooter();
+			Entity entity1 = this.getOwner();
 			DamageSource damagesource = CDamageSource.causeMagicProjectileDamage(this, (Entity)(entity1 == null ? this : entity1));
 			//		this.dealtDamage = true;
 			SoundEvent soundevent = SoundEvents.ARROW_HIT;
@@ -173,11 +172,6 @@ public class ProjectileSword extends AbstractMagicProjectile {
 			float f1 = 1.0F;
 			this.playSound(soundevent, f1, 1.0F);
 		}
-	}
-
-	@Override
-	public Packet<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override

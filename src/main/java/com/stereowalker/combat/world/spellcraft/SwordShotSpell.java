@@ -27,7 +27,7 @@ public class SwordShotSpell extends Spell {
 			int num = Mth.clamp(Mth.floor(strength), 1, 10);
 			for (int i = 1; i <= num; i++) {
 				ProjectileSword proj = new ProjectileSword(caster.level, caster.getX() + 1, caster.getY() + 4, caster.getZ());
-				proj.setShooter(caster);
+				proj.setOwner(caster);
 				proj.setNoGravity(true);
 				proj.setSpinMidAir(false);
 				proj.setEjectedSword(false);
@@ -48,7 +48,7 @@ public class SwordShotSpell extends Spell {
 	@Override
 	public boolean spellProgram(LivingEntity caster, double strength, Vec3 location, InteractionHand hand) {
 		for (ProjectileSword proj : caster.level.getEntitiesOfClass(ProjectileSword.class, caster.getBoundingBox().inflate(30))) {
-			if (proj.getShooter() == caster) {
+			if (proj.getOwner() == caster) {
 				proj.setNoGravity(false);
 				proj.setSpinMidAir(true);
 				proj.setEjectedSword(true);
