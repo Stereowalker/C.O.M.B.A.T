@@ -74,23 +74,6 @@ public class RankEvents {
 	}
 
 	@SubscribeEvent
-	public static void increaseExperience(LivingExperienceDropEvent event) {
-		//In order to prevent players from getting experience from other players
-		if (event.getAttackingPlayer() != null && !(event.getEntityLiving() instanceof Player)) {
-			int i = event.getDroppedExperience();
-
-			i *= Math.max((PlayerAttributeLevels.getLevel(event.getEntityLiving()))-(PlayerAttributeLevels.getLevel(event.getAttackingPlayer())), 1);
-
-			PlayerAttributeLevels.setExperience(event.getAttackingPlayer(), PlayerAttributeLevels.getExperience(event.getAttackingPlayer())+i);
-		}
-		//Make players take all the experence from players that theyve killed
-		if (event.getAttackingPlayer() != null && (event.getEntityLiving() instanceof Player) && Config.RPG_COMMON.takeXpFromKilledPlayers.get()) {
-			PlayerAttributeLevels.setExperience(event.getAttackingPlayer(), PlayerAttributeLevels.getExperience(event.getAttackingPlayer())+PlayerAttributeLevels.getExperience(event.getEntityLiving()));
-			PlayerAttributeLevels.setExperience(event.getEntityLiving(), 0);
-		}
-	}
-
-	@SubscribeEvent
 	public static void createPlayer(EntityJoinWorldEvent event) {
 		if (!event.getWorld().isClientSide) {
 			if (event.getEntity() instanceof LivingEntity) {
