@@ -1,4 +1,4 @@
-package com.stereowalker.combat.mixins;
+package com.stereowalker.combat.mixins.client;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

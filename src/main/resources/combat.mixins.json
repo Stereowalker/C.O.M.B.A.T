@@ -5,17 +5,18 @@
   "refmap": "combat.refmap.json",
   "mixins": [
 	"AnimalMixin",
-  	"PlayerMixin",
-  	"LivingEntityMixin",
-  	"ItemMixin",
 	"BaseFireBlockMixin",
-	"NoiseBasedChunkGeneratorMixin"
+  	"ItemMixin",
+  	"LivingEntityMixin",
+	"NoiseBasedChunkGeneratorMixin",
+  	"PlayerMixin",
+	"rankup.LivingEntityMixin"
   ],
   "client": [
-    "CreateWorldScreenMixin",
-    "HumanoidArmorLayerMixin",
-	"LayerDefinitionsMixin",
-	"MinecraftMixin"
+    "client.CreateWorldScreenMixin",
+    "client.HumanoidArmorLayerMixin",
+	"client.LayerDefinitionsMixin",
+	"client.MinecraftMixin"
   ],
   "injectors": {
     "defaultRequire": 1
