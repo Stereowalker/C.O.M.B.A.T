@@ -64,7 +64,7 @@ public class RenderEvent {
 				fontrenderer.drawInBatch(displayNameIn, f2, (float)i, -1, false, matrix4f, bufferIn, false, 0, packedLightIn);
 			}
 
-			matrixStackIn.pushPose();
+			matrixStackIn.popPose();
 		}
 	}
 }
