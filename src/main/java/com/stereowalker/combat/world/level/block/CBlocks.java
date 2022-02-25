@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LanternBlock;
-import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.OreBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -90,7 +89,7 @@ public class CBlocks {
 	public static final Block AUSLDINE_DOOR = register("ausldine_door", CreativeModeTab.TAB_REDSTONE, new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final Block AUSLDINE_FENCE_GATE = register("ausldine_fence_gate", CreativeModeTab.TAB_REDSTONE, new FenceGateBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_FENCE = register("ausldine_fence", CCreativeModeTab.COMBAT_TAB_MISC, new FenceBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block AUSLDINE_LEAVES = register("ausldine_leaves", CCreativeModeTab.COMBAT_TAB_MISC, new LeavesBlock(Block.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion()));
+	public static final Block AUSLDINE_LEAVES = register("ausldine_leaves", CCreativeModeTab.COMBAT_TAB_MISC,  Blocks.leaves(SoundType.GRASS));
 	public static final Block AUSLDINE_LOG = register("ausldine_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.TERRACOTTA_CYAN, MaterialColor.TERRACOTTA_CYAN));
 	public static final Block AUSLDINE_PLANKS = register("ausldine_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_PODIUM = register("ausldine_podium", new PodiumBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD).noOcclusion()));
@@ -129,7 +128,7 @@ public class CBlocks {
 	public static final Block MONORIS_DOOR = register("monoris_door", CreativeModeTab.TAB_REDSTONE, new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final Block MONORIS_FENCE_GATE = register("monoris_fence_gate", CreativeModeTab.TAB_REDSTONE, new FenceGateBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block MONORIS_FENCE = register("monoris_fence", CCreativeModeTab.COMBAT_TAB_MISC, new FenceBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block MONORIS_LEAVES = register("monoris_leaves", CCreativeModeTab.COMBAT_TAB_MISC, new LeavesBlock(Block.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion()));
+	public static final Block MONORIS_LEAVES = register("monoris_leaves", CCreativeModeTab.COMBAT_TAB_MISC, Blocks.leaves(SoundType.GRASS));
 	public static final Block MONORIS_LOG = register("monoris_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.SNOW, MaterialColor.SNOW));
 	public static final Block MONORIS_PLANKS = register("monoris_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block MONORIS_PODIUM = register("monoris_podium", new PodiumBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD).noOcclusion()));
@@ -141,7 +140,7 @@ public class CBlocks {
 	public static final Block STRIPPED_MONORIS_WOOD = register("stripped_monoris_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F).sound(SoundType.WOOD)));
 	public static final Block POTTED_MONORIS_SAPLING = register("potted_monoris_sapling", new FlowerPotBlock(Blocks.FLOWER_POT == null ? null : () -> (FlowerPotBlock) Blocks.FLOWER_POT.delegate.get(), () -> CBlocks.MONORIS_SAPLING.delegate.get(), Block.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
 	//Rezal -> Jungle
-	public static final Block REZAL_LEAVES = register("rezal_leaves", CCreativeModeTab.COMBAT_TAB_MISC, new LeavesBlock(Block.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion()));
+	public static final Block REZAL_LEAVES = register("rezal_leaves", CCreativeModeTab.COMBAT_TAB_MISC, Blocks.leaves(SoundType.GRASS));
 	public static final Block REZAL_LOG = register("rezal_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.COLOR_RED, MaterialColor.COLOR_GREEN));
 	public static final Block REZAL_PLANKS = register("rezal_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block REZAL_WOOD = register("rezal_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN).strength(2.0F).sound(SoundType.WOOD)));
