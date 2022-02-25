@@ -229,18 +229,6 @@ public class CombatHooks {
 		return worldIn.getBlockState(pos).isAir() || worldIn.getBlockState(pos).getBlock() == Blocks.SNOW;
 	}
 
-	public static int calculateFallDamageFromAttribute(LivingEntity livingEntity, float distance, float damageMultiplier) {
-		boolean useVanilla = true;
-		float f;
-		if (GameEvents.jumpingEntities.test(livingEntity) && !useVanilla) {
-			f = (((Double)livingEntity.getAttributeValue(CAttributes.JUMP_STRENGTH)).floatValue() - 0.2f) * 10f;
-		} else {
-			MobEffectInstance effectinstance = livingEntity.getEffect(MobEffects.JUMP);
-			f = effectinstance == null ? 0.0F : (float)(effectinstance.getAmplifier() + 1);
-		}
-		return Mth.ceil((distance - 3.0F - f) * damageMultiplier);
-	}
-
 
 	//For rendering the legendary item glint
 	public static VertexConsumer getArmorFoilBuffer(MultiBufferSource buffer, RenderType renderType, boolean noEntity, boolean withGlint, ItemStack stack) {

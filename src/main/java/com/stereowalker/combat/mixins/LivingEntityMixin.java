@@ -36,12 +36,17 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ToolActions;
 
+/**
+ * @author Stereowalker
+ *
+ */
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
 	public LivingEntityMixin(EntityType<?> entityTypeIn, Level worldIn) {
@@ -51,6 +56,7 @@ public abstract class LivingEntityMixin extends Entity {
 	@Shadow public abstract ItemStack getItemBySlot(EquipmentSlot slotIn);
 	@Shadow public boolean hasEffect(MobEffect potionIn) {return true;}
 	@Shadow public double getAttributeValue(Attribute attribute) {return 0;}
+	@Shadow @Nullable public AttributeInstance getAttribute(Attribute pAttribute) {return null;}
 	/**
 	 * returns the PotionEffect for the supplied Potion if it is active, null otherwise.
 	 */
@@ -182,5 +188,21 @@ public abstract class LivingEntityMixin extends Entity {
 
 	protected void blockUsingSword(LivingEntity entityIn) {
 		this.knockback(0.75F, entityIn.getX() - this.getX(), entityIn.getZ() - this.getZ());
+	}
+	
+	
+	/**
+	 * This allows us to use the Jump Strength attribute rather than the mob effect to reduce the fall damage of the player
+	 * @param pDistance
+	 * @param pDamageMultiplier
+	 * @param cir
+	 */
+	@Inject(method = "calculateFallDamage", at = @At(value = "HEAD"), cancellable = true)
+	public void calculateFallDamage_inject(float pDistance, float pDamageMultiplier, CallbackInfoReturnable<Integer> cir) {
+		boolean useVanilla = this.getAttribute(CAttributes.JUMP_STRENGTH) == null;
+		if (!useVanilla) {
+			float f = (((Double)this.getAttributeValue(CAttributes.JUMP_STRENGTH)).floatValue() - 0.2f) * 10f;
+			cir.setReturnValue(Mth.ceil((pDistance - 3.0F - f) * pDamageMultiplier));
+		}
 	}
 }
