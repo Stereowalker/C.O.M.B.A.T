@@ -430,11 +430,11 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 		else {
 			ItemStack stack2 = ItemStack.EMPTY;
 			//Wands
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.BASIC_STICK_WAND, CItems.NOVICE_STICK_WAND, CItems.APPRENTICE_STICK_WAND, CItems.ADVANCED_STICK_WAND, CItems.MASTER_STICK_WAND, shrink);
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.BASIC_BLAZE_WAND, CItems.NOVICE_BLAZE_WAND, CItems.APPRENTICE_BLAZE_WAND, CItems.ADVANCED_BLAZE_WAND, CItems.MASTER_BLAZE_WAND, shrink);
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.BASIC_GOLDEN_WAND, CItems.NOVICE_GOLDEN_WAND, CItems.APPRENTICE_GOLDEN_WAND, CItems.ADVANCED_GOLDEN_WAND, CItems.MASTER_GOLDEN_WAND, shrink);
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.BASIC_SERABLE_WAND, CItems.NOVICE_SERABLE_WAND, CItems.APPRENTICE_SERABLE_WAND, CItems.ADVANCED_SERABLE_WAND, CItems.MASTER_SERABLE_WAND, shrink);
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.BASIC_SHULKER_WAND, CItems.NOVICE_SHULKER_WAND, CItems.APPRENTICE_SHULKER_WAND, CItems.ADVANCED_SHULKER_WAND, CItems.MASTER_SHULKER_WAND, shrink);
+			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_STICK_WAND, CItems.APPRENTICE_STICK_WAND, CItems.ADVANCED_STICK_WAND, CItems.MASTER_STICK_WAND, shrink);
+			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_BLAZE_WAND, CItems.APPRENTICE_BLAZE_WAND, CItems.ADVANCED_BLAZE_WAND, CItems.MASTER_BLAZE_WAND, shrink);
+			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_GOLDEN_WAND, CItems.APPRENTICE_GOLDEN_WAND, CItems.ADVANCED_GOLDEN_WAND, CItems.MASTER_GOLDEN_WAND, shrink);
+			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_SERABLE_WAND, CItems.APPRENTICE_SERABLE_WAND, CItems.ADVANCED_SERABLE_WAND, CItems.MASTER_SERABLE_WAND, shrink);
+			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_SHULKER_WAND, CItems.APPRENTICE_SHULKER_WAND, CItems.ADVANCED_SHULKER_WAND, CItems.MASTER_SHULKER_WAND, shrink);
 			//Rings
 			if (stack2.isEmpty()) stack2 = this.mergeItem(new ItemStack(CItems.AEROMANCER_RING), new ItemStack(UItems.GOLDEN_RING), new ItemStack(Items.PHANTOM_MEMBRANE), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
 			if (stack2.isEmpty()) stack2 = this.mergeItem(new ItemStack(CItems.ELECTROMANCER_RING), new ItemStack(UItems.GOLDEN_RING), new ItemStack(CItems.COPPER_INGOT), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
@@ -445,9 +445,9 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 		}
 	}
 
-	public ItemStack upgradeWands(Item basic, Item novice, Item apprentice, Item advanced, Item master, boolean shrink) {
+	public ItemStack upgradeWands(Item novice, Item apprentice, Item advanced, Item master, boolean shrink) {
 		ItemStack stack = ItemStack.EMPTY;
-		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(novice), new ItemStack(basic), new ItemStack(Items.LAPIS_LAZULI), 10, new ItemStack(CItems.YELLOW_MAGIC_STONE), 16, ItemStack.EMPTY, 0, 10, shrink);
+//		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(novice), new ItemStack(basic), new ItemStack(Items.LAPIS_LAZULI), 10, new ItemStack(CItems.YELLOW_MAGIC_STONE), 16, ItemStack.EMPTY, 0, 10, shrink);
 		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(apprentice), new ItemStack(novice), new ItemStack(Items.QUARTZ), 10, new ItemStack(CItems.YELLOW_MAGIC_STONE), 32, ItemStack.EMPTY, 0, 10, shrink);
 		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(advanced), new ItemStack(apprentice), new ItemStack(CItems.PYRANITE), 10, new ItemStack(CItems.RED_MAGIC_STONE), 16, ItemStack.EMPTY, 0, 10, shrink);
 		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(master), new ItemStack(advanced), new ItemStack(Items.DRAGON_BREATH), 10, new ItemStack(CItems.RED_MAGIC_STONE), 32, ItemStack.EMPTY, 0, 10, shrink);
