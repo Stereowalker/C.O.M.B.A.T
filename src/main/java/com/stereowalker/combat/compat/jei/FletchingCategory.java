@@ -2,7 +2,7 @@ package com.stereowalker.combat.compat.jei;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.client.gui.screens.inventory.FletchingScreen;
-import com.stereowalker.combat.world.item.crafting.ShapedFletchingRecipe;
+import com.stereowalker.combat.world.item.crafting.FletchingRecipe;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 
-public class FletchingCategory implements IRecipeCategory<ShapedFletchingRecipe> {
+public class FletchingCategory implements IRecipeCategory<FletchingRecipe> {
 	public static final ResourceLocation UID = Combat.getInstance().location("fletching");
 	
 	private final IDrawable background;
@@ -37,8 +37,8 @@ public class FletchingCategory implements IRecipeCategory<ShapedFletchingRecipe>
 	}
 
 	@Override
-	public Class<ShapedFletchingRecipe> getRecipeClass() {
-		return ShapedFletchingRecipe.class;
+	public Class<FletchingRecipe> getRecipeClass() {
+		return FletchingRecipe.class;
 	}
 
 	@Override
@@ -57,13 +57,13 @@ public class FletchingCategory implements IRecipeCategory<ShapedFletchingRecipe>
 	}
 
 	@Override
-	public void setIngredients(ShapedFletchingRecipe recipe, IIngredients ingredients) {
+	public void setIngredients(FletchingRecipe recipe, IIngredients ingredients) {
 		ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
 		ingredients.setInputIngredients(recipe.getIngredients());
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, ShapedFletchingRecipe recipe, IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout recipeLayout, FletchingRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
 		stacks.init(0, false, 74, 18);
 		for (int i = 1; i <= 3; i++) {

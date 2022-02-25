@@ -12,6 +12,7 @@ import com.stereowalker.combat.world.inventory.ArcaneWorkbenchMenu;
 import com.stereowalker.combat.world.inventory.FletchingMenu;
 import com.stereowalker.combat.world.inventory.WoodcutterMenu;
 import com.stereowalker.combat.world.item.CItems;
+import com.stereowalker.combat.world.item.crafting.CRecipeSerializer;
 import com.stereowalker.combat.world.item.crafting.CRecipeType;
 import com.stereowalker.combat.world.item.crafting.TippedArrowFletchingRecipe;
 import com.stereowalker.combat.world.level.block.CBlocks;
@@ -65,7 +66,7 @@ public class JEICompat implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		Collection<Recipe<?>> collection = Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter((r) -> {
-			return r.getType() == CRecipeType.FLETCHING && !(r.getType() instanceof TippedArrowFletchingRecipe);	
+			return r.getType() == CRecipeType.FLETCHING && r.getSerializer() != CRecipeSerializer.FLETCHING_SPECIAL_TIPPEDARROW;	
 		}).collect(Collectors.toList());
 		for (Item arrow : CItems.ARROW_MAP.keySet()) {
 			for (Potion potion : ForgeRegistries.POTIONS) {
