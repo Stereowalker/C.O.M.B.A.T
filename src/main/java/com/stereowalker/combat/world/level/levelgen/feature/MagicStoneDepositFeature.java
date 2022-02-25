@@ -56,7 +56,7 @@ public class MagicStoneDepositFeature extends ProbabilityFeature {
 		public void generatePieces(RegistryAccess pRegistryAccess, ChunkGenerator pChunkGenerator,
 				StructureManager pStructureManager, ChunkPos pChunkPos, Biome pBiome,
 				ProbabilityStructureConfiguration pConfig, LevelHeightAccessor pLevel) {
-			BlockPos blockpos = new BlockPos(pChunkPos.getMinBlockX(), 90, pChunkPos.getMinBlockZ());
+			BlockPos blockpos = new BlockPos(pChunkPos.getMinBlockX(), 30, pChunkPos.getMinBlockZ());
 			Rotation rotation = Rotation.getRandom(this.random);
 			MagicStoneDepositPieces.addPieces(pStructureManager, blockpos, rotation, this, this.random);
 		}
