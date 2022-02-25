@@ -28,7 +28,7 @@ public class CDimensionSpecialEffects {
 	public static class Acrotlest extends DimensionSpecialEffects {
 		public Acrotlest() {
 			//Cloud Height // Colors the sky, Requires closer inspection
-			super(100.0F, false, DimensionSpecialEffects.SkyType.NORMAL, false, true);
+			super(200.0F, false, DimensionSpecialEffects.SkyType.NORMAL, false, true);
 		}
 
 		@Override
