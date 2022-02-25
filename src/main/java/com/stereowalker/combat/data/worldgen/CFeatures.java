@@ -53,8 +53,10 @@ public abstract class CFeatures {
 	public static final ConfiguredFeature<?, ?> TREES_MONORIS = register("trees_monoris", Feature.RANDOM_SELECTOR.configured(new RandomFeatureConfiguration(ImmutableList.of(MONORIS.weighted(0.5F)), MONORIS)).decorated(Features.Decorators.HEIGHTMAP_SQUARE).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(10, 0.1F, 1))));
 
 	public static final ImmutableList<OreConfiguration.TargetBlockState> ORE_RUBY_TARGET_LIST = ImmutableList.of(OreConfiguration.target(OreConfiguration.Predicates.STONE_ORE_REPLACEABLES, CFeatures.States.RUBY_ORE), OreConfiguration.target(OreConfiguration.Predicates.DEEPSLATE_ORE_REPLACEABLES, CFeatures.States.RUBY_ORE));
-	public static final ConfiguredFeature<?, ?> ORE_PELGAN = register("ore_plegan", Feature.ORE.configured(new OreConfiguration(CombatOreConfigurationPredicates.MEZEPINE, CFeatures.States.PELGAN_ORE, 9)).rangeTriangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(64)).squared().count(20));
-	public static final ConfiguredFeature<?, ?> ORE_LOZYNE = register("ore_lozyne", Feature.ORE.configured(new OreConfiguration(CombatOreConfigurationPredicates.MEZEPINE, CBlocks.LOZYNE_ORE.defaultBlockState(), 8)).rangeTriangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(17)).squared().count(1));
+	public static final ImmutableList<OreConfiguration.TargetBlockState> ORE_PELGAN_TARGET_LIST = ImmutableList.of(OreConfiguration.target(CombatOreConfigurationPredicates.MEZEPINE, CFeatures.States.PELGAN_ORE), OreConfiguration.target(CombatOreConfigurationPredicates.SLYAPHY, CFeatures.States.SLYAPHY_PELGAN_ORE));
+	public static final ImmutableList<OreConfiguration.TargetBlockState> ORE_LOZYNE_TARGET_LIST = ImmutableList.of(OreConfiguration.target(CombatOreConfigurationPredicates.MEZEPINE, CFeatures.States.LOZYNE_ORE), OreConfiguration.target(CombatOreConfigurationPredicates.SLYAPHY, CFeatures.States.SLYAPHY_LOZYNE_ORE));
+	public static final ConfiguredFeature<?, ?> ORE_PELGAN = register("ore_plegan", Feature.ORE.configured(new OreConfiguration(ORE_PELGAN_TARGET_LIST, 9)).rangeTriangle(VerticalAnchor.absolute(60), VerticalAnchor.absolute(200)).squared().count(20));
+	public static final ConfiguredFeature<?, ?> ORE_LOZYNE = register("ore_lozyne", Feature.ORE.configured(new OreConfiguration(ORE_LOZYNE_TARGET_LIST, 8)).rangeTriangle(VerticalAnchor.absolute(-120), VerticalAnchor.absolute(60)).squared().count(1));
 	public static final ConfiguredFeature<?, ?> ORE_SERABLE = register("ore_serable", Feature.ORE.configured(new OreConfiguration(CombatOreConfigurationPredicates.MEZEPINE, CBlocks.SERABLE_ORE.defaultBlockState(), 7)).rangeTriangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(32)).squared().count(5));
 	public static final ConfiguredFeature<?, ?> ORE_PYRANITE = register("ore_pyranite", Feature.ORE.configured(new OreConfiguration(CombatOreConfigurationPredicates.MEZEPINE, CBlocks.PYRANITE_ORE.defaultBlockState(), 16)).rangeTriangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(100)).squared().count(16));
 	public static final ConfiguredFeature<?, ?> ORE_LIMESTONE = register("ore_limestone", Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, CBlocks.LIMESTONE.defaultBlockState(), 14)).rangeTriangle(VerticalAnchor.absolute(31), VerticalAnchor.absolute(62)).squared().count(40));
@@ -89,5 +91,8 @@ public abstract class CFeatures {
 	public static final class States {
 		protected static final BlockState RUBY_ORE = CBlocks.RUBY_ORE.defaultBlockState();
 		protected static final BlockState PELGAN_ORE = CBlocks.PELGAN_ORE.defaultBlockState();
+		protected static final BlockState SLYAPHY_PELGAN_ORE = CBlocks.SLYAPHY_PELGAN_ORE.defaultBlockState();
+		protected static final BlockState LOZYNE_ORE = CBlocks.LOZYNE_ORE.defaultBlockState();
+		protected static final BlockState SLYAPHY_LOZYNE_ORE = CBlocks.SLYAPHY_LOZYNE_ORE.defaultBlockState();
 	}
 }

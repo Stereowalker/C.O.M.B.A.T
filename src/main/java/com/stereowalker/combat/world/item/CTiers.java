@@ -1,12 +1,22 @@
 package com.stereowalker.combat.world.item;
 
+import java.util.List;
 import java.util.function.Supplier;
 
+import com.stereowalker.combat.Combat;
+import com.stereowalker.combat.tags.BlockCTags;
 import com.stereowalker.combat.tags.CTags.ItemCTags;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.TierSortingRegistry;
 
 public enum CTiers implements Tier
 {
@@ -23,13 +33,13 @@ public enum CTiers implements Tier
 	PASQUEM(3, 1750, 10.0F, 3.5F, 5, () -> {
 	      return Ingredient.of(CItems.PASQUEM_INGOT);
 	   }),
-	PELGAN(2, 125, 9.0F, 1.0F, 21, () -> {
+	PELGAN(4, 125, 9.0F, 1.0F, 21, () -> {
 	      return Ingredient.of(CItems.PELGAN_INGOT);
 	   }),
 	SERABLE(1, 515, 18.5F, 0.5F, 30, () -> {
 	      return Ingredient.of(CItems.SERABLE_INGOT);
 	   }),
-	LOZYNE(3, 2342, 12.0F, 4.5F, 15, () -> {
+	LOZYNE(5, 2342, 12.0F, 4.5F, 15, () -> {
 	      return Ingredient.of(CItems.LOZYNE_INGOT);
 	   }),
 	//Endgame Metals
@@ -51,7 +61,9 @@ public enum CTiers implements Tier
 	
 	private float attackDamage, efficiency;
 	private int maxUses, harvestLevel, enchantability;
+	@SuppressWarnings("deprecation")
 	private final LazyLoadedValue<Ingredient> repairMaterial;
+	@SuppressWarnings("deprecation")
 	private CTiers(int harvestLevel, int maxUses, float efficiency, float attackDamage, int enchantability, Supplier<Ingredient> repairMaterialIn) 
 	{
 		this.attackDamage = attackDamage;
@@ -86,9 +98,38 @@ public enum CTiers implements Tier
 	{
 		return this.maxUses;
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	public Ingredient getRepairIngredient() 
 	{
 		return this.repairMaterial.get();
 	}
+	
+	//Forge Method
+	@Override
+	@javax.annotation.Nullable public net.minecraft.tags.Tag<net.minecraft.world.level.block.Block> getTag() { return getTagFromModdedTier(this); }
+	
+	public static void handleModdedTiers() {
+		var pelgan = Combat.getInstance().location("pelgan");
+		TierSortingRegistry.registerTier(PELGAN, pelgan, List.of(new ResourceLocation("diamond")), List.of());
+	}
+
+    public static Tag<Block> getTagFromModdedTier(CTiers tier)
+    {
+        return switch(tier)
+                {
+                    case BRONZE -> BlockTags.NEEDS_IRON_TOOL;
+                    case STEEL -> BlockTags.NEEDS_IRON_TOOL;
+                    case MAGISTEEL -> BlockTags.NEEDS_DIAMOND_TOOL;
+                    case PASQUEM -> BlockTags.NEEDS_DIAMOND_TOOL;
+                    case PELGAN -> BlockCTags.NEEDS_PELGAN_TOOL;
+                    case SERABLE -> BlockTags.NEEDS_STONE_TOOL;
+                    case LOZYNE -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
+                    case MYTHRIL -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
+                    case POWERED_MYTHRIL -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
+                    case ETHERION -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
+                    case BLOOD -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
+                    case LIGHT_SABER -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
+                };
+    }
 }

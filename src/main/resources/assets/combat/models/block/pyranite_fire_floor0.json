@@ -1,7 +1,6 @@
 {
-    "parent": "block/fire_floor",
-    "textures": {
-        "particle": "combat:block/pyranite_fire_0",
-        "fire": "combat:block/pyranite_fire_0"
+    "parent": "minecraft:block/template_fire_floor",
+  	"textures": {
+    	"fire": "combat:block/pyranite_fire_0"
     }
 }

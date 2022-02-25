@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "combat:mezepine"
+    "combat:mezepine",
+    "combat:pyranite_ore"
   ]
 }

@@ -23,12 +23,11 @@ import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CanyonWorldCarver;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
-import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 
 public class AcrotlestCanyonWorldCarver extends CanyonWorldCarver {
 	public AcrotlestCanyonWorldCarver(Codec<CanyonCarverConfiguration> p_64711_) {
 		super(p_64711_);
-		this.replaceableBlocks = ImmutableSet.of(CBlocks.PURIFIED_DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, CBlocks.PURIFIED_GRASS_BLOCK, CBlocks.MEZEPINE, Blocks.SANDSTONE, Blocks.GREEN_TERRACOTTA);
+		this.replaceableBlocks = ImmutableSet.of(CBlocks.PURIFIED_DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, CBlocks.PURIFIED_GRASS_BLOCK, CBlocks.MEZEPINE, CBlocks.SLYAPHY, Blocks.GREEN_TERRACOTTA);
 		this.liquids = ImmutableSet.of(CFluids.BIABLE);
 	}
 

@@ -16,6 +16,7 @@
 	"combat:mana_generator",
 	"combat:mythril_charger",
 	"combat:electric_furnace",
-	"combat:connector"
+	"combat:connector",
+	"combat:mezepine"
   ]
 }

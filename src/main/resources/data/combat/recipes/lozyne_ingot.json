@@ -1,7 +1,7 @@
 {
   "type": "smelting",
   "ingredient": {
-    "item": "combat:lozyne_ore"
+    "item": "combat:raw_lozyne"
   },
   "result": "combat:lozyne_ingot",
   "experience": 1.8,

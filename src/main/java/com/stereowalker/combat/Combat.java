@@ -34,6 +34,7 @@ import com.stereowalker.combat.network.protocol.game.ServerboundStoreItemPacket;
 import com.stereowalker.combat.tags.BlockCTags;
 import com.stereowalker.combat.tags.CEntityTypeTags;
 import com.stereowalker.combat.tags.CTags;
+import com.stereowalker.combat.world.item.CTiers;
 import com.stereowalker.combat.world.item.alchemy.BrewingPotion;
 import com.stereowalker.combat.world.level.CGameRules;
 import com.stereowalker.combat.world.level.block.CBlocks;
@@ -159,8 +160,10 @@ public class Combat extends MinecraftMod
 		BrewingPotion.registerBrewing();
 		CCriteriaTriggers.registerAll();
 		setBurnableBlocks();
+		PyraniteFireBlock.bootStrap();
 		CTags.init();
 		new BlockCTags();
+		CTiers.handleModdedTiers();
 		CEntityTypeTags.init();
 		CGameRules.init();
 		Map<Block, Block> STRIP_MAP = (new Builder<Block, Block>())

@@ -42,13 +42,18 @@ public class CItems {
 	public static final List<Item> ITEMS = new ArrayList<Item>();
 	//Block Items
 	public static final Item CALTAS = register(CBlocks.CALTAS, CCreativeModeTab.BUILDING_BLOCKS);
+	public static final Item MEZEPINE = register(CBlocks.MEZEPINE, CCreativeModeTab.BUILDING_BLOCKS);
+	public static final Item SLYAPHY = register(CBlocks.SLYAPHY, CCreativeModeTab.BUILDING_BLOCKS);
+	public static final Item COBBLED_SLYAPHY = register(CBlocks.COBBLED_SLYAPHY, CCreativeModeTab.BUILDING_BLOCKS);
 	//Ores
 	public static final Item CASSITERITE = register(CBlocks.CASSITERITE, CCreativeModeTab.BUILDING_BLOCKS);
 	public static final Item PASQUEM_ORE = register(CBlocks.PASQUEM_ORE, CCreativeModeTab.BUILDING_BLOCKS);
 	public static final Item TRIDOX_ORE = register(CBlocks.TRIDOX_ORE, CCreativeModeTab.BUILDING_BLOCKS);
 	public static final Item RUBY_ORE = register(CBlocks.RUBY_ORE, CCreativeModeTab.BUILDING_BLOCKS);
 	public static final Item PELGAN_ORE = register(CBlocks.PELGAN_ORE, CCreativeModeTab.BUILDING_BLOCKS);
+	public static final Item SLYAPHY_PELGAN_ORE = register(CBlocks.SLYAPHY_PELGAN_ORE, CCreativeModeTab.BUILDING_BLOCKS);
 	public static final Item LOZYNE_ORE = register(CBlocks.LOZYNE_ORE, CCreativeModeTab.BUILDING_BLOCKS);
+	public static final Item SLYAPHY_LOZYNE_ORE = register(CBlocks.SLYAPHY_LOZYNE_ORE, CCreativeModeTab.BUILDING_BLOCKS);
 	public static final Item PYRANITE_ORE = register(CBlocks.PYRANITE_ORE, CCreativeModeTab.BUILDING_BLOCKS);
 	public static final Item SERABLE_ORE = register(CBlocks.SERABLE_ORE, CCreativeModeTab.BUILDING_BLOCKS);
 	public static final Item PASQUEM_BLOCK = register(CBlocks.PASQUEM_BLOCK, CCreativeModeTab.BUILDING_BLOCKS);
@@ -152,6 +157,7 @@ public class CItems {
 	public static final Item PASQUEM_INGOT = register("pasquem_ingot", new Item(new Item.Properties().tab(CCreativeModeTab.COMBAT_TAB_MISC)));
 	public static final Item STEEL_INGOT = register("steel_ingot", new Item(new Item.Properties().tab(CCreativeModeTab.COMBAT_TAB_MISC)));
 	public static final Item PELGAN_INGOT = register("pelgan_ingot", new Item(new Item.Properties().tab(CCreativeModeTab.COMBAT_TAB_MISC)));
+	public static final Item RAW_LOZYNE = register("raw_lozyne", new Item(new Item.Properties().tab(CCreativeModeTab.COMBAT_TAB_MISC)));
 	public static final Item LOZYNE_INGOT = register("lozyne_ingot", new Item(new Item.Properties().tab(CCreativeModeTab.COMBAT_TAB_MISC)));
 	public static final Item SERABLE_INGOT = register("serable_ingot", new Item(new Item.Properties().tab(CCreativeModeTab.COMBAT_TAB_MISC)));
 	public static final Item ETHERION_INGOT = register("etherion_ingot", new Item(new Item.Properties().tab(CCreativeModeTab.COMBAT_TAB_MISC)));

@@ -6,6 +6,8 @@
     "combat:ruby_ore",
     "combat:pelgan_ore",
     "combat:lozyne_ore",
+    "combat:slyaphy_pelgan_ore",
+    "combat:slyaphy_lozyne_ore",
     "combat:pyranite_ore",
     "combat:serable_ore",
     "combat:cassiterite",
@@ -41,6 +43,9 @@
 	"combat:mana_generator",
 	"combat:mythril_charger",
 	"combat:electric_furnace",
-	"combat:connector"
+	"combat:connector",
+	"combat:mezepine",
+	"combat:slyaphy",
+	"combat:cobbled_slyaphy"
   ]
 }

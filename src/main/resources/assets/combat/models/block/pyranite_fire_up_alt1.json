@@ -1,7 +1,6 @@
 {
-    "parent": "block/fire_up_alt",
-    "textures": {
-        "particle": "combat:block/pyranite_fire_1",
-        "fire": "combat:block/pyranite_fire_1"
+    "parent": "minecraft:block/template_fire_up_alt",
+  	"textures": {
+    	"fire": "combat:block/pyranite_fire_1"
     }
 }

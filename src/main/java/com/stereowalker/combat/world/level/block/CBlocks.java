@@ -54,12 +54,18 @@ public class CBlocks {
 	//-Fluids-\\
 	public static final Block OIL = register("oil", new LiquidCBlock((FlowingFluid) CFluids.OIL, Block.Properties.of(CMaterial.OIL).noCollission().strength(100.0F).lootFrom(() -> Blocks.AIR)));
 	public static final Block BIABLE = register("biable", new LiquidCBlock((FlowingFluid) CFluids.BIABLE, Block.Properties.of(CMaterial.BIABLE).noCollission().strength(100.0F).lootFrom(() -> Blocks.AIR)));
+	//-Acrotlest Blocks-\\
+	public static final Block MEZEPINE = register("mezepine", new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
+	public static final Block SLYAPHY = register("slyaphy", new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(2.0F, 6.0F)));
+	public static final Block COBBLED_SLYAPHY = register("cobbled_slyaphy", new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(2.0F, 6.0F)));
 	//-Metals-\\
 	public static final Block PASQUEM_ORE = register("pasquem_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
 	public static final Block TRIDOX_ORE = register("tridox_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), UniformInt.of(5, 10)));
 	public static final Block RUBY_ORE = register("ruby_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), UniformInt.of(3, 7)));
 	public static final Block PELGAN_ORE = register("pelgan_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block SLYAPHY_PELGAN_ORE = register("slyaphy_pelgan_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
 	public static final Block LOZYNE_ORE = register("lozyne_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block SLYAPHY_LOZYNE_ORE = register("slyaphy_lozyne_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
 	public static final Block PYRANITE_ORE = register("pyranite_ore", new PyraniteOreBlock(Block.Properties.of(Material.STONE).randomTicks().lightLevel((p_235418_0_) -> {
 		return 2;
 	}).strength(3.0F, 3.0F)));
@@ -248,9 +254,11 @@ public class CBlocks {
 	public static final Block BLUE_TSUNE = register("blue_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.BLUE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
+	//Hisov Sands
 	public static final Block BROWN_TSUNE = register("brown_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.BROWN, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
+	//Aquifers
 	public static final Block GREEN_TSUNE = register("green_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.GREEN, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
@@ -271,7 +279,6 @@ public class CBlocks {
 	})));
 	public static final Block ALLOY_FURNACE = register("alloy_furnace", new AlloyFurnaceBlock(Block.Properties.of(Material.DECORATION).requiresCorrectToolForDrops().strength(2.0f, 3.0f).lightLevel(getLightValueLit(13))));
 	public static final Block LIMESTONE = register("limestone", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.STONE).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
-	public static final Block MEZEPINE = register("mezepine", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.STONE).strength(0.75F, 3.0F)));
 	public static final Block MEZEPINE_BRICKS = register("mezepine_bricks", new Block(Block.Properties.of(Material.STONE).strength(0.75F, 3.0F)));
 	public static final Block MEZEPINE_FURNACE = register("mezepine_furnace", CCreativeModeTab.COMBAT_TAB_MISC, new MezepineFurnaceBlock(Block.Properties.of(Material.STONE).strength(1.75F).lightLevel((p_235418_0_) -> {
 		return 13;

@@ -42,7 +42,8 @@ public class PyraniteOreBlock extends OreBlock {
 			BlockPos blockPos1 = blockPos.relative(direction);
 			BlockState blockstate = world.getBlockState(blockPos1);
 			if(blockstate == Blocks.AIR.defaultBlockState() && blockstate.canSurvive(world, blockPos1)) {
-				world.setBlock(blockPos1, ((PyraniteFireBlock)CBlocks.PYRANITE_FIRE).getStateForPlacement(world, blockPos1), 11);
+				BlockState fire = ((PyraniteFireBlock)CBlocks.PYRANITE_FIRE).getStateForPlacement(world, blockPos1);
+				world.setBlock(blockPos1, fire, 11);
 			}
 		}
 	}

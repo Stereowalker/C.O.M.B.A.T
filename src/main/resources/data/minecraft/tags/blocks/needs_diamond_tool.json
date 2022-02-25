@@ -20,6 +20,11 @@
     "combat:green_tsune",
     "combat:red_tsune",
     "combat:black_tsune",
-	"combat:magic_stone"
+	"combat:magic_stone",
+    "combat:slyaphy",
+    "combat:cobbled_slyaphy",
+    "combat:pelgan_ore",
+    "combat:slyaphy_pelgan_ore",
+    "combat:pelgan_block"
   ]
 }

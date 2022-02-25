@@ -7,4 +7,5 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
 public class CombatOreConfigurationPredicates {
     public static final RuleTest MEZEPINE = new BlockMatchTest(CBlocks.MEZEPINE);
+    public static final RuleTest SLYAPHY = new BlockMatchTest(CBlocks.SLYAPHY);
 }
