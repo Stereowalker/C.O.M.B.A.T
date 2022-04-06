@@ -29,21 +29,21 @@ public class AffinityCommand {
 			return setAffinity(f.getSource(), SpellCategory.ClassType.ELEMENTAL, f.getSource().getPlayerOrException(), SpellCategory.WIND);
 		})))
 				
-		.then(Commands.literal("special").then(Commands.literal("Enhancement").executes((e) -> {
-			return setAffinity(e.getSource(), SpellCategory.ClassType.SPECIAL, e.getSource().getPlayerOrException(), SpellCategory.ENHANCEMENT);
+		.then(Commands.literal("primeval").then(Commands.literal("Enhancement").executes((e) -> {
+			return setAffinity(e.getSource(), SpellCategory.ClassType.PRIMEVAL, e.getSource().getPlayerOrException(), SpellCategory.ENHANCEMENT);
 		})).then(Commands.literal("Mind").executes((f) -> {
-			return setAffinity(f.getSource(), SpellCategory.ClassType.SPECIAL, f.getSource().getPlayerOrException(), SpellCategory.MIND);
+			return setAffinity(f.getSource(), SpellCategory.ClassType.PRIMEVAL, f.getSource().getPlayerOrException(), SpellCategory.MIND);
 		})).then(Commands.literal("Nature").executes((f) -> {
-			return setAffinity(f.getSource(), SpellCategory.ClassType.SPECIAL, f.getSource().getPlayerOrException(), SpellCategory.NATURE);
+			return setAffinity(f.getSource(), SpellCategory.ClassType.PRIMEVAL, f.getSource().getPlayerOrException(), SpellCategory.NATURE);
 		})).then(Commands.literal("Space").executes((f) -> {
-			return setAffinity(f.getSource(), SpellCategory.ClassType.SPECIAL, f.getSource().getPlayerOrException(), SpellCategory.SPACE);
+			return setAffinity(f.getSource(), SpellCategory.ClassType.PRIMEVAL, f.getSource().getPlayerOrException(), SpellCategory.SPACE);
+		})).then(Commands.literal("Conjuration").executes((f) -> {
+			return setAffinity(f.getSource(), SpellCategory.ClassType.PRIMEVAL, f.getSource().getPlayerOrException(), SpellCategory.CONJURATION);
+		})).then(Commands.literal("Restoration").executes((f) -> {
+			return setAffinity(f.getSource(), SpellCategory.ClassType.PRIMEVAL, f.getSource().getPlayerOrException(), SpellCategory.RESTORATION);
 		})))
 		
-		.then(Commands.literal("life").then(Commands.literal("Conjuration").executes((e) -> {
-			return setAffinity(e.getSource(), SpellCategory.ClassType.LIFE, e.getSource().getPlayerOrException(), SpellCategory.CONJURATION);
-		})).then(Commands.literal("Restoration").executes((f) -> {
-			return setAffinity(f.getSource(), SpellCategory.ClassType.LIFE, f.getSource().getPlayerOrException(), SpellCategory.RESTORATION);
-		})) )));
+				));
 	}
 
 	private static int setAffinity(CommandSourceStack source, SpellCategory.ClassType type, ServerPlayer caster, SpellCategory affinity) throws CommandSyntaxException {
@@ -54,15 +54,9 @@ public class AffinityCommand {
 				i++;
 			}
 		}
-		if (type.equals(SpellCategory.ClassType.SPECIAL)) {
-			if (CombatEntityStats.getSpecialAffinity(caster) == SpellCategory.NONE) {
-				CombatEntityStats.setSpecialAffinity(caster, affinity);
-				i++;
-			}
-		}
-		if (type.equals(SpellCategory.ClassType.LIFE)) {
-			if (CombatEntityStats.getLifeAffinity(caster) == SpellCategory.NONE) {
-				CombatEntityStats.setLifeAffinity(caster, affinity);
+		if (type.equals(SpellCategory.ClassType.PRIMEVAL)) {
+			if (CombatEntityStats.getPrimevalAffinity(caster) == SpellCategory.NONE) {
+				CombatEntityStats.setPrimevalAffinity(caster, affinity);
 				i++;
 			}
 		}

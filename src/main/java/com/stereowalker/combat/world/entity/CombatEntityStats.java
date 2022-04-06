@@ -222,17 +222,7 @@ public class CombatEntityStats {
 		return SpellCategory.NONE;
 	}
 
-	public static SpellCategory getLifeAffinity(LivingEntity entity) {
-		if(entity != null) {
-			CompoundTag compound = getModNBT(entity);
-			if (compound != null && compound.contains(lifeAffinityID)) {
-				return SpellCategory.byId(compound.getInt(lifeAffinityID));
-			}
-		}
-		return SpellCategory.NONE;
-	}
-
-	public static SpellCategory getSpecialAffinity(LivingEntity entity) {
+	public static SpellCategory getPrimevalAffinity(LivingEntity entity) {
 		if(entity != null) {
 			CompoundTag compound = getModNBT(entity);
 			if (compound != null && compound.contains(specialAffinityID)) {
@@ -385,14 +375,9 @@ public class CombatEntityStats {
 		if (category.getClassType() == ClassType.ELEMENTAL || category == SpellCategory.NONE) compound.putInt(subElementalAffinity2ID, category.ordinal());
 	}
 
-	public static void setLifeAffinity(LivingEntity entity, SpellCategory category) {
+	public static void setPrimevalAffinity(LivingEntity entity, SpellCategory category) {
 		CompoundTag compound = getModNBT(entity);
-		if (category.getClassType() == ClassType.LIFE || category == SpellCategory.NONE) compound.putInt(lifeAffinityID, category.ordinal());
-	}
-
-	public static void setSpecialAffinity(LivingEntity entity, SpellCategory category) {
-		CompoundTag compound = getModNBT(entity);
-		if (category.getClassType() == ClassType.SPECIAL || category == SpellCategory.NONE) compound.putInt(specialAffinityID, category.ordinal());
+		if (category.getClassType() == ClassType.PRIMEVAL || category == SpellCategory.NONE) compound.putInt(specialAffinityID, category.ordinal());
 	}
 
 	public static void setAllies(LivingEntity entity, List<Player> allies) {

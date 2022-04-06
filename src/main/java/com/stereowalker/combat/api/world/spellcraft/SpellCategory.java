@@ -17,21 +17,16 @@ public enum SpellCategory {
 	LIGHTNING("lightning", TextColor.fromLegacyFormat(ChatFormatting.BLUE), ClassType.ELEMENTAL, 0.333F, 0.333F, 1.0F),
 	EARTH("earth", TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN), ClassType.ELEMENTAL, 0.0F, 0.667F, 0.0F),
 	WIND("wind", TextColor.fromLegacyFormat(ChatFormatting.GRAY), ClassType.ELEMENTAL, 0.667F, 0.667F, 0.667F),
-//	WIND("Wind", ChatFormatting.DARK_GRAY, ClassType.ELEMENTAL, 0.333F, 0.333F, 0.333F),
-	//LIFE
-	RESTORATION("restoration", TextColor.fromLegacyFormat(ChatFormatting.YELLOW), ClassType.LIFE, 1.0F, 1.0F, 0.333F),
-	CONJURATION("conjuration", TextColor.fromLegacyFormat(ChatFormatting.DARK_PURPLE), ClassType.LIFE, 0.667F, 0.0F, 0.667F),
 	//SPECIAL
-	MIND("mind", TextColor.fromLegacyFormat(ChatFormatting.LIGHT_PURPLE), ClassType.SPECIAL, 1.0F, 0.333F, 1.0F),
-	NATURE("nature", TextColor.fromLegacyFormat(ChatFormatting.GREEN), ClassType.SPECIAL, 0.333F, 1.0F, 0.333F),
-	SPACE("space", TextColor.fromLegacyFormat(ChatFormatting.DARK_BLUE), ClassType.SPECIAL, 0.0F, 0.0F, 0.667F),
-	ENHANCEMENT("enhancement", TextColor.fromLegacyFormat(ChatFormatting.DARK_AQUA), ClassType.SPECIAL, 0.0F, 0.667F, 0.667F),
-//	ADVANCED9,
-//	NULL("Null", ChatFormatting.GRAY);
-	//MISCELLANEOUS
+	RESTORATION("restoration", TextColor.fromLegacyFormat(ChatFormatting.YELLOW), ClassType.PRIMEVAL, 1.0F, 1.0F, 0.333F),
+	CONJURATION("conjuration", TextColor.fromLegacyFormat(ChatFormatting.DARK_PURPLE), ClassType.PRIMEVAL, 0.667F, 0.0F, 0.667F),
+	MIND("mind", TextColor.fromLegacyFormat(ChatFormatting.LIGHT_PURPLE), ClassType.PRIMEVAL, 1.0F, 0.333F, 1.0F),
+	NATURE("nature", TextColor.fromLegacyFormat(ChatFormatting.GREEN), ClassType.PRIMEVAL, 0.333F, 1.0F, 0.333F),
+	SPACE("space", TextColor.fromLegacyFormat(ChatFormatting.DARK_BLUE), ClassType.PRIMEVAL, 0.0F, 0.0F, 0.667F),
+	ENHANCEMENT("enhancement", TextColor.fromLegacyFormat(ChatFormatting.DARK_AQUA), ClassType.PRIMEVAL, 0.0F, 0.667F, 0.667F),
+	//UNCLASSED
 	BLOOD("blood", TextColor.fromLegacyFormat(ChatFormatting.DARK_RED), ClassType.UNCLASSED, 0.667F, 0.0F, 0.0F),
 	HOLY("holy", TextColor.fromLegacyFormat(ChatFormatting.GOLD), ClassType.UNCLASSED, 1.0F, 0.667F, 0.0F);
-//	BLACK("BLACK", '0', 0, 0),
 	
 	private TextColor categoryColor;
 	private ClassType classType;;
@@ -44,9 +39,10 @@ public enum SpellCategory {
 		this.name = name;
 		this.categoryColor = categoryColorIn;
 		this.classType = type;
-		this.rColor = rColor;
-		this.gColor = gColor;
-		this.bColor = bColor;
+		
+		this.rColor = (float)((categoryColorIn.getValue() >> 16) & 0xFF) / 255.0F;
+		this.gColor = (float)((categoryColorIn.getValue() >>  8) & 0xFF) / 255.0F;
+		this.bColor = (float)((categoryColorIn.getValue() >>  0) & 0xFF) / 255.0F;
 	}
 	
 	public String getName() {
@@ -105,8 +101,7 @@ public enum SpellCategory {
 	public enum ClassType {
 		UNCLASSED("Unclassified"),
 		ELEMENTAL("Elemental"),
-		LIFE("Life"),
-		SPECIAL("Special");
+		PRIMEVAL("Primeval");
 		
 		private String name;
 		

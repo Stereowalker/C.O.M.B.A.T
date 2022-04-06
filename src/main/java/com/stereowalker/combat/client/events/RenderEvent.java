@@ -336,23 +336,18 @@ public class RenderEvent {
 
 		int mana = Mth.floor(CombatEntityStats.getMana(playerentity));
 		int manaCap = iattributemaxMana != null ? Mth.floor(iattributemaxMana.getValue()) : 1;
-		int specialAffinity = 0;
+		int primevalAffinity = 0;
 		int elementalAffinity = 0;
-		int lifeAffinity = 0;
 		if (!Config.MAGIC_COMMON.toggle_affinities.get()) {
-			specialAffinity = 0;
+			primevalAffinity = 0;
 			elementalAffinity = 0;
-			lifeAffinity = 0;
 		}
 		else {
-			if (CombatEntityStats.getSpecialAffinity(playerentity) == SpellCategory.NONE) {
-				specialAffinity = 7;
+			if (CombatEntityStats.getPrimevalAffinity(playerentity) == SpellCategory.NONE) {
+				primevalAffinity = 7;
 			} 
 			if (CombatEntityStats.getElementalAffinity(playerentity) == SpellCategory.NONE) {
 				elementalAffinity = 7;
-			} 
-			if (CombatEntityStats.getLifeAffinity(playerentity) == SpellCategory.NONE) {
-				lifeAffinity = 7;
 			} 
 		}
 		int i = manaCap;
@@ -366,12 +361,12 @@ public class RenderEvent {
 					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 21 + elementalAffinity, k, 6);
 				}
 				if (mc.gameMode.hasExperience()) {
-					RenderSystem.setShaderColor(CombatEntityStats.getSpecialAffinity(playerentity).getrCOlor(), CombatEntityStats.getSpecialAffinity(playerentity).getgCOlor(), CombatEntityStats.getSpecialAffinity(playerentity).getbCOlor(), 1.0F);
-					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 7 + specialAffinity, k, 6);
+					RenderSystem.setShaderColor(CombatEntityStats.getPrimevalAffinity(playerentity).getrCOlor(), CombatEntityStats.getPrimevalAffinity(playerentity).getgCOlor(), CombatEntityStats.getPrimevalAffinity(playerentity).getbCOlor(), 1.0F);
+					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 7 + primevalAffinity, k, 6);
+					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 35 + primevalAffinity, k, 6);
 				}
 				if (mc.gameMode.hasExperience()) {
-					RenderSystem.setShaderColor(CombatEntityStats.getLifeAffinity(playerentity).getrCOlor(), CombatEntityStats.getLifeAffinity(playerentity).getgCOlor(), CombatEntityStats.getLifeAffinity(playerentity).getbCOlor(), 1.0F);
-					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 35 + lifeAffinity, k, 6);
+					RenderSystem.setShaderColor(CombatEntityStats.getPrimevalAffinity(playerentity).getrCOlor(), CombatEntityStats.getPrimevalAffinity(playerentity).getgCOlor(), CombatEntityStats.getPrimevalAffinity(playerentity).getbCOlor(), 1.0F);
 				}
 			}
 			matrixStack.popPose();

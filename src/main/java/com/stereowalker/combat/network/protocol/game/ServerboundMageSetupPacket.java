@@ -13,17 +13,15 @@ public class ServerboundMageSetupPacket extends CUnionPacket {
 	private int colorG;
 	private int colorB;
 	private SpellCategory elemental;
-	private SpellCategory life;
-	private SpellCategory special;
+	private SpellCategory primeval;
 
-	public ServerboundMageSetupPacket(final int r, final int g, final int b, SpellCategory elemental, SpellCategory life, SpellCategory special) {
+	public ServerboundMageSetupPacket(final int r, final int g, final int b, SpellCategory elemental, SpellCategory primeval) {
 		super(Combat.getInstance().channel);
 		this.colorR = r;
 		this.colorG = g;
 		this.colorB = b;
 		this.elemental = elemental;
-		this.life = life;
-		this.special = special;
+		this.primeval = primeval;
 	}
 	
 	public ServerboundMageSetupPacket(FriendlyByteBuf packetBuffer) {
@@ -32,8 +30,7 @@ public class ServerboundMageSetupPacket extends CUnionPacket {
 		this.colorG = packetBuffer.readInt();
 		this.colorB = packetBuffer.readInt();
 		this.elemental = packetBuffer.readEnum(SpellCategory.class);
-		this.life = packetBuffer.readEnum(SpellCategory.class);
-		this.special = packetBuffer.readEnum(SpellCategory.class);
+		this.primeval = packetBuffer.readEnum(SpellCategory.class);
 	}
 
 	@Override
@@ -42,15 +39,13 @@ public class ServerboundMageSetupPacket extends CUnionPacket {
 		packetBuffer.writeInt(this.colorG);
 		packetBuffer.writeInt(this.colorB);
 		packetBuffer.writeEnum(this.elemental);
-		packetBuffer.writeEnum(this.life);
-		packetBuffer.writeEnum(this.special);
+		packetBuffer.writeEnum(this.primeval);
 	}
 
 	@Override
 	public boolean handleOnServer(ServerPlayer sender) {
 		CombatEntityStats.setElementalAffinity(sender, elemental);
-		CombatEntityStats.setLifeAffinity(sender, life);
-		CombatEntityStats.setSpecialAffinity(sender, special);
+		CombatEntityStats.setPrimevalAffinity(sender, primeval);
 		CombatEntityStats.setManaColor(sender, colorR << 16 | colorG << 8 | colorB);
 		return true;
 	}

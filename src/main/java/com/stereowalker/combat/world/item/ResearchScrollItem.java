@@ -36,7 +36,7 @@ public class ResearchScrollItem extends Item {
 				Spell spell;
 				itemStack.shrink(1);
 				if (Config.MAGIC_COMMON.toggle_affinities.get()) {
-					spell = SpellUtil.getWeightedRandomSpell(rand, CombatEntityStats.getElementalAffinity(playerIn), CombatEntityStats.getSubElementalAffinity1(playerIn), CombatEntityStats.getSubElementalAffinity2(playerIn), CombatEntityStats.getLifeAffinity(playerIn), CombatEntityStats.getSpecialAffinity(playerIn));
+					spell = SpellUtil.getWeightedRandomSpell(rand, CombatEntityStats.getElementalAffinity(playerIn), CombatEntityStats.getSubElementalAffinity1(playerIn), CombatEntityStats.getSubElementalAffinity2(playerIn), CombatEntityStats.getPrimevalAffinity(playerIn));
 				} else {
 					spell = SpellUtil.getWeightedRandomSpell(rand);
 				}

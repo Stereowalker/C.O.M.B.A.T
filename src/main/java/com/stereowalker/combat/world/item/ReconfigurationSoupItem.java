@@ -37,8 +37,7 @@ public class ReconfigurationSoupItem extends Item {
 		CombatEntityStats.setElementalAffinity(entityplayer, SpellCategory.NONE);
 		CombatEntityStats.setSubElementalAffinity1(entityplayer, SpellCategory.NONE);
 		CombatEntityStats.setSubElementalAffinity2(entityplayer, SpellCategory.NONE);
-		CombatEntityStats.setLifeAffinity(entityplayer, SpellCategory.NONE);
-		CombatEntityStats.setSpecialAffinity(entityplayer, SpellCategory.NONE);
+		CombatEntityStats.setPrimevalAffinity(entityplayer, SpellCategory.NONE);
 
 		if (entityplayer != null) {
 			entityplayer.awardStat(Stats.ITEM_USED.get(this));

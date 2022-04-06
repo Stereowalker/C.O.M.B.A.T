@@ -21,8 +21,7 @@ public class MageSelectionScreen extends Screen {
 	int gValue = 128;
 	int maxColorValue = 255;
 	SpellCategory elementalAffinity = null;
-	SpellCategory lifeAffinity = null;
-	SpellCategory specialAffinity = null;
+	SpellCategory primevalAffinity = null;
 
 	Button fire, wate, ligh, eart, wind, rest, conj, spac, mind, natu, enha;
 	Slider[] sliders = new Slider[3];
@@ -56,27 +55,27 @@ public class MageSelectionScreen extends Screen {
 		}));
 
 		rest = this.addRenderableWidget(new Button(this.width / 2 - 81, this.height / 6 + 24, 80, 20, SpellCategory.RESTORATION.getDisplayName(), (onPress) -> {
-			this.lifeAffinity = SpellCategory.RESTORATION;
+			this.primevalAffinity = SpellCategory.RESTORATION;
 		}));
 
 		conj = this.addRenderableWidget(new Button(this.width / 2 + 1, this.height / 6 + 24, 80, 20, SpellCategory.CONJURATION.getDisplayName(), (onPress) -> {
-			this.lifeAffinity = SpellCategory.CONJURATION;
+			this.primevalAffinity = SpellCategory.CONJURATION;
 		}));
 
 		spac = this.addRenderableWidget(new Button(this.width / 2 - 163, this.height / 6 + 48, 80, 20, SpellCategory.SPACE.getDisplayName(), (onPress) -> {
-			this.specialAffinity = SpellCategory.SPACE;
+			this.primevalAffinity = SpellCategory.SPACE;
 		}));
 
 		mind = this.addRenderableWidget(new Button(this.width / 2 - 81, this.height / 6 + 48, 80, 20, SpellCategory.MIND.getDisplayName(), (onPress) -> {
-			this.specialAffinity = SpellCategory.MIND;
+			this.primevalAffinity = SpellCategory.MIND;
 		}));
 
 		natu = this.addRenderableWidget(new Button(this.width / 2 + 1, this.height / 6 + 48, 80, 20, SpellCategory.NATURE.getDisplayName(), (onPress) -> {
-			this.specialAffinity = SpellCategory.NATURE;
+			this.primevalAffinity = SpellCategory.NATURE;
 		}));
 
 		enha = this.addRenderableWidget(new Button(this.width / 2 + 83, this.height / 6 + 48, 80, 20, SpellCategory.ENHANCEMENT.getDisplayName(), (onPress) -> {
-			this.specialAffinity = SpellCategory.ENHANCEMENT;
+			this.primevalAffinity = SpellCategory.ENHANCEMENT;
 		}));
 
 
@@ -103,9 +102,9 @@ public class MageSelectionScreen extends Screen {
 
 
 		this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 168, 200, 20, new TranslatableComponent("gui.done"), (onPress) -> {
-			if (elementalAffinity != null && lifeAffinity != null && specialAffinity != null) {
+			if (elementalAffinity != null && primevalAffinity != null) {
 				this.minecraft.setScreen(this.previousScreen);
-				new ServerboundMageSetupPacket(rValue, gValue, bValue, elementalAffinity, lifeAffinity, specialAffinity).send();
+				new ServerboundMageSetupPacket(rValue, gValue, bValue, elementalAffinity, primevalAffinity).send();
 			}
 		}));
 //		super.init();
@@ -118,12 +117,12 @@ public class MageSelectionScreen extends Screen {
 		eart.active = elementalAffinity != SpellCategory.EARTH;
 		ligh.active = elementalAffinity != SpellCategory.LIGHTNING;
 		wate.active = elementalAffinity != SpellCategory.WATER;
-		conj.active = lifeAffinity != SpellCategory.CONJURATION;
-		rest.active = lifeAffinity != SpellCategory.RESTORATION;
-		mind.active = specialAffinity != SpellCategory.MIND;
-		natu.active = specialAffinity != SpellCategory.NATURE;
-		spac.active = specialAffinity != SpellCategory.SPACE;
-		enha.active = specialAffinity != SpellCategory.ENHANCEMENT;
+		conj.active = primevalAffinity != SpellCategory.CONJURATION;
+		rest.active = primevalAffinity != SpellCategory.RESTORATION;
+		mind.active = primevalAffinity != SpellCategory.MIND;
+		natu.active = primevalAffinity != SpellCategory.NATURE;
+		spac.active = primevalAffinity != SpellCategory.SPACE;
+		enha.active = primevalAffinity != SpellCategory.ENHANCEMENT;
 		
 		int i = 0;
 		for (Slider slider : sliders) {

@@ -64,14 +64,14 @@ public class SpellCircleRenderer extends EntityRenderer<AbstractSpellCircle>{
 	}
 
 	public ResourceLocation getInnerRingTexture(AbstractSpellCircle entity) {
-		if (entity.getSpell().getSpell().getCategory().getClassType() == SpellCategory.ClassType.LIFE) {
+		if (entity.getSpell().getSpell().getCategory().getClassType() == SpellCategory.ClassType.PRIMEVAL) {
 			return life_inner_ring_textures;
 		}
 		else return elemental_inner_ring_textures;
 	}
 	
 	public ResourceLocation getMiddleRingTexture(AbstractSpellCircle entity) {
-		if (entity.getSpell().getSpell().getCategory().getClassType() == SpellCategory.ClassType.LIFE) {
+		if (entity.getSpell().getSpell().getCategory().getClassType() == SpellCategory.ClassType.PRIMEVAL) {
 			return life_middle_ring_textures;
 		}
 		else return elemental_middle_ring_textures;
@@ -79,7 +79,7 @@ public class SpellCircleRenderer extends EntityRenderer<AbstractSpellCircle>{
 	
 	@Override
 	public ResourceLocation getTextureLocation(AbstractSpellCircle entity) {
-		if (entity.getSpell().getSpell().getCategory().getClassType() == SpellCategory.ClassType.LIFE) {
+		if (entity.getSpell().getSpell().getCategory().getClassType() == SpellCategory.ClassType.PRIMEVAL) {
 			return life_outer_ring_textures;
 		}
 		else return elemental_outer_ring_textures;

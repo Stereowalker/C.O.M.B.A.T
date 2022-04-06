@@ -320,8 +320,7 @@ public class GameEvents {
 		CombatEntityStats.setManaColor(event.getPlayer() , CombatEntityStats.getManaColor(event.getOriginal()));
 		CombatEntityStats.setSubElementalAffinity1(event.getPlayer(), CombatEntityStats.getSubElementalAffinity1(event.getOriginal()));
 		CombatEntityStats.setSubElementalAffinity2(event.getPlayer(), CombatEntityStats.getSubElementalAffinity2(event.getOriginal()));
-		CombatEntityStats.setLifeAffinity(event.getPlayer(), CombatEntityStats.getLifeAffinity(event.getOriginal()));
-		CombatEntityStats.setSpecialAffinity(event.getPlayer(), CombatEntityStats.getSpecialAffinity(event.getOriginal()));
+		CombatEntityStats.setPrimevalAffinity(event.getPlayer(), CombatEntityStats.getPrimevalAffinity(event.getOriginal()));
 		CombatEntityStats.setElementalAffinity(event.getPlayer(), CombatEntityStats.getElementalAffinity(event.getOriginal()));
 		CombatEntityStats.setAllies(event.getPlayer(), CombatEntityStats.getAllies(event.getOriginal()));
 		CombatEntityStats.setStoredXP(event.getPlayer(), CombatEntityStats.getStoredXP(event.getOriginal()));
