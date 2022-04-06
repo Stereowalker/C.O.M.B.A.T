@@ -1,5 +1,5 @@
 {
-///////////////////////////////////////////////////////////[ITEMS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[ITEMS]///////////////////////////////////////////////////////////
 	"item.combat.guide": "The Adventurer's Guide",
 	"item.combat.glock_17": "Glock 17",
 	"item.combat.sig_sauer_p320": "SIG Sauer P320",
@@ -369,7 +369,7 @@
 	"item.combat.mythril_axe": "Mythril Axe",
 	"item.combat.mythril_pickaxe": "Mythril Pickaxe",
 	"item.combat.mythril_hoe": "Mythril Hoe",
-///////////////////////////////////////////////////////////[BLOCKS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[BLOCKS]///////////////////////////////////////////////////////////
 	"block.combat.copper_door": "Copper Door",
 	"block.combat.copper_trapdoor": "Copper Trapdoor",
 	"block.combat.copper_bars": "Copper Bars",
@@ -451,7 +451,7 @@
 	"block.combat.black_tsune": "Black Tsune",
 	"block.combat.monoris_slab": "Monoris Slab",
 	"block.combat.monoris_stairs": "Monoris Stairs",
-	
+
 	"block.combat.fir_beam": "Fir Beam",
 	"block.combat.redwood_beam": "Redwood Beam",
 	"block.combat.cherry_beam": "Cherry Beam",
@@ -463,7 +463,7 @@
 	"block.combat.magic_beam": "Magic Beam",
 	"block.combat.umbran_beam": "Umbran Beam",
 	"block.combat.hellbark_beam": "Hellbark Beam",
-	
+
 	"block.combat.purified_dirt": "Purified Dirt",
 	"block.combat.purified_grass_block": "Purified Grass Block",
 	"block.combat.lozyne_block": "Lozyne Block",
@@ -531,7 +531,7 @@
 	"block.combat.magic_podium": "Magic Podium",
 	"block.combat.umbran_podium": "Umbran Podium",
 	"block.combat.hellbark_podium": "Hellbark Podium",
-	
+
 	"block.combat.yellow_magic_cluster": "Yellow Magic Cluster",
 	"block.combat.rezal_log": "Rezal Log",
 	"block.combat.rezal_leaves": "Rezal Leaves",
@@ -540,7 +540,7 @@
 	"block.combat.mythril_charger": "Mythril Charger",
 	"block.combat.slyaphy": "Slyaphy",
 	"block.combat.cobbled_slyaphy": "Cobbled Slyaphy",
-///////////////////////////////////////////////////////////[BIOMES]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[BIOMES]///////////////////////////////////////////////////////////
 	"biome.combat.magic_forest": "Magic Forest",
 	"biome.combat.magic_plains": "Magic Plains",
 	"biome.combat.dead_forest": "Dead Forest",
@@ -549,7 +549,7 @@
 	"biome.combat.acrotlest_mountains": "Acrotlest Mountains",
 	"biome.combat.acrotlest_river": "Acrotlest River",
 	"biome.combat.hisov_sands": "Hisov Sands",
-///////////////////////////////////////////////////////////[ENTITIES]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[ENTITIES]///////////////////////////////////////////////////////////
 	"entity.combat.robin": "Robin",
 	"entity.combat.zombie_cow": "Zombie Cow",
 	"entity.combat.boat_copy": "Boat",
@@ -572,14 +572,14 @@
 	"entity.combat.lichu": "Lichu",
 	"entity.combat.shuriken": "Shuriken",
 	"entity.combat.chakram": "Chakram",
-///////////////////////////////////////////////////////////[ITEM_GROUPS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[ITEM_GROUPS]///////////////////////////////////////////////////////////
 	"itemGroup.combat_construction_blocks": "[C.O.M.B.A.T.] Construction Blocks",
 	"itemGroup.combat_magic": "[C.O.M.B.A.T.] Magic",
 	"itemGroup.combat_battle": "[C.O.M.B.A.T.] Battle",
 	"itemGroup.combat_machinery": "[C.O.M.B.A.T.] Technology",
 	"itemGroup.combat_misc": "[C.O.M.B.A.T.] Misc",
 	"itemGroup.combat_tools": "[C.O.M.B.A.T.] Tools",
-///////////////////////////////////////////////////////////[MISC]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[MISC]///////////////////////////////////////////////////////////
 	"legendaryitem.name": "Legendary Item",
 	///////////////////////////////////////////////////////////[POTIONS_&_EFFECTS]///////////////////////////////////////////////////////////
 	"effect.combat.flammable": "Flammable",
@@ -768,7 +768,7 @@
 	"item.combat.obsidian_tipped_arrow.effect.heat_resistance": "Obsidian Arrow of Heat Resistance",
 	"item.combat.diamond_tipped_arrow.effect.heat_resistance": "Diamond Arrow of Heat Resistance",
 	"item.minecraft.tipped_arrow.effect.heat_resistance": "Flint Arrow of Heat Resistance",
-	
+
 	"item.combat.wooden_tipped_arrow.effect.cold_resistance": "Wooden Arrow of Cold Resistance",
 	"item.combat.golden_tipped_arrow.effect.cold_resistance": "Golden Arrow of Cold Resistance",
 	"item.combat.iron_tipped_arrow.effect.cold_resistance": "Iron Arrow of Cold Resistance",
@@ -776,7 +776,7 @@
 	"item.combat.obsidian_tipped_arrow.effect.cold_resistance": "Obsidian Arrow of Cold Resistance",
 	"item.combat.diamond_tipped_arrow.effect.cold_resistance": "Diamond Arrow of Cold Resistance",
 	"item.minecraft.tipped_arrow.effect.cold_resistance": "Flint Arrow of Cold Resistance",
-	
+
 	"item.combat.wooden_tipped_arrow.effect.poison_resistance": "Wooden Arrow of Poison Resistance",
 	"item.combat.golden_tipped_arrow.effect.poison_resistance": "Golden Arrow of Poison Resistance",
 	"item.combat.iron_tipped_arrow.effect.poison_resistance": "Iron Arrow of Poison Resistance",
@@ -784,7 +784,7 @@
 	"item.combat.obsidian_tipped_arrow.effect.poison_resistance": "Obsidian Arrow of Poison Resistance",
 	"item.combat.diamond_tipped_arrow.effect.poison_resistance": "Diamond Arrow of Poison Resistance",
 	"item.minecraft.tipped_arrow.effect.poison_resistance": "Flint Arrow of Poison Resistance",
-	
+
 	"item.combat.wooden_tipped_arrow.effect.poison_strike": "Wooden Arrow of Poison Strike",
 	"item.combat.golden_tipped_arrow.effect.poison_strike": "Golden Arrow of Poison Strike",
 	"item.combat.iron_tipped_arrow.effect.poison_strike": "Iron Arrow of Poison Strike",
@@ -792,7 +792,7 @@
 	"item.combat.obsidian_tipped_arrow.effect.poison_strike": "Obsidian Arrow of Poison Strike",
 	"item.combat.diamond_tipped_arrow.effect.poison_strike": "Diamond Arrow of Poison Strike",
 	"item.minecraft.tipped_arrow.effect.poison_strike": "Flint Arrow of Poison Strike",
-	
+
 	"item.combat.wooden_tipped_arrow.effect.long_poison_strike": "Wooden Arrow of Poison Strike",
 	"item.combat.golden_tipped_arrow.effect.long_poison_strike": "Golden Arrow of Poison Strike",
 	"item.combat.iron_tipped_arrow.effect.long_poison_strike": "Iron Arrow of Poison Strike",
@@ -800,7 +800,7 @@
 	"item.combat.obsidian_tipped_arrow.effect.long_poison_strike": "Obsidian Arrow of Poison Strike",
 	"item.combat.diamond_tipped_arrow.effect.long_poison_strike": "Diamond Arrow of Poison Strike",
 	"item.minecraft.tipped_arrow.effect.long_poison_strike": "Flint Arrow of Poison Strike",
-	
+
 	"item.combat.wooden_tipped_arrow.effect.strong_poison_strike": "Wooden Arrow of Poison Strike",
 	"item.combat.golden_tipped_arrow.effect.strong_poison_strike": "Golden Arrow of Poison Strike",
 	"item.combat.iron_tipped_arrow.effect.strong_poison_strike": "Iron Arrow of Poison Strike",
@@ -808,7 +808,7 @@
 	"item.combat.obsidian_tipped_arrow.effect.strong_poison_strike": "Obsidian Arrow of Poison Strike",
 	"item.combat.diamond_tipped_arrow.effect.strong_poison_strike": "Diamond Arrow of Poison Strike",
 	"item.minecraft.tipped_arrow.effect.strong_poison_strike": "Flint Arrow of Poison Strike",
-///////////////////////////////////////////////////////////[ENCHANTMENTS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[ENCHANTMENTS]///////////////////////////////////////////////////////////
 	"enchantment.minecraft.protection.desc": "Reduces damage taken from most sources",
 	"enchantment.minecraft.fire_protection.desc": "Take less fire damage.",
 	"enchantment.minecraft.feather_falling.desc": "Take less fall damage",
@@ -894,7 +894,7 @@
 	"enchantment.combat.retaining.desc": "Item stays in the inventory on death",
 	"enchantment.combat.absorption": "Absorption",
 	"enchantment.combat.absorption.desc": "Absorbs 5% of damage per level into the armor",
-///////////////////////////////////////////////////////////[ADVANCENENTS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[ADVANCENENTS]///////////////////////////////////////////////////////////
 	"advancements.magic.root.title": "Magic",
 	"advancements.magic.root.description": "A little magic won't hurt anyone, right?",
 	"advancements.magic.obtain_wand.title": "Craft A Wand",
@@ -935,7 +935,7 @@
 	"advancements.technology.find_mythril_ingot.description": "Find a piece of ancient lost tech.",
 	"advancements.technology.charge_mythril_item.title": "Not Ao Devine Afterall",
 	"advancements.technology.charge_mythril_item.description": "Charge any mythril item",
-///////////////////////////////////////////////////////////[KEYBINDS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[KEYBINDS]///////////////////////////////////////////////////////////
 	"key.category.combat.general": "C.O.M.B.A.T.",
 	"key.combat.prev_spell": "Previous Spell",
 	"key.combat.next_spell": "Next Spell",
@@ -947,7 +947,7 @@
 	"key.combat.open_spellbook": "Open Spellbook",
 	"key.combat.open_back_item": "Open Back Item",
 	"key.combat.store_item": "Store Item",
-///////////////////////////////////////////////////////////[SKILLS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[SKILLS]///////////////////////////////////////////////////////////
 	"skill.combat.dagger_throw": "Dagger Throw",
 	"skill.combat.dagger_retrieval_1": "Dagger Retrieval I",
 	"skill.combat.dagger_retrieval_2": "Dagger Retrieval II",
@@ -960,7 +960,7 @@
 	"skill.combat.burning_strike": "Burning Strike",
 	"skill.combat.freezing_strike": "Freezing Strike",
 	"skill.combat.insight": "Insight",
-///////////////////////////////////////////////////////////[SPELLS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[SPELLS]///////////////////////////////////////////////////////////
 	"spell.combat.none": "None",
 	"spell.combat.none.desc": "...",
 	"spell.combat.explosion": "Explosion",
@@ -1121,7 +1121,7 @@
 	"spell.combat.diamond_sword_shot.desc": "Create and fire diamond swords as projectiles at your enemies",
 	"spell.combat.netherite_sword_shot": "Netherite Sword Shot",
 	"spell.combat.netherite_sword_shot.desc": "Create and fire netherite swords as projectiles at your enemies",
-///////////////////////////////////////////////////////////[DEATH_MESSAGES]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[DEATH_MESSAGES]///////////////////////////////////////////////////////////
 	"death.attack.staked": "%1$s was staked by %2$s",
 	"death.attack.staked.item": "%1$s was staked by %2$s with %3$s",
 	"death.attack.hypothermia": "%1$s froze up",
@@ -1146,7 +1146,7 @@
 	"death.attack.burningThorns.item": "%1$s was burned by %3$s trying to hurt %2$s",
 	"death.attack.burningSpikes": "%1$s was burned trying to hurt %2$s",
 	"death.attack.burningSpikes.item": "%1$s was burned by %3$s trying to hurt %2$s",
-///////////////////////////////////////////////////////////[CONTAINERS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[CONTAINERS]///////////////////////////////////////////////////////////
 	"container.cardboard_box": "Cardboard Box",
 	"container.disenchant": "Disenchantment",
 	"container.alloy_furnace": "Alloy Furnace",
@@ -1156,13 +1156,13 @@
 	"container.electric_furnace": "Electric Furnace",
 	"container.woodcutter": "Woodcutter",
 	"container.fletching": "Fletching",
-///////////////////////////////////////////////////////////[STATS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[STATS]///////////////////////////////////////////////////////////
 	"stat.combat.damage_blocked_by_weapon": "Damage Blocked by Weapon",
 	"stat.combat.guns_reloaded": "Guns Reloaded",
 	"stat.combat.interact_with_woodcutter": "Interactions with Woodcutter",
 	"stat.combat.shots_fired": "Shots Fired",
 	"stat.combat.spells_casted": "Spells Casted",
-///////////////////////////////////////////////////////////[ATTRIBUTES]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[ATTRIBUTES]///////////////////////////////////////////////////////////
 	"attribute.name.combat.max_mana": "Max Mana",
 	"attribute.name.combat.magic_strength": "Magic Strength",
 	"attribute.name.combat.health_regeneration": "Health Regeneration",
@@ -1170,7 +1170,7 @@
 	"attribute.name.combat.jump_strength": "Jump Strength",
 	"attribute.name.combat.attack_reach": "Attack Reach",
 	"attribute.name.combat.physical_resistance": "Physical Resisitance",
-///////////////////////////////////////////////////////////[UPGRADEABLE_ATTRIBUTES]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[UPGRADEABLE_ATTRIBUTES]///////////////////////////////////////////////////////////
 	"stat.combat.vitality": "Vitality",
 	"stat.combat.agility": "Agility",
 	"stat.combat.max_mana": "Max Mana",
@@ -1178,8 +1178,15 @@
 	"stat.combat.magic": "Magic",
 	"stat.combat.luck": "Luck",
 	"stat.combat.defence": "Defence",
-///////////////////////////////////////////////////////////[GUI]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[GUI]///////////////////////////////////////////////////////////
 	"combat.config.title": "Combat Config",
+	"combat.mage_creation.title": "Mage Creation",
+	"gui.red_slider": "Red",
+	"gui.green_slider": "Green",
+	"gui.blue_slider": "Blue",
+	"gui.elemental_affinity": "Elemental Affiity",
+	"gui.primeval_affinity": "Primeval Affinity",
+	"gui.mana_color": "Mana Color",
 	"combat.Enable Affinities": "Enable Affinities",
 	"combat.Load Guns": "Load Guns",
 	"combat.Use Custom Main Menu": "Use Custom Main Menu",
@@ -1192,14 +1199,14 @@
 	"combat.Enable Leveling System": "Leveling System",
 	"combat.gui.add_spell": "Add Spell",
 	"gui.show_skills": "Show Skills",
-///////////////////////////////////////////////////////////[CURIOS_IDENTIFIERS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[CURIOS_IDENTIFIERS]///////////////////////////////////////////////////////////
 	"curios.identifier.book": "Book",
-///////////////////////////////////////////////////////////[GAMERULES]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[GAMERULES]///////////////////////////////////////////////////////////
 	"gamerule.doInfiniteMana": "Give Infinite Mana",
 	"gamerule.doInfiniteMana.description": "All magic cast will not be bound by the amount of mana a player has",
 	"gamerule.doMagicFriendlyFire": "Enable Magic Friendly Fire",
 	"gamerule.doMagicFriendlyFire.description": "If enabled, your magic does not differentiate between friend or foe and affects all entities equally",
-///////////////////////////////////////////////////////////[COMMANDS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[COMMANDS]///////////////////////////////////////////////////////////
 	"commands.cast.success.single": "Succesfully cast %1$s from %2$s",
 	"commands.cast.success.multiple": "Succesfully cast %1$s from %2$s entities",
 	"commands.cast.failed.single": "Unable to cast %1$s from %2$s",
@@ -1233,12 +1240,12 @@
 	"commands.level.add.success.multiple": "Sucessfully added %1$s levels to %2$s players",
 	"commands.level.add.failed.single": "Failed to add %1$s levels to %2$s",
 	"commands.level.add.failed.multiple": "Failed to add %1$s levels to %2$s players",
-///////////////////////////////////////////////////////////[RECIPE_HANDLERS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[RECIPE_HANDLERS]///////////////////////////////////////////////////////////
 	"combat.recipes.woodcutting": "Woodcutting",
 	"combat.recipes.fletching": "Fletching",
 	"combat.recipes.alloy_smelting": "Alloy Smelting",
 	"combat.recipes.arcane_conversion": "Arcane Conversion",
-///////////////////////////////////////////////////////////[SPELL_RANKS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[SPELL_RANKS]///////////////////////////////////////////////////////////
 	"rank.none": "None",
 	"rank.basic": "Basic",
 	"rank.novice": "Novice",
@@ -1246,7 +1253,7 @@
 	"rank.advanced": "Advanced",
 	"rank.master": "Master",
 	"rank.god": "God",
-///////////////////////////////////////////////////////////[SPELL_AFFINITIES]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[SPELL_AFFINITIES]///////////////////////////////////////////////////////////
 	"category.none": "None",
 	"category.fire": "Fire",
 	"category.water": "Water",
@@ -1260,7 +1267,7 @@
 	"category.space": "Space",
 	"category.enhancement": "Enhancement",
 	"category.blood": "Blood",
-///////////////////////////////////////////////////////////[SPELL_FAIL_MESSAGES]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[SPELL_FAIL_MESSAGES]///////////////////////////////////////////////////////////
 	"spell.fail.no_book": "You do not possess a spell book",
 	"spell.fail.on_cooldown": "%1$s more seconds until you can cast %2$s",
 	"spell.fail.not_enough_mana": "You don't have enough mana",
@@ -1269,10 +1276,10 @@
 	"spell.fail.too_advanced": "This spell is too advanced for your wand. You need %1$s wand to cast this spell",
 	"spell.fail.no_affinity": "You don't possess %1$s affinity",
 	"spell.fail.unknown": "The spell won't cast for some unknown reason",
-///////////////////////////////////////////////////////////[ORIGINS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[ORIGINS]///////////////////////////////////////////////////////////
 	"origin.combat.manaborn.name": "Manaborn",
 	"origin.combat.manaborn.description": "Born as a result of accumulated mana over time in certain places, Manaborn are the personification of a mages desire to grow and evolve",
-///////////////////////////////////////////////////////////[ORIGINS_POWERS]///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////[ORIGINS_POWERS]///////////////////////////////////////////////////////////
 	"power.combat.mana_capacity.name": "Mana Accumulation",
 	"power.combat.mana_capacity.description": "As a result of being accumulated mana itself, you have insanely large amounts of mana at birth",
 	"power.combat.no_mana_absorbers.name": "No Mana Absorbers",
@@ -1283,15 +1290,15 @@
 	"power.combat.altered_regeneration.description": "Your health is regenerated by your mana instead of your hunger",
 	"power.combat.magic_stomach.name": "Magic Stomach",
 	"power.combat.magic_stomach.description": "Normal food will have give negative effects when consumed and mana sources like mana pills will now give double the amount of mana, positive side effects and increase your food and saturation instead",
-///////////////////////////////////////////////////////////[PATCHOULI_BOOK]///////////////////////////////////////////////////////////
-	"text.combat.adventurers_guide.landing":"This a guide that will teach you the basics of living in your world. It is not a replacement for actual experience as it will only teach the BASICS and nothing more",
-	
+	///////////////////////////////////////////////////////////[PATCHOULI_BOOK]///////////////////////////////////////////////////////////
+	"text.combat.adventurers_guide.landing": "This a guide that will teach you the basics of living in your world. It is not a replacement for actual experience as it will only teach the BASICS and nothing more",
+
 	"book.combat.category.materials.name": "Materials",
 	"book.combat.category.materials.desc": "The resources and materials that your predecessors found and identified, recorded only for you to rediscover them",
-	
+
 	"book.combat.category.magic.name": "Magic",
 	"book.combat.category.magic.desc": "Any and all attempts to comprehend all that is contained here will leave you with only more questions. Only tread here if you've resolved to abandon your sanity",
-	
+
 	"book.combat.entry.magisteel_ingot.name": "Magisteel Ingot",
 	"book.combat.entry.magisteel_ingot.heading.1": "Magical Metal",
 	"book.combat.entry.magisteel_ingot.page.1": "  A quite exquisite metal if I say so myself. I stumbled upon this by sheer accident and in the coming years it has proved quite useful. I barely had space in my pockets and i had to create space for the goods I was about to aquire. With no free chests around me, I immediately proceeded to store them in the nearest alloy furnace. These items were a steel ingot, a red and a yellow magic stone. To my amazement, ",
@@ -1303,14 +1310,14 @@
 	"book.combat.entry.magic_orb.page.1": "  To all those naive of its true worth and equally ignorant of the magic world, this is simply a glass ball. But to those mad men who have abandoned sanity to achieve true godship, this is the beginning of their journey. This apparently useless object has the power to connect an individual to the magic world. This orb has the power to grant its user magical abilities and once used it ",
 	"book.combat.entry.magic_orb.page.2": "possess the power to show its user the kind of magics available to them. Due to the salient nature of this item, it's been said that many religions were established around this item and a lot of magic aficionados will turn those who speak ill of this item into ",
 	"book.combat.entry.magic_orb.page.3": "recluses",
-	
+
 	"book.combat.entry.lozyne_ingot.name": "Lozyne Ingot",
 	"book.combat.entry.lozyne_ingot.heading.1": "Mildly Marvelous Metal",
 	"book.combat.entry.lozyne_ingot.page.1": "  A very valuable metal naitive to the acrotlest, used by craftsment of that dimension to make the most powerful of weapons and armor. The rarity of this metal is nothing to scoff at. Armies including soldiers that weild lozyne weapons and armor are almost always emerge the winners of their wars and blacksmiths that specialize in crafting lozyne lways end up rich beyond compare. ",
 	"book.combat.entry.lozyne_ingot.page.2": "  I've heard from various miners that this metal occurs in nature around layers 21 to layers 3 in the acrotlest, but one should always take this type of information with a grain of salt as no one would ever willingly give up the source of their riches. ",
-	
+
 	"book.combat.entry.reconfiguration_soup.name": "Reconfiguration Soup",
 	"book.combat.entry.reconfiguration_soup.heading.1": "The Reapers Brew",
 	"book.combat.entry.reconfiguration_soup.page.1": "  A mix that contains elements of life and death. Made from the foulest of flowers and a tear from a nether terror, this brew is known to erase the magical identity and ability of whoever consumes it and reverts them to regular humans.  "
-	
+
 }
