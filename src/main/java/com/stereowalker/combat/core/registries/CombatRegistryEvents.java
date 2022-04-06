@@ -157,7 +157,7 @@ public class CombatRegistryEvents
 			return tintIndex == 0 ? PotionUtils.getColor(stack) : -1;
 		}, CItems.WOODEN_TIPPED_ARROW, CItems.GOLDEN_TIPPED_ARROW, CItems.QUARTZ_TIPPED_ARROW, CItems.DIAMOND_TIPPED_ARROW, CItems.OBSIDIAN_TIPPED_ARROW, CItems.IRON_TIPPED_ARROW);
 		event.getItemColors().register((stack, tintIndex) -> {
-			return tintIndex == 0 ? SpellUtil.getSpellFromItem(stack).getCategory().getTextFormatting().getColor() : -1;
+			return tintIndex == 0 ? SpellUtil.getSpellFromItem(stack).getCategory().getColor().getValue() : -1;
 		}, CItems.SCROLL);
 		event.getItemColors().register((stack, tintIndex) -> {
 			return tintIndex > 0 ? -1 : ((DyeableLeatherItem)stack.getItem()).getColor(stack);

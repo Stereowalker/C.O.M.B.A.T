@@ -4,41 +4,43 @@ import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.TranslatableComponent;
 
 public enum SpellCategory {
 	//NONE
-	NONE("none", ChatFormatting.WHITE, ClassType.UNCLASSED, 1.0F, 1.0F, 1.0F),
+	NONE("none", TextColor.fromLegacyFormat(ChatFormatting.WHITE), ClassType.UNCLASSED, 1.0F, 1.0F, 1.0F),
 	//ELEMENTALS
-	FIRE("fire", ChatFormatting.RED, ClassType.ELEMENTAL, 1.0F, 0.333F, 0.333F),
-	WATER("water", ChatFormatting.AQUA, ClassType.ELEMENTAL, 0.333F, 1.0F, 1.0F),
-	LIGHTNING("lightning", ChatFormatting.BLUE, ClassType.ELEMENTAL, 0.333F, 0.333F, 1.0F),
-	EARTH("earth", ChatFormatting.DARK_GREEN, ClassType.ELEMENTAL, 0.0F, 0.667F, 0.0F),
-	WIND("wind", ChatFormatting.GRAY, ClassType.ELEMENTAL, 0.667F, 0.667F, 0.667F),
+	FIRE("fire", TextColor.fromLegacyFormat(ChatFormatting.RED), ClassType.ELEMENTAL, 1.0F, 0.333F, 0.333F),
+	WATER("water", TextColor.fromLegacyFormat(ChatFormatting.AQUA), ClassType.ELEMENTAL, 0.333F, 1.0F, 1.0F),
+	LIGHTNING("lightning", TextColor.fromLegacyFormat(ChatFormatting.BLUE), ClassType.ELEMENTAL, 0.333F, 0.333F, 1.0F),
+	EARTH("earth", TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN), ClassType.ELEMENTAL, 0.0F, 0.667F, 0.0F),
+	WIND("wind", TextColor.fromLegacyFormat(ChatFormatting.GRAY), ClassType.ELEMENTAL, 0.667F, 0.667F, 0.667F),
 //	WIND("Wind", ChatFormatting.DARK_GRAY, ClassType.ELEMENTAL, 0.333F, 0.333F, 0.333F),
 	//LIFE
-	RESTORATION("restoration", ChatFormatting.YELLOW, ClassType.LIFE, 1.0F, 1.0F, 0.333F),
-	CONJURATION("conjuration", ChatFormatting.DARK_PURPLE, ClassType.LIFE, 0.667F, 0.0F, 0.667F),
+	RESTORATION("restoration", TextColor.fromLegacyFormat(ChatFormatting.YELLOW), ClassType.LIFE, 1.0F, 1.0F, 0.333F),
+	CONJURATION("conjuration", TextColor.fromLegacyFormat(ChatFormatting.DARK_PURPLE), ClassType.LIFE, 0.667F, 0.0F, 0.667F),
 	//SPECIAL
-	MIND("mind", ChatFormatting.LIGHT_PURPLE, ClassType.SPECIAL, 1.0F, 0.333F, 1.0F),
-	NATURE("nature", ChatFormatting.GREEN, ClassType.SPECIAL, 0.333F, 1.0F, 0.333F),
-	SPACE("space", ChatFormatting.DARK_BLUE, ClassType.SPECIAL, 0.0F, 0.0F, 0.667F),
-	ENHANCEMENT("enhancement", ChatFormatting.DARK_AQUA, ClassType.SPECIAL, 0.0F, 0.667F, 0.667F),
+	MIND("mind", TextColor.fromLegacyFormat(ChatFormatting.LIGHT_PURPLE), ClassType.SPECIAL, 1.0F, 0.333F, 1.0F),
+	NATURE("nature", TextColor.fromLegacyFormat(ChatFormatting.GREEN), ClassType.SPECIAL, 0.333F, 1.0F, 0.333F),
+	SPACE("space", TextColor.fromLegacyFormat(ChatFormatting.DARK_BLUE), ClassType.SPECIAL, 0.0F, 0.0F, 0.667F),
+	ENHANCEMENT("enhancement", TextColor.fromLegacyFormat(ChatFormatting.DARK_AQUA), ClassType.SPECIAL, 0.0F, 0.667F, 0.667F),
 //	ADVANCED9,
 //	NULL("Null", ChatFormatting.GRAY);
 	//MISCELLANEOUS
-	BLOOD("blood", ChatFormatting.DARK_RED, ClassType.UNCLASSED, 0.667F, 0.0F, 0.0F),
-	HOLY("holy", ChatFormatting.GOLD, ClassType.UNCLASSED, 1.0F, 0.667F, 0.0F);
+	BLOOD("blood", TextColor.fromLegacyFormat(ChatFormatting.DARK_RED), ClassType.UNCLASSED, 0.667F, 0.0F, 0.0F),
+	HOLY("holy", TextColor.fromLegacyFormat(ChatFormatting.GOLD), ClassType.UNCLASSED, 1.0F, 0.667F, 0.0F);
 //	BLACK("BLACK", '0', 0, 0),
 	
-	private ChatFormatting categoryColor;
+	private TextColor categoryColor;
 	private ClassType classType;;
 	private String name;
 	private float rColor;
 	private float gColor;
 	private float bColor;
 	
-	private SpellCategory(String name, ChatFormatting categoryColorIn, @Nullable ClassType type, float rColor, float gColor, float bColor) {
+	private SpellCategory(String name, TextColor categoryColorIn, @Nullable ClassType type, float rColor, float gColor, float bColor) {
 		this.name = name;
 		this.categoryColor = categoryColorIn;
 		this.classType = type;
@@ -56,10 +58,10 @@ public enum SpellCategory {
 	}
 
 	public Component getColoredDisplayName() {
-		return new TranslatableComponent("category." + this.name).withStyle(getTextFormatting());
+		return new TranslatableComponent("category." + this.name).withStyle(Style.EMPTY.withColor(getColor()));
 	}
 	
-	public ChatFormatting getTextFormatting() {
+	public TextColor getColor() {
 		return categoryColor;
 	}
 	

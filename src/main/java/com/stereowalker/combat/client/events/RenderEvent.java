@@ -422,17 +422,17 @@ public class RenderEvent {
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale, scale, scale);
-					mc.font.draw(matrixStack, s, (float)i10 - (2 / scale) , (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
+					mc.font.draw(matrixStack, s, (float)i10 - (2 / scale) , (float)j10 / scale, cSpell.getCategory().getColor().getValue());
 					matrixStack.popPose();
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale2, scale2, scale2);
-					mc.font.draw(matrixStack, s1, (float)i11 - (2 / scale2), (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
+					mc.font.draw(matrixStack, s1, (float)i11 - (2 / scale2), (float)(j10 + 10) / scale2, nSpell.getCategory().getColor().getValue());
 					matrixStack.popPose();
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale2, scale2, scale2);
-					mc.font.draw(matrixStack, s2, (float)i12 - (2 / scale2), (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
+					mc.font.draw(matrixStack, s2, (float)i12 - (2 / scale2), (float)(j10 - 10) / scale2, pSpell.getCategory().getColor().getValue());
 					matrixStack.popPose();
 				}
 				popPose();
@@ -455,17 +455,17 @@ public class RenderEvent {
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale, scale, scale);
-					mc.font.draw(matrixStack, s, 2 / scale, (float)j10 / scale, cSpell.getCategory().getTextFormatting().getColor());
+					mc.font.draw(matrixStack, s, 2 / scale, (float)j10 / scale, cSpell.getCategory().getColor().getValue());
 					matrixStack.popPose();
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale2, scale2, scale2);
-					mc.font.draw(matrixStack, s1, 2 / scale2, (float)(j10 + 10) / scale2, nSpell.getCategory().getTextFormatting().getColor());
+					mc.font.draw(matrixStack, s1, 2 / scale2, (float)(j10 + 10) / scale2, nSpell.getCategory().getColor().getValue());
 					matrixStack.popPose();
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale2, scale2, scale2);
-					mc.font.draw(matrixStack, s2, 2 / scale2, (float)(j10 - 10) / scale2, pSpell.getCategory().getTextFormatting().getColor());
+					mc.font.draw(matrixStack, s2, 2 / scale2, (float)(j10 - 10) / scale2, pSpell.getCategory().getColor().getValue());
 					matrixStack.popPose();
 				}
 				popPose();

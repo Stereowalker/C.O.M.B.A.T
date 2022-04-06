@@ -128,20 +128,6 @@ jar {
     }
 }
 
-curseforge {
-    project {
-    	id = modCurseId
-		apiKey = "$System.env.CURSEFORGEKEY"
-		changelog = file('changelog.md')
-		releaseType = 'release'
-		addGameVersion(modMinecraftVersion)
-        addGameVersion("Forge")
-		mainArtifact(jar) {
-			displayName = modFilename+"-$project.version"
-		}
-	}		
-}
-
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allJava

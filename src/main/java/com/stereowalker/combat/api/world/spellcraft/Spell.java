@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,7 +51,7 @@ public abstract class Spell extends ForgeRegistryEntry<Spell>{
 	}
 	
 	public MutableComponent getKnownColoredName() {
-		return getKnownName().withStyle(category.getTextFormatting()); 
+		return getKnownName().withStyle((Style t) -> t.withColor(category.getColor())); 
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -60,7 +61,7 @@ public abstract class Spell extends ForgeRegistryEntry<Spell>{
 
 	@OnlyIn(Dist.CLIENT)
 	public MutableComponent getColoredName(boolean isKnown) {
-		return isKnown ? getKnownColoredName() : SpellGalaticNames.getInstance().getGalacticSpellName(Minecraft.getInstance().font, 1000, getKnownName()).withStyle(category.getTextFormatting());
+		return isKnown ? getKnownColoredName() : SpellGalaticNames.getInstance().getGalacticSpellName(Minecraft.getInstance().font, 1000, getKnownName()).withStyle((Style t) -> t.withColor(category.getColor()));
 	}
 
 	protected String getDefaultTranslationKey() {
