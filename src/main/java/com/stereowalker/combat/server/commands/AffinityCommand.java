@@ -31,8 +31,6 @@ public class AffinityCommand {
 				
 		.then(Commands.literal("primeval").then(Commands.literal("Enhancement").executes((e) -> {
 			return setAffinity(e.getSource(), SpellCategory.ClassType.PRIMEVAL, e.getSource().getPlayerOrException(), SpellCategory.ENHANCEMENT);
-		})).then(Commands.literal("Mind").executes((f) -> {
-			return setAffinity(f.getSource(), SpellCategory.ClassType.PRIMEVAL, f.getSource().getPlayerOrException(), SpellCategory.MIND);
 		})).then(Commands.literal("Nature").executes((f) -> {
 			return setAffinity(f.getSource(), SpellCategory.ClassType.PRIMEVAL, f.getSource().getPlayerOrException(), SpellCategory.NATURE);
 		})).then(Commands.literal("Space").executes((f) -> {

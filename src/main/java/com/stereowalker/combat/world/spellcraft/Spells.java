@@ -72,6 +72,7 @@ public class Spells {
 	public static final Spell CONJOUR_SHOVEL = register("conjour_shovel", new SummonItemSpell(SpellCategory.CONJURATION, Rank.BASIC, 0.0F, 0, () -> CItems.SOUL_SHOVEL, 20));
 	public static final Spell CONJOUR_HOE = register("conjour_hoe", new SummonItemSpell(SpellCategory.CONJURATION, Rank.BASIC, 0.0F, 0, () -> CItems.SOUL_HOE, 20));
 	public static final Spell CONJOUR_PICKAXE = register("conjour_pickaxe", new SummonItemSpell(SpellCategory.CONJURATION, Rank.BASIC, 0.0F, 0, () -> CItems.SOUL_PICKAXE, 20));
+	public static final Spell FEAR = register("fear", new AOEEffectSpell(SpellCategory.CONJURATION, Rank.BASIC, 0.8F, 1, 20, () -> CMobEffects.FEAR, 1, false, 20));
 	//Novice
 	public static final Spell CONJOUR_SWORD = register("conjour_sword", new SummonItemSpell(SpellCategory.CONJURATION, Rank.NOVICE, 0.0F, 0, () -> CItems.SOUL_SWORD, 20));
 	public static final Spell CONJOUR_BOW = register("conjour_bow", new SummonItemSpell(SpellCategory.CONJURATION, Rank.NOVICE, 0.0F, 0, () -> CItems.SOUL_BOW, 20));
@@ -108,9 +109,6 @@ public class Spells {
 	//Novice
 	public static final Spell AIR_BULLET = register("air_bullet", new BoltSpell(SpellCategory.WIND, Rank.NOVICE, 0.2F, 0));
 	public static final Spell AIR_BURST = register("air_burst", new AirBurstSpell(SpellCategory.WIND, Rank.NOVICE, CastType.TRAP, 2.0F, 5, 20));
-//----------------------------------------[Mind]----------------------------------------\\
-	//Mind
-	public static final Spell FEAR = register("fear", new AOEEffectSpell(SpellCategory.MIND, Rank.BASIC, 0.8F, 1, 20, () -> CMobEffects.FEAR, 1, false, 20));
 //----------------------------------------[Nature]----------------------------------------\\
 	//Novice
 	public static final Spell POISON = register("poison", new PoisonSpell(SpellCategory.NATURE, Rank.NOVICE, 0.8F, 0));

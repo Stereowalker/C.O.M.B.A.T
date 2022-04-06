@@ -66,10 +66,6 @@ public class MageSelectionScreen extends Screen {
 			this.primevalAffinity = SpellCategory.SPACE;
 		}));
 
-		mind = this.addRenderableWidget(new Button(this.width / 2 - 81, this.height / 6 + 48, 80, 20, SpellCategory.MIND.getDisplayName(), (onPress) -> {
-			this.primevalAffinity = SpellCategory.MIND;
-		}));
-
 		natu = this.addRenderableWidget(new Button(this.width / 2 + 1, this.height / 6 + 48, 80, 20, SpellCategory.NATURE.getDisplayName(), (onPress) -> {
 			this.primevalAffinity = SpellCategory.NATURE;
 		}));
@@ -119,7 +115,6 @@ public class MageSelectionScreen extends Screen {
 		wate.active = elementalAffinity != SpellCategory.WATER;
 		conj.active = primevalAffinity != SpellCategory.CONJURATION;
 		rest.active = primevalAffinity != SpellCategory.RESTORATION;
-		mind.active = primevalAffinity != SpellCategory.MIND;
 		natu.active = primevalAffinity != SpellCategory.NATURE;
 		spac.active = primevalAffinity != SpellCategory.SPACE;
 		enha.active = primevalAffinity != SpellCategory.ENHANCEMENT;

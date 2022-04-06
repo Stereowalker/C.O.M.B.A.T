@@ -2,7 +2,6 @@ package com.stereowalker.combat.api.world.spellcraft;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
@@ -10,23 +9,22 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 public enum SpellCategory {
 	//NONE
-	NONE("none", TextColor.fromLegacyFormat(ChatFormatting.WHITE), ClassType.UNCLASSED, 1.0F, 1.0F, 1.0F),
+	NONE("none", TextColor.parseColor("#FFFFFF"), ClassType.UNCLASSED),
 	//ELEMENTALS
-	FIRE("fire", TextColor.fromLegacyFormat(ChatFormatting.RED), ClassType.ELEMENTAL, 1.0F, 0.333F, 0.333F),
-	WATER("water", TextColor.fromLegacyFormat(ChatFormatting.AQUA), ClassType.ELEMENTAL, 0.333F, 1.0F, 1.0F),
-	LIGHTNING("lightning", TextColor.fromLegacyFormat(ChatFormatting.BLUE), ClassType.ELEMENTAL, 0.333F, 0.333F, 1.0F),
-	EARTH("earth", TextColor.fromLegacyFormat(ChatFormatting.DARK_GREEN), ClassType.ELEMENTAL, 0.0F, 0.667F, 0.0F),
-	WIND("wind", TextColor.fromLegacyFormat(ChatFormatting.GRAY), ClassType.ELEMENTAL, 0.667F, 0.667F, 0.667F),
+	FIRE("fire", TextColor.parseColor("#FF5555"), ClassType.ELEMENTAL),
+	WATER("water", TextColor.parseColor("#55FFFF"), ClassType.ELEMENTAL),
+	LIGHTNING("lightning", TextColor.parseColor("#5555FF"), ClassType.ELEMENTAL),
+	EARTH("earth", TextColor.parseColor("#00AA00"), ClassType.ELEMENTAL),
+	WIND("wind", TextColor.parseColor("#AAAAAA"), ClassType.ELEMENTAL),
 	//SPECIAL
-	RESTORATION("restoration", TextColor.fromLegacyFormat(ChatFormatting.YELLOW), ClassType.PRIMEVAL, 1.0F, 1.0F, 0.333F),
-	CONJURATION("conjuration", TextColor.fromLegacyFormat(ChatFormatting.DARK_PURPLE), ClassType.PRIMEVAL, 0.667F, 0.0F, 0.667F),
-	MIND("mind", TextColor.fromLegacyFormat(ChatFormatting.LIGHT_PURPLE), ClassType.PRIMEVAL, 1.0F, 0.333F, 1.0F),
-	NATURE("nature", TextColor.fromLegacyFormat(ChatFormatting.GREEN), ClassType.PRIMEVAL, 0.333F, 1.0F, 0.333F),
-	SPACE("space", TextColor.fromLegacyFormat(ChatFormatting.DARK_BLUE), ClassType.PRIMEVAL, 0.0F, 0.0F, 0.667F),
-	ENHANCEMENT("enhancement", TextColor.fromLegacyFormat(ChatFormatting.DARK_AQUA), ClassType.PRIMEVAL, 0.0F, 0.667F, 0.667F),
+	RESTORATION("restoration", TextColor.parseColor("#FFFF55"), ClassType.PRIMEVAL),
+	CONJURATION("conjuration", TextColor.parseColor("#AA00AA"), ClassType.PRIMEVAL),
+	NATURE("nature", TextColor.parseColor("#55FF55"), ClassType.PRIMEVAL),
+	SPACE("space", TextColor.parseColor("#0000AA"), ClassType.PRIMEVAL),
+	ENHANCEMENT("enhancement", TextColor.parseColor("#00AAAA"), ClassType.PRIMEVAL),
 	//UNCLASSED
-	BLOOD("blood", TextColor.fromLegacyFormat(ChatFormatting.DARK_RED), ClassType.UNCLASSED, 0.667F, 0.0F, 0.0F),
-	HOLY("holy", TextColor.fromLegacyFormat(ChatFormatting.GOLD), ClassType.UNCLASSED, 1.0F, 0.667F, 0.0F);
+	BLOOD("blood", TextColor.parseColor("#AA0000"), ClassType.UNCLASSED),
+	HOLY("holy", TextColor.parseColor("#FFAA00"), ClassType.UNCLASSED);
 	
 	private TextColor categoryColor;
 	private ClassType classType;;
@@ -35,7 +33,7 @@ public enum SpellCategory {
 	private float gColor;
 	private float bColor;
 	
-	private SpellCategory(String name, TextColor categoryColorIn, @Nullable ClassType type, float rColor, float gColor, float bColor) {
+	private SpellCategory(String name, TextColor categoryColorIn, @Nullable ClassType type) {
 		this.name = name;
 		this.categoryColor = categoryColorIn;
 		this.classType = type;
