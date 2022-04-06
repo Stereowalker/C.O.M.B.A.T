@@ -80,6 +80,7 @@ public class Spells {
 	public static final Spell CONJOUR_ARMOR = register("conjour_armor", new SummonArmorSpell(SpellCategory.CONJURATION, Rank.APPRENTICE, 0.0F, 0, () -> CItems.SOUL_HELMET, () -> CItems.SOUL_CHESTPLATE, () -> CItems.SOUL_LEGGINGS, () -> CItems.SOUL_BOOTS, 20));
 	//Advanced
 	public static final Spell SUMMON_ZOMBIE = register("summon_zombie", new SummonEntitySpell(SpellCategory.CONJURATION, Rank.ADVANCED, 0.0F, 0, CEntityType.ZOMBIE_MINION, 20));
+	public static final Spell SUMMON_WITHER_SKULL = register("summon_wither_skull", new SummonWitherSkullSpell(SpellCategory.CONJURATION, Rank.ADVANCED, 5.0F, 0, 20));
 	public static final Spell SUMMON_SKELETON = register("summon_skeleton", new SummonEntitySpell(SpellCategory.CONJURATION, Rank.ADVANCED, 0.0F, 0, CEntityType.SKELETON_MINION, 20));
 //----------------------------------------[Earth]----------------------------------------\\
 	//Basic

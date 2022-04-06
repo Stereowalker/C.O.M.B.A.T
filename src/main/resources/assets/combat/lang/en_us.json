@@ -1003,6 +1003,8 @@
 	"spell.combat.summon_zombie.desc": "Summon a zombie into the ranks of your undead army",
 	"spell.combat.summon_skeleton": "Summon Skeleton",
 	"spell.combat.summon_skeleton.desc": "Summon a skeleton into the ranks of your undead army",
+	"spell.combat.summon_wither_skull": "Summon Wither Skull",
+	"spell.combat.summon_wither_skull.desc": "Summons a wither skull that travels in the direction you are looking at",
 	"spell.combat.lightning_bolt": "Lightning Bolt",
 	"spell.combat.lightning_bolt.desc": "Shoot a bolt of lighting from your wand",
 	"spell.combat.lightning": "Lightning",

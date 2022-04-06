@@ -33,7 +33,7 @@ public class SummonEntitySpell extends Spell {
 		if (caster.level instanceof ServerLevel) {
 			BlockPos pos = new BlockPos(location);
 			Entity entity = entityType.spawn((ServerLevel)caster.level, null, (Player) caster, pos, MobSpawnType.MOB_SUMMONED, true, true); 
-			if(entity instanceof Minion)((Minion) entity).setMasterId(caster.getUUID());
+			if(entity instanceof Minion)((Minion<?>) entity).setMasterId(caster.getUUID());
 			if(entity instanceof SkeletonMinion) {
 				((SkeletonMinion) entity).setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
 			}
