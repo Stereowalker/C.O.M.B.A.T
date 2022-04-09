@@ -41,6 +41,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
@@ -407,13 +408,14 @@ public class RenderEvent {
 				int i12 = (int) ((gui().screenWidth/scale2) - mc.font.width(s2));
 				if(Minecraft.renderNames() && !mc.gameMode.isAlwaysFlying()) {
 					gui().blit(matrixStack, gui().screenWidth - 61, j10 - offset, 60, 49, 60, 30);
-
-					RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 0.101F);
-					gui().blit(matrixStack, gui().screenWidth - cWidth-1, j10 - offset + 10, 0, 82, cWidth, 10);
-					gui().blit(matrixStack, gui().screenWidth - nWidth-1, j10 - offset + 21, 0, 82, nWidth, 8);
-					gui().blit(matrixStack, gui().screenWidth - pWidth-1, j10 - offset + 01, 0, 82, pWidth, 8);
-					RenderSystem.setShaderColor(1.0f-q, q, 0.0f, 0.101F);
-					gui().blit(matrixStack, gui().screenWidth - tWidth-1, j10 - offset + 10, 0, 82, tWidth, 10);
+					int w = gui().screenWidth-1;
+					int h = j10 - offset;
+					int r = Mth.floor(q*255)%255;
+					Gui.fill(matrixStack, w - cWidth, h + 10, w - (cWidth * -2), h + 10 + 10, FastColor.ARGB32.color(36, 255, 255, 255));
+					Gui.fill(matrixStack, w - nWidth, h + 21, w - (nWidth * -2), h + 21 +  8, FastColor.ARGB32.color(36, 255, 255, 255));
+					Gui.fill(matrixStack, w - pWidth, h + 01, w - (pWidth * -2), h + 01 +  8, FastColor.ARGB32.color(36, 255, 255, 255));
+					Gui.fill(matrixStack, w - tWidth, h + 10, w - (tWidth * -2), h + 10 + 10, FastColor.ARGB32.color(72, 255 - r, r, 0));
+					System.out.println("Polling: "+r);
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale, scale, scale);
@@ -441,12 +443,12 @@ public class RenderEvent {
 				if(Minecraft.renderNames() && !mc.gameMode.isAlwaysFlying()) {
 					gui().blit(matrixStack, 1, j10 - offset, 0, 49, 60, 30);
 
-					RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 0.101F);
-					gui().blit(matrixStack, 1, j10 - offset + 10, 0, 82, cWidth, 10);
-					gui().blit(matrixStack, 1, j10 - offset + 21, 0, 82, nWidth, 8);
-					gui().blit(matrixStack, 1, j10 - offset + 01, 0, 82, pWidth, 8);
-					RenderSystem.setShaderColor(1.0f-q, q, 0.0f, 0.101F);
-					gui().blit(matrixStack, 1, j10 - offset + 10, 0, 82, tWidth, 10);
+					int h = j10 - offset;
+					int r = Mth.floor(q*255)%255;
+					Gui.fill(matrixStack, 1, h + 10, 1 + cWidth, h + 10 + 10, FastColor.ARGB32.color(36, 255, 255, 255));
+					Gui.fill(matrixStack, 1, h + 21, 1 + nWidth, h + 21 +  8, FastColor.ARGB32.color(36, 255, 255, 255));
+					Gui.fill(matrixStack, 1, h + 01, 1 + pWidth, h + 01 +  8, FastColor.ARGB32.color(36, 255, 255, 255));
+					Gui.fill(matrixStack, 1, h + 10, 1 + tWidth, h + 10 + 10, FastColor.ARGB32.color(72, 255 - r, r, 0));
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale, scale, scale);
