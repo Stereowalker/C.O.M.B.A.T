@@ -2,6 +2,7 @@ package com.stereowalker.combat.client.renderer.item;
 
 import javax.annotation.Nullable;
 
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.core.EnergyUtils;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.item.CItems;
@@ -209,8 +210,8 @@ public class CItemProperties {
 				boolean flag = entity != null;
 				if (flag) {
 					boolean flag2 = entity.getMainHandItem() == stack || entity.getOffhandItem() == stack;
-					int d1 = CombatEntityStats.getSubElementalAffinity1(entity).ordinal();
-					int d2 = CombatEntityStats.getSubElementalAffinity2(entity).ordinal();
+					int d1 = SpellCategory.getNextStrongestElementalAffinities(entity)[0].ordinal();
+					int d2 = SpellCategory.getNextStrongestElementalAffinities(entity)[1].ordinal();
 					if (flag2) {
 						float d0 = Float.parseFloat("0."+d1+d2);
 						return d0;

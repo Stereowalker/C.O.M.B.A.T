@@ -338,17 +338,18 @@ public class RenderEvent {
 		int mana = Mth.floor(CombatEntityStats.getMana(playerentity));
 		int manaCap = iattributemaxMana != null ? Mth.floor(iattributemaxMana.getValue()) : 1;
 		int primevalAffinity = 0;
-		int elementalAffinity = 0;
+		int elementalAffinitySprite = 0;
+		SpellCategory elementalAffinity = SpellCategory.getStrongestElementalAffinity(playerentity);
 		if (!Config.MAGIC_COMMON.toggle_affinities.get()) {
 			primevalAffinity = 0;
-			elementalAffinity = 0;
+			elementalAffinitySprite = 0;
 		}
 		else {
 			if (CombatEntityStats.getPrimevalAffinity(playerentity) == SpellCategory.NONE) {
 				primevalAffinity = 7;
 			} 
-			if (CombatEntityStats.getElementalAffinity(playerentity) == SpellCategory.NONE) {
-				elementalAffinity = 7;
+			if (elementalAffinity == SpellCategory.NONE) {
+				elementalAffinitySprite = 7;
 			} 
 		}
 		int i = manaCap;
@@ -358,8 +359,8 @@ public class RenderEvent {
 			if(Minecraft.renderNames() && mc.gameMode.hasExperience())gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 0, 182, 6);
 			if (k > 0) {
 				if (mc.gameMode.hasExperience()) {
-					RenderSystem.setShaderColor(CombatEntityStats.getElementalAffinity(playerentity).getrCOlor(), CombatEntityStats.getElementalAffinity(playerentity).getgCOlor(), CombatEntityStats.getElementalAffinity(playerentity).getbCOlor(), 1.0F);
-					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 21 + elementalAffinity, k, 6);
+					RenderSystem.setShaderColor(elementalAffinity.getrCOlor(), elementalAffinity.getgCOlor(), elementalAffinity.getbCOlor(), 1.0F);
+					gui().blit(matrixStack, x, k2 - moveUp + 2, 0, 21 + elementalAffinitySprite, k, 6);
 				}
 				if (mc.gameMode.hasExperience()) {
 					RenderSystem.setShaderColor(CombatEntityStats.getPrimevalAffinity(playerentity).getrCOlor(), CombatEntityStats.getPrimevalAffinity(playerentity).getgCOlor(), CombatEntityStats.getPrimevalAffinity(playerentity).getbCOlor(), 1.0F);
@@ -415,7 +416,6 @@ public class RenderEvent {
 					Gui.fill(matrixStack, w - nWidth, h + 21, w - (nWidth * -2), h + 21 +  8, FastColor.ARGB32.color(36, 255, 255, 255));
 					Gui.fill(matrixStack, w - pWidth, h + 01, w - (pWidth * -2), h + 01 +  8, FastColor.ARGB32.color(36, 255, 255, 255));
 					Gui.fill(matrixStack, w - tWidth, h + 10, w - (tWidth * -2), h + 10 + 10, FastColor.ARGB32.color(72, 255 - r, r, 0));
-					System.out.println("Polling: "+r);
 
 					matrixStack.pushPose();
 					matrixStack.scale(scale, scale, scale);

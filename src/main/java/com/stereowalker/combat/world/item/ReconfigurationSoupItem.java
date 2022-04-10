@@ -34,9 +34,9 @@ public class ReconfigurationSoupItem extends Item {
 			CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)entityplayer, stack);
 		}
 
-		CombatEntityStats.setElementalAffinity(entityplayer, SpellCategory.NONE);
-		CombatEntityStats.setSubElementalAffinity1(entityplayer, SpellCategory.NONE);
-		CombatEntityStats.setSubElementalAffinity2(entityplayer, SpellCategory.NONE);
+		for (SpellCategory cats : SpellCategory.values()) 
+			if (cats.getAttachedAttribute() != null) 
+				entityplayer.getAttribute(cats.getAttachedAttribute()).setBaseValue(0.1d);
 		CombatEntityStats.setPrimevalAffinity(entityplayer, SpellCategory.NONE);
 
 		if (entityplayer != null) {

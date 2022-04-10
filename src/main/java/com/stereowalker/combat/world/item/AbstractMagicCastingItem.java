@@ -97,7 +97,8 @@ public abstract class AbstractMagicCastingItem extends Item implements Vanishabl
 				currentSpell.setRayTraceResult(raytraceresult);
 				double addStrength = (double)CombatEntityStats.getSpellStats(playerIn, currentSpell).getTimesCast()/100000.0d;
 				if (!Config.MAGIC_COMMON.enableSpellTraining.get()) addStrength = 0.0d;
-				SpellInstance spell = new SpellInstance(currentSpell, playerIn.getAttributeValue(CAttributes.MAGIC_STRENGTH)+addStrength, raytraceresult.getLocation(), playerIn.getUsedItemHand(), playerIn.getUUID());
+				double multiplier = currentSpell.getCategory().getAttachedAttribute() == null ? 0 : playerIn.getAttributeValue(currentSpell.getCategory().getAttachedAttribute());
+				SpellInstance spell = new SpellInstance(currentSpell, (playerIn.getAttributeValue(CAttributes.MAGIC_STRENGTH)+addStrength)*multiplier, raytraceresult.getLocation(), playerIn.getUsedItemHand(), playerIn.getUUID());
 				if(spell.executeSpell(playerIn)) {
 					if (worldIn.isClientSide) SpellUtil.addEffects(playerIn, currentSpell);
 					SpellUtil.spellItemEffects(playerIn, itemstack, currentSpell);
@@ -161,7 +162,8 @@ public abstract class AbstractMagicCastingItem extends Item implements Vanishabl
 				currentSpell.setRayTraceResult(raytraceresult);
 				double addStrength = (double)CombatEntityStats.getSpellStats(playerIn, currentSpell).getTimesCast()/100000.0d;
 				if (!Config.MAGIC_COMMON.enableSpellTraining.get()) addStrength = 0.0d;
-				SpellInstance spell = new SpellInstance(currentSpell, playerIn.getAttributeValue(CAttributes.MAGIC_STRENGTH)+addStrength, raytraceresult.getLocation(), playerIn.getUsedItemHand(), playerIn.getUUID());
+				double multiplier = currentSpell.getCategory().getAttachedAttribute() == null ? 0 : playerIn.getAttributeValue(currentSpell.getCategory().getAttachedAttribute());
+				SpellInstance spell = new SpellInstance(currentSpell, (playerIn.getAttributeValue(CAttributes.MAGIC_STRENGTH)+addStrength)*multiplier, raytraceresult.getLocation(), playerIn.getUsedItemHand(), playerIn.getUUID());
 				if(spell.executeSpell(playerIn)) {
 					if (worldIn.isClientSide) SpellUtil.addEffects(playerIn, currentSpell);
 					SpellUtil.spellItemEffects(playerIn, stack, currentSpell);

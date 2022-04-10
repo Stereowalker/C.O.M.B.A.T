@@ -1,8 +1,12 @@
 package com.stereowalker.combat.world.item;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.Lists;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellInstance;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
@@ -36,7 +40,13 @@ public class ResearchScrollItem extends Item {
 				Spell spell;
 				itemStack.shrink(1);
 				if (Config.MAGIC_COMMON.toggle_affinities.get()) {
-					spell = SpellUtil.getWeightedRandomSpell(rand, CombatEntityStats.getElementalAffinity(playerIn), CombatEntityStats.getSubElementalAffinity1(playerIn), CombatEntityStats.getSubElementalAffinity2(playerIn), CombatEntityStats.getPrimevalAffinity(playerIn));
+					
+					List<SpellCategory> cats = new ArrayList<SpellCategory>();
+					cats.add(CombatEntityStats.getPrimevalAffinity(playerIn));
+					cats.add(SpellCategory.getStrongestElementalAffinity(playerIn));
+					cats.addAll(Lists.newArrayList(SpellCategory.getNextStrongestElementalAffinities(playerIn)));
+					
+					spell = SpellUtil.getWeightedRandomSpell(rand, cats.toArray(new SpellCategory[0]));
 				} else {
 					spell = SpellUtil.getWeightedRandomSpell(rand);
 				}

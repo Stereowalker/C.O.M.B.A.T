@@ -2,7 +2,6 @@ package com.stereowalker.combat.world.item;
 
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.client.gui.screens.MageSelectionScreen;
-import com.stereowalker.combat.world.entity.CombatEntityStats;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +20,7 @@ public class MagicOrbItem extends Item {
 	
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		if (worldIn.isClientSide && CombatEntityStats.getElementalAffinity(playerIn) == SpellCategory.NONE) {
+		if (worldIn.isClientSide && SpellCategory.getStrongestElementalAffinity(playerIn) == SpellCategory.NONE) {
 			openMageScreen();
 		}
 		return super.use(worldIn, playerIn, handIn);

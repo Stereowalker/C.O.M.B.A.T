@@ -293,10 +293,8 @@ public abstract class AbstractMagicProjectile extends Projectile {
 	protected void onHit(HitResult raytraceResultIn) {
 		HitResult.Type raytraceresult$type = raytraceResultIn.getType();
 		if (raytraceresult$type == HitResult.Type.ENTITY) {
-			System.out.println("ENTITID");
 			this.onEntityHit((EntityHitResult)raytraceResultIn);
 		} else if (raytraceresult$type == HitResult.Type.BLOCK) {
-			System.out.println("BLOCK");
 			BlockHitResult blockraytraceresult = (BlockHitResult)raytraceResultIn;
 			BlockState blockstate = this.level.getBlockState(blockraytraceresult.getBlockPos());
 			this.inBlockState = blockstate;

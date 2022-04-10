@@ -318,10 +318,7 @@ public class GameEvents {
 			CombatEntityStats.setMana(event.getPlayer(), CombatEntityStats.getMana(event.getOriginal()));
 		}
 		CombatEntityStats.setManaColor(event.getPlayer() , CombatEntityStats.getManaColor(event.getOriginal()));
-		CombatEntityStats.setSubElementalAffinity1(event.getPlayer(), CombatEntityStats.getSubElementalAffinity1(event.getOriginal()));
-		CombatEntityStats.setSubElementalAffinity2(event.getPlayer(), CombatEntityStats.getSubElementalAffinity2(event.getOriginal()));
 		CombatEntityStats.setPrimevalAffinity(event.getPlayer(), CombatEntityStats.getPrimevalAffinity(event.getOriginal()));
-		CombatEntityStats.setElementalAffinity(event.getPlayer(), CombatEntityStats.getElementalAffinity(event.getOriginal()));
 		CombatEntityStats.setAllies(event.getPlayer(), CombatEntityStats.getAllies(event.getOriginal()));
 		CombatEntityStats.setStoredXP(event.getPlayer(), CombatEntityStats.getStoredXP(event.getOriginal()));
 	}
@@ -452,9 +449,9 @@ public class GameEvents {
 	public static void entityJoinWorld(EntityJoinWorldEvent event) {
 		if (event.getEntity() instanceof ServerPlayer) {
 			ServerPlayer player = (ServerPlayer)event.getEntity();
-			if (CombatEntityStats.getElementalAffinity(player) == SpellCategory.NONE) {
+//			if (CombatEntityStats.getElementalAffinity(player) == SpellCategory.NONE) {
 				//				player.sendMessage(new StringTextComponent("Use /affinitiy to set your Elemental, Life and Special Affinity. You won't be able to cast magic until you do"), Util.DUMMY_UUID);
-			}
+//			}
 		}
 	}
 }

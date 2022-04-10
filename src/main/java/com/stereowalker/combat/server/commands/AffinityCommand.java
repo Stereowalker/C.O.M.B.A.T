@@ -47,10 +47,13 @@ public class AffinityCommand {
 	private static int setAffinity(CommandSourceStack source, SpellCategory.ClassType type, ServerPlayer caster, SpellCategory affinity) throws CommandSyntaxException {
 		int i = 0;
 		if (type.equals(SpellCategory.ClassType.ELEMENTAL)) {
-			if (CombatEntityStats.getElementalAffinity(caster) == SpellCategory.NONE) {
-				CombatEntityStats.setElementalAffinity(caster, affinity);
-				i++;
+			for (SpellCategory cats : SpellCategory.values()) {
+				if (cats.getAttachedAttribute() != null) {
+					caster.getAttribute(cats.getAttachedAttribute()).setBaseValue(0.1d);
+				}
 			}
+			SpellCategory.setElementalAffinity(caster, affinity);
+			i++;
 		}
 		if (type.equals(SpellCategory.ClassType.PRIMEVAL)) {
 			if (CombatEntityStats.getPrimevalAffinity(caster) == SpellCategory.NONE) {

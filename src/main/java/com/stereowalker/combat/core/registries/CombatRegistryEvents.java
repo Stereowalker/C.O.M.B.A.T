@@ -130,6 +130,11 @@ public class CombatRegistryEvents
 		event.add(EntityType.PLAYER, CAttributes.MANA_REGENERATION);
 		event.add(EntityType.PLAYER, CAttributes.MAX_MANA);
 		event.add(EntityType.PLAYER, CAttributes.ATTACK_REACH);
+		event.add(EntityType.PLAYER, CAttributes.EARTH_AFFINITY);
+		event.add(EntityType.PLAYER, CAttributes.FIRE_AFFINITY);
+		event.add(EntityType.PLAYER, CAttributes.LIGHTNING_AFFINITY);
+		event.add(EntityType.PLAYER, CAttributes.WATER_AFFINITY);
+		event.add(EntityType.PLAYER, CAttributes.WIND_AFFINITY);
 	}
 
 	@SubscribeEvent

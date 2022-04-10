@@ -50,11 +50,7 @@ public class CombatEntityStats {
 	public static String limiterId = "Limiter";
 	public static String vampireId = "IsVampire";
 	public static String manabornBonusId = "IsManaborn";
-	public static String elementalAffinityID = "ElementalAffinity";
-	public static String subElementalAffinity1ID = "SubElementalAffinity1";
-	public static String subElementalAffinity2ID = "SUbElementalAffinity2";
-	public static String lifeAffinityID = "LifeAffinity";
-	public static String specialAffinityID = "SpecialAffinity";
+	public static String primevalAffinityID = "PrimevalAffinity";
 	public static String etherionTowerPositionID = "ETowPos";
 
 	public static String abominationID = "Abominaion";
@@ -192,41 +188,11 @@ public class CombatEntityStats {
 		return AbominationType.NORMAL;
 	}
 
-	public static SpellCategory getElementalAffinity(LivingEntity entity) {
-		if(entity != null) {
-			CompoundTag compound = getModNBT(entity);
-			if (compound != null && compound.contains(elementalAffinityID)) {
-				return SpellCategory.byId(compound.getInt(elementalAffinityID));
-			}
-		}
-		return SpellCategory.NONE;
-	}
-
-	public static SpellCategory getSubElementalAffinity1(LivingEntity entity) {
-		if(entity != null) {
-			CompoundTag compound = getModNBT(entity);
-			if (compound != null && compound.contains(subElementalAffinity1ID)) {
-				return SpellCategory.byId(compound.getInt(subElementalAffinity1ID));
-			}
-		}
-		return SpellCategory.NONE;
-	}
-
-	public static SpellCategory getSubElementalAffinity2(LivingEntity entity) {
-		if(entity != null) {
-			CompoundTag compound = getModNBT(entity);
-			if (compound != null && compound.contains(subElementalAffinity2ID)) {
-				return SpellCategory.byId(compound.getInt(subElementalAffinity2ID));
-			}
-		}
-		return SpellCategory.NONE;
-	}
-
 	public static SpellCategory getPrimevalAffinity(LivingEntity entity) {
 		if(entity != null) {
 			CompoundTag compound = getModNBT(entity);
-			if (compound != null && compound.contains(specialAffinityID)) {
-				return SpellCategory.byId(compound.getInt(specialAffinityID));
+			if (compound != null && compound.contains(primevalAffinityID)) {
+				return SpellCategory.byId(compound.getInt(primevalAffinityID));
 			}
 		}
 		return SpellCategory.NONE;
@@ -360,24 +326,9 @@ public class CombatEntityStats {
 		compound.putInt(abominationID, category.ordinal());
 	}
 
-	public static void setElementalAffinity(LivingEntity entity, SpellCategory category) {
-		CompoundTag compound = getModNBT(entity);
-		if (category.getClassType() == ClassType.ELEMENTAL || category == SpellCategory.NONE) compound.putInt(elementalAffinityID, category.ordinal());
-	}
-
-	public static void setSubElementalAffinity1(LivingEntity entity, SpellCategory category) {
-		CompoundTag compound = getModNBT(entity);
-		if (category.getClassType() == ClassType.ELEMENTAL || category == SpellCategory.NONE) compound.putInt(subElementalAffinity1ID, category.ordinal());
-	}
-
-	public static void setSubElementalAffinity2(LivingEntity entity, SpellCategory category) {
-		CompoundTag compound = getModNBT(entity);
-		if (category.getClassType() == ClassType.ELEMENTAL || category == SpellCategory.NONE) compound.putInt(subElementalAffinity2ID, category.ordinal());
-	}
-
 	public static void setPrimevalAffinity(LivingEntity entity, SpellCategory category) {
 		CompoundTag compound = getModNBT(entity);
-		if (category.getClassType() == ClassType.PRIMEVAL || category == SpellCategory.NONE) compound.putInt(specialAffinityID, category.ordinal());
+		if (category.getClassType() == ClassType.PRIMEVAL || category == SpellCategory.NONE) compound.putInt(primevalAffinityID, category.ordinal());
 	}
 
 	public static void setAllies(LivingEntity entity, List<Player> allies) {
@@ -501,27 +452,6 @@ public class CombatEntityStats {
 				}
 				if (!compound.contains(acrotlestPortalCounterID)) {
 					setAcrotlestPortalCounter(player, 0);
-				}
-				Random random = new Random();
-				if (compound.contains(elementalAffinityID)) {
-					if (getElementalAffinity(player) != SpellCategory.NONE) {
-						int elemental = 0;
-						for (SpellCategory cat : SpellCategory.values()) {
-							if (getElementalAffinity(player) == cat) break;
-							elemental++;
-						}
-						elemental-=1;
-						if ((!compound.contains(subElementalAffinity1ID) && !compound.contains(subElementalAffinity2ID)) || (getSubElementalAffinity1(player) == SpellCategory.NONE && getSubElementalAffinity2(player) == SpellCategory.NONE)) {
-							int a = random.nextInt(5);
-							while (a == elemental) a = random.nextInt(5);
-							compound.putInt(subElementalAffinity1ID, a+1);
-							Combat.debug("Set " + name + "'s 1st Sub Elemental Affinity to " + getSubElementalAffinity1(player));
-							int b = random.nextInt(5);
-							while (b == a || b == elemental) b = random.nextInt(5);
-							compound.putInt(subElementalAffinity2ID, b+1);
-							Combat.debug("Set " + name + "'s 2nd Elemental Affinity to " + getSubElementalAffinity2(player));
-						}
-					}
 				}
 			}
 		}

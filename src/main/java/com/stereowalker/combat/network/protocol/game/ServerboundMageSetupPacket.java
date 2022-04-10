@@ -44,7 +44,7 @@ public class ServerboundMageSetupPacket extends CUnionPacket {
 
 	@Override
 	public boolean handleOnServer(ServerPlayer sender) {
-		CombatEntityStats.setElementalAffinity(sender, elemental);
+		SpellCategory.setElementalAffinity(sender, elemental);
 		CombatEntityStats.setPrimevalAffinity(sender, primeval);
 		CombatEntityStats.setManaColor(sender, colorR << 16 | colorG << 8 | colorB);
 		return true;
