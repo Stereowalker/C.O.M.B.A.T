@@ -7,8 +7,10 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 import com.stereowalker.combat.Combat;
+import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory.ClassType;
 import com.stereowalker.combat.event.AbominationEvents;
 import com.stereowalker.combat.event.LegendaryWeaponEvents;
 import com.stereowalker.combat.event.MagicEvents;
@@ -365,8 +367,15 @@ public class GameEvents {
 		if (event.getEntityLiving() instanceof Monster) {
 			AbominationEvents.abominationDeath(event.getSource(), (Monster)event.getEntityLiving());
 		}
+		
 		Random rand = new Random();
-		ItemStack itemIn = new ItemStack(CItems.SCROLL);
+		Spell spell = SpellUtil.getWeightedRandomSpell(rand);
+		ItemStack itemIn;
+		if (spell.getCategory().getClassType().equals(ClassType.ELEMENTAL)) {
+			itemIn = new ItemStack(CItems.SCROLL);
+		} else {
+			itemIn = new ItemStack(CItems.ANCIENT_SCROLL);
+		}
 		ItemStack itemIn1 = new ItemStack(CItems.EMPTY_SOUL_GEM);
 		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && (event.getEntityLiving() instanceof LivingEntity)) {
 			if(event.getSource().getEntity() instanceof Player) {

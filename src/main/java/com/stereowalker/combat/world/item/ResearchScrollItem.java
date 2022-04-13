@@ -7,6 +7,7 @@ import java.util.Random;
 import com.google.common.collect.Lists;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory.ClassType;
 import com.stereowalker.combat.api.world.spellcraft.SpellInstance;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
@@ -32,7 +33,6 @@ public class ResearchScrollItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		if (!worldIn.isClientSide) {
-			ItemStack itemIn = new ItemStack(CItems.SCROLL);
 			ItemStack itemStack = playerIn.getItemInHand(handIn);
 			Random rand = new Random();
 			int chance = rand.nextInt(3);
@@ -49,6 +49,12 @@ public class ResearchScrollItem extends Item {
 					spell = SpellUtil.getWeightedRandomSpell(rand, cats.toArray(new SpellCategory[0]));
 				} else {
 					spell = SpellUtil.getWeightedRandomSpell(rand);
+				}
+				ItemStack itemIn;
+				if (spell.getCategory().getClassType().equals(ClassType.ELEMENTAL)) {
+					itemIn = new ItemStack(CItems.SCROLL);
+				} else {
+					itemIn = new ItemStack(CItems.ANCIENT_SCROLL);
 				}
 				if (chance == 0) {
 					if(!playerIn.getInventory().add(SpellUtil.addSpellToStack(itemIn, spell))) {
