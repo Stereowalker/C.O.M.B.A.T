@@ -109,7 +109,7 @@ public enum SpellCategory {
 		}
 		return NONE;
 	}
-	
+
 	public static SpellCategory[] getNextStrongestElementalAffinities(LivingEntity entity) {
 		SpellCategory[] cats = new SpellCategory[3];
 		boolean skip = false;
@@ -128,12 +128,15 @@ public enum SpellCategory {
 	}
 
 	public static boolean canAccessElementalAffinity(Player player, SpellCategory category) {
-		return player.getAttributeValue(category.getAttachedAttribute()) > 0.0f;
+		if (category.getClassType() == ClassType.ELEMENTAL)
+			return player.getAttributeValue(category.getAttachedAttribute()) > 0.0f;
+			else
+				return false;
 	}
-	
+
 	public static void setElementalAffinity(Player player, SpellCategory category) {
 		player.getAttribute(category.getAttachedAttribute()).setBaseValue(1.0f);
-		
+
 		int elemental = 0;
 		for (SpellCategory cat : SpellCategory.values()) {
 			if (category == cat) break;
@@ -141,18 +144,14 @@ public enum SpellCategory {
 		}
 		elemental-=1;
 		Random random = new Random();
-//		if ((!compound.contains(subElementalAffinity1ID) && !compound.contains(subElementalAffinity2ID)) || (getSubElementalAffinity1(player) == SpellCategory.NONE && getSubElementalAffinity2(player) == SpellCategory.NONE)) {
 		int a = random.nextInt(5);
 		while (a == elemental) a = random.nextInt(5);
 		player.getAttribute(values()[a+1].getAttachedAttribute()).setBaseValue(0.5f);
-//		compound.putInt(subElementalAffinity1ID, a+1);
-//		Combat.debug("Set " + name + "'s 1st Sub Elemental Affinity to " + getSubElementalAffinity1(player));
+		//		Combat.debug("Set " + name + "'s 1st Sub Elemental Affinity to " + getSubElementalAffinity1(player));
 		int b = random.nextInt(5);
 		while (b == a || b == elemental) b = random.nextInt(5);
 		player.getAttribute(values()[b+1].getAttachedAttribute()).setBaseValue(0.5f);
-//		compound.putInt(subElementalAffinity2ID, b+1);
-//		Combat.debug("Set " + name + "'s 2nd Elemental Affinity to " + getSubElementalAffinity2(player));
-//		}
+		//		Combat.debug("Set " + name + "'s 2nd Elemental Affinity to " + getSubElementalAffinity2(player));
 	}
 
 	public float getrCOlor() {
