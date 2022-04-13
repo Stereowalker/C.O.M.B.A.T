@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "combat:item/scroll_roll",
+        "layer1": "combat:item/ancient_scroll_base"
+    }
+}

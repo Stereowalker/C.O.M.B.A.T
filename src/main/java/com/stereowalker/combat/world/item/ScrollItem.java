@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.world.spellcraft.SpellStats;
 import com.stereowalker.combat.world.spellcraft.Spells;
@@ -26,9 +27,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ScrollItem extends Item {
+	private final SpellCategory.ClassType type;
 
-	public ScrollItem(Properties properties) {
+	public ScrollItem(SpellCategory.ClassType type, Properties properties) {
 		super(properties);
+		this.type = type;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -47,7 +50,7 @@ public class ScrollItem extends Item {
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (this.allowdedIn(group)) {
 			for(Spell spell : CombatRegistries.SPELLS) {
-				if (spell != Spells.NONE) {
+				if (spell != Spells.NONE && spell.getCategory().getClassType() == type) {
 					items.add(SpellUtil.addSpellToStack(new ItemStack(this), spell));
 				}
 			}

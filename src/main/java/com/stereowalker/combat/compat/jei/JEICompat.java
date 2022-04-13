@@ -109,7 +109,7 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		registration.useNbtForSubtypes(CItems.DIAMOND_TIPPED_ARROW, CItems.OBSIDIAN_TIPPED_ARROW, CItems.IRON_TIPPED_ARROW, CItems.QUARTZ_TIPPED_ARROW, CItems.WOODEN_TIPPED_ARROW, CItems.GOLDEN_TIPPED_ARROW, CItems.SCROLL, CItems.SKILL_RUNESTONE);
+		registration.useNbtForSubtypes(CItems.DIAMOND_TIPPED_ARROW, CItems.OBSIDIAN_TIPPED_ARROW, CItems.IRON_TIPPED_ARROW, CItems.QUARTZ_TIPPED_ARROW, CItems.WOODEN_TIPPED_ARROW, CItems.GOLDEN_TIPPED_ARROW, CItems.SCROLL, CItems.ANCIENT_SCROLL, CItems.SKILL_RUNESTONE);
 	}
 	
 	@Override

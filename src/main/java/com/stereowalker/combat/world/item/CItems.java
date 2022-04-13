@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.Rank;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory.ClassType;
 import com.stereowalker.combat.sounds.CSoundEvents;
 import com.stereowalker.combat.world.level.block.CBlocks;
 import com.stereowalker.combat.world.level.material.CFluids;
@@ -222,7 +223,8 @@ public class CItems {
 	public static final Item MASTER_SHULKER_WAND = register("master_shulker_wand", new TieredWandItem(new Item.Properties().tab(CCreativeModeTab.MAGIC), Rank.MASTER, WandTiers.SHULKER));
 
 	public static final Item RESEARCH_SCROLL = register("research_scroll",new ResearchScrollItem( new Item.Properties().tab(CCreativeModeTab.MAGIC)));
-	public static final Item SCROLL = register("scroll",new ScrollItem( new Item.Properties().stacksTo(1).tab(CCreativeModeTab.MAGIC)));
+	public static final Item SCROLL = register("scroll",new ScrollItem(ClassType.ELEMENTAL, new Item.Properties().stacksTo(1).tab(CCreativeModeTab.MAGIC)));
+	public static final Item ANCIENT_SCROLL = register("ancient_scroll",new ScrollItem(ClassType.PRIMEVAL, new Item.Properties().stacksTo(1).tab(CCreativeModeTab.MAGIC)));
 	public static final Item GRIMOIRE = register("grimoire", new GrimoireItem(new Item.Properties().tab(CCreativeModeTab.MAGIC)));
 	public static final Item NECRONOMICON = register("necronomicon", new NecronomiconItem(new Item.Properties().tab(CCreativeModeTab.MAGIC)));
 	public static final Item TRIDOX = register("tridox", new Item(new Item.Properties().tab(CCreativeModeTab.MAGIC)));
