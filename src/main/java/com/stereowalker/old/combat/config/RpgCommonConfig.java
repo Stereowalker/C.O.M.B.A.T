@@ -33,8 +33,8 @@ public class RpgCommonConfig {
 			baseXpCost = UnionValues.IntValue.build(ConfigCreator.numberedValue("Leveling Stats", "Base Experience Cost", common, 7, 1, 1000, "The base amount of experience taken for each upgrade"));
 			xpCostStep = UnionValues.IntValue.build(ConfigCreator.numberedValue("Leveling Stats", "Experience Cost Step", common, 2, 1, 1000, "The amount of experience added to the base cost taken for each upgrade","This number is multiplied by the current level of the stat to determine the cost of the next upgrade"));
 
-			baseXpForLevelCost = UnionValues.IntValue.build(ConfigCreator.numberedValue("Leveling Stats", "Base Experience For Level Cost", common, 10, 1, 1000, "The base amount of experience taken for each upgrade"));
-			xpCostForLevelStep = UnionValues.IntValue.build(ConfigCreator.numberedValue("Leveling Stats", "Experience Cost For Level Step", common, 10, 1, 1000, "The amount of experience added to the base cost taken for each upgrade","This number is multiplied by the current level of the stat to determine the cost of the next upgrade"));
+			baseXpForLevelCost = UnionValues.IntValue.build(ConfigCreator.numberedValue("Leveling Stats", "Base Experience For Level Cost", common, 20, 1, 1000, "The base amount of experience taken for each upgrade"));
+			xpCostForLevelStep = UnionValues.IntValue.build(ConfigCreator.numberedValue("Leveling Stats", "Experience Cost For Level Step", common, 20, 1, 1000, "The amount of experience added to the base cost taken for each upgrade","This number is multiplied by the current level of the stat to determine the cost of the next upgrade"));
 
 			keepMobsAtLevelOne = UnionValues.BooleanValue.build(common
 					.comment("Should all mobs be kept at level one? Do you really want them to stay vanilla?")
