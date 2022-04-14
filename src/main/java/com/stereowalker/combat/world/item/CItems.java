@@ -29,6 +29,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SignItem;
@@ -223,8 +224,8 @@ public class CItems {
 	public static final Item MASTER_SHULKER_WAND = register("master_shulker_wand", new TieredWandItem(new Item.Properties().tab(CCreativeModeTab.MAGIC), Rank.MASTER, WandTiers.SHULKER));
 
 	public static final Item RESEARCH_SCROLL = register("research_scroll",new ResearchScrollItem( new Item.Properties().tab(CCreativeModeTab.MAGIC)));
-	public static final Item SCROLL = register("scroll",new ScrollItem(ClassType.ELEMENTAL, new Item.Properties().stacksTo(1).tab(CCreativeModeTab.MAGIC)));
-	public static final Item ANCIENT_SCROLL = register("ancient_scroll",new ScrollItem(ClassType.PRIMEVAL, new Item.Properties().stacksTo(1).tab(CCreativeModeTab.MAGIC)));
+	public static final Item SCROLL = register("scroll",new ScrollItem(ClassType.ELEMENTAL, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+	public static final Item ANCIENT_SCROLL = register("ancient_scroll",new ScrollItem(ClassType.PRIMEVAL, new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
 	public static final Item GRIMOIRE = register("grimoire", new GrimoireItem(new Item.Properties().tab(CCreativeModeTab.MAGIC)));
 	public static final Item NECRONOMICON = register("necronomicon", new NecronomiconItem(new Item.Properties().tab(CCreativeModeTab.MAGIC)));
 	public static final Item TRIDOX = register("tridox", new Item(new Item.Properties().tab(CCreativeModeTab.MAGIC)));

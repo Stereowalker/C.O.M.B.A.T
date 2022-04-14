@@ -48,7 +48,7 @@ public class ScrollItem extends Item {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (this.allowdedIn(group)) {
+		if (group == CCreativeModeTab.MAGIC) {
 			for(Spell spell : CombatRegistries.SPELLS) {
 				if (spell != Spells.NONE && spell.getCategory().getClassType() == type) {
 					items.add(SpellUtil.addSpellToStack(new ItemStack(this), spell));

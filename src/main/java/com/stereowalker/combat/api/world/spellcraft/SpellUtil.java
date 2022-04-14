@@ -189,37 +189,18 @@ public class SpellUtil {
 	}
 
 	/**
-	 * @param categories the filter to apply
-	 * @return A weighted random {@link Spell} based on the applied filter
+	 * @param categories The {@link SpellCategory} to filter for
+	 * @param rand The random function
+	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
 	public static Spell getWeightedRandomSpell(Random rand, SpellCategory... categories) {
-		List<Spell> elegibleSpells = new ArrayList<Spell>();
-		for (Spell spell : CombatRegistries.SPELLS) {
-			for (SpellCategory category : categories) {
-				if (spell.getCategory() == category) {
-					if (!elegibleSpells.contains(spell))
-						elegibleSpells.add(spell);
-				}
-			}
-		}
-		int totalWeight = 0;
-		for (Spell spell : elegibleSpells) {
-			totalWeight += spell.getWeight();
-		}
-		int randomSpell = rand.nextInt(totalWeight);
-		int i = 0;
-		for (Spell spell : elegibleSpells) {
-			i += spell.getWeight();
-			if (i >= randomSpell) {
-				return spell;
-			}
-		}
-		return Spells.NONE;
+		return getWeightedRandomSpell(rand, null, categories, null);
 	}
 
 	/**
 	 * If any of the filters are null or empty, it will skip that particular one
-	 * @param castTypes the CastTypes to check for
+	 * @param castTypes The {@link CastType} to filter for
+	 * @param rand The random function
 	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
 	public static Spell getWeightedRandomSpell(Random rand, CastType... castTypes) {
@@ -228,8 +209,9 @@ public class SpellUtil {
 	
 	/**
 	 * If any of the filters are null or empty, it will skip that particular one
-	 * @param castTypes the CastTypes to check for
-	 * @param categories the filter to apply if null or empty, it will ignore the filter
+	 * @param castTypes The {@link CastType} to filter for
+	 * @param categories The {@link SpellCategory} to filter for
+	 * @param rand The random function
 	 * @param ranks the filter to apply if null or empty, it will ignore the filter
 	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
@@ -242,8 +224,9 @@ public class SpellUtil {
 
 	/**
 	 * If any of the filters are null or empty, it will skip that particular one
-	 * @param castTypes the CastTypes to check for
-	 * @param categories the filter to apply if null or empty, it will ignore the filter
+	 * @param castTypes The {@link CastType} to filter for
+	 * @param categories The {@link SpellCategory} to filter for
+	 * @param rand The random function
 	 * @param ranks the filter to apply if null or empty, it will ignore the filter
 	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
