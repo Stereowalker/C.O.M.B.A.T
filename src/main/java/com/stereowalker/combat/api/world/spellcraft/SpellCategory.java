@@ -1,5 +1,7 @@
 package com.stereowalker.combat.api.world.spellcraft;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -78,6 +80,16 @@ public enum SpellCategory {
 
 	public ClassType getClassType() {
 		return classType;
+	}
+	
+	public static SpellCategory[] values(ClassType classType) {
+		List<SpellCategory> list = new ArrayList<SpellCategory>();
+		for (SpellCategory category : values()) {
+			if (category.getClassType() == classType) {
+				list.add(category);
+			}
+		}
+		return list.toArray(new SpellCategory[0]);
 	}
 
 	/**

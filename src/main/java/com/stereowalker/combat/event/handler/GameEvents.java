@@ -369,13 +369,7 @@ public class GameEvents {
 		}
 		
 		Random rand = new Random();
-		Spell spell = SpellUtil.getWeightedRandomSpell(rand);
-		ItemStack itemIn;
-		if (spell.getCategory().getClassType().equals(ClassType.ELEMENTAL)) {
-			itemIn = new ItemStack(CItems.SCROLL);
-		} else {
-			itemIn = new ItemStack(CItems.ANCIENT_SCROLL);
-		}
+		ItemStack itemIn = new ItemStack(CItems.SCROLL);
 		ItemStack itemIn1 = new ItemStack(CItems.EMPTY_SOUL_GEM);
 		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && (event.getEntityLiving() instanceof LivingEntity)) {
 			if(event.getSource().getEntity() instanceof Player) {
@@ -394,13 +388,15 @@ public class GameEvents {
 			}
 		}
 		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && event.getEntityLiving() instanceof Monster) {
+			Spell spell = SpellUtil.getWeightedRandomSpell(rand, SpellCategory.values(ClassType.ELEMENTAL));
 			if(event.getSource().getEntity() instanceof Player) {
 				if(UnionMathHelper.probabilityCheck(Config.MAGIC_COMMON.scrollDropChanceFromKill.get())) {
-					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, SpellUtil.getWeightedRandomSpell(rand)));
+					System.out.println("Should Drop Scroll");
+					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, spell));
 				}
 			} else {
 				if(UnionMathHelper.probabilityCheck(Config.MAGIC_COMMON.scrollDropChance.get())) {
-					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, SpellUtil.getWeightedRandomSpell(rand)));
+					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, spell));
 				}
 			}
 		}

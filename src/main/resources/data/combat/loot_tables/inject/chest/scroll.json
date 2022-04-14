@@ -9,33 +9,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 32,
-          "functions": [
-            {
-              "function": "combat:append_random_spell",
-				"ranks": [
-					"basic"
-				],
-				"categories": [
-					"restoration",
-					"conjuration",
-					"nature",
-					"space",
-					"enhancement",
-					"blood",
-					"holy"
-				]
-            }
-          ],
-          "name": "combat:ancient_scroll"
-        },
-        {
-          "type": "minecraft:item",
           "weight": 16,
           "functions": [
             {
               "function": "combat:append_random_spell",
 				"ranks": [
+					"basic",
 					"novice"
 				],
 				"categories": [
@@ -102,28 +81,7 @@
             {
               "function": "combat:append_random_spell",
 				"ranks": [
-					"master"
-				],
-				"categories": [
-					"restoration",
-					"conjuration",
-					"nature",
-					"space",
-					"enhancement",
-					"blood",
-					"holy"
-				]
-            }
-          ],
-          "name": "combat:ancient_scroll"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "functions": [
-            {
-              "function": "combat:append_random_spell",
-				"ranks": [
+					"master",
 					"god"
 				],
 				"categories": [

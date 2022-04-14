@@ -218,32 +218,12 @@ public class SpellUtil {
 	}
 
 	/**
-	 * @param castTypes the filter to apply
-	 * @return A weighted random {@link Spell} based on the applied filter
+	 * If any of the filters are null or empty, it will skip that particular one
+	 * @param castTypes the CastTypes to check for
+	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
 	public static Spell getWeightedRandomSpell(Random rand, CastType... castTypes) {
-		List<Spell> elegibleSpells = new ArrayList<Spell>();
-		for (Spell spell : CombatRegistries.SPELLS) {
-			for (CastType castType : castTypes) {
-				if (spell.getCastType() == castType) {
-					if (!elegibleSpells.contains(spell))
-						elegibleSpells.add(spell);
-				}
-			}
-		}
-		int totalWeight = 0;
-		for (Spell spell : elegibleSpells) {
-			totalWeight += spell.getWeight();
-		}
-		int randomSpell = rand.nextInt(totalWeight);
-		int i = 0;
-		for (Spell spell : elegibleSpells) {
-			i += spell.getWeight();
-			if (i >= randomSpell) {
-				return spell;
-			}
-		}
-		return Spells.NONE;
+		return getWeightedRandomSpell(rand, castTypes, null, null);
 	}
 	
 	/**

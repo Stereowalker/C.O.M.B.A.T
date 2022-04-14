@@ -37,7 +37,7 @@ public class ResearchScrollItem extends Item {
 			Random rand = new Random();
 			int chance = rand.nextInt(3);
 			if (CombatEntityStats.addMana(playerIn, -2.0F)) {
-				Spell spell;
+				Spell spell = SpellUtil.getWeightedRandomSpell(rand, SpellCategory.values(ClassType.ELEMENTAL));
 				itemStack.shrink(1);
 				if (Config.MAGIC_COMMON.toggle_affinities.get()) {
 					
@@ -50,15 +50,10 @@ public class ResearchScrollItem extends Item {
 				} else {
 					spell = SpellUtil.getWeightedRandomSpell(rand);
 				}
-				ItemStack itemIn;
-				if (spell.getCategory().getClassType().equals(ClassType.ELEMENTAL)) {
-					itemIn = new ItemStack(CItems.SCROLL);
-				} else {
-					itemIn = new ItemStack(CItems.ANCIENT_SCROLL);
-				}
+				ItemStack itemIn = SpellUtil.addSpellToStack(new ItemStack(CItems.SCROLL), spell);
 				if (chance == 0) {
-					if(!playerIn.getInventory().add(SpellUtil.addSpellToStack(itemIn, spell))) {
-						worldIn.addFreshEntity(new ItemEntity(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SpellUtil.addSpellToStack(itemIn, spell)));
+					if(!playerIn.getInventory().add(itemIn)) {
+						worldIn.addFreshEntity(new ItemEntity(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), itemIn));
 					}
 				} else if (chance == 1){
 					worldIn.explode(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), 1, Explosion.BlockInteraction.NONE);
