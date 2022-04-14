@@ -6,6 +6,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.api.world.spellcraft.Spell.CastType;
@@ -75,7 +76,7 @@ public class SpellUtil {
 		}
 		return itemIn;
 	}
-	
+
 	public static boolean itemHasSpell(ItemStack stack) {
 		return getSpellFromItem(stack) != Spells.NONE;
 	}
@@ -244,6 +245,53 @@ public class SpellUtil {
 		}
 		return Spells.NONE;
 	}
+	
+	/**
+	 * If any of the filters are null or empty, it will skip that particular one
+	 * @param castTypes the CastTypes to check for
+	 * @param categories the filter to apply if null or empty, it will ignore the filter
+	 * @param ranks the filter to apply if null or empty, it will ignore the filter
+	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
+	 */
+	public static Spell getWeightedRandomSpell(Random rand, CastType[] castTypes, SpellCategory[] categories, Rank[] ranks) {
+		List<CastType> types = castTypes == null ? null : Lists.newArrayList(castTypes);
+		List<SpellCategory> categ = categories == null ? null : Lists.newArrayList(categories);
+		List<Rank> rank = ranks == null ? null : Lists.newArrayList(ranks);
+		return getWeightedRandomSpell(rand, types, categ, rank);
+	}
+
+	/**
+	 * If any of the filters are null or empty, it will skip that particular one
+	 * @param castTypes the CastTypes to check for
+	 * @param categories the filter to apply if null or empty, it will ignore the filter
+	 * @param ranks the filter to apply if null or empty, it will ignore the filter
+	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
+	 */
+	public static Spell getWeightedRandomSpell(Random rand, List<CastType> castTypes, List<SpellCategory> categories, List<Rank> ranks) {
+		List<Spell> elegibleSpells = new ArrayList<Spell>();
+		for (Spell spell : CombatRegistries.SPELLS) {
+			if (!elegibleSpells.contains(spell) && (
+					(ranks == null || ranks.isEmpty() || ranks.contains(spell.getRank())) && 
+					(castTypes == null || castTypes.isEmpty() || castTypes.contains(spell.getCastType())) && 
+					(categories == null || categories.isEmpty() || categories.contains(spell.getCategory()))
+							)) {
+				elegibleSpells.add(spell);
+			}
+		}
+		int totalWeight = 0;
+		for (Spell spell : elegibleSpells) {
+			totalWeight += spell.getWeight();
+		}
+		int randomSpell = rand.nextInt(totalWeight);
+		int i = 0;
+		for (Spell spell : elegibleSpells) {
+			i += spell.getWeight();
+			if (i >= randomSpell) {
+				return spell;
+			}
+		}
+		return Spells.NONE;
+	}
 
 	public static boolean canItemCastSpell(ItemStack stack, Spell spell) {
 		if(stack.getItem() instanceof AbstractMagicCastingItem) {
@@ -323,7 +371,7 @@ public class SpellUtil {
 		AbstractMagicCastingItem stackItem = (AbstractMagicCastingItem) stack.getItem();
 		boolean sendStatus = true;
 		if(world.isClientSide) {
-//			Blocks.SNOW
+			//			Blocks.SNOW
 			//TODO: Remove Cooldown
 			if (AbstractSpellBookItem.getMainSpellBook(player).isEmpty()) {
 				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.no_book"), sendStatus);
@@ -346,25 +394,25 @@ public class SpellUtil {
 			} else mc.player.displayClientMessage(new TranslatableComponent("spell.fail.unknown"),  sendStatus);
 		}
 	}
-	
+
 	//TODO: Use UnionLib Articulated component
 	public static Component articulatedComponent(Component component, boolean iaArticleCapital, boolean shouldArticleUseComponentStyle) {
 		MutableComponent comp;
-		
+
 		if (iaArticleCapital) {
 			comp = new TextComponent(TextHelper.isFirstLeterVowel(component) ? "An " : "A ");
 		}
 		else {
 			comp = new TextComponent(TextHelper.isFirstLeterVowel(component) ? "an " : "a ");
 		}
-		
+
 		if (shouldArticleUseComponentStyle && component.getStyle() != null) {
 			comp = (comp.withStyle(component.getStyle())).append(component);
 		}
 		else {
 			comp = comp.append(component);
 		}
-		
+
 		return comp;
 	}
 
@@ -432,10 +480,10 @@ public class SpellUtil {
 		setIce(target, (int) attackDamage);
 		target.hurt(CDamageSource.causeIceDamage(attacker), attackDamage);
 	}
-	
+
 	public static void setIce(Entity entity, int seconds) {
 		if (entity instanceof LivingEntity)
-		((LivingEntity)entity).addEffect(new MobEffectInstance(CMobEffects.FROSTBITE, seconds * 20, 1, false, false));
+			((LivingEntity)entity).addEffect(new MobEffectInstance(CMobEffects.FROSTBITE, seconds * 20, 1, false, false));
 	}
 
 	public static void waterAttack(LivingEntity target, LivingEntity attacker, float attackDamage) {

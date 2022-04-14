@@ -130,7 +130,7 @@ public enum SpellCategory {
 	public static boolean canAccessElementalAffinity(Player player, SpellCategory category) {
 		if (category.getClassType() == ClassType.ELEMENTAL)
 			return player.getAttributeValue(category.getAttachedAttribute()) > 0.0f;
-			else
+						else
 				return false;
 	}
 

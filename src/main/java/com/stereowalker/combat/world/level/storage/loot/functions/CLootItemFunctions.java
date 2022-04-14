@@ -15,7 +15,7 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 public class CLootItemFunctions {
 	private static List<Pair<String,LootItemFunctionType>> LOOT_FUNCTION_TYPES = new ArrayList<Pair<String,LootItemFunctionType>>();
 	
-	public static final LootItemFunctionType APPEND_RANDOM_SPELL_WITH_RANK = register("append_random_spell_with_rank", new AppendRandomSpellFunction.Serializer());
+	public static final LootItemFunctionType APPEND_RANDOM_SPELL = register("append_random_spell", new AppendRandomSpellFunction.Serializer());
 
 	private static LootItemFunctionType register(String key, Serializer<? extends LootItemFunction> function) {
 		LootItemFunctionType loot = new LootItemFunctionType(function);

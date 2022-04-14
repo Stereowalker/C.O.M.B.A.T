@@ -12,66 +12,132 @@
           "weight": 32,
           "functions": [
             {
-              "function": "combat:append_random_spell_with_rank",
-              "rank": "basic"
+              "function": "combat:append_random_spell",
+				"ranks": [
+					"basic"
+				],
+				"categories": [
+					"restoration",
+					"conjuration",
+					"nature",
+					"space",
+					"enhancement",
+					"blood",
+					"holy"
+				]
             }
           ],
-          "name": "combat:scroll"
+          "name": "combat:ancient_scroll"
         },
         {
           "type": "minecraft:item",
           "weight": 16,
           "functions": [
             {
-              "function": "combat:append_random_spell_with_rank",
-              "rank": "novice"
+              "function": "combat:append_random_spell",
+				"ranks": [
+					"novice"
+				],
+				"categories": [
+					"restoration",
+					"conjuration",
+					"nature",
+					"space",
+					"enhancement",
+					"blood",
+					"holy"
+				]
             }
           ],
-          "name": "combat:scroll"
+          "name": "combat:ancient_scroll"
         },
         {
           "type": "minecraft:item",
           "weight": 8,
           "functions": [
             {
-              "function": "combat:append_random_spell_with_rank",
-              "rank": "apprentice"
+              "function": "combat:append_random_spell",
+				"ranks": [
+					"apprentice"
+				],
+				"categories": [
+					"restoration",
+					"conjuration",
+					"nature",
+					"space",
+					"enhancement",
+					"blood",
+					"holy"
+				]
             }
           ],
-          "name": "combat:scroll"
+          "name": "combat:ancient_scroll"
         },
         {
           "type": "minecraft:item",
           "weight": 4,
           "functions": [
             {
-              "function": "combat:append_random_spell_with_rank",
-              "rank": "advanced"
+              "function": "combat:append_random_spell",
+				"ranks": [
+					"advanced"
+				],
+				"categories": [
+					"restoration",
+					"conjuration",
+					"nature",
+					"space",
+					"enhancement",
+					"blood",
+					"holy"
+				]
             }
           ],
-          "name": "combat:scroll"
+          "name": "combat:ancient_scroll"
         },
         {
           "type": "minecraft:item",
           "weight": 2,
           "functions": [
             {
-              "function": "combat:append_random_spell_with_rank",
-              "rank": "master"
+              "function": "combat:append_random_spell",
+				"ranks": [
+					"master"
+				],
+				"categories": [
+					"restoration",
+					"conjuration",
+					"nature",
+					"space",
+					"enhancement",
+					"blood",
+					"holy"
+				]
             }
           ],
-          "name": "combat:scroll"
+          "name": "combat:ancient_scroll"
         },
         {
           "type": "minecraft:item",
           "weight": 1,
           "functions": [
             {
-              "function": "combat:append_random_spell_with_rank",
-              "rank": "god"
+              "function": "combat:append_random_spell",
+				"ranks": [
+					"god"
+				],
+				"categories": [
+					"restoration",
+					"conjuration",
+					"nature",
+					"space",
+					"enhancement",
+					"blood",
+					"holy"
+				]
             }
           ],
-          "name": "combat:scroll"
+          "name": "combat:ancient_scroll"
         }
       ]
     }
