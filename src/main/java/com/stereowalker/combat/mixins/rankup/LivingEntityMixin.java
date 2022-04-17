@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.event.AbominationEvents;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 
 import net.minecraft.server.level.ServerLevel;
@@ -47,7 +47,7 @@ public abstract class LivingEntityMixin extends Entity {
 			PlayerAttributeLevels.setExperience(lastHurtByPlayer, PlayerAttributeLevels.getExperience(lastHurtByPlayer)+amountModified);
 		}
 		//Make players take all the experence from players that theyve killed
-		if (lastHurtByPlayer != null && ((LivingEntity)(Object)this instanceof Player) && Config.RPG_COMMON.takeXpFromKilledPlayers.get()) {
+		if (lastHurtByPlayer != null && ((LivingEntity)(Object)this instanceof Player) && Combat.RPG_CONFIG.takeXpFromKilledPlayers) {
 			PlayerAttributeLevels.setExperience(lastHurtByPlayer, PlayerAttributeLevels.getExperience(lastHurtByPlayer)+PlayerAttributeLevels.getExperience((LivingEntity)(Object)this));
 			PlayerAttributeLevels.setExperience((LivingEntity)(Object)this, 0);
 		}

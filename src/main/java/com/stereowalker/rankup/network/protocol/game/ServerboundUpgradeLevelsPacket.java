@@ -3,7 +3,7 @@ package com.stereowalker.rankup.network.protocol.game;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.stereowalker.old.combat.config.Config;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.api.stat.StatUtil;
@@ -45,14 +45,14 @@ public class ServerboundUpgradeLevelsPacket {
 			final Stat level = msg.level;
 			final UUID uuid = msg.uuid;
 			if (uuid.equals(Player.createPlayerUUID(sender.getGameProfile()))) {
-				if (Config.RPG_COMMON.enableLevelingSystem.get() && Rankup.statsManager.STATS.get(level).isEnabled()) {
-					if ((""+Config.RPG_COMMON.useXPToUpgrade.get()).equals("true")) {
+				if (Combat.RPG_CONFIG.enableLevelingSystem && Rankup.statsManager.STATS.get(level).isEnabled()) {
+					if ((""+Combat.RPG_CONFIG.useXPToUpgrade).equals("true")) {
 						int cost = level.getExperienceCost(sender);
 						if (EntityHelper.getActualExperienceTotal(sender) >= cost) {
 							sender.giveExperiencePoints(-cost);
 							PlayerAttributeLevels.addStatPoints(sender, level, 1);
 						}
-					} else if (Config.RPG_COMMON.levelUpType.get() == LevelType.UPGRADE_POINTS) {
+					} else if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS) {
 						if (PlayerAttributeLevels.getUpgradePoints(sender) > 0) {
 							PlayerAttributeLevels.addStatPoints(sender, level, 1);
 							PlayerAttributeLevels.addUpgradePoints(sender, -1);

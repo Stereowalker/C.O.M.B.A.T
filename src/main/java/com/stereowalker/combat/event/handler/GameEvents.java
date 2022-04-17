@@ -107,7 +107,7 @@ public class GameEvents {
 		if (event.getState().getBlock() instanceof CropBlock) {
 			CropBlock crop = (CropBlock)event.getState().getBlock();
 			if (crop.isMaxAge(event.getState())) {
-				if (Config.COMMON.xpFromFarming.get() != 0)event.setExpToDrop(Config.COMMON.xpFromFarming.get());
+				if (Combat.RPG_CONFIG.xpFromFarming != 0)event.setExpToDrop(Combat.RPG_CONFIG.xpFromFarming);
 			}
 		}
 	}
@@ -390,12 +390,12 @@ public class GameEvents {
 		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && event.getEntityLiving() instanceof Monster) {
 			Spell spell = SpellUtil.getWeightedRandomSpell(rand, SpellCategory.values(ClassType.ELEMENTAL));
 			if(event.getSource().getEntity() instanceof Player) {
-				if(UnionMathHelper.probabilityCheck(Config.MAGIC_COMMON.scrollDropChanceFromKill.get())) {
+				if(UnionMathHelper.probabilityCheck(Combat.MAGIC_CONFIG.scrollDropChanceFromKill)) {
 					System.out.println("Should Drop Scroll");
 					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, spell));
 				}
 			} else {
-				if(UnionMathHelper.probabilityCheck(Config.MAGIC_COMMON.scrollDropChance.get())) {
+				if(UnionMathHelper.probabilityCheck(Combat.MAGIC_CONFIG.scrollDropChance)) {
 					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, spell));
 				}
 			}

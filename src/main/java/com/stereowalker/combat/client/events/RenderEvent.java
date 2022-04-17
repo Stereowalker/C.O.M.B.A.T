@@ -146,7 +146,7 @@ public class RenderEvent {
 		ItemStack stack = event.getItemStack();
 		boolean flag = event.getHand() == InteractionHand.MAIN_HAND;
 		HumanoidArm handside = flag ? player.getMainArm() : player.getMainArm().getOpposite();
-		if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+		if (Combat.BATTLE_CONFIG.swordBlocking && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
 			if (player.isUsingItem() && player.getUseItemRemainingTicks() > 0 && player.getUsedItemHand() == event.getHand()) {
 				//				event.getMatrixStack().pushPose();
 				boolean flag3 = handside == HumanoidArm.RIGHT;
@@ -340,7 +340,7 @@ public class RenderEvent {
 		int primevalAffinity = 0;
 		int elementalAffinitySprite = 0;
 		SpellCategory elementalAffinity = SpellCategory.getStrongestElementalAffinity(playerentity);
-		if (!Config.MAGIC_COMMON.toggle_affinities.get()) {
+		if (!Combat.MAGIC_CONFIG.toggle_affinities) {
 			primevalAffinity = 0;
 			elementalAffinitySprite = 0;
 		}

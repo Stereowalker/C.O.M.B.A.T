@@ -3,7 +3,7 @@ package com.stereowalker.rankup.events;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.stereowalker.old.combat.config.Config;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.AccessoryModifiers;
 import com.stereowalker.rankup.AccessoryStats;
 import com.stereowalker.rankup.api.stat.Stat;
@@ -30,7 +30,7 @@ public class UnionEvents {
 
 	@SubscribeEvent
 	public static void addEffectsToAccessories(LivingUpdateEvent event) {
-		if (!ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
+		if (!ModHelper.isCuriosLoaded() && Combat.RPG_CONFIG.enableLevelingSystem) {
 			if (event.getEntityLiving() instanceof Player) {
 				addEffectsToAccessory((Player) event.getEntityLiving());
 			}
@@ -39,7 +39,7 @@ public class UnionEvents {
 
 	@SubscribeEvent
 	public static void addEffectsToChestItems(PlayerContainerEvent.Open event) {
-		if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+		if (Combat.RPG_CONFIG.enableLevelingSystem) {
 			if (event.getEntityLiving() instanceof Player) {
 				AccessoryStats.addEffectsToChestItems(event.getContainer());
 			}
@@ -49,7 +49,7 @@ public class UnionEvents {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void modifierTooltip(ItemTooltipEvent event) {
-		if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+		if (Combat.RPG_CONFIG.enableLevelingSystem) {
 			if (event.getEntityLiving() instanceof Player) {
 				AccessoryStats.modifierTooltip(event.getToolTip(), event.getItemStack());
 			}
@@ -58,7 +58,7 @@ public class UnionEvents {
 
 	@SubscribeEvent
 	public static void addModifiers(LivingUpdateEvent event) {
-		if (!ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
+		if (!ModHelper.isCuriosLoaded() && Combat.RPG_CONFIG.enableLevelingSystem) {
 			if (event.getEntityLiving() instanceof Player) {
 				addModifiers((Player) event.getEntityLiving());
 			}

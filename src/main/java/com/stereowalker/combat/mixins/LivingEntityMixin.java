@@ -14,13 +14,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.stats.CStats;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.combat.world.item.ItemFilters;
 import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
 import com.stereowalker.combat.world.item.enchantment.CEnchantments;
 import com.stereowalker.combat.world.item.enchantment.MagmaWalkerEnchantment;
-import com.stereowalker.old.combat.config.Config;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -90,7 +90,7 @@ public abstract class LivingEntityMixin extends Entity {
 				if (useVanilla)
 					i = (this.getEffect(MobEffects.DAMAGE_RESISTANCE).getAmplifier() + 1) * 5;
 				else
-					i = Mth.ceil(this.getAttributeValue(CAttributes.PHYSICAL_RESISTANCE)) + (Config.RPG_COMMON.enableLevelingSystem.get() ? -10 : 0);
+					i = Mth.ceil(this.getAttributeValue(CAttributes.PHYSICAL_RESISTANCE)) + (Combat.RPG_CONFIG.enableLevelingSystem ? -10 : 0);
 				int j = 25 - i;
 				float f = alteredDamage * (float)j;
 				float f1 = alteredDamage;

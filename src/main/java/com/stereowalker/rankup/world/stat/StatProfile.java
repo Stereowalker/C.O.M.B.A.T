@@ -3,7 +3,7 @@ package com.stereowalker.rankup.world.stat;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.stereowalker.old.combat.config.Config;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.unionlib.util.NBTHelper.NbtType;
 
@@ -91,7 +91,7 @@ public class StatProfile {
 	public static int getTotalPoints(LivingEntity entity, Stat stat) {
 		StatProfile statProfile = PlayerAttributeLevels.getStatPoints(entity, stat);
 		int points = statProfile.getPoints();
-		if (Config.RPG_COMMON.enableTraining.get())
+		if (Combat.RPG_CONFIG.enableTraining)
 			points+=statProfile.getEffortPoints();
 		for (Integer mod : statProfile.getModifiers().values()) {
 			points+=mod;

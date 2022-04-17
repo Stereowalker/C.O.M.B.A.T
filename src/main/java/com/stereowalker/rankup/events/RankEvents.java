@@ -1,6 +1,6 @@
 package com.stereowalker.rankup.events;
 
-import com.stereowalker.old.combat.config.Config;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.skill.SkillsEvents;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
@@ -14,7 +14,6 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -28,7 +27,7 @@ public class RankEvents {
 	public static void living(LivingUpdateEvent event) {
 		SkillsEvents.tickSkillUpdate(event.getEntityLiving());
 		if (!event.getEntityLiving().level.isClientSide) {
-			if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+			if (Combat.RPG_CONFIG.enableLevelingSystem) {
 				StatEvents.registerEntityStats(event.getEntityLiving());
 				StatEvents.statUpdate(event.getEntityLiving());
 			}
@@ -77,7 +76,7 @@ public class RankEvents {
 	public static void createPlayer(EntityJoinWorldEvent event) {
 		if (!event.getWorld().isClientSide) {
 			if (event.getEntity() instanceof LivingEntity) {
-				if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+				if (Combat.RPG_CONFIG.enableLevelingSystem) {
 					StatEvents.registerEntityStats((LivingEntity)event.getEntity());
 					StatEvents.statUpdate((LivingEntity)event.getEntity());
 				}

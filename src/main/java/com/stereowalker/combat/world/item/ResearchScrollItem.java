@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory.ClassType;
 import com.stereowalker.combat.api.world.spellcraft.SpellInstance;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
-import com.stereowalker.old.combat.config.Config;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -39,7 +39,7 @@ public class ResearchScrollItem extends Item {
 			if (CombatEntityStats.addMana(playerIn, -2.0F)) {
 				Spell spell = SpellUtil.getWeightedRandomSpell(rand, SpellCategory.values(ClassType.ELEMENTAL));
 				itemStack.shrink(1);
-				if (Config.MAGIC_COMMON.toggle_affinities.get()) {
+				if (Combat.MAGIC_CONFIG.toggle_affinities) {
 					
 					List<SpellCategory> cats = new ArrayList<SpellCategory>();
 					cats.add(CombatEntityStats.getPrimevalAffinity(playerIn));

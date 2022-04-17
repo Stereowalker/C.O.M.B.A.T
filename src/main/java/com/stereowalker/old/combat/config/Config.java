@@ -30,30 +30,6 @@ public class Config
         COMMON = Combat.disableConfig() ? new CommonConfig(new Builder()) : specPair.getLeft();
     }
 
-    static final ForgeConfigSpec magicCommonSpec;
-    public static final MagicCommonConfig MAGIC_COMMON;
-    static {
-        final Pair<MagicCommonConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(MagicCommonConfig::new);
-        magicCommonSpec = Combat.disableConfig() ? null : specPair.getRight();
-        MAGIC_COMMON = Combat.disableConfig() ? new MagicCommonConfig(new Builder()) : specPair.getLeft();
-    }
-
-    static final ForgeConfigSpec rpgCommonSpec;
-    public static final RpgCommonConfig RPG_COMMON;
-    static {
-        final Pair<RpgCommonConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(RpgCommonConfig::new);
-        rpgCommonSpec = Combat.disableConfig() ? null : specPair.getRight();
-        RPG_COMMON = Combat.disableConfig() ? new RpgCommonConfig(new Builder()) : specPair.getLeft();
-    }
-
-    static final ForgeConfigSpec battleCommonSpec;
-    public static final BattleCommonConfig BATTLE_COMMON;
-    static {
-        final Pair<BattleCommonConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(BattleCommonConfig::new);
-        battleCommonSpec = Combat.disableConfig() ? null : specPair.getRight();
-        BATTLE_COMMON = Combat.disableConfig() ? new BattleCommonConfig(new Builder()) : specPair.getLeft();
-    }
-
     static final ForgeConfigSpec serverSpec;
     public static final ServerConfig SERVER;
     static {
@@ -68,9 +44,6 @@ public class Config
     	ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
-    	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.magicCommonSpec, "combat\\magic.toml");
-    	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.battleCommonSpec, "combat\\battle.toml");
-    	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.rpgCommonSpec, "combat\\rpg.toml");
     }
     
 //    @SubscribeEvent

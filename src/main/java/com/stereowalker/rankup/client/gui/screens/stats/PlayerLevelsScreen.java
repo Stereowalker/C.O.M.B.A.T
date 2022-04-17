@@ -120,7 +120,7 @@ public class PlayerLevelsScreen extends Screen {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		GuiComponent.drawCenteredString(matrixStack, this.font, "Level: " +PlayerAttributeLevels.getLevel(minecraft.player), this.width / 2 - 94, this.height/ 2 - 75 + offset, 0xFFFFFF);
-		if (Config.RPG_COMMON.levelUpType.get() == LevelType.UPGRADE_POINTS)
+		if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS)
 			GuiComponent.drawCenteredString(matrixStack, this.font, "Upgrade Points: "+PlayerAttributeLevels.getUpgradePoints(minecraft.player), this.width / 2, this.height/ 2 - 55 + offset, 16777215);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		for(Widget widget : this.renderables) {

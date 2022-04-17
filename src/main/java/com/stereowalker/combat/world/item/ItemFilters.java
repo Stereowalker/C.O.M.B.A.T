@@ -2,7 +2,7 @@ package com.stereowalker.combat.world.item;
 
 import java.util.function.Predicate;
 
-import com.stereowalker.old.combat.config.Config;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.unionlib.util.RegistryHelper;
 
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +21,7 @@ public class ItemFilters {
 
 	public static final Predicate<ItemStack> EDGELESS_THRUSTING_WEAPONS = (stack) -> {
 		boolean flag = false;
-		for (String sword : Config.BATTLE_COMMON.edgelessThrustingWeapons.get()) {
+		for (String sword : Combat.BATTLE_CONFIG.edgelessThrustingWeapons) {
 			flag = RegistryHelper.matchesRegisteredEntry(sword, stack.getItem());
 			if (flag) {
 				break;
@@ -38,7 +38,7 @@ public class ItemFilters {
 
 	public static final Predicate<ItemStack> SINGLE_EDGE_CURVED_WEAPONS = (stack) -> {
 		boolean flag = false;
-		for (String sword : Config.BATTLE_COMMON.singleEdgeCurvedWeapons.get()) {
+		for (String sword : Combat.BATTLE_CONFIG.singleEdgeCurvedWeapons) {
 			flag = RegistryHelper.matchesRegisteredEntry(sword, stack.getItem());
 			if (flag) {
 				break;
@@ -55,7 +55,7 @@ public class ItemFilters {
 
 	public static final Predicate<ItemStack> DOUBLE_EDGE_STRAIGHT_WEAPONS = (stack) -> {
 		boolean flag = false;
-		for (String sword : Config.BATTLE_COMMON.doubleEdgeStraightWeapons.get()) {
+		for (String sword : Combat.BATTLE_CONFIG.doubleEdgeStraightWeapons) {
 			flag = RegistryHelper.matchesRegisteredEntry(sword, stack.getItem());
 			if (flag) {
 				break;

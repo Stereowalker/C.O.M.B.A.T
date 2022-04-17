@@ -1,8 +1,8 @@
 package com.stereowalker.rankup.world.stat;
 
 import com.google.common.collect.Maps;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
 
@@ -134,7 +134,7 @@ public class PlayerAttributeLevels {
 			if (!compound.contains("level")) {
 				setLevel(entity, 1);
 				if (!(entity instanceof Player)) {
-					if (!Config.RPG_COMMON.keepMobsAtLevelOne.get() && entity.level instanceof ServerLevel) {
+					if (!Combat.RPG_CONFIG.keepMobsAtLevelOne && entity.level instanceof ServerLevel) {
 						BlockPos position = entity.blockPosition();
 						BlockPos spawn = ((ServerLevel)entity.level).getSharedSpawnPos();
 
@@ -160,7 +160,7 @@ public class PlayerAttributeLevels {
 	}
 
 	public static double distance(int range, int spawnRadius) {
-		return (spawnRadius + Config.RPG_COMMON.distanceForLevelIncrease.get() + (Config.RPG_COMMON.distanceForLevelIncreaseStep.get() * range)) * (spawnRadius + Config.RPG_COMMON.distanceForLevelIncrease.get() + (Config.RPG_COMMON.distanceForLevelIncreaseStep.get() * range));
+		return (spawnRadius + Combat.RPG_CONFIG.distanceForLevelIncrease + (Combat.RPG_CONFIG.distanceForLevelIncreaseStep * range)) * (spawnRadius + Combat.RPG_CONFIG.distanceForLevelIncrease + (Combat.RPG_CONFIG.distanceForLevelIncreaseStep * range));
 	}
 
 	public static CompoundTag getRankNBT(Entity entity) {

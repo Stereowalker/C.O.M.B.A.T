@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.core.EnergyUtils;
-import com.stereowalker.combat.world.item.Magisteel;
 import com.stereowalker.combat.world.item.ItemFilters;
+import com.stereowalker.combat.world.item.Magisteel;
 import com.stereowalker.combat.world.item.Mythril;
-import com.stereowalker.old.combat.config.Config;
-	
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -39,7 +39,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	 */
 	@Overwrite
 	public UseAnim getUseAnimation(ItemStack stack) {
-		if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+		if (Combat.BATTLE_CONFIG.swordBlocking && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
 			return UseAnim.BLOCK;
 		} else {
 			return stack.getItem().isEdible() ? UseAnim.EAT : UseAnim.NONE;
@@ -53,7 +53,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	public int getUseDuration(ItemStack stack) {
 		if (stack.getItem().isEdible()) {
 			return this.getFoodProperties().isFastFood() ? 16 : 32;
-		} else if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+		} else if (Combat.BATTLE_CONFIG.swordBlocking && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
 			return 40;
 		} else {
 			return 0;
@@ -95,7 +95,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 				return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 			}
 		} else {
-			if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(itemstack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(itemstack))) {
+			if (Combat.BATTLE_CONFIG.swordBlocking && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(itemstack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(itemstack))) {
 				playerIn.startUsingItem(handIn);
 				return InteractionResultHolder.consume(itemstack);
 			} else {

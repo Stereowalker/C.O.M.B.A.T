@@ -95,7 +95,7 @@ public class KeybindingEvent {
 					}
 				}
 
-				if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+				if (Combat.RPG_CONFIG.enableLevelingSystem) {
 					while (KeyMappings.PLAYER_LEVELS.consumeClick()) {
 						mc.setScreen(new PlayerLevelsScreen(mc));
 					}

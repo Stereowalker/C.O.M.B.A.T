@@ -121,10 +121,10 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
 			Player player = Minecraft.getInstance().player;
 			this.widgets.forEach((widget) -> {
 				widget.y = top;
-				if (Config.RPG_COMMON.levelUpType.get() == LevelType.UPGRADE_POINTS)
+				if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS)
 					widget.render(matrixStack, mouseX, mouseY, partialTicks);
 				MutableComponent normalStatDisplay = (stat.getName().append(": "+stat.getCurrentPoints(player)));
-				if (Config.RPG_COMMON.enableTraining.get())
+				if (Combat.RPG_CONFIG.enableTraining)
 					normalStatDisplay = (stat.getName().append(": "+stat.getCurrentPoints(player))).append(new TextComponent(" +"+stat.getEffortPoints(player)).withStyle(ChatFormatting.YELLOW));
 				MutableComponent lockedStatDisplay = (stat.getName().append(": Locked"));
 				MutableComponent bonusStatDisplay = (new TextComponent("").append(normalStatDisplay)).append(new TextComponent(" +"+stat.getAdditionalPoints(player)).withStyle(ChatFormatting.GREEN));

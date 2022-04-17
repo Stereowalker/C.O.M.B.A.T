@@ -1,9 +1,9 @@
 package com.stereowalker.combat.world.spellcraft;
 
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
-import com.stereowalker.old.combat.config.Config;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
@@ -103,7 +103,7 @@ public class SpellStats {
 	public static boolean getSpellKnowledge(Player player, Spell spell) {
 		return CombatEntityStats.getSpellStats(player, spell).isKnown() 
 				|| (player != null && player.isCreative()) 
-				|| !Config.MAGIC_COMMON.enableSpellKnowledge.get();
+				|| !Combat.MAGIC_CONFIG.enableSpellKnowledge;
 	}
 	
 	public static boolean getSpellPrimed(Player player, Spell spell) {

@@ -7,10 +7,8 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ServerConfig {
 	//OreGen
-	public  UnionValues.IntValue copperChance;
 	public  UnionValues.IntValue tridoxChance;
 	public  UnionValues.IntValue oilChance;
-	public  UnionValues.BooleanValue generate_copper_ore;
 	public  UnionValues.BooleanValue generate_limestone;
 	public  UnionValues.BooleanValue generate_cassiterite;
 	public  UnionValues.BooleanValue generate_ruby_ore;
@@ -22,12 +20,6 @@ public class ServerConfig {
 
 	ServerConfig(ForgeConfigSpec.Builder server) {
 		if (server != null) {
-			generate_copper_ore = UnionValues.BooleanValue.build(server
-					.comment("Should C.O.M.B.A.T. copper ores spawn ingame")
-					.define("Oregen.Generate Copper Ore", true));
-			copperChance = UnionValues.IntValue.build(server
-					.comment("Max number of copper ore veins that can spawn in one chunk")
-					.defineInRange("oregen.Copper Chance", 30, 1, 100));
 			generate_limestone = UnionValues.BooleanValue.build(server
 					.comment("Should C.O.M.B.A.T. limestone spawn ingame")
 					.define("Oregen.Generate Limestone", true));
@@ -52,8 +44,6 @@ public class ServerConfig {
 			acrotlestPortalProbability = UnionValues.DoubleValue.build(ConfigCreator.structureGen("Acrotlest Portal", server, 0.5D));
 		}
 		else {
-			generate_copper_ore = new UnionValues.BooleanValue(null, true);
-			copperChance = new UnionValues.IntValue(null, 30);
 			generate_limestone = new UnionValues.BooleanValue(null, true);
 			generate_cassiterite = new UnionValues.BooleanValue(null, true);
 			generate_ruby_ore = new UnionValues.BooleanValue(null, true);

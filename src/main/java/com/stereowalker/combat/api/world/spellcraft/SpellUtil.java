@@ -274,7 +274,7 @@ public class SpellUtil {
 			if (entity instanceof Player) {
 				Player player = (Player)entity;
 				if (player.getAbilities().instabuild) return true;
-				else if (Config.MAGIC_COMMON.toggle_affinities.get()) {
+				else if (Combat.MAGIC_CONFIG.toggle_affinities) {
 					if (spell.getCategory() == SpellCategory.BLOOD) {
 						return true;
 					}
@@ -350,7 +350,7 @@ public class SpellUtil {
 				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.jammed"), sendStatus);
 			} else if (stack.getDamageValue() >= stack.getMaxDamage() - 1 && stack.isDamageableItem()) {
 				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.broken_wand"), sendStatus);
-			} else if (Config.MAGIC_COMMON.toggle_affinities.get() && !(SpellCategory.canAccessElementalAffinity(player, spell.getCategory()) || spell.getCategory() == CombatEntityStats.getPrimevalAffinity(player)) && spell != Spells.NONE) {
+			} else if (Combat.MAGIC_CONFIG.toggle_affinities && !(SpellCategory.canAccessElementalAffinity(player, spell.getCategory()) || spell.getCategory() == CombatEntityStats.getPrimevalAffinity(player)) && spell != Spells.NONE) {
 				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.no_affinity", articulatedComponent(spell.getCategory().getColoredDisplayName(), false, false)), sendStatus);
 			} else if (caster.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AbstractSpellBookItem) {//TODO: Use UnionLib Articulated component
 				Combat.debug("Book In Hand");

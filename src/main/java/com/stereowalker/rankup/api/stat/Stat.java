@@ -65,8 +65,8 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 	
 	public int getExperienceCost(int level) {
 		int n = level + 1;
-		int a = Config.RPG_COMMON.baseXpCost.get();
-		int d = Config.RPG_COMMON.xpCostStep.get();
+		int a = Combat.RPG_CONFIG.baseXpCost;
+		int d = Combat.RPG_CONFIG.xpCostStep;
 		
 		int total = (n/2) * ((2*a) + (n - 1) * d);
 		return total;

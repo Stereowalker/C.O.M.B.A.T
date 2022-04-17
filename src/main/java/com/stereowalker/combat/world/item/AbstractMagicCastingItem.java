@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.Rank;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellInstance;
@@ -16,7 +17,6 @@ import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.combat.world.spellcraft.Spells;
-import com.stereowalker.old.combat.config.Config;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -96,7 +96,7 @@ public abstract class AbstractMagicCastingItem extends Item implements Vanishabl
 				HitResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, ClipContext.Fluid.NONE);
 				currentSpell.setRayTraceResult(raytraceresult);
 				double addStrength = (double)CombatEntityStats.getSpellStats(playerIn, currentSpell).getTimesCast()/100000.0d;
-				if (!Config.MAGIC_COMMON.enableSpellTraining.get()) addStrength = 0.0d;
+				if (!Combat.MAGIC_CONFIG.enableSpellTraining) addStrength = 0.0d;
 				double multiplier = currentSpell.getCategory().getAttachedAttribute() == null ? 0 : playerIn.getAttributeValue(currentSpell.getCategory().getAttachedAttribute());
 				SpellInstance spell = new SpellInstance(currentSpell, (playerIn.getAttributeValue(CAttributes.MAGIC_STRENGTH)+addStrength)*multiplier, raytraceresult.getLocation(), playerIn.getUsedItemHand(), playerIn.getUUID());
 				if(spell.executeSpell(playerIn)) {
@@ -161,7 +161,7 @@ public abstract class AbstractMagicCastingItem extends Item implements Vanishabl
 				HitResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, ClipContext.Fluid.NONE);
 				currentSpell.setRayTraceResult(raytraceresult);
 				double addStrength = (double)CombatEntityStats.getSpellStats(playerIn, currentSpell).getTimesCast()/100000.0d;
-				if (!Config.MAGIC_COMMON.enableSpellTraining.get()) addStrength = 0.0d;
+				if (!Combat.MAGIC_CONFIG.enableSpellTraining) addStrength = 0.0d;
 				double multiplier = currentSpell.getCategory().getAttachedAttribute() == null ? 0 : playerIn.getAttributeValue(currentSpell.getCategory().getAttachedAttribute());
 				SpellInstance spell = new SpellInstance(currentSpell, (playerIn.getAttributeValue(CAttributes.MAGIC_STRENGTH)+addStrength)*multiplier, raytraceresult.getLocation(), playerIn.getUsedItemHand(), playerIn.getUUID());
 				if(spell.executeSpell(playerIn)) {

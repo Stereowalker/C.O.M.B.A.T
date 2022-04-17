@@ -66,8 +66,8 @@ public class StatEvents {
 
 	public static int getExperienceCost(int level) {
 		int n = level + 1;
-		int a = Config.RPG_COMMON.baseXpForLevelCost.get();
-		int d = Config.RPG_COMMON.xpCostForLevelStep.get();
+		int a = Combat.RPG_CONFIG.baseXpForLevelCost;
+		int d = Combat.RPG_CONFIG.xpCostForLevelStep;
 
 		int total = (n/2) * ((2*a) + (n - 1) * d);
 		return total;
@@ -75,8 +75,8 @@ public class StatEvents {
 
 	public static int getMaxExperience(int level) {
 		int n = level + 1;
-		int a = Config.RPG_COMMON.baseXpForLevelCost.get();
-		int d = Config.RPG_COMMON.xpCostForLevelStep.get();
+		int a = Combat.RPG_CONFIG.baseXpForLevelCost;
+		int d = Combat.RPG_CONFIG.xpCostForLevelStep;
 
 		int xp = a + (n - 1)*d;
 		return xp;
@@ -96,14 +96,14 @@ public class StatEvents {
 			else
 				i = 0;
 
-			if (Config.RPG_COMMON.levelUpType.get() == LevelType.ASSIGN_POINTS) {
+			if (Combat.RPG_CONFIG.levelUpType == LevelType.ASSIGN_POINTS) {
 				PlayerAttributeLevels.addStatPoints(player, stat, i);
 				upText.append(stat.getName().append("+"+i).withStyle(ChatFormatting.GREEN)).append(", ");
 			} else {
 				upPoints += Rankup.statsManager.STATS.get(stat).getUpgradePointsPerLevel();
 			}
 		}
-		if (Config.RPG_COMMON.levelUpType.get() == LevelType.UPGRADE_POINTS) {
+		if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS) {
 			PlayerAttributeLevels.addUpgradePoints(player, upPoints);
 			upText.append(new TextComponent("Upgrade Points +"+upPoints).withStyle(ChatFormatting.GREEN));
 		}
@@ -127,7 +127,7 @@ public class StatEvents {
 			if (entity instanceof ServerPlayer) {
 				ServerPlayer player = (ServerPlayer) entity;
 				if (statSettings.getEffortStat() != null) {
-					if (Config.RPG_COMMON.enableTraining.get() && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints() * statSettings.getEffortValueModifier()) {
+					if (Combat.RPG_CONFIG.enableTraining && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints() * statSettings.getEffortValueModifier()) {
 						StatProfile.setEffortPoints(player, stat, PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints()+1);
 					}
 				}
@@ -140,7 +140,7 @@ public class StatEvents {
 
 
 				if (entity.getAttribute(attribute) != null && entity.isAlive()) {
-					if (addition > 0 && Config.RPG_COMMON.enableLevelingSystem.get() && (!statSettings.isLimitable() || !CombatEntityStats.isLimiterOn(entity)) && statSettings.isEnabled()) {
+					if (addition > 0 && Combat.RPG_CONFIG.enableLevelingSystem && (!statSettings.isLimitable() || !CombatEntityStats.isLimiterOn(entity)) && statSettings.isEnabled()) {
 						if (entity.getAttribute(attribute).getBaseValue() != baseValue) {
 							entity.getAttribute(attribute).setBaseValue(baseValue);
 						}

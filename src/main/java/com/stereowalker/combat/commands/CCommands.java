@@ -18,7 +18,7 @@ public class CCommands {
 		AffinityCommand.register(dispatcher);
 		AllyCommand.register(dispatcher);
 		Combat.debug("Registered All Commands");
-		if (Config.RPG_COMMON.enableLevelingSystem.get()) {
+		if (Combat.RPG_CONFIG.enableLevelingSystem) {
 			SkillCommand.register(dispatcher);
 			LevelCommand.register(dispatcher);
 			Combat.debug("Registered All Commands for Rankup");

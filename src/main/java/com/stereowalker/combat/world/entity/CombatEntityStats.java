@@ -463,8 +463,8 @@ public class CombatEntityStats {
 		if(monster.isAlive()) {
 			if(monster.isEffectiveAi()) {
 				if (!compound.contains(CombatEntityStats.abominationID)) {
-					boolean isAbomination = UnionMathHelper.probabilityCheck(Config.MAGIC_COMMON.abominationChance.get());
-					boolean isRareAbomination = UnionMathHelper.probabilityCheck(Config.MAGIC_COMMON.rareAbominationChance.get());
+					boolean isAbomination = UnionMathHelper.probabilityCheck(Combat.MAGIC_CONFIG.abominationChance);
+					boolean isRareAbomination = UnionMathHelper.probabilityCheck(Combat.MAGIC_CONFIG.rareAbominationChance);
 					if (isAbomination) {
 						int abominationRand = random.nextInt(AbominationType.values().length-1);
 						compound.putInt(CombatEntityStats.abominationID, abominationRand);

@@ -18,6 +18,9 @@ import com.stereowalker.combat.client.renderer.item.CItemProperties;
 import com.stereowalker.combat.commands.CCommands;
 import com.stereowalker.combat.compat.curios.CuriosCompat;
 import com.stereowalker.combat.compat.curios.CuriosEvents;
+import com.stereowalker.combat.config.BattleConfig;
+import com.stereowalker.combat.config.MagicConfig;
+import com.stereowalker.combat.config.RpgConfig;
 import com.stereowalker.combat.core.registries.RegistryOverrides;
 import com.stereowalker.combat.network.protocol.game.ClientboundAbominationPacket;
 import com.stereowalker.combat.network.protocol.game.ClientboundPlayerStatsPacket;
@@ -60,6 +63,7 @@ import net.minecraft.client.renderer.CubeMap;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Block;
@@ -88,6 +92,9 @@ public class Combat extends MinecraftMod
 {
 	private static Combat combatInstance;
 	public static Rankup rankupInstance;
+	public static final RpgConfig RPG_CONFIG = new RpgConfig();
+	public static final BattleConfig BATTLE_CONFIG = new BattleConfig();
+	public static final MagicConfig MAGIC_CONFIG = new MagicConfig();
 	public static CombatBlockEntityWithoutLevelRenderer itemStackRender;
 
 	public static boolean disableConfig() {
@@ -115,6 +122,9 @@ public class Combat extends MinecraftMod
 		rankupInstance = new Rankup();
 		CLootItemFunctions.registerAll();
 		ConfigBuilder.registerConfig(RpgClientConfig.class);
+		ConfigBuilder.registerConfig(RPG_CONFIG);
+		ConfigBuilder.registerConfig(BATTLE_CONFIG);
+		ConfigBuilder.registerConfig(MAGIC_CONFIG);
 		RegistryOverrides.override();
 		if (!Combat.disableConfig()) Config.registerConfigs();
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -146,7 +156,9 @@ public class Combat extends MinecraftMod
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public Screen getConfigScreen(Minecraft mc, Screen previousScreen) {
-		return /* new CombatConfigScreen(mc, previousScreen) */new MinecraftModConfigsScreen(previousScreen, null, Combat.class);
+//		return /* new CombatConfigScreen(mc, previousScreen) */new MinecraftModConfigsScreen(previousScreen, null, Combat.class);
+		return new MinecraftModConfigsScreen(previousScreen, new TranslatableComponent("gui.combat.config.title"), RPG_CONFIG, BATTLE_CONFIG, MAGIC_CONFIG);
+		
 	}
 
 	public static void debug(Object message) {

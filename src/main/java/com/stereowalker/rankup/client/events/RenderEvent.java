@@ -37,7 +37,7 @@ public class RenderEvent {
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void renderLayer(RenderLivingEvent<?, ?> event) {
-		if (PlayerSkills.hasSkill(mc.player, Skills.INSIGHT) && Config.RPG_COMMON.enableLevelingSystem.get() && event.getEntity() != Minecraft.getInstance().player) {
+		if (PlayerSkills.hasSkill(mc.player, Skills.INSIGHT) && Combat.RPG_CONFIG.enableLevelingSystem && event.getEntity() != Minecraft.getInstance().player) {
 			event.getMatrixStack().translate(0, 0.25, 0);
 			renderName(event.getRenderer(), event.getEntity(), new TextComponent("Level "+PlayerAttributeLevels.getLevel(event.getEntity())), event.getMatrixStack(), event.getBuffers(), event.getLight());
 			event.getMatrixStack().translate(0, -0.25, 0);

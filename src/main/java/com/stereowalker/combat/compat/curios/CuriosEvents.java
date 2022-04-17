@@ -1,9 +1,9 @@
 package com.stereowalker.combat.compat.curios;
 
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.mixinshooks.IBackItemHolder;
 import com.stereowalker.combat.world.item.InventoryItem;
 import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.compat.curios.accessories.CuriosAccesories;
 import com.stereowalker.unionlib.util.ModHelper;
 
@@ -17,7 +17,7 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 public class CuriosEvents {
 	@SubscribeEvent
 	public static void addEffectsToAccessories(LivingUpdateEvent event) {
-		if (ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
+		if (ModHelper.isCuriosLoaded() && Combat.RPG_CONFIG.enableLevelingSystem) {
 			if (event.getEntityLiving() instanceof Player) {
 				CuriosAccesories.addEffectsToAccessory((Player) event.getEntityLiving());
 			}
@@ -26,7 +26,7 @@ public class CuriosEvents {
 	
 	@SubscribeEvent
 	public static void addModifiers(LivingUpdateEvent event) {
-		if (ModHelper.isCuriosLoaded() && Config.RPG_COMMON.enableLevelingSystem.get()) {
+		if (ModHelper.isCuriosLoaded() && Combat.RPG_CONFIG.enableLevelingSystem) {
 			if (event.getEntityLiving() instanceof Player) {
 				CuriosAccesories.addModifiers((Player) event.getEntityLiving());
 			}
