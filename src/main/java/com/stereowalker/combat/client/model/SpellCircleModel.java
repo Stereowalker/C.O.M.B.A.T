@@ -36,6 +36,6 @@ public class SpellCircleModel extends EntityModel<AbstractSpellCircle> {
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		circle.render(poseStack, buffer, packedLight, packedOverlay);
+		circle.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 }
