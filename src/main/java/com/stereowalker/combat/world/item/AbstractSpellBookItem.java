@@ -154,6 +154,13 @@ public abstract class AbstractSpellBookItem extends Item {
 		screen.showPage(page);
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	public void openGrimoireInSlot(ItemStack book, int page) {
+		SpellBookScreen screen = new SpellBookScreen(SpellBookScreen.IBookInfo.fromItem(book), book, false);
+		Minecraft.getInstance().setScreen(screen);
+		screen.showPage(page);
+	}
+
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {

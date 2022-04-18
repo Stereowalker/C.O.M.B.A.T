@@ -61,8 +61,12 @@ public class ScrollItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		if (worldIn.isClientSide && !AbstractSpellBookItem.getMainSpellBook(playerIn).isEmpty()) {
 			ItemStack book =  AbstractSpellBookItem.getMainSpellBook(playerIn);
-			((AbstractSpellBookItem)book.getItem()).openGrimoireInSlot(book);
-			return new InteractionResultHolder<>(InteractionResult.SUCCESS, playerIn.getItemInHand(handIn));
+			for (int i = 0; i < ((AbstractSpellBookItem)book.getItem()).number; i++) {
+				if (((AbstractSpellBookItem)book.getItem()).getSpell(book, i) == Spells.NONE) {
+					((AbstractSpellBookItem)book.getItem()).openGrimoireInSlot(book, i);
+					return new InteractionResultHolder<>(InteractionResult.SUCCESS, playerIn.getItemInHand(handIn));
+				}
+			}
 		}
 		return new InteractionResultHolder<>(InteractionResult.PASS, playerIn.getItemInHand(handIn));
 	}
@@ -72,6 +76,7 @@ public class ScrollItem extends Item {
 		return SpellUtil.itemHasSpell(stack);
 	}
 
+	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)
 	public static void addSpellTooltip(ItemStack itemIn, List<Component> lores, Spell spell) {
 		if (SpellUtil.itemHasSpell(itemIn)) {
