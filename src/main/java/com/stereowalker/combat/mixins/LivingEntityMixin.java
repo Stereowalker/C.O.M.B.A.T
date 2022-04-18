@@ -155,7 +155,7 @@ public abstract class LivingEntityMixin extends Entity {
 	 */
 	@Inject(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/critereon/EntityHurtPlayerTrigger;trigger(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/damagesource/DamageSource;FFZ)V", shift = Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
 	public void hurt_inject2(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir, float f, boolean flag, float f1, boolean flag1, Entity entity1, boolean flag2) {
-		if (amount > 0.0F && amount < 3.4028235E37F && ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
+		if (amount > 0.0F && amount < 3.4028235E37F && canBlockUsingWeapon()) {
 			((ServerPlayer)(Object)this).awardStat(CStats.DAMAGE_BLOCKED_BY_WEAPON, Math.round(amount * 10.0F));
 		}
 	}
@@ -167,23 +167,30 @@ public abstract class LivingEntityMixin extends Entity {
 	 */
 	@ModifyVariable(method = "hurt", /*name = "amount"*/ at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSource;isProjectile()Z", shift = Shift.BY, by = -3), ordinal = 0, print = false)
 	public float hurt_modifyVariable(float amount) {
-		if (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
-			return storedDamage/2;
+		if (canBlockUsingWeapon()) {
+			float copy = storedDamage;
+			storedDamage = 0.0F;
+			return copy/2;
 		} else {
 			return amount;
 		}
 	}
 
 	/**
-	 * Either the player
+	 * Alter the knockback on the player depending on whether they used a sword or a shield to block
 	 */
 	@Redirect(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;blockUsingShield(Lnet/minecraft/world/entity/LivingEntity;)V"))
 	public void hurt_redirect(LivingEntity us, LivingEntity entity) {
-		if (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemBySlot(EquipmentSlot.MAINHAND)) && !(this.getItemBySlot(EquipmentSlot.MAINHAND).canPerformAction(ToolActions.SHIELD_BLOCK) || this.getItemBySlot(EquipmentSlot.OFFHAND).canPerformAction(ToolActions.SHIELD_BLOCK))) {
+		if (canBlockUsingWeapon()) {
 			this.blockUsingSword(entity);
 		} else {
 			this.blockUsingShield(entity);
 		}
+	}
+	
+	private boolean canBlockUsingWeapon() {
+		return (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemBySlot(EquipmentSlot.MAINHAND)) && !this.getItemBySlot(EquipmentSlot.OFFHAND).canPerformAction(ToolActions.SHIELD_BLOCK)) ||
+				(ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemBySlot(EquipmentSlot.OFFHAND)) && !this.getItemBySlot(EquipmentSlot.MAINHAND).canPerformAction(ToolActions.SHIELD_BLOCK));
 	}
 
 	protected void blockUsingSword(LivingEntity entityIn) {

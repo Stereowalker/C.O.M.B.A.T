@@ -30,6 +30,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ToolActions;
 
 @Mixin(Item.class)
 public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Item> implements ItemLike, net.minecraftforge.common.extensions.IForgeItem {
@@ -39,7 +40,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	 */
 	@Overwrite
 	public UseAnim getUseAnimation(ItemStack stack) {
-		if (Combat.BATTLE_CONFIG.swordBlocking && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+		if (Combat.BATTLE_CONFIG.swordBlocking && ItemFilters.BLOCKABLE_WEAPONS.test(stack)) {
 			return UseAnim.BLOCK;
 		} else {
 			return stack.getItem().isEdible() ? UseAnim.EAT : UseAnim.NONE;
@@ -53,7 +54,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	public int getUseDuration(ItemStack stack) {
 		if (stack.getItem().isEdible()) {
 			return this.getFoodProperties().isFastFood() ? 16 : 32;
-		} else if (Combat.BATTLE_CONFIG.swordBlocking && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+		} else if (Combat.BATTLE_CONFIG.swordBlocking && ItemFilters.BLOCKABLE_WEAPONS.test(stack)) {
 			return 40;
 		} else {
 			return 0;
@@ -83,6 +84,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	@Redirect(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResultHolder;pass(Ljava/lang/Object;)Lnet/minecraft/world/InteractionResultHolder;"))
 	public InteractionResultHolder<ItemStack> onItemRightClickMixin(Object type, Level worldIn, Player playerIn, InteractionHand handIn) {
 		ItemStack itemstack = playerIn.getItemInHand(handIn);
+		ItemStack otherstack = playerIn.getItemInHand(handIn == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
 		if (playerIn.isShiftKeyDown()) {
 			if (this instanceof Mythril) {
 				if (EnergyUtils.getEnergy(itemstack, EnergyUtils.EnergyType.DIVINE_ENERGY) > 0) {
@@ -95,7 +97,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 				return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
 			}
 		} else {
-			if (Combat.BATTLE_CONFIG.swordBlocking && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(itemstack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(itemstack))) {
+			if (Combat.BATTLE_CONFIG.swordBlocking && !otherstack.canPerformAction(ToolActions.SHIELD_BLOCK) && ItemFilters.BLOCKABLE_WEAPONS.test(itemstack)) {
 				playerIn.startUsingItem(handIn);
 				return InteractionResultHolder.consume(itemstack);
 			} else {
