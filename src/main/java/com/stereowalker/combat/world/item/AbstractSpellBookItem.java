@@ -4,7 +4,7 @@ import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.client.gui.screens.inventory.SpellBookScreen;
 import com.stereowalker.combat.compat.curios.CuriosCompat;
-import com.stereowalker.combat.tags.CTags;
+import com.stereowalker.combat.tags.ItemCTags;
 import com.stereowalker.combat.world.spellcraft.Spells;
 import com.stereowalker.unionlib.util.ModHelper;
 
@@ -194,24 +194,24 @@ public abstract class AbstractSpellBookItem extends Item {
 	public static ItemStack getMainSpellBook(Player player) {
 		if (ModHelper.isCuriosLoaded()) {
 			ItemStack stack = CuriosCompat.getSlotsForType(player, "book", 0);
-			if (CTags.ItemCTags.SPELLBOOKS.contains(stack.getItem()))
+			if (ItemCTags.SPELLBOOKS.contains(stack.getItem()))
 				return stack;
 			else 
 				return ItemStack.EMPTY;
 		} else {
 			for (ItemStack stack : player.getInventory().offhand) {
-				if (CTags.ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
+				if (ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
 					return stack;
 				}
 			}
 			for (ItemStack stack : player.getInventory().items) {
-				if (CTags.ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
+				if (ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
 					return stack;
 				}
 			}
 			//Highly unlikely that there's a spellbook here, but still check
 			for (ItemStack stack : player.getInventory().armor) {
-				if (CTags.ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
+				if (ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
 					return stack;
 				}
 			}

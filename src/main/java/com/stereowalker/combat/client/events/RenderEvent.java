@@ -22,7 +22,6 @@ import com.stereowalker.combat.world.item.ItemFilters;
 import com.stereowalker.combat.world.item.ReinforcedCrossbowItem;
 import com.stereowalker.combat.world.level.block.CBlocks;
 import com.stereowalker.combat.world.spellcraft.SpellStats;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.unionlib.util.ModHelper;
 
 import net.minecraft.ChatFormatting;
@@ -146,7 +145,7 @@ public class RenderEvent {
 		ItemStack stack = event.getItemStack();
 		boolean flag = event.getHand() == InteractionHand.MAIN_HAND;
 		HumanoidArm handside = flag ? player.getMainArm() : player.getMainArm().getOpposite();
-		if (Combat.BATTLE_CONFIG.swordBlocking && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+		if (Combat.BATTLE_CONFIG.swordBlocking && ItemFilters.BLOCKABLE_WEAPONS.test(stack)) {
 			if (player.isUsingItem() && player.getUseItemRemainingTicks() > 0 && player.getUsedItemHand() == event.getHand()) {
 				//				event.getMatrixStack().pushPose();
 				boolean flag3 = handside == HumanoidArm.RIGHT;

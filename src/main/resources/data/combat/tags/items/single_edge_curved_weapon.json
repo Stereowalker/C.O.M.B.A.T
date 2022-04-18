@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "combat:wooden_katana",
+    "combat:stone_katana",
+    "combat:iron_katana",
+    "combat:golden_katana",
+    "combat:diamond_katana",
+    "combat:netherite_katana",
+    "combat:bronze_katana",
+    "combat:steel_katana",
+    "combat:pasquem_katana",
+    "combat:pelgan_katana",
+    "combat:lozyne_katana",
+    "combat:serable_katana",
+    "combat:etherion_katana"
+  ]
+}

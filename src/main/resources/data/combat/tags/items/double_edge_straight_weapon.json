@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wooden_sword",
+    "minecraft:stone_sword",
+    "minecraft:iron_sword",
+    "minecraft:golden_sword",
+    "minecraft:diamond_sword",
+    "minecraft:netherite_sword",
+    "combat:bronze_sword",
+    "combat:steel_sword",
+    "combat:pasquem_sword",
+    "combat:pelgan_sword",
+    "combat:lozyne_sword",
+    "combat:serable_sword",
+    "combat:etherion_sword",
+    "combat:blood_sword",
+    "combat:soul_sword"
+  ]
+}

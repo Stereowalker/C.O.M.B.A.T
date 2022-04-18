@@ -5,14 +5,13 @@ import java.util.function.Supplier;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.tags.BlockCTags;
-import com.stereowalker.combat.tags.CTags.ItemCTags;
+import com.stereowalker.combat.tags.ItemCTags;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;

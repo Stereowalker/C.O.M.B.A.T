@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.lwjgl.glfw.GLFW;
 
 import com.google.common.collect.Multimap;
+import com.stereowalker.combat.tags.ItemCTags;
 import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.combat.world.item.ItemFilters;
@@ -113,15 +114,15 @@ public class TooltipEvents {
 				tooltip.add(1, new TranslatableComponent("Throwable: ").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(2, new TranslatableComponent(" Can Be Thrown").withStyle(ChatFormatting.GOLD));
 			}
-			if (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack)) {
+			if (stack.is(ItemCTags.SINGLE_EDGE_CURVED_WEAPON)) {
 				tooltip.add(1, new TranslatableComponent("Single-Edge & Curved: ").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(2, new TranslatableComponent(" +50% Attack Damage When Opponent Is Not Wearing Chest Armor").withStyle(ChatFormatting.GOLD));
 			}
-			if (ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack)) {
+			if (stack.is(ItemCTags.DOUBLE_EDGE_STRAIGHT_WEAPON)) {
 				tooltip.add(1, new TranslatableComponent("Double-Edge & Straight: ").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(2, new TranslatableComponent(" +25% Attack Speed When There Is No Item In Offhand").withStyle(ChatFormatting.GOLD));
 			}
-			if (ItemFilters.EDGELESS_THRUSTING_WEAPONS.test(stack)) {
+			if (stack.is(ItemCTags.EDGELESS_THRUSTING_WEAPON)) {
 				tooltip.add(1, new TranslatableComponent("Edgeless & Thrusting: ").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(2, new TranslatableComponent(" Critical Hits Deal x3 Damage").withStyle(ChatFormatting.GOLD));
 			}

@@ -37,6 +37,7 @@ import com.stereowalker.combat.network.protocol.game.ServerboundStoreItemPacket;
 import com.stereowalker.combat.tags.BlockCTags;
 import com.stereowalker.combat.tags.CEntityTypeTags;
 import com.stereowalker.combat.tags.CTags;
+import com.stereowalker.combat.tags.ItemCTags;
 import com.stereowalker.combat.world.item.CTiers;
 import com.stereowalker.combat.world.item.alchemy.BrewingPotion;
 import com.stereowalker.combat.world.level.CGameRules;
@@ -175,6 +176,7 @@ public class Combat extends MinecraftMod
 		PyraniteFireBlock.bootStrap();
 		CTags.init();
 		new BlockCTags();
+		new ItemCTags();
 		CTiers.handleModdedTiers();
 		CEntityTypeTags.init();
 		CGameRules.init();

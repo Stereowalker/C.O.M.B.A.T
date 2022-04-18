@@ -47,7 +47,7 @@ public abstract class CCreativeModeTab extends CreativeModeTab {
 		public ItemStack makeIcon() {
 			return new ItemStack(CItems.NETHERITE_KATANA);
 		}
-	}).setBackgroundSuffix("battle.png").setEnchantmentCategories(new EnchantmentCategory[]{CEnchantmentCategory.TWO_HAND, CEnchantmentCategory.CURVED, CEnchantmentCategory.SINGLE_EDGE, CEnchantmentCategory.THROWN, CEnchantmentCategory.SHIELD});
+	}).setBackgroundSuffix("battle.png").setEnchantmentCategories(new EnchantmentCategory[]{CEnchantmentCategory.TWO_HAND, CEnchantmentCategory.CURVED, CEnchantmentCategory.EDGELESS, CEnchantmentCategory.THROWN, CEnchantmentCategory.SHIELD});
 	public static final CreativeModeTab TECHNOLOGY = (new CCreativeModeTab("combat_machinery") {
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack makeIcon() {

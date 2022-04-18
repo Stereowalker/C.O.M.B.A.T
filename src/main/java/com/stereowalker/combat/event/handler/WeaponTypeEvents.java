@@ -3,6 +3,7 @@ package com.stereowalker.combat.event.handler;
 import java.util.Random;
 import java.util.UUID;
 
+import com.stereowalker.combat.tags.ItemCTags;
 import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.item.ItemFilters;
 
@@ -48,7 +49,7 @@ public class WeaponTypeEvents {
 		if (event.getTarget() instanceof LivingEntity && event.getEntityLiving() instanceof Player) {
 			Player player = (Player)event.getEntityLiving();
 			LivingEntity target = (LivingEntity)event.getTarget();
-			if (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(player.getMainHandItem()) && !target.hasItemInSlot(EquipmentSlot.CHEST)) {
+			if (player.getMainHandItem().is(ItemCTags.SINGLE_EDGE_CURVED_WEAPON) && !target.hasItemInSlot(EquipmentSlot.CHEST)) {
 				if (!player.getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(bonus)) {
 					player.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(bonus);
 				}
@@ -66,7 +67,7 @@ public class WeaponTypeEvents {
 		boolean flag = false;
 		if (event.getEntityLiving() instanceof Player) {
 			Player player = (Player)event.getEntityLiving();
-			if (ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(player.getMainHandItem())) {
+			if (player.getMainHandItem().is(ItemCTags.DOUBLE_EDGE_STRAIGHT_WEAPON)) {
 				if (player.getOffhandItem().isEmpty()) {
 					if (!player.getAttribute(Attributes.ATTACK_SPEED).hasModifier(penalty))
 						player.getAttribute(Attributes.ATTACK_SPEED).addPermanentModifier(penalty);
@@ -100,7 +101,7 @@ public class WeaponTypeEvents {
 
 	@SubscribeEvent
 	public static void singleEdgeWeaponUpdate(CriticalHitEvent event) {
-		if (ItemFilters.EDGELESS_THRUSTING_WEAPONS.test(event.getPlayer().getMainHandItem())) {
+		if (event.getPlayer().getMainHandItem().is(ItemCTags.EDGELESS_THRUSTING_WEAPON)) {
 			if (event.isVanillaCritical()) {
 				event.setDamageModifier(3.0F);
 			}

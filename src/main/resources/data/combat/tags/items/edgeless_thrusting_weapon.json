@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "combat:wooden_rapier",
+    "combat:stone_rapier",
+    "combat:iron_rapier",
+    "combat:golden_rapier",
+    "combat:diamond_rapier",
+    "combat:netherite_rapier",
+    "combat:bronze_rapier",
+    "combat:steel_rapier",
+    "combat:pasquem_rapier",
+    "combat:pelgan_rapier",
+    "combat:lozyne_rapier",
+    "combat:serable_rapier",
+    "combat:etherion_rapier"
+  ]
+}
