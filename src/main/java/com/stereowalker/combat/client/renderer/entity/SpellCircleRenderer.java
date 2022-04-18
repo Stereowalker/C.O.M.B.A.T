@@ -35,9 +35,10 @@ public class SpellCircleRenderer extends EntityRenderer<AbstractSpellCircle>{
 
 	@Override
 	public void render(AbstractSpellCircle entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource typeBuffer, int packedLightIn) {
+		super.render(entity, entityYaw, partialTicks, matrixStack, typeBuffer, packedLightIn);
 		matrixStack.pushPose();
 		matrixStack.scale(entity.getRadius()/8.0F, 1.0F, entity.getRadius()/8.0F);
-		matrixStack.translate(0.0D, 0.035D, 0.0D);
+		matrixStack.translate(0.0D, -1.105D, 0.0D);
 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - (entityYaw * 3)));
 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
 		VertexConsumer ivertexbuilder = typeBuffer.getBuffer(this.spellCircleOuterModel.renderType(this.getTextureLocation(entity)));
@@ -45,7 +46,7 @@ public class SpellCircleRenderer extends EntityRenderer<AbstractSpellCircle>{
 		matrixStack.popPose();
 		matrixStack.pushPose();
 		matrixStack.scale(entity.getRadius()/8.0F, 1.0F, entity.getRadius()/8.0F);
-		matrixStack.translate(0.0D, 0.070D, 0.0D);
+		matrixStack.translate(0.0D, -1.070D, 0.0D);
 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F + (entityYaw * 2)));
 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
 		VertexConsumer ivertexbuilder2 = typeBuffer.getBuffer(this.spellCircleOuterModel.renderType(this.getMiddleRingTexture(entity)));
@@ -53,14 +54,13 @@ public class SpellCircleRenderer extends EntityRenderer<AbstractSpellCircle>{
 		matrixStack.popPose();
 		matrixStack.pushPose();
 		matrixStack.scale(entity.getRadius()/8.0F, 1.0F, entity.getRadius()/8.0F);
-		matrixStack.translate(0.0D, 0.105D, 0.0D);
+		matrixStack.translate(0.0D, -1.035D, 0.0D);
 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - (entityYaw * 1)));
 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
 		VertexConsumer ivertexbuilder3 = typeBuffer.getBuffer(this.spellCircleOuterModel.renderType(this.getInnerRingTexture(entity)));
 //		this.spellCircleOuterModel.renderToBuffer(matrixStack, ivertexbuilder3, packedLightIn, OverlayTexture.NO_OVERLAY, entity.getSpell().getSpell().getCategory().getrCOlor(), entity.getSpell().getSpell().getCategory().getgCOlor(), entity.getSpell().getSpell().getCategory().getbCOlor(), 1.0F);
 		this.spellCircleOuterModel.renderToBuffer(matrixStack, ivertexbuilder3, packedLightIn, OverlayTexture.NO_OVERLAY, CombatEntityStats.getManaColorR(entity.getOwner())/255.0f, CombatEntityStats.getManaColorG(entity.getOwner())/255.0f, CombatEntityStats.getManaColorB(entity.getOwner())/255.0f, 1.0F);
 		matrixStack.popPose();
-		super.render(entity, entityYaw, partialTicks, matrixStack, typeBuffer, packedLightIn);
 	}
 
 	public ResourceLocation getInnerRingTexture(AbstractSpellCircle entity) {
