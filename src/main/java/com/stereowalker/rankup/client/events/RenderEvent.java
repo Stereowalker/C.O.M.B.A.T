@@ -3,7 +3,6 @@ package com.stereowalker.rankup.client.events;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.stereowalker.combat.Combat;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;

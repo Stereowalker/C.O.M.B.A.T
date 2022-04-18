@@ -5,7 +5,6 @@ import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.server.commands.AffinityCommand;
 import com.stereowalker.combat.server.commands.AllyCommand;
 import com.stereowalker.combat.server.commands.CastCommand;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.commands.arguments.LevelCommand;
 import com.stereowalker.rankup.commands.arguments.SkillCommand;
 

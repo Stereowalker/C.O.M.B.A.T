@@ -20,7 +20,6 @@ import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
 import com.stereowalker.combat.world.spellcraft.SpellStats;
 import com.stereowalker.combat.world.spellcraft.Spells;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.unionlib.util.TextHelper;
 
 import net.minecraft.client.Minecraft;

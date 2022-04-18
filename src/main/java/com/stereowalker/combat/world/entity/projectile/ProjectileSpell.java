@@ -73,7 +73,6 @@ public class ProjectileSpell extends AbstractMagicProjectile {
 
 	@Override
 	protected void magicHit(LivingEntity living) {
-//		this.getSpell().getSpell().setCaster((LivingEntity) this.getShooter());
 		this.getSpell().executeExtensionSpell((LivingEntity)this.getOwner(), living);
 	}
 

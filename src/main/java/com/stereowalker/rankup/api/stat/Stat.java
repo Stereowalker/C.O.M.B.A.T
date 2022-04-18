@@ -3,7 +3,6 @@ package com.stereowalker.rankup.api.stat;
 import java.util.UUID;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 
 import net.minecraft.Util;

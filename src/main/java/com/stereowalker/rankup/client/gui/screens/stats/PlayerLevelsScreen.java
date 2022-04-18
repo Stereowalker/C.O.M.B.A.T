@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.client.KeyMappings;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.client.gui.screens.skill.PlayerSkillsScreen;
 import com.stereowalker.rankup.world.stat.LevelType;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;

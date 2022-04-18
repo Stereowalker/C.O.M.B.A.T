@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.Combat;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.network.protocol.game.ServerboundUpgradeLevelsPacket;
 import com.stereowalker.rankup.world.stat.LevelType;

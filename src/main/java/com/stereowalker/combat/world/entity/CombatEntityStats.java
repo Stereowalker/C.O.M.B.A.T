@@ -19,7 +19,6 @@ import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.combat.world.level.CGameRules;
 import com.stereowalker.combat.world.spellcraft.SpellStats;
 import com.stereowalker.combat.world.spellcraft.Spells;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.unionlib.util.NBTHelper;
 import com.stereowalker.unionlib.util.math.UnionMathHelper;
 

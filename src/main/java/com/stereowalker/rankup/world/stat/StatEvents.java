@@ -6,7 +6,6 @@ import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.network.protocol.game.ClientboundEntityStatsPacket;
