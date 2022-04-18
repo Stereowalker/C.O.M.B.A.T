@@ -34,9 +34,9 @@ public class NecronomiconItem extends AbstractSpellBookItem {
 	
 	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-		if (entity.level.isClientSide) {
+		if (!entity.level.isClientSide) {
 			for (Player player : entity.level.players()) {
-				if (isOwner(stack, player)) {
+				if (isOwner(stack, player) && !player.isDeadOrDying()) {
 					if (player.getInventory().add(stack)) {
 						entity.discard();
 					}
