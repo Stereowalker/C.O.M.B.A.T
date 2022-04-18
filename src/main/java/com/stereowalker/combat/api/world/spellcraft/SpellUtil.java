@@ -38,6 +38,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -416,8 +418,11 @@ public class SpellUtil {
 		target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20 * 20, 1, false, false));
 		target.hurt(CDamageSource.causeLightningDamage(attacker), target.isInWaterOrRain() ? attackDamage*2 : attackDamage);
 		if (attacker.isEffectiveAi()) {			
-			if (causeLightning)
-				target.thunderHit((ServerLevel)attacker.level,null);
+			if (causeLightning) {
+				LightningBolt lightningboltentity = EntityType.LIGHTNING_BOLT.create(attacker.level);
+				lightningboltentity.setDamage(0);
+				target.thunderHit((ServerLevel)attacker.level,lightningboltentity);
+			}
 			target.clearFire();
 		}
 		List<LivingEntity> affectedEntities = target.level.getEntitiesOfClass(LivingEntity.class, new AABB(target.blockPosition().relative(Direction.NORTH, chainRange).relative(Direction.WEST, chainRange).relative(Direction.UP, chainRange), target.blockPosition().relative(Direction.SOUTH, chainRange).relative(Direction.EAST, chainRange).relative(Direction.DOWN, chainRange)));
