@@ -319,6 +319,11 @@ public class GameEvents {
 			CombatEntityStats.setManabornBonus(event.getPlayer(), CombatEntityStats.hasManabornBonus(event.getOriginal()));
 			CombatEntityStats.setMana(event.getPlayer(), CombatEntityStats.getMana(event.getOriginal()));
 		}
+		event.getPlayer().getAttribute(CAttributes.EARTH_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.EARTH_AFFINITY));
+		event.getPlayer().getAttribute(CAttributes.FIRE_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.FIRE_AFFINITY));
+		event.getPlayer().getAttribute(CAttributes.LIGHTNING_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.LIGHTNING_AFFINITY));
+		event.getPlayer().getAttribute(CAttributes.WATER_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.WATER_AFFINITY));
+		event.getPlayer().getAttribute(CAttributes.WIND_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.WIND_AFFINITY));
 		CombatEntityStats.setManaColor(event.getPlayer() , CombatEntityStats.getManaColor(event.getOriginal()));
 		CombatEntityStats.setPrimevalAffinity(event.getPlayer(), CombatEntityStats.getPrimevalAffinity(event.getOriginal()));
 		CombatEntityStats.setAllies(event.getPlayer(), CombatEntityStats.getAllies(event.getOriginal()));
