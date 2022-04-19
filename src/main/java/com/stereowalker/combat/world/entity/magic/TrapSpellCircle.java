@@ -32,10 +32,8 @@ public class TrapSpellCircle extends AbstractSpellCircle {
 		if (!affectedEntities.isEmpty()) {
 			//				this.getSpell().getSpell().setLocation(this.getPositionVec());
 			LivingEntity living = affectedEntities.get(0);
-			if (this.level.isClientSide == this.getSpell().getSpell().isClientSpell()) {
-				if (this.getSpell().executeExtensionSpell(this.getOwner(), living)) {
-					this.discard();
-				}
+			if (this.getSpell().executeExtensionSpell(this.getOwner(), living)) {
+				this.discard();
 			}
 		}
 	}

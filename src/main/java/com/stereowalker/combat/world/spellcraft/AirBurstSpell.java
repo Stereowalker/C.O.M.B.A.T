@@ -18,10 +18,10 @@ public class AirBurstSpell extends AbstractTrapSpell {
 
 	@Override
 	public boolean extensionProgram(LivingEntity caster, Entity target, double strength, Vec3 location, InteractionHand hand) {
-		target.setDeltaMovement(target.getDeltaMovement().add(0, 3.0F*strength, 0));
 		if (!caster.level.isClientSide && target instanceof LivingEntity) {
 			SpellUtil.airAttack((LivingEntity)target, caster, 0);
 		}
+		target.push(0, 3.0F*strength, 0);
 		return true;
 	}
 
