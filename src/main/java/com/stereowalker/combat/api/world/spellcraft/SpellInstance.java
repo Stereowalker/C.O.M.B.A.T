@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.stereowalker.combat.mixinshooks.SpellCaster;
 import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.level.CGameRules;
@@ -98,6 +99,10 @@ public class SpellInstance {
 				if(this.getSpell().spellProgram(caster, this.getStrength(), this.getLocation(), this.getHand())) {
 					if (this.getSpell().canBePrimed()) {
 						SpellStats.setSpellPrimed(caster, this.getSpell(), false);
+					}
+					if (caster instanceof SpellCaster) {
+						((SpellCaster)caster).setLastCastedSpell(this.getSpell());
+						((SpellCaster)caster).setLastCastedTicks(0);
 					}
 					return true;
 				}

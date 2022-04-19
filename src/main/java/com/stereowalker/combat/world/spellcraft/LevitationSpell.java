@@ -18,7 +18,6 @@ public class LevitationSpell extends Spell {
 	@Override
 	public boolean spellProgram(LivingEntity caster, double strength, Vec3 location, InteractionHand hand) {
 		caster.push(0, 1.5D * strength, 0);
-		caster.fallDistance = (float) (-10.0F * strength * 2);
 		return true;
 	}
 	

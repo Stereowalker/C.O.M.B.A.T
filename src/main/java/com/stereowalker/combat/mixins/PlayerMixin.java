@@ -10,11 +10,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.authlib.GameProfile;
+import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.compat.curios.CuriosCompat;
 import com.stereowalker.combat.mixinshooks.IBackItemHolder;
+import com.stereowalker.combat.mixinshooks.SpellCaster;
 import com.stereowalker.combat.world.inventory.ItemContainer;
 import com.stereowalker.combat.world.item.InventoryItem;
 import com.stereowalker.combat.world.item.QuiverItem;
+import com.stereowalker.combat.world.spellcraft.Spells;
 import com.stereowalker.unionlib.util.ModHelper;
 
 import net.minecraft.core.BlockPos;
@@ -30,13 +33,13 @@ import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends LivingEntity implements IBackItemHolder {
-	@Shadow
-	public Inventory inventory;
+public abstract class PlayerMixin extends LivingEntity implements IBackItemHolder, SpellCaster {
+	@Shadow public Inventory inventory;
+	@Shadow public final Abilities abilities = new Abilities();
 
 	ItemContainer<?> itemInventory;
-	@Shadow
-	public final Abilities abilities = new Abilities();
+	Spell lastCastedSpell = Spells.NONE;
+	int lastCastedTicks = 0;
 
 	public PlayerMixin(Level p_i241920_1_, BlockPos p_i241920_2_, float p_i241920_3_, GameProfile p_i241920_4_) {
 		super(EntityType.PLAYER, p_i241920_1_);
@@ -57,6 +60,12 @@ public abstract class PlayerMixin extends LivingEntity implements IBackItemHolde
 				ItemStack quiver = CuriosCompat.getSlotsForType(this, "back", 0);
 				((InventoryItem<?>)quiver.getItem()).saveInventory(quiver, itemInventory);
 			}
+		}
+		if (lastCastedSpell != Spells.NONE && lastCastedTicks <= 72000) {
+			lastCastedTicks++;
+		}
+		if (lastCastedSpell == Spells.LEVITATION && lastCastedTicks <= 60) {
+			this.fallDistance = 0;
 		}
 	}
 
@@ -104,6 +113,26 @@ public abstract class PlayerMixin extends LivingEntity implements IBackItemHolde
 	@Override
 	public void setItemInventory(ItemContainer<?> input) {
 		itemInventory = input;
+	}
+	
+	@Override
+	public Spell getLastCastedSpell() {
+		return lastCastedSpell;
+	}
+	
+	@Override
+	public int getLastCastedTicks() {
+		return lastCastedTicks;
+	}
+	
+	@Override
+	public void setLastCastedSpell(Spell spell) {
+		this.lastCastedSpell = spell;
+	}
+	
+	@Override
+	public void setLastCastedTicks(int ticks) {
+		this.lastCastedTicks = ticks;
 	}
 	
 	public void setupInventory() {
