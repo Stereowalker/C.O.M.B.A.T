@@ -24,7 +24,9 @@ import com.stereowalker.unionlib.util.TextHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -404,8 +406,11 @@ public class SpellUtil {
 		target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20 * 20, 1, false, false));
 		target.attackEntityFrom(CDamageSource.causeLightningDamage(attacker), target.isWet() ? attackDamage*2 : attackDamage);
 		if (attacker.isServerWorld()) {			
-			if (causeLightning)
-				target.causeLightningStrike((ServerWorld)attacker.world,null);
+			if (causeLightning) {
+				LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(attacker.world);
+				lightningboltentity.setDamage(0);
+				target.causeLightningStrike((ServerWorld)attacker.world,lightningboltentity);
+			}
 			target.extinguish();
 		}
 		List<LivingEntity> affectedEntities = target.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(target.getPosition().offset(Direction.NORTH, chainRange).offset(Direction.WEST, chainRange).offset(Direction.UP, chainRange), target.getPosition().offset(Direction.SOUTH, chainRange).offset(Direction.EAST, chainRange).offset(Direction.DOWN, chainRange)));
