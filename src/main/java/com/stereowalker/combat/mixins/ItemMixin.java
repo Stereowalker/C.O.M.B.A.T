@@ -40,7 +40,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	 */
 	@Overwrite
 	public UseAction getUseAction(ItemStack stack) {
-		if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+		if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.BLOCKABLE_WEAPONS.test(stack))) {
 			return UseAction.BLOCK;
 		} else {
 			return stack.getItem().isFood() ? UseAction.EAT : UseAction.NONE;
@@ -54,7 +54,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	public int getUseDuration(ItemStack stack) {
 		if (stack.getItem().isFood()) {
 			return this.getFood().isFastEating() ? 16 : 32;
-		} else if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(stack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(stack))) {
+		} else if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.BLOCKABLE_WEAPONS.test(stack))) {
 			return 40;
 		} else {
 			return 0;
@@ -84,6 +84,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;resultPass(Ljava/lang/Object;)Lnet/minecraft/util/ActionResult;"), method = "onItemRightClick")
 	public ActionResult<ItemStack> onItemRightClickMixin(Object type, World worldIn, PlayerEntity playerIn, Hand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
+		ItemStack otherstack = playerIn.getHeldItem(handIn == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
 		if (playerIn.isSneaking()) {
 			if (this instanceof IMythrilItem) {
 				if (EnergyUtils.getEnergy(itemstack, EnergyType.DIVINE_ENERGY) > 0) {
@@ -96,7 +97,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
 				return ActionResult.resultPass(playerIn.getHeldItem(handIn));
 			}
 		} else {
-			if (Config.BATTLE_COMMON.swordBlocking.get() && (ItemFilters.SINGLE_EDGE_CURVED_WEAPONS.test(itemstack) || ItemFilters.DOUBLE_EDGE_STRAIGHT_WEAPONS.test(itemstack))) {
+			if (Config.BATTLE_COMMON.swordBlocking.get() && !otherstack.isShield(playerIn) && ItemFilters.BLOCKABLE_WEAPONS.test(itemstack)) {
 				playerIn.setActiveHand(handIn);
 				return ActionResult.resultConsume(itemstack);
 			} else {

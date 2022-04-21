@@ -243,8 +243,10 @@ public abstract class LivingEntityMixin extends Entity {
 	 */
 	@ModifyVariable(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/DamageSource;isProjectile()Z", shift = Shift.BY, by = -3), method = "attackEntityFrom", /*name = "amount"*/ ordinal = 0, print = false)
 	public float blockWithSword(float amount) {
-		if (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND))) {
-			return storedDamage/2;
+		if (canBlockUsingWeapon()) {
+			float copy = storedDamage;
+			storedDamage = 0.0F;
+			return copy/2;
 		} else {
 			return amount;
 		}
@@ -252,7 +254,7 @@ public abstract class LivingEntityMixin extends Entity {
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;blockUsingShield(Lnet/minecraft/entity/LivingEntity;)V"), method = "attackEntityFrom")
 	public void applyKnockback(LivingEntity us, LivingEntity entity) {
-		if (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND))) {
+		if (canBlockUsingWeapon()) {
 			this.blockUsingSword(entity);
 		} else {
 			this.blockUsingShield(entity);
@@ -261,9 +263,13 @@ public abstract class LivingEntityMixin extends Entity {
 	
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/criterion/EntityHurtPlayerTrigger;trigger(Lnet/minecraft/entity/player/ServerPlayerEntity;Lnet/minecraft/util/DamageSource;FFZ)V", shift = Shift.AFTER), method = "attackEntityFrom", locals = LocalCapture.CAPTURE_FAILHARD)
 	public void blockStats(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir, float f, boolean flag, float f1, boolean flag1, Entity entity1, boolean flag2) {
-		if (amount > 0.0F && amount < 3.4028235E37F && ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND))) {
+		if (amount > 0.0F && amount < 3.4028235E37F && canBlockUsingWeapon()) {
 			((ServerPlayerEntity)(Object)this).addStat(CStats.DAMAGE_BLOCKED_BY_WEAPON, Math.round(amount * 10.0F));
 		}
+	}
+	private boolean canBlockUsingWeapon() {
+		return (ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.MAINHAND)) && !this.getItemStackFromSlot(EquipmentSlotType.OFFHAND).isShield((LivingEntity)(Object)this)) ||
+				(ItemFilters.BLOCKABLE_WEAPONS.test(this.getItemStackFromSlot(EquipmentSlotType.OFFHAND)) && !this.getItemStackFromSlot(EquipmentSlotType.MAINHAND).isShield((LivingEntity)(Object)this));
 	}
 
 	protected void blockUsingSword(LivingEntity entityIn) {
