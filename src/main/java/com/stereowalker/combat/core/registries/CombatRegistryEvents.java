@@ -6,6 +6,12 @@ import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.client.particle.AcrotlestPortalParticle;
 import com.stereowalker.combat.client.particle.CDripParticle;
 import com.stereowalker.combat.core.particles.CParticleTypes;
+import com.stereowalker.combat.data.worldgen.features.COreFeatures;
+import com.stereowalker.combat.data.worldgen.features.CTreeFeatures;
+import com.stereowalker.combat.data.worldgen.features.CVegetationFeatures;
+import com.stereowalker.combat.data.worldgen.placement.COrePlacements;
+import com.stereowalker.combat.data.worldgen.placement.CTreePlacements;
+import com.stereowalker.combat.data.worldgen.placement.CVegetationPlacements;
 import com.stereowalker.combat.sounds.CSoundEvents;
 import com.stereowalker.combat.stats.CStats;
 import com.stereowalker.combat.world.effect.CMobEffects;
@@ -28,11 +34,12 @@ import com.stereowalker.combat.world.item.enchantment.CEnchantments;
 import com.stereowalker.combat.world.level.biome.CBiomeRegistry;
 import com.stereowalker.combat.world.level.block.CBlocks;
 import com.stereowalker.combat.world.level.block.entity.CBlockEntityType;
+import com.stereowalker.combat.world.level.levelgen.CNoiseGeneratorSettings;
 import com.stereowalker.combat.world.level.levelgen.carver.CWorldCarver;
 import com.stereowalker.combat.world.level.levelgen.feature.CFeature;
 import com.stereowalker.combat.world.level.levelgen.feature.CStructureFeature;
-import com.stereowalker.combat.world.level.levelgen.placement.CFeatureDecorator;
 import com.stereowalker.combat.world.level.material.CFluids;
+import com.stereowalker.combat.world.level.storage.loot.functions.CLootItemFunctions;
 import com.stereowalker.combat.world.spellcraft.Spells;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.skill.Skills;
@@ -69,10 +76,10 @@ import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -84,6 +91,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegistryBuilder;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD, modid = "combat")
@@ -96,7 +104,7 @@ public class CombatRegistryEvents
 	@OnlyIn(Dist.CLIENT)
 	public static void onTextureStitch(TextureStitchEvent.Pre event)
 	{
-		if(event.getMap().location().equals(TextureAtlas.LOCATION_BLOCKS))
+		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS))
 		{
 			event.addSprite(Combat.getInstance().EMPTY_SPELLBOOK_SLOT);
 		}
@@ -280,6 +288,14 @@ public class CombatRegistryEvents
 	//Worldgen Registries
 	@SubscribeEvent
 	public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
+		NoiseGeneratorSettings.register(CNoiseGeneratorSettings.ACROTLEST, CNoiseGeneratorSettings.acrotlestSettings(false));
+		CLootItemFunctions.registerAll();
+		new COreFeatures();
+		new CTreeFeatures();
+		new CVegetationFeatures();
+		new COrePlacements();
+		new CTreePlacements();
+		new CVegetationPlacements();
 		CBiomeRegistry.registerAll(event.getRegistry());
 	}
 
@@ -298,25 +314,13 @@ public class CombatRegistryEvents
 		CStructureFeature.registerAll(event.getRegistry());
 	}
 
-	@SubscribeEvent
-	public static void registerFeatureDecorators(final RegistryEvent.Register<FeatureDecorator<?>> event) {
-		CFeatureDecorator.registerAll(event.getRegistry());
-	}
-
-	//	@SubscribeEvent
-	//	public static void registerDataSerializers(final RegistryEvent.Register<DataSerializerEntry> event) {
-	//		event.getRegistry().registerAll(
-	//
-	//				);
-	//		Combat.debug("No Data Serializers to register");
-	//	}
 
 
 	@SubscribeEvent
-	public static void registerCombatRegistries(final RegistryEvent.NewRegistry event) {
-		new RegistryBuilder<Spell>().setName(Combat.getInstance().location("spell")).setType(Spell.class).setMaxID(MAX_VARINT).create();
-		new RegistryBuilder<Skill>().setName(Combat.getInstance().location("skill")).setType(Skill.class).setMaxID(MAX_VARINT).create();
-		new RegistryBuilder<Stat>().setName(Combat.getInstance().location("upgradeable_attribute")).setType(Stat.class).setMaxID(MAX_VARINT).create();
+	public static void registerCombatRegistries(final NewRegistryEvent event) {
+		event.create(new RegistryBuilder<Spell>().setName(Combat.getInstance().location("spell")).setType(c(Spell.class)).setMaxID(MAX_VARINT));
+		event.create(new RegistryBuilder<Skill>().setName(Combat.getInstance().location("skill")).setType(c(Skill.class)).setMaxID(MAX_VARINT));
+		event.create(new RegistryBuilder<Stat>().setName(Combat.getInstance().location("stat")).setType(c(Stat.class)).setMaxID(MAX_VARINT));
 	}
 
 	//Custom C.O.M.B.A.T. Registries
@@ -334,4 +338,7 @@ public class CombatRegistryEvents
 	public static void registerLeveledStats(final RegistryEvent.Register<Stat> event) {
 		Stats.registerAll(event.getRegistry());
 	}
+	
+	@SuppressWarnings("unchecked") //Ugly hack to let us pass in a typed Class object. Remove when we remove type specific references.
+	private static <T> Class<T> c(Class<?> cls) { return (Class<T>)cls; }
 }

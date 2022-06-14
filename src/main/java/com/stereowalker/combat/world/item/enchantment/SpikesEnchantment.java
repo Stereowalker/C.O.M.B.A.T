@@ -3,6 +3,7 @@ package com.stereowalker.combat.world.item.enchantment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.common.ToolActions;
 
 public class SpikesEnchantment extends Enchantment {
 	public SpikesEnchantment(Enchantment.Rarity rarityIn, EquipmentSlot... slots) {
@@ -26,7 +27,7 @@ public class SpikesEnchantment extends Enchantment {
 
 	@Override
 	public boolean canEnchant(ItemStack stack) {
-		return stack.isShield(null) ? true : super.canEnchant(stack);
+		return stack.canPerformAction(ToolActions.SHIELD_BLOCK) ? true : super.canEnchant(stack);
 	}
 
 	@Override

@@ -124,7 +124,7 @@ public class PlayerLevelsScreen extends Screen {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		for(Widget widget : this.renderables) {
 			if (widget instanceof AbstractWidget)
-				if (((AbstractWidget)widget).isHovered()) {
+				if (((AbstractWidget)widget).isHoveredOrFocused()) {
 					((AbstractWidget)widget).renderToolTip(matrixStack, mouseX, mouseY);
 					break;
 				}

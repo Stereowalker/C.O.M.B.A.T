@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.stereowalker.combat.compat.curios.CuriosPredicates;
-import com.stereowalker.unionlib.item.AccessoryItem;
+import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

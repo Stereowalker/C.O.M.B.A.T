@@ -6,10 +6,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.stereowalker.old.combat.config.Config;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.fmlclient.registry.ClientRegistry;
 
 /**
  * Registers this mod's {@link KeyMapping}s.
@@ -28,17 +25,4 @@ public class KeyMappings {
 	public static final KeyMapping PRONE = new ToggleKeyMapping("key.combat.prone", KeyConflictContext.IN_GAME, GLFW.GLFW_KEY_LEFT_CONTROL, CATEGORY, () -> {
 		return Config.CLIENT.prone_toggle.get();
 	});
-
-	@OnlyIn(Dist.CLIENT)
-	public static void registerKeyBindings() {
-		ClientRegistry.registerKeyBinding(NEXT_SPELL);
-		ClientRegistry.registerKeyBinding(PREV_SPELL);
-		ClientRegistry.registerKeyBinding(PLAYER_LEVELS);
-		ClientRegistry.registerKeyBinding(TOGGLE_LIMITER);
-		ClientRegistry.registerKeyBinding(RELOAD);
-		ClientRegistry.registerKeyBinding(FIRE);
-		ClientRegistry.registerKeyBinding(OPEN_BACK_ITEM);
-		ClientRegistry.registerKeyBinding(STORE_ITEM);
-		ClientRegistry.registerKeyBinding(PRONE);
-	}
 }

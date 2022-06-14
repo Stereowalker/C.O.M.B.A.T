@@ -30,20 +30,15 @@ import net.minecraft.world.level.levelgen.WorldGenSettings;
 public abstract class CreateWorldScreenMixin extends Screen {
 
 	@Shadow private String initName;
-	@Shadow public final WorldGenSettingsComponent worldGenSettingsComponent;
+//	@Shadow public final WorldGenSettingsComponent worldGenSettingsComponent;
+	@Shadow public boolean hardCore;
 	private long worldSeed;
 
-	public CreateWorldScreenMixin(@Nullable Screen p_i242064_1_, LevelSettings p_i242064_2_, WorldGenSettings p_i242064_3_, @Nullable Path p_i242064_4_, DataPackConfig p_i242064_5_, RegistryAccess.RegistryHolder p_i242064_6_) {
-		this(p_i242064_1_, p_i242064_5_, new WorldGenSettingsComponent(p_i242064_6_, p_i242064_3_, WorldPreset.of(p_i242064_3_), OptionalLong.of(p_i242064_3_.seed())));
-		this.initName = p_i242064_2_.levelName();
-		this.worldSeed = p_i242064_3_.seed();
-	}
-
-	private CreateWorldScreenMixin(@Nullable Screen p_i242063_1_, DataPackConfig p_i242063_2_, WorldGenSettingsComponent p_i242063_3_) {
+	private CreateWorldScreenMixin(@Nullable Screen pLastScreen, DataPackConfig pDataPacks, WorldGenSettingsComponent pWorldGenSettingsComponent) {
 		super(new TranslatableComponent("selectWorld.create"));
 		this.initName = I18n.get("selectWorld.newWorld");
-		this.worldGenSettingsComponent = p_i242063_3_;
-		this.worldSeed = 0;
+//		this.worldGenSettingsComponent = pWorldGenSettingsComponent;
+		this.worldSeed = pWorldGenSettingsComponent.makeSettings(this.hardCore).seed();
 	}
 
 	@Inject(at = @At(value = "HEAD"), method = "init()V")

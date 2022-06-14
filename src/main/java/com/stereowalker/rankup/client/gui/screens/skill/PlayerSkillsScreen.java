@@ -206,14 +206,13 @@ public class PlayerSkillsScreen extends Screen {
 		super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
 		for(Widget widget : this.renderables) {
 			if (widget instanceof AbstractWidget)
-				if (((AbstractWidget)widget).isHovered()) {
+				if (((AbstractWidget)widget).isHoveredOrFocused()) {
 					((AbstractWidget)widget).renderToolTip(pPoseStack, pMouseX, pMouseY);
 					break;
 				}
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public void renderWindow(PoseStack matrixStack, int x, int y) {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.enableBlend();

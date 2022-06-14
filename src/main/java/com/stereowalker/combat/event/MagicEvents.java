@@ -55,7 +55,7 @@ public class MagicEvents {
 							CombatEntityStats.setMana(player, Mth.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
 						}
 						double multiplier;
-						if (CBiomes.getMagicBiomes().contains(entity.level.getBiome(entity.blockPosition()).getRegistryName())) multiplier = 1.0D;
+						if (CBiomes.getMagicBiomes().contains(entity.level.getBiome(entity.blockPosition()).value().getRegistryName())) multiplier = 1.0D;
 						else multiplier = 0.1D;
 						if (!player.getFoodData().needsFood()) multiplier*=5.0D;
 						float mana = (float) (multiplier*player.getAttributeValue(CAttributes.MANA_REGENERATION));

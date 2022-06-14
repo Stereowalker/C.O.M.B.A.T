@@ -20,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
  * Created using Tabula 7.0.0
  */
 public class SpearModel extends Model {
-	public static final ResourceLocation TEXTURE_LOCATION = Combat.getInstance().location("textures/entity/projectiles/spear.png");
     public ModelPart handle;
     public ModelPart tip0;
     public ModelPart tip1;

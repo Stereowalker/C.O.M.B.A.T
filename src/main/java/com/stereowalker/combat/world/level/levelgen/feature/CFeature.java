@@ -3,14 +3,10 @@ package com.stereowalker.combat.world.level.levelgen.feature;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.stereowalker.combat.Combat;
-import com.stereowalker.combat.data.worldgen.CFeatures;
+import com.stereowalker.combat.data.worldgen.features.MiscAcrotlestFeatures;
+import com.stereowalker.combat.data.worldgen.placement.MiscAcrotlestPlacements;
 
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.ReplaceBlockFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -39,9 +35,8 @@ public abstract class CFeature {
 			registry.register(feature);
 			Combat.debug("Feature: \""+feature.getRegistryName().toString()+"\" registered");
 		}
-		for (Pair<String,ConfiguredFeature<?, ?>> pair : CFeatures.CONFIGURED_FEATURES) {
-			Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, Combat.getInstance().location(pair.getLeft()), pair.getRight());
-		}
+		new MiscAcrotlestFeatures();
+		new MiscAcrotlestPlacements();
 		Combat.debug("All Features Registered");
 	}
 }

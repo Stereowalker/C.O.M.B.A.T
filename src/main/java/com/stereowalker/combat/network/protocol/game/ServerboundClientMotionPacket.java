@@ -2,13 +2,13 @@ package com.stereowalker.combat.network.protocol.game;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
-import com.stereowalker.unionlib.network.client.CUnionPacket;
+import com.stereowalker.unionlib.network.protocol.game.ServerboundUnionPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 
-public class ServerboundClientMotionPacket extends CUnionPacket {
+public class ServerboundClientMotionPacket extends ServerboundUnionPacket {
 	Vec3 motion;
 
 	public ServerboundClientMotionPacket(Vec3 motionIn) {

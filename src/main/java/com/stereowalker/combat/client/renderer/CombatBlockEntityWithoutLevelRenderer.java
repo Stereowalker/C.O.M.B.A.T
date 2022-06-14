@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -43,9 +44,9 @@ public class CombatBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLev
 	private RoundShieldModel modelRoundShield;
 	private ShieldModel modelTowerShield;
 		@SuppressWarnings("deprecation")
-		public static final Material LOCATION_ROUND_SHIELD_BASE = new Material(TextureAtlas.LOCATION_BLOCKS, Combat.getInstance().location("textures/entity/shield_base.png"));
+		public static final Material LOCATION_ROUND_SHIELD_BASE = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Combat.MODID, "textures/entity/shield_base.png"));
 		@SuppressWarnings("deprecation")
-		public static final Material LOCATION_ROUND_SHIELD_NO_PATTERN = new Material(TextureAtlas.LOCATION_BLOCKS, Combat.getInstance().location("textures/entity/shield_base_nopattern.png"));
+		public static final Material LOCATION_ROUND_SHIELD_NO_PATTERN = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation(Combat.MODID, "textures/entity/shield_base_nopattern.png"));
 
 
 	public CombatBlockEntityWithoutLevelRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
@@ -160,7 +161,7 @@ public class CombatBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLev
 			} else if (item == CItems.SPEAR) {
 				matrixStackIn.pushPose();
 				matrixStackIn.scale(1.0F, -1.0F, -1.0F);
-				VertexConsumer ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, this.spear.renderType(SpearModel.TEXTURE_LOCATION), false, itemStackIn.hasFoil());
+				VertexConsumer ivertexbuilder1 = ItemRenderer.getFoilBufferDirect(bufferIn, this.spear.renderType(Combat.Locations.SPEAR_TEXTURE), false, itemStackIn.hasFoil());
 				this.spear.renderToBuffer(matrixStackIn, ivertexbuilder1, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
 				matrixStackIn.popPose();
 			}

@@ -98,8 +98,7 @@ public abstract class AbstractEnergyContainerBlockEntity extends BaseContainerBl
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound) {
 		compound.putInt("Energy", this.energy);
-		return super.save(compound);
 	}
 }

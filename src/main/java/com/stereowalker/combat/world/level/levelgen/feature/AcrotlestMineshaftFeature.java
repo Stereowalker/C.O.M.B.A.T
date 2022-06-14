@@ -9,60 +9,48 @@ import com.stereowalker.combat.world.level.block.CBlocks;
 import com.stereowalker.combat.world.level.levelgen.feature.configurations.AcrotlestMineshaftConfiguration;
 import com.stereowalker.combat.world.level.levelgen.structure.AcrotlestMineShaftPieces;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.QuartPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 
 
 public class AcrotlestMineshaftFeature extends CStructureFeature<AcrotlestMineshaftConfiguration> {
 	public AcrotlestMineshaftFeature(Codec<AcrotlestMineshaftConfiguration> p_66273_) {
-		super(p_66273_);
+		super(p_66273_, PieceGeneratorSupplier.simple(AcrotlestMineshaftFeature::checkLocation, AcrotlestMineshaftFeature::generatePieces));
 	}
 
-	@Override
-	protected boolean isFeatureChunk(ChunkGenerator pGenerator, BiomeSource pBiomeSource, long pSeed, WorldgenRandom pRandom, ChunkPos pChunkPos, Biome pBiome, ChunkPos pPotentialPos, AcrotlestMineshaftConfiguration pConfig, LevelHeightAccessor pLevel) {
-		pRandom.setLargeFeatureSeed(pSeed, pChunkPos.x, pChunkPos.z);
-		double d0 = (double)pConfig.probability;
-		return pRandom.nextDouble() < d0;
+	private static boolean checkLocation(PieceGeneratorSupplier.Context<AcrotlestMineshaftConfiguration> p_197122_) {
+		WorldgenRandom worldgenrandom = new WorldgenRandom(new LegacyRandomSource(0L));
+		worldgenrandom.setLargeFeatureSeed(p_197122_.seed(), p_197122_.chunkPos().x, p_197122_.chunkPos().z);
+		double d0 = (double)(p_197122_.config()).probability;
+		return worldgenrandom.nextDouble() >= d0 ? false : p_197122_.validBiome().test(p_197122_.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(p_197122_.chunkPos().getMiddleBlockX()), QuartPos.fromBlock(50), QuartPos.fromBlock(p_197122_.chunkPos().getMiddleBlockZ())));
 	}
 
-	@Override
-	public CStructureFeature.StructureStartFactory<AcrotlestMineshaftConfiguration> getStartFactory() {
-		return AcrotlestMineshaftFeature.MineShaftStart::new;
-	}
-
-	public static class MineShaftStart extends StructureStart<AcrotlestMineshaftConfiguration> {
-		public MineShaftStart(StructureFeature<AcrotlestMineshaftConfiguration> p_160031_, ChunkPos p_160032_, int p_160033_, long p_160034_) {
-			super(p_160031_, p_160032_, p_160033_, p_160034_);
+	private static void generatePieces(StructurePiecesBuilder p_197124_, PieceGenerator.Context<AcrotlestMineshaftConfiguration> p_197125_) {
+		AcrotlestMineShaftPieces.AcrotlestMineShaftRoom mineshaftpieces$mineshaftroom = new AcrotlestMineShaftPieces.AcrotlestMineShaftRoom(0, p_197125_.random(), p_197125_.chunkPos().getBlockX(2), p_197125_.chunkPos().getBlockZ(2), (p_197125_.config()).type);
+		p_197124_.addPiece(mineshaftpieces$mineshaftroom);
+		mineshaftpieces$mineshaftroom.addChildren(mineshaftpieces$mineshaftroom, p_197124_, p_197125_.random());
+		int i = p_197125_.chunkGenerator().getSeaLevel();
+		if ((p_197125_.config()).type == AcrotlestMineshaftFeature.Type.MESA) {
+			BlockPos blockpos = p_197124_.getBoundingBox().getCenter();
+			int j = p_197125_.chunkGenerator().getBaseHeight(blockpos.getX(), blockpos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, p_197125_.heightAccessor());
+			int k = j <= i ? i : Mth.randomBetweenInclusive(p_197125_.random(), i, j);
+			int l = k - blockpos.getY();
+			p_197124_.offsetPiecesVertically(l);
+		} else {
+			p_197124_.moveBelowSeaLevel(i, p_197125_.chunkGenerator().getMinY(), p_197125_.random(), 10);
 		}
 
-		@Override
-		public void generatePieces(RegistryAccess p_160044_, ChunkGenerator p_160045_, StructureManager p_160046_, ChunkPos p_160047_, Biome p_160048_, AcrotlestMineshaftConfiguration p_160049_, LevelHeightAccessor p_160050_) {
-			AcrotlestMineShaftPieces.AcrotlestMineShaftRoom mineshaftpieces$mineshaftroom = new AcrotlestMineShaftPieces.AcrotlestMineShaftRoom(0, this.random, p_160047_.getBlockX(2), p_160047_.getBlockZ(2), p_160049_.type);
-			this.addPiece(mineshaftpieces$mineshaftroom);
-			mineshaftpieces$mineshaftroom.addChildren(mineshaftpieces$mineshaftroom, this, this.random);
-			if (p_160049_.type == AcrotlestMineshaftFeature.Type.MESA) {
-				int i = -5;
-				BoundingBox boundingbox = this.getBoundingBox();
-				int j = p_160045_.getSeaLevel() - boundingbox.maxY() + boundingbox.getYSpan() / 2 - i;
-				this.offsetPiecesVertically(j);
-			} else {
-				this.moveBelowSeaLevel(p_160045_.getSeaLevel(), p_160045_.getMinY(), this.random, 10);
-			}
-
-		}
 	}
 
 	public static enum Type implements StringRepresentable {

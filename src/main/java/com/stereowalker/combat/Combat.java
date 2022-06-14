@@ -22,6 +22,12 @@ import com.stereowalker.combat.config.BattleConfig;
 import com.stereowalker.combat.config.MagicConfig;
 import com.stereowalker.combat.config.RpgConfig;
 import com.stereowalker.combat.core.registries.RegistryOverrides;
+import com.stereowalker.combat.data.worldgen.features.COreFeatures;
+import com.stereowalker.combat.data.worldgen.features.CTreeFeatures;
+import com.stereowalker.combat.data.worldgen.features.CVegetationFeatures;
+import com.stereowalker.combat.data.worldgen.placement.COrePlacements;
+import com.stereowalker.combat.data.worldgen.placement.CTreePlacements;
+import com.stereowalker.combat.data.worldgen.placement.CVegetationPlacements;
 import com.stereowalker.combat.network.protocol.game.ClientboundAbominationPacket;
 import com.stereowalker.combat.network.protocol.game.ClientboundPlayerStatsPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundBackItemPacket;
@@ -34,9 +40,10 @@ import com.stereowalker.combat.network.protocol.game.ServerboundRequestStatsPack
 import com.stereowalker.combat.network.protocol.game.ServerboundSetLimiterPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundSpellbookNBTPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundStoreItemPacket;
+import com.stereowalker.combat.tags.BiomeCTags;
 import com.stereowalker.combat.tags.BlockCTags;
-import com.stereowalker.combat.tags.CEntityTypeTags;
 import com.stereowalker.combat.tags.CTags;
+import com.stereowalker.combat.tags.EntityTypeCTags;
 import com.stereowalker.combat.tags.ItemCTags;
 import com.stereowalker.combat.world.item.CTiers;
 import com.stereowalker.combat.world.item.alchemy.BrewingPotion;
@@ -44,19 +51,23 @@ import com.stereowalker.combat.world.level.CGameRules;
 import com.stereowalker.combat.world.level.block.CBlocks;
 import com.stereowalker.combat.world.level.block.PyraniteFireBlock;
 import com.stereowalker.combat.world.level.dimension.CDimensionType;
+import com.stereowalker.combat.world.level.levelgen.CNoiseGeneratorSettings;
 import com.stereowalker.combat.world.level.material.CFluids;
 import com.stereowalker.combat.world.level.storage.loot.functions.CLootItemFunctions;
 import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.old.combat.config.RpgClientConfig;
 import com.stereowalker.rankup.Rankup;
+import com.stereowalker.rankup.network.protocol.game.RankupNetRegistry;
 import com.stereowalker.unionlib.client.gui.screens.config.MinecraftModConfigsScreen;
 import com.stereowalker.unionlib.config.ConfigBuilder;
+import com.stereowalker.unionlib.mod.IPacketHolder;
 import com.stereowalker.unionlib.mod.MinecraftMod;
 import com.stereowalker.unionlib.network.PacketRegistry;
 import com.stereowalker.unionlib.util.ModHelper;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.Util;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -70,11 +81,11 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -82,15 +93,16 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
-import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.network.simple.SimpleChannel;
+//import net.minecraftforge.fmlserverevents.FMLServerAboutToStartEvent;
+//import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 
-@Mod(value = "combat")
-public class Combat extends MinecraftMod
+@Mod(Combat.MODID)
+public class Combat extends MinecraftMod implements IPacketHolder
 {
+	public static final String MODID = "combat";
 	private static Combat combatInstance;
 	public static Rankup rankupInstance;
 	public static final RpgConfig RPG_CONFIG = new RpgConfig();
@@ -118,10 +130,9 @@ public class Combat extends MinecraftMod
 
 	public Combat() 
 	{
-		super("combat", new ResourceLocation("combat", "textures/icon.png"), LoadType.BOTH);
+		super(MODID, new ResourceLocation(MODID, "textures/icon.png"), LoadType.BOTH);
 		combatInstance = this;
 		rankupInstance = new Rankup();
-		CLootItemFunctions.registerAll();
 		ConfigBuilder.registerConfig(RpgClientConfig.class);
 		ConfigBuilder.registerConfig(RPG_CONFIG);
 		ConfigBuilder.registerConfig(BATTLE_CONFIG);
@@ -136,28 +147,40 @@ public class Combat extends MinecraftMod
 	}
 	
 	@Override
-	public void registerMessages(SimpleChannel channel) {
-		int netID = -1;
-		//server
-		channel.registerMessage(netID++, ClientboundAbominationPacket.class, ClientboundAbominationPacket::encode, ClientboundAbominationPacket::decode, ClientboundAbominationPacket::handle);
-		channel.registerMessage(netID++, ClientboundPlayerStatsPacket.class, ClientboundPlayerStatsPacket::encode, ClientboundPlayerStatsPacket::decode, ClientboundPlayerStatsPacket::handle);
+	@OnlyIn(Dist.CLIENT)
+	public KeyMapping[] getModKeyMappings() {
+		return new KeyMapping[] {KeyMappings.NEXT_SPELL, KeyMappings.PREV_SPELL, KeyMappings.PLAYER_LEVELS, KeyMappings.TOGGLE_LIMITER,
+				KeyMappings.RELOAD, KeyMappings.FIRE, KeyMappings.OPEN_BACK_ITEM, KeyMappings.STORE_ITEM, KeyMappings.PRONE};
+	}
+
+	@Override
+	public void registerClientboundPackets(SimpleChannel arg0) {
+		RankupNetRegistry.registerMessages();
+		arg0.registerMessage(0, ClientboundAbominationPacket.class, ClientboundAbominationPacket::encode, ClientboundAbominationPacket::decode, ClientboundAbominationPacket::handle);
+		arg0.registerMessage(1, ClientboundPlayerStatsPacket.class, ClientboundPlayerStatsPacket::encode, ClientboundPlayerStatsPacket::decode, ClientboundPlayerStatsPacket::handle);
+		
+	}
+
+	@Override
+	public void registerServerboundPackets(SimpleChannel arg0) {
+		int netID = 1;
 		//client
-		PacketRegistry.registerMessage(channel, netID++, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, ServerboundGunPacket.class, (packetBuffer) -> {return new ServerboundGunPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, ServerboundMageSetupPacket.class, (packetBuffer) -> {return new ServerboundMageSetupPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, ServerboundSetLimiterPacket.class, (packetBuffer) -> {return new ServerboundSetLimiterPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, ServerboundStoreItemPacket.class, (packetBuffer) -> {return new ServerboundStoreItemPacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, ServerboundPronePacket.class, (packetBuffer) -> {return new ServerboundPronePacket(packetBuffer);});
-		PacketRegistry.registerMessage(channel, netID++, ServerboundClientMotionPacket.class, (packetBuffer) -> {return new ServerboundClientMotionPacket(packetBuffer);});
-		channel.registerMessage(netID++, ServerboundHeldItemStackNBTPacket.class, ServerboundHeldItemStackNBTPacket::encode, ServerboundHeldItemStackNBTPacket::decode, ServerboundHeldItemStackNBTPacket::handle);
-		channel.registerMessage(netID++, ServerboundRequestStatsPacket.class, ServerboundRequestStatsPacket::encode, ServerboundRequestStatsPacket::decode, ServerboundRequestStatsPacket::handle);
-		channel.registerMessage(netID++, ServerboundSpellbookNBTPacket.class, ServerboundSpellbookNBTPacket::encode, ServerboundSpellbookNBTPacket::decode, ServerboundSpellbookNBTPacket::handle);
+		PacketRegistry.registerMessage(arg0, netID++, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, netID++, ServerboundGunPacket.class, (packetBuffer) -> {return new ServerboundGunPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, netID++, ServerboundMageSetupPacket.class, (packetBuffer) -> {return new ServerboundMageSetupPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, netID++, ServerboundSetLimiterPacket.class, (packetBuffer) -> {return new ServerboundSetLimiterPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, netID++, ServerboundStoreItemPacket.class, (packetBuffer) -> {return new ServerboundStoreItemPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, netID++, ServerboundPronePacket.class, (packetBuffer) -> {return new ServerboundPronePacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, netID++, ServerboundClientMotionPacket.class, (packetBuffer) -> {return new ServerboundClientMotionPacket(packetBuffer);});
+		arg0.registerMessage(netID++, ServerboundHeldItemStackNBTPacket.class, ServerboundHeldItemStackNBTPacket::encode, ServerboundHeldItemStackNBTPacket::decode, ServerboundHeldItemStackNBTPacket::handle);
+		arg0.registerMessage(netID++, ServerboundRequestStatsPacket.class, ServerboundRequestStatsPacket::encode, ServerboundRequestStatsPacket::decode, ServerboundRequestStatsPacket::handle);
+		arg0.registerMessage(netID++, ServerboundSpellbookNBTPacket.class, ServerboundSpellbookNBTPacket::encode, ServerboundSpellbookNBTPacket::decode, ServerboundSpellbookNBTPacket::handle);
+		
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public Screen getConfigScreen(Minecraft mc, Screen previousScreen) {
-//		return /* new CombatConfigScreen(mc, previousScreen) */new MinecraftModConfigsScreen(previousScreen, null, Combat.class);
 		return new MinecraftModConfigsScreen(previousScreen, new TranslatableComponent("gui.combat.config.title"), RPG_CONFIG, BATTLE_CONFIG, MAGIC_CONFIG);
 		
 	}
@@ -177,8 +200,9 @@ public class Combat extends MinecraftMod
 		CTags.init();
 		new BlockCTags();
 		new ItemCTags();
+		new EntityTypeCTags();
+		new BiomeCTags();
 		CTiers.handleModdedTiers();
-		CEntityTypeTags.init();
 		CGameRules.init();
 		Map<Block, Block> STRIP_MAP = (new Builder<Block, Block>())
 				.put(CBlocks.AUSLDINE_WOOD, CBlocks.STRIPPED_AUSLDINE_WOOD).put(CBlocks.AUSLDINE_LOG, CBlocks.STRIPPED_AUSLDINE_LOG)
@@ -196,7 +220,6 @@ public class Combat extends MinecraftMod
 		boolean useMain = false;
 		CModelLayers.init();
 		EntityRendererHandler.bootStrap();
-		KeyMappings.registerKeyBindings();
 		BlockEntityRenderHandler.registerRenders();
 		CScreens.registerScreens();
 		if (Config.CLIENT.toggle_custom_main_menu.get())
@@ -277,13 +300,13 @@ public class Combat extends MinecraftMod
 		CCommands.registerCommands(event.getDispatcher());
 	}
 
-	@SubscribeEvent
-	public void onServerStarting(FMLServerStartingEvent event) {
-	}
-
-	@SubscribeEvent
-	public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-	}
+//	@SubscribeEvent
+//	public void onServerStarting(FMLServerStartingEvent event) {
+//	}
+//
+//	@SubscribeEvent
+//	public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+//	}
 
 	public static void setBurnableBlocks() {
 		setFlammable(CBlocks.AUSLDINE_PLANKS, 5, 20);
@@ -317,5 +340,9 @@ public class Combat extends MinecraftMod
 	
 	public static Combat getInstance() {
 		return combatInstance;
+	}
+	
+	public class Locations {
+		public static final ResourceLocation SPEAR_TEXTURE = new ResourceLocation(Combat.MODID, "textures/entity/projectiles/spear.png");
 	}
 }

@@ -201,24 +201,24 @@ public abstract class AbstractSpellBookItem extends Item {
 	public static ItemStack getMainSpellBook(Player player) {
 		if (ModHelper.isCuriosLoaded()) {
 			ItemStack stack = CuriosCompat.getSlotsForType(player, "book", 0);
-			if (ItemCTags.SPELLBOOKS.contains(stack.getItem()))
+			if (stack.is(ItemCTags.SPELLBOOKS))
 				return stack;
 			else 
 				return ItemStack.EMPTY;
 		} else {
 			for (ItemStack stack : player.getInventory().offhand) {
-				if (ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
+				if (stack.is(ItemCTags.SPELLBOOKS)) {
 					return stack;
 				}
 			}
 			for (ItemStack stack : player.getInventory().items) {
-				if (ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
+				if (stack.is(ItemCTags.SPELLBOOKS)) {
 					return stack;
 				}
 			}
 			//Highly unlikely that there's a spellbook here, but still check
 			for (ItemStack stack : player.getInventory().armor) {
-				if (ItemCTags.SPELLBOOKS.contains(stack.getItem())) {
+				if (stack.is(ItemCTags.SPELLBOOKS)) {
 					return stack;
 				}
 			}

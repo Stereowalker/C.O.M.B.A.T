@@ -39,7 +39,7 @@ public class MagisteelAxeItem extends AxeItem implements Magisteel {
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		if (isUsingMana(stack)) {
-			return this.blocks.contains(state.getBlock()) ? this.speed * 2.0F : super.getDestroySpeed(stack, state) * 2.0F;
+			return state.is(this.blocks) ? this.speed * 2.0F : super.getDestroySpeed(stack, state) * 2.0F;
 		} else {
 			return super.getDestroySpeed(stack, state);
 		}

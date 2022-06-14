@@ -1,19 +1,32 @@
 package com.stereowalker.combat.world.item;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
+import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.effect.CMobEffects;
+import com.stereowalker.unionlib.entity.AccessorySlot.Group;
+import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class AffinityRingItem extends AbstractRingItem {
+public class AffinityRingItem extends AccessoryItem {
 
-	public AffinityRingItem(Properties properties) {
-		super(properties);
+	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+	
+	public AffinityRingItem(SpellCategory category, Properties properties) {
+		super(properties, Group.FINGER);
+		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+		builder.put(category.getAttachedAttribute(), new AttributeModifier(UUIDS.AFFINITY_RING_MODIFIER, "Ring modifier", 0.9D, AttributeModifier.Operation.ADDITION));
+		this.defaultModifiers = builder.build();
 	}
 	
 	@Override
@@ -55,6 +68,10 @@ public class AffinityRingItem extends AbstractRingItem {
 			return new TranslatableComponent("Gives you the ability to use wind magic when equipped");
 		}
 		return null;
+	}
+
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(Group group, ItemStack stack) {
+		return group == Group.FINGER ? this.defaultModifiers : ImmutableMultimap.of();
 	}
 
 }

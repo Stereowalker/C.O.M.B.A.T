@@ -17,7 +17,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class Meteor extends Entity {
 	private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(Meteor.class, EntityDataSerializers.INT);

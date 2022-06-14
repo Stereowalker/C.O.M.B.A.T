@@ -22,8 +22,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class QuiverModel extends Model {
 
-	public static final ResourceLocation TEXTURE_LOCATION = Combat.getInstance().location("textures/entity/quiver.png");
-	public static final ResourceLocation OVERLAY_LOCATION = Combat.getInstance().location("textures/entity/quiver_overlay.png");	private final ModelPart quiverBody;
+	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Combat.MODID, "textures/entity/quiver.png");
+	public static final ResourceLocation OVERLAY_LOCATION = new ResourceLocation(Combat.MODID, "textures/entity/quiver_overlay.png");	private final ModelPart quiverBody;
 	private final ModelPart backStrap;
 	private final ModelPart topStrap;
 	private final ModelPart frontStrap;

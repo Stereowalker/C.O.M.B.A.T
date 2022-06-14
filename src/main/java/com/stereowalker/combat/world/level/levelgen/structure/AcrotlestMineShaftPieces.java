@@ -12,7 +12,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.MinecartChest;
 import net.minecraft.world.level.BlockGetter;
@@ -31,10 +30,11 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -93,7 +93,7 @@ public class AcrotlestMineShaftPieces {
 		private boolean hasPlacedSpider;
 		private final int numSections;
 
-		public AcrotlestMineShaftCorridor(ServerLevel pLevel, CompoundTag pTag) {
+		public AcrotlestMineShaftCorridor(CompoundTag pTag) {
 			super(StructurePieceTypes.MINE_SHAFT_CORRIDOR, pTag);
 			this.hasRails = pTag.getBoolean("hr");
 			this.spiderCorridor = pTag.getBoolean("sc");
@@ -102,8 +102,8 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		protected void addAdditionalSaveData(ServerLevel pLevel, CompoundTag pTag) {
-			super.addAdditionalSaveData(pLevel, pTag);
+		protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag pTag) {
+			super.addAdditionalSaveData(pContext, pTag);
 			pTag.putBoolean("hr", this.hasRails);
 			pTag.putBoolean("sc", this.spiderCorridor);
 			pTag.putBoolean("hps", this.hasPlacedSpider);
@@ -241,10 +241,8 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public boolean postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-			if (this.edgesLiquid(pLevel, pBox)) {
-				return false;
-			} else {
+		public void postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+			if (!this.edgesLiquid(pLevel, pBox)) {
 				int i = 0;
 				int j = 2;
 				int k = 0;
@@ -316,7 +314,6 @@ public class AcrotlestMineShaftPieces {
 					}
 				}
 
-				return true;
 			}
 		}
 
@@ -457,15 +454,15 @@ public class AcrotlestMineShaftPieces {
 		private final Direction direction;
 		private final boolean isTwoFloored;
 
-		public AcrotlestMineShaftCrossing(ServerLevel pLevel, CompoundTag pTag) {
+		public AcrotlestMineShaftCrossing(CompoundTag pTag) {
 			super(StructurePieceTypes.MINE_SHAFT_CROSSING, pTag);
 			this.isTwoFloored = pTag.getBoolean("tf");
 			this.direction = Direction.from2DDataValue(pTag.getInt("D"));
 		}
 
 		@Override
-		protected void addAdditionalSaveData(ServerLevel pLevel, CompoundTag pTag) {
-			super.addAdditionalSaveData(pLevel, pTag);
+		protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag pTag) {
+			super.addAdditionalSaveData(pContext, pTag);
 			pTag.putBoolean("tf", this.isTwoFloored);
 			pTag.putInt("D", this.direction.get2DDataValue());
 		}
@@ -552,10 +549,8 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public boolean postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-			if (this.edgesLiquid(pLevel, pBox)) {
-				return false;
-			} else {
+		public void postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+			if (!this.edgesLiquid(pLevel, pBox)) {
 				BlockState blockstate = this.type.getPlanksState();
 				if (this.isTwoFloored) {
 					this.generateBox(pLevel, pBox, this.boundingBox.minX() + 1, this.boundingBox.minY(), this.boundingBox.minZ(), this.boundingBox.maxX() - 1, this.boundingBox.minY() + 3 - 1, this.boundingBox.maxZ(), CAVE_AIR, CAVE_AIR, false);
@@ -579,8 +574,6 @@ public class AcrotlestMineShaftPieces {
 						this.setPlanksBlock(pLevel, pBox, blockstate, j, i, k);
 					}
 				}
-
-				return true;
 			}
 		}
 
@@ -612,7 +605,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		protected void addAdditionalSaveData(ServerLevel pLevel, CompoundTag pTag) {
+		protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag pTag) {
 			pTag.putInt("MST", this.type.ordinal());
 		}
 
@@ -694,7 +687,7 @@ public class AcrotlestMineShaftPieces {
 			this.type = pType;
 		}
 
-		public AcrotlestMineShaftRoom(ServerLevel pLevel, CompoundTag pTag) {
+		public AcrotlestMineShaftRoom(CompoundTag pTag) {
 			super(StructurePieceTypes.MINE_SHAFT_ROOM, pTag);
 			BoundingBox.CODEC.listOf().parse(NbtOps.INSTANCE, pTag.getList("Entrances", 11)).resultOrPartial(AcrotlestMineShaftPieces.LOGGER::error).ifPresent(this.childEntranceBoxes::addAll);
 		}
@@ -763,10 +756,8 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public boolean postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-			if (this.edgesLiquid(pLevel, pBox)) {
-				return false;
-			} else {
+		public void postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+			if (!this.edgesLiquid(pLevel, pBox)) {
 				this.generateBox(pLevel, pBox, this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ(), this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.maxZ(), Blocks.DIRT.defaultBlockState(), CAVE_AIR, true);
 				this.generateBox(pLevel, pBox, this.boundingBox.minX(), this.boundingBox.minY() + 1, this.boundingBox.minZ(), this.boundingBox.maxX(), Math.min(this.boundingBox.minY() + 3, this.boundingBox.maxY()), this.boundingBox.maxZ(), CAVE_AIR, CAVE_AIR, false);
 
@@ -775,7 +766,6 @@ public class AcrotlestMineShaftPieces {
 				}
 
 				this.generateUpperHalfSphere(pLevel, pBox, this.boundingBox.minX(), this.boundingBox.minY() + 4, this.boundingBox.minZ(), this.boundingBox.maxX(), this.boundingBox.maxY(), this.boundingBox.maxZ(), CAVE_AIR, false);
-				return true;
 			}
 		}
 
@@ -790,8 +780,8 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		protected void addAdditionalSaveData(ServerLevel pLevel, CompoundTag pTag) {
-			super.addAdditionalSaveData(pLevel, pTag);
+		protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag pTag) {
+			super.addAdditionalSaveData(pContext, pTag);
 			BoundingBox.CODEC.listOf().encodeStart(NbtOps.INSTANCE, this.childEntranceBoxes).resultOrPartial(AcrotlestMineShaftPieces.LOGGER::error).ifPresent((p_162606_) -> {
 				pTag.put("Entrances", p_162606_);
 			});
@@ -804,7 +794,7 @@ public class AcrotlestMineShaftPieces {
 			this.setOrientation(pDirection);
 		}
 
-		public AcrotlestMineShaftStairs(ServerLevel pLevel, CompoundTag pTag) {
+		public AcrotlestMineShaftStairs(CompoundTag pTag) {
 			super(StructurePieceTypes.MINE_SHAFT_STAIRS, pTag);
 		}
 
@@ -854,18 +844,14 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public boolean postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-			if (this.edgesLiquid(pLevel, pBox)) {
-				return false;
-			} else {
+		public void postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+			if (!this.edgesLiquid(pLevel, pBox)) {
 				this.generateBox(pLevel, pBox, 0, 5, 0, 2, 7, 1, CAVE_AIR, CAVE_AIR, false);
 				this.generateBox(pLevel, pBox, 0, 0, 7, 2, 2, 8, CAVE_AIR, CAVE_AIR, false);
 
 				for(int i = 0; i < 5; ++i) {
 					this.generateBox(pLevel, pBox, 0, 5 - i - (i < 4 ? 1 : 0), 2 + i, 2, 7 - i, 2 + i, CAVE_AIR, CAVE_AIR, false);
 				}
-
-				return true;
 			}
 		}
 	}

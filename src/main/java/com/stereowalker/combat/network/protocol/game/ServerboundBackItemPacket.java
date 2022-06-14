@@ -8,14 +8,14 @@ import com.stereowalker.combat.world.inventory.SheathMenu;
 import com.stereowalker.combat.world.item.BackpackItem;
 import com.stereowalker.combat.world.item.QuiverItem;
 import com.stereowalker.combat.world.item.SheathItem;
-import com.stereowalker.unionlib.network.client.CUnionPacket;
+import com.stereowalker.unionlib.network.protocol.game.ServerboundUnionPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.item.ItemStack;
 
-public class ServerboundBackItemPacket extends CUnionPacket {
+public class ServerboundBackItemPacket extends ServerboundUnionPacket {
 
 	public ServerboundBackItemPacket() {
 		super(Combat.getInstance().channel);

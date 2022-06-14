@@ -9,7 +9,7 @@ import com.stereowalker.combat.tags.ItemCTags;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -106,14 +106,14 @@ public enum CTiers implements Tier
 	
 	//Forge Method
 	@Override
-	@javax.annotation.Nullable public net.minecraft.tags.Tag<net.minecraft.world.level.block.Block> getTag() { return getTagFromModdedTier(this); }
+	@javax.annotation.Nullable public net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> getTag() { return getTagFromModdedTier(this); }
 	
 	public static void handleModdedTiers() {
 		var pelgan = Combat.getInstance().location("pelgan");
 		TierSortingRegistry.registerTier(PELGAN, pelgan, List.of(new ResourceLocation("diamond")), List.of());
 	}
 
-    public static Tag<Block> getTagFromModdedTier(CTiers tier)
+    public static TagKey<Block> getTagFromModdedTier(CTiers tier)
     {
         return switch(tier)
                 {

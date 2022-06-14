@@ -7,6 +7,7 @@ import com.stereowalker.combat.tags.ItemCTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.TridentItem;
+import net.minecraftforge.common.ToolActions;
 
 public class ItemFilters {
 	public static final Predicate<ItemStack> THROWABLE_WEAPONS = (stack) -> {
@@ -25,14 +26,6 @@ public class ItemFilters {
 		return stack.getItem() instanceof HammerItem;
 	};
 
-	public static final Predicate<ItemStack> RINGS = (stack) -> {
-		return stack.getItem() instanceof AbstractRingItem;
-	};
-
-	public static final Predicate<ItemStack> NECKLACES = (stack) -> {
-		return stack.getItem() instanceof AbstractNecklaceItem;
-	};
-
 	public static final Predicate<ItemStack> SPELLBOOKS = (stack) -> {
 		return stack.getItem() instanceof AbstractSpellBookItem;
 	};
@@ -46,7 +39,7 @@ public class ItemFilters {
 	};
 
 	public static final Predicate<ItemStack> SHIELDS = (stack) -> {
-		return stack.isShield(null);
+		return stack.canPerformAction(ToolActions.SHIELD_BLOCK);
 	};
 
 	public static final Predicate<ItemStack> MELEE_WEAPONS = (stack) -> {

@@ -110,8 +110,8 @@ public abstract class AbstractElectricFurnaceBlockEntity extends AbstractEnergyC
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		compound.putInt("CookTime", this.cookTime);
 		compound.putInt("CookTimeTotal", this.cookTimeTotal);
 		ContainerHelper.saveAllItems(compound, this.items);
@@ -120,7 +120,6 @@ public abstract class AbstractElectricFurnaceBlockEntity extends AbstractEnergyC
 			compoundnbt.putInt(recipeId.toString(), craftedAmount);
 		});
 		compound.put("RecipesUsed", compoundnbt);
-		return compound;
 	}
 
 	@SuppressWarnings({ "unchecked", "resource" })

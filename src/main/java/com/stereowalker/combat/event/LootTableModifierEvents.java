@@ -12,6 +12,7 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -62,7 +63,7 @@ public class LootTableModifierEvents {
 	}
 
 	private static LootPool getInjectPool(String entryName) {
-		return LootPool.lootPool().add(getInjectEntry(entryName, 1)).bonusRolls(0.0F, 1.0F).name("combat_inject")
+		return LootPool.lootPool().add(getInjectEntry(entryName, 1)).setBonusRolls(UniformGenerator.between(0.0F, 1.0F)).name("combat_inject")
 				.build();
 	}
 

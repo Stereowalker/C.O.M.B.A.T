@@ -1,12 +1,13 @@
 package com.stereowalker.combat.event.handler;
 
 import com.stereowalker.combat.data.worldgen.BiomeCombatFeatures;
+import com.stereowalker.combat.tags.BiomeCTags;
 import com.stereowalker.combat.world.level.biome.CBiomes;
 
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -21,17 +22,14 @@ public class ModdedBiomeGeneration
 	{	
 		//TODO: Use The Helper Method For This Case
 		if ((event.getCategory() != Biome.BiomeCategory.NETHER && event.getCategory() != Biome.BiomeCategory.THEEND) || hasType(event, BiomeDictionary.Type.OVERWORLD)) {
-			if (event.getName().toString().equalsIgnoreCase(Biomes.LUKEWARM_OCEAN.location().toString()) || 
-					event.getName().toString().equalsIgnoreCase(Biomes.WARM_OCEAN.location().toString()) || 
-					event.getName().toString().equalsIgnoreCase(Biomes.DEEP_LUKEWARM_OCEAN.location().toString()) || 
-					event.getName().toString().equalsIgnoreCase(Biomes.DEEP_WARM_OCEAN.location().toString())) {
+			if (BuiltinRegistries.BIOME.getHolderOrThrow(ResourceKey.create(Registry.BIOME_REGISTRY, event.getName())).is(BiomeCTags.IS_WARM_OCEAN)) {
 				BiomeCombatFeatures.addLimestone(event.getGeneration());
 			}
 			BiomeCombatFeatures.addPasquem(event.getGeneration(), CBiomes.getDeadBiomes().contains(event.getName()));
 			BiomeCombatFeatures.addTridox(event.getGeneration(), CBiomes.getMagicBiomes().contains(event.getName()));
 			BiomeCombatFeatures.addYellowMagicClusters(event.getGeneration(), CBiomes.getMagicBiomes().contains(event.getName()));
 			BiomeCombatFeatures.addCassiterite(event.getGeneration());
-			BiomeCombatFeatures.addMagicStoneDeposits(event.getGeneration());
+//			BiomeCombatFeatures.addMagicStoneDeposits(event.getGeneration());
 			
 			if (hasTypeWithCategory(event, BiomeDictionary.Type.FOREST, Biome.BiomeCategory.FOREST)) 
 				BiomeCombatFeatures.addVampires(event.getSpawns());

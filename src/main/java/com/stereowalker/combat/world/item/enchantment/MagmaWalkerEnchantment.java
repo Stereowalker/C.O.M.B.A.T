@@ -52,7 +52,7 @@ public class MagmaWalkerEnchantment extends Enchantment{
 			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 			for(BlockPos blockpos : BlockPos.betweenClosed(pPos.offset((double)(-f), -1.0D, (double)(-f)), pPos.offset((double)f, -1.0D, (double)f))) {
-				if (blockpos.closerThan(pLiving.position(), (double)f)) {
+				if (blockpos.closerToCenterThan(pLiving.position(), (double)f)) {
 					blockpos$mutableblockpos.set(blockpos.getX(), blockpos.getY() + 1, blockpos.getZ());
 					BlockState blockstate1 = pLevel.getBlockState(blockpos$mutableblockpos);
 					if (blockstate1.isAir()) {
@@ -60,7 +60,7 @@ public class MagmaWalkerEnchantment extends Enchantment{
 						boolean isFull = blockstate2.getBlock() == Blocks.LAVA && blockstate2.getValue(LiquidBlock.LEVEL) == 0; //TODO: Forge, modded lava?
 						if (blockstate2.getMaterial() == Material.LAVA && isFull && blockstate.canSurvive(pLevel, blockpos) && pLevel.isUnobstructed(blockstate, blockpos, CollisionContext.empty()) && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(pLiving, net.minecraftforge.common.util.BlockSnapshot.create(pLevel.dimension(), pLevel, blockpos), Direction.UP)) {
 							pLevel.setBlockAndUpdate(blockpos, blockstate);
-							pLevel.getBlockTicks().scheduleTick(blockpos, Blocks.MAGMA_BLOCK, Mth.nextInt(pLiving.getRandom(), 60, 120));
+							pLevel.scheduleTick(blockpos, Blocks.MAGMA_BLOCK, Mth.nextInt(pLiving.getRandom(), 60, 120));
 						}
 					}
 				}

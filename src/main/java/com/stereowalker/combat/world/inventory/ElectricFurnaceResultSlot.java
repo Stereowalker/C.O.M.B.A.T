@@ -51,6 +51,6 @@ public class ElectricFurnaceResultSlot extends Slot {
       }
 
       this.removeCount = 0;
-      net.minecraftforge.fmllegacy.hooks.BasicEventHooks.firePlayerSmeltedEvent(this.player, stack);
+      net.minecraftforge.event.ForgeEventFactory.firePlayerSmeltedEvent(this.player, stack);
    }
 }

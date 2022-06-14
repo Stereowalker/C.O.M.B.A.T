@@ -1,13 +1,13 @@
 package com.stereowalker.combat.network.protocol.game;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.unionlib.network.client.CUnionPacket;
+import com.stereowalker.unionlib.network.protocol.game.ServerboundUnionPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Pose;
 
-public class ServerboundPronePacket extends CUnionPacket {
+public class ServerboundPronePacket extends ServerboundUnionPacket {
 	boolean isProne;
 
 	public ServerboundPronePacket(boolean isProneIn) {

@@ -73,9 +73,9 @@ public class MythrilChargerBlockEntity  extends AbstractEnergyConsumerBlockEntit
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		ContainerHelper.saveAllItems(compound, this.inventory);
-		return super.save(compound);
 	}
 
 	public ItemStack getItem() {
@@ -143,12 +143,14 @@ public class MythrilChargerBlockEntity  extends AbstractEnergyConsumerBlockEntit
 	@Override
 	@Nullable
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 13, this.getUpdateTag());
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return this.save(new CompoundTag());
+		CompoundTag compound = new CompoundTag();
+		this.saveAdditional(new CompoundTag());
+		return compound;
 	}
 
 	@Override

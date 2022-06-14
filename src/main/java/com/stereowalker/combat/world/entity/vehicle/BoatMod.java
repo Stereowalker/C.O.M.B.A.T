@@ -1,5 +1,7 @@
 package com.stereowalker.combat.world.entity.vehicle;
 
+import java.util.function.Supplier;
+
 import com.stereowalker.combat.world.entity.CEntityType;
 import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.level.block.CBlocks;
@@ -113,14 +115,14 @@ public class BoatMod extends Boat {
 	}
 
 	public static enum Type {
-		DEAD_OAK(CBlocks.DEAD_OAK_PLANKS, "dead_oak"),
-		AUSLDINE(CBlocks.AUSLDINE_PLANKS, "ausldine"), 
-		MONORIS(CBlocks.MONORIS_PLANKS, "monoris");
+		DEAD_OAK(() ->CBlocks.DEAD_OAK_PLANKS, "dead_oak"),
+		AUSLDINE(() ->CBlocks.AUSLDINE_PLANKS, "ausldine"), 
+		MONORIS(() ->CBlocks.MONORIS_PLANKS, "monoris");
 
 		private final String name;
-		private final Block planks;
+		private final Supplier<Block> planks;
 
-		private Type(Block p_38427_, String p_38428_) {
+		private Type(Supplier<Block> p_38427_, String p_38428_) {
 			this.name = p_38428_;
 			this.planks = p_38427_;
 		}
@@ -130,7 +132,7 @@ public class BoatMod extends Boat {
 		}
 
 		public Block getPlanks() {
-			return this.planks;
+			return this.planks.get();
 		}
 
 		public String toString() {

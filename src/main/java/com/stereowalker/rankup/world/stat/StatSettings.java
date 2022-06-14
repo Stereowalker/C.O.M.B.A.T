@@ -7,13 +7,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.stereowalker.combat.Combat;
+import com.stereowalker.unionlib.util.NBTHelper;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class StatSettings {
@@ -253,7 +253,7 @@ public class StatSettings {
 		this.effortValue = nbt.getDouble("effortValue");
 		
 		ImmutableMap.Builder<Attribute,Double> attributeMapIn = ImmutableMap.builder();
-		for (Tag nbt3 : nbt.getList("attributeMap", NBT.TAG_COMPOUND)) {
+		for (Tag nbt3 : nbt.getList("attributeMap", NBTHelper.NbtType.CompoundNBT)) {
 			CompoundTag nbt2 = (CompoundTag)nbt3;
 			attributeMapIn.put(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(nbt2.getString("attribute"))), nbt2.getDouble("value"));
 		}

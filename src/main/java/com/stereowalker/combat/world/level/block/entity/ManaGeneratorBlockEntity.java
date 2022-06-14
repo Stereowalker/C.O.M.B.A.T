@@ -68,9 +68,9 @@ public class ManaGeneratorBlockEntity extends AbstractEnergyGeneratorBlockEntity
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		ContainerHelper.saveAllItems(compound, this.inventory);
-		return super.save(compound);
 	}
 
 	@Override

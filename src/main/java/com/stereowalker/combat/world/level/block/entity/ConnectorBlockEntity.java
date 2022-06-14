@@ -107,13 +107,13 @@ public class ConnectorBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		if (isConnected()){
 			compound.putInt("conX", this.getConnection().getX());
 			compound.putInt("conY", this.getConnection().getY());
 			compound.putInt("conZ", this.getConnection().getZ());
 		}
-		return super.save(compound);
 	}
 
 	@Nullable
@@ -136,12 +136,14 @@ public class ConnectorBlockEntity extends BlockEntity {
 	@Override
 	@Nullable
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 13, this.getUpdateTag());
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return this.save(new CompoundTag());
+		CompoundTag compound = new CompoundTag();
+		this.saveAdditional(compound);
+		return compound;
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import com.stereowalker.combat.world.item.AbstractMagicCastingItem;
 import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.item.crafting.AbstractArcaneWorkbenchRecipe;
 import com.stereowalker.combat.world.item.crafting.CRecipeType;
-import com.stereowalker.unionlib.item.UItems;
+import com.stereowalker.unionlib.world.item.UItems;
 
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;

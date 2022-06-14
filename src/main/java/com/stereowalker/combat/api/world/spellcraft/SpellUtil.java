@@ -267,7 +267,6 @@ public class SpellUtil {
 		return false;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static boolean canEntityCastSpell(LivingEntity entity, Spell spell, double costModifier) {
 		boolean isAvailable = false;
 		if (!entity.hasEffect(CMobEffects.MAGIC_JAMMING) && !CombatEntityStats.getSpellStats(entity, spell).onCooldown()) isAvailable = true;
@@ -279,22 +278,7 @@ public class SpellUtil {
 					if (spell.getCategory() == SpellCategory.BLOOD) {
 						return true;
 					}
-					if (spell.getCategory() == SpellCategory.FIRE && AccessoryItemCheck.isEquipped(player, CItems.PYROMANCER_RING)) {
-						return canDecrementMana(player, spell, costModifier);
-					}
-					else if (spell.getCategory() == SpellCategory.WATER && AccessoryItemCheck.isEquipped(player, CItems.HYDROMANCER_RING)) {
-						return canDecrementMana(player, spell, costModifier);
-					}
-					else if (spell.getCategory() == SpellCategory.LIGHTNING && AccessoryItemCheck.isEquipped(player, CItems.ELECTROMANCER_RING)) {
-						return canDecrementMana(player, spell, costModifier);
-					}
-					else if (spell.getCategory() == SpellCategory.EARTH && AccessoryItemCheck.isEquipped(player, CItems.TERRAMANCER_RING)) {
-						return canDecrementMana(player, spell, costModifier);
-					}
-					else if (spell.getCategory() == SpellCategory.WIND && AccessoryItemCheck.isEquipped(player, CItems.AEROMANCER_RING)) {
-						return canDecrementMana(player, spell, costModifier);
-					}
-					else if (spell.getCategory() == SpellCategory.NONE) {
+					if (spell.getCategory() == SpellCategory.NONE) {
 						return canDecrementMana(player, spell, costModifier);
 					}
 					else if ((SpellCategory.canAccessElementalAffinity(player, spell.getCategory()) || spell.getCategory() == CombatEntityStats.getPrimevalAffinity(player))) {

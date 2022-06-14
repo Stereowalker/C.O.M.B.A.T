@@ -31,7 +31,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class Ray extends Entity {
 	protected static final EntityDataAccessor<CompoundTag> SPELL = SynchedEntityData.defineId(Ray.class, EntityDataSerializers.COMPOUND_TAG);

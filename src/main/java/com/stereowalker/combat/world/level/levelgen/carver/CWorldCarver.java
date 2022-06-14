@@ -3,16 +3,12 @@ package com.stereowalker.combat.world.level.levelgen.carver;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.data.worldgen.CCarvers;
 
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -33,9 +29,7 @@ public abstract class CWorldCarver {
 			Combat.debug("World Carver: \""+feature.getRegistryName().toString()+"\" registered");
 		}
 		
-		for(Pair<String,ConfiguredWorldCarver<?>> configuredCarver: CCarvers.CONFIGURED_CARVERS) {
-			BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_CARVER, Combat.getInstance().locationString(configuredCarver.getKey()), configuredCarver.getValue());
-		}
+		new CCarvers();
 		Combat.debug("All World Carvers Registered");
 	}
 }

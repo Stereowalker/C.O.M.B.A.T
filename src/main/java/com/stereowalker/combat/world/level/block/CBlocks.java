@@ -7,7 +7,7 @@ import java.util.function.ToIntFunction;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.core.particles.CParticleTypes;
 import com.stereowalker.combat.world.item.CCreativeModeTab;
-import com.stereowalker.combat.world.level.block.grower.AusldineTree;
+import com.stereowalker.combat.world.level.block.grower.AusldineTreeGrower;
 import com.stereowalker.combat.world.level.block.grower.MonorisTreeGrower;
 import com.stereowalker.combat.world.level.block.state.properties.CWoodType;
 import com.stereowalker.combat.world.level.material.CFluids;
@@ -51,8 +51,8 @@ public class CBlocks {
 	public static final List<CreativeModeTab> CREATIVE_MODE_TABS = new ArrayList<CreativeModeTab>();
 	public static final List<Block> BLOCKITEMS = new ArrayList<Block>();
 	//-Fluids-\\
-	public static final Block OIL = register("oil", new LiquidCBlock((FlowingFluid) CFluids.OIL, Block.Properties.of(CMaterial.OIL).noCollission().strength(100.0F).lootFrom(() -> Blocks.AIR)));
-	public static final Block BIABLE = register("biable", new LiquidCBlock((FlowingFluid) CFluids.BIABLE, Block.Properties.of(CMaterial.BIABLE).noCollission().strength(100.0F).lootFrom(() -> Blocks.AIR)));
+	public static final Block OIL = register("oil", new LiquidCBlock(() ->(FlowingFluid) CFluids.OIL, Block.Properties.of(CMaterial.OIL).noCollission().strength(100.0F).lootFrom(() -> Blocks.AIR)));
+	public static final Block BIABLE = register("biable", new LiquidCBlock(() ->(FlowingFluid) CFluids.BIABLE, Block.Properties.of(CMaterial.BIABLE).noCollission().strength(100.0F).lootFrom(() -> Blocks.AIR)));
 	//-Acrotlest Blocks-\\
 	public static final Block MEZEPINE = register("mezepine", new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final Block SLYAPHY = register("slyaphy", new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(2.0F, 6.0F)));
@@ -94,7 +94,7 @@ public class CBlocks {
 	public static final Block AUSLDINE_PLANKS = register("ausldine_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_PODIUM = register("ausldine_podium", new PodiumBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final Block AUSLDINE_PRESSURE_PLATE = register("ausldine_pressure_plate", CreativeModeTab.TAB_REDSTONE, new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final Block AUSLDINE_SAPLING = register("ausldine_sapling", CCreativeModeTab.COMBAT_TAB_MISC, new MagicSaplingBlock(new AusldineTree(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
+	public static final Block AUSLDINE_SAPLING = register("ausldine_sapling", CCreativeModeTab.COMBAT_TAB_MISC, new MagicSaplingBlock(new AusldineTreeGrower(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
 	public static final Block AUSLDINE_SIGN = register("ausldine_sign", new CStandingSignBlock(Block.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD), CWoodType.AUSLDINE));
 	public static final Block AUSLDINE_SLAB = register("ausldine_slab", CCreativeModeTab.BUILDING_BLOCKS, new SlabBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_STAIRS = register("ausldine_stairs", CCreativeModeTab.BUILDING_BLOCKS, new StairBlock(() -> CBlocks.AUSLDINE_PLANKS.defaultBlockState(), Block.Properties.copy(CBlocks.AUSLDINE_PLANKS)));
@@ -144,7 +144,8 @@ public class CBlocks {
 	public static final Block REZAL_LOG = register("rezal_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.COLOR_RED, MaterialColor.COLOR_GREEN));
 	public static final Block REZAL_PLANKS = register("rezal_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block REZAL_WOOD = register("rezal_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN).strength(2.0F).sound(SoundType.WOOD)));
-
+	public static final Block REZAL_SAPLING = register("rezal_sapling", CCreativeModeTab.COMBAT_TAB_MISC, new MagicSaplingBlock(new MonorisTreeGrower(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
+	
 	//Minecraft Wood
 	//Oak
 	public static final Block OAK_BEAM = register("oak_beam", new BeamBlock(Block.Properties.of(Material.WOOD, MaterialColor.WOOD).sound(SoundType.WOOD).strength(1.0F, 2.0F)));

@@ -1,7 +1,7 @@
 package com.stereowalker.rankup.network.protocol.game;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.unionlib.network.server.SUnionPacket;
+import com.stereowalker.unionlib.network.protocol.game.ClientboundUnionPacket;
 
 import net.minecraft.Util;
 import net.minecraft.client.player.LocalPlayer;
@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ClientboundPlayerDisplayStatPacket extends SUnionPacket {
+public class ClientboundPlayerDisplayStatPacket extends ClientboundUnionPacket {
 	Component component;
 	
 	public ClientboundPlayerDisplayStatPacket(Component componentIn) {

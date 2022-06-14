@@ -23,7 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class ArchArrow extends AbstractArrow {
 	private static final EntityDataAccessor<Integer> TYPE = SynchedEntityData.defineId(ArchArrow.class, EntityDataSerializers.INT);

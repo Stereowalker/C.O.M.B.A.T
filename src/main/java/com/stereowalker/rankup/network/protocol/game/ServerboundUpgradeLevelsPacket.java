@@ -14,7 +14,7 @@ import com.stereowalker.unionlib.util.EntityHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 public class ServerboundUpgradeLevelsPacket {
 	private Stat level;

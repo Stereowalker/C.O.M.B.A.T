@@ -33,7 +33,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 @Mixin(LayerDefinitions.class)
 public class LayerDefinitionsMixin {
 
-	@Inject(method = "createRoots", at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/model/ArmorStandModel;createBodyLayer()Lnet/minecraft/client/model/geom/builders/LayerDefinition;"), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(id = "registerCombatLayers", method = "createRoots", at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/client/model/ArmorStandModel;createBodyLayer()Lnet/minecraft/client/model/geom/builders/LayerDefinition;"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void inject_createRoots(CallbackInfoReturnable<Map<ModelLayerLocation, LayerDefinition>> cir, Builder<ModelLayerLocation, LayerDefinition> builder, LayerDefinition layerdefinition, LayerDefinition layerdefinition1, LayerDefinition layerdefinition2, LayerDefinition layerdefinition3) {
 		builder.put(CModelLayers.BACKPACK, BackpackModel.createLayer());
 		builder.put(CModelLayers.BIOG, BiogModel.createBodyLayer());

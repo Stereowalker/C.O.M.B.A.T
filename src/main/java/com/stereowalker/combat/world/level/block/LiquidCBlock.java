@@ -1,5 +1,7 @@
 package com.stereowalker.combat.world.level.block;
 
+import java.util.function.Supplier;
+
 import com.stereowalker.combat.world.effect.CMobEffects;
 
 import net.minecraft.core.BlockPos;
@@ -15,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 
 public class LiquidCBlock extends LiquidBlock {
-	public LiquidCBlock(FlowingFluid pFluid, Properties pProperties) {
+	public LiquidCBlock(Supplier<FlowingFluid> pFluid, Properties pProperties) {
 		super(pFluid, pProperties);
 	}
 
@@ -31,12 +33,11 @@ public class LiquidCBlock extends LiquidBlock {
 	}
 	
 	@Override
-	public void catchFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
+	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
 		if (this == CBlocks.OIL) {
 			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 10, true, Explosion.BlockInteraction.BREAK);
 			world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 		}
-		super.catchFire(state, world, pos, face, igniter);
+		super.onCaughtFire(state, world, pos, face, igniter);
 	}
-
 }

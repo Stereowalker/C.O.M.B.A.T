@@ -40,7 +40,7 @@ public class AcrotlestEvents {
 		int j = chunkpos.getMinBlockZ();
 		BlockPos blockpos2 = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, world.getBlockRandomPos(i, 0, j, 15));
 		BlockPos blockpos3 = blockpos2.below();
-		Biome biome = world.getBiome(blockpos2);
+		Biome biome = world.getBiome(blockpos2).value();
 		if (world.isAreaLoaded(blockpos2, 1)) // Forge: check area to avoid loading neighbors in unloaded chunks
 			if (doesWaterFreeze(biome, world, blockpos3)) {
 				world.setBlockAndUpdate(blockpos3, CBlocks.GROPAPY.defaultBlockState());
@@ -52,7 +52,7 @@ public class AcrotlestEvents {
 	}
 
 	public static boolean doesWaterFreeze(Biome biome, LevelReader worldIn, BlockPos water, boolean mustBeAtEdge) {
-		if (biome.getTemperature(water) >= 0.15F) {
+		if (biome.warmEnoughToRain(water)) {
 			return false;
 		} else {
 			if (water.getY() >= 0 && water.getY() < 256 && worldIn.getBrightness(LightLayer.BLOCK, water) < 10) {

@@ -27,7 +27,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.network.NetworkDirection;
 
 @OnlyIn(Dist.CLIENT)
 public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row> {

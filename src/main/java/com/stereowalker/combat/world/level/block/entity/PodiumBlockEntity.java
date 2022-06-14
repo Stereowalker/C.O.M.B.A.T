@@ -47,10 +47,9 @@ public class PodiumBlockEntity extends BlockEntity implements Clearable {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag pTag) {
-		super.save(pTag);
+	public void saveAdditional(CompoundTag pTag) {
+		super.saveAdditional(pTag);
 		ContainerHelper.saveAllItems(pTag, this.items, false);
-		return pTag;
 	}
 
 	public NonNullList<ItemStack> getItems() {
@@ -132,7 +131,7 @@ public class PodiumBlockEntity extends BlockEntity implements Clearable {
 	 */
 	@Nullable
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 13, this.getUpdateTag());
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	/**
@@ -141,7 +140,9 @@ public class PodiumBlockEntity extends BlockEntity implements Clearable {
 	 */
 	@Override
 	public CompoundTag getUpdateTag() {
-		return this.save(new CompoundTag());
+		CompoundTag compound = new CompoundTag();
+		this.saveAdditional(new CompoundTag());
+		return compound;
 	}
 
 	@Override

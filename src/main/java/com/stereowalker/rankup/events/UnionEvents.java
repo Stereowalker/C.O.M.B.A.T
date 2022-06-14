@@ -1,5 +1,6 @@
 package com.stereowalker.rankup.events;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -8,10 +9,10 @@ import com.stereowalker.rankup.AccessoryModifiers;
 import com.stereowalker.rankup.AccessoryStats;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.world.stat.StatProfile;
-import com.stereowalker.unionlib.UnionLib;
-import com.stereowalker.unionlib.item.AccessoryItem;
-import com.stereowalker.unionlib.item.AccessoryItem.AccessorySlotType;
+import com.stereowalker.unionlib.entity.AccessorySlot;
+import com.stereowalker.unionlib.entity.player.CustomInventoryGetter;
 import com.stereowalker.unionlib.util.ModHelper;
+import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber
 public class UnionEvents {
-	static List<AccessorySlotType> useable_ids = Lists.newArrayList(AccessorySlotType.RING, AccessorySlotType.NECKLACE);
+	static List<AccessorySlot> useable_ids = Lists.newArrayList(AccessorySlot.FINGER_1, AccessorySlot.FINGER_2, AccessorySlot.NECK_1);
 
 	@SubscribeEvent
 	public static void addEffectsToAccessories(LivingUpdateEvent event) {
@@ -67,18 +68,18 @@ public class UnionEvents {
 	
 	public static void addEffectsToAccessory(Player player) {
 		if (player != null) {
-			if (!UnionLib.getAccessoryInventory(player).getFirstRing().isEmpty())
-				AccessoryStats.addModifier(UnionLib.getAccessoryInventory(player).getFirstRing());
-			if (!UnionLib.getAccessoryInventory(player).getSecondRing().isEmpty())
-				AccessoryStats.addModifier(UnionLib.getAccessoryInventory(player).getSecondRing());
-			if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof AccessoryItem && useable_ids.contains(((AccessoryItem)player.getItemInHand(InteractionHand.OFF_HAND).getItem()).getAccessoryType())) {
+			for (AccessorySlot slot : AccessorySlot.values()) {
+				if (!((CustomInventoryGetter)player).getUnionInventory().getAccessory(slot).isEmpty())
+					AccessoryStats.addModifier(((CustomInventoryGetter)player).getUnionInventory().getAccessory(slot));
+			}
+			if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof AccessoryItem && !Collections.disjoint(useable_ids, ((AccessoryItem)player.getItemInHand(InteractionHand.OFF_HAND).getItem()).getAccessorySlots())) {
 				AccessoryStats.addModifier(player.getItemInHand(InteractionHand.OFF_HAND));
-			} else if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AccessoryItem && useable_ids.contains(((AccessoryItem)player.getItemInHand(InteractionHand.MAIN_HAND).getItem()).getAccessoryType())) {
+			} else if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AccessoryItem && !Collections.disjoint(useable_ids, ((AccessoryItem)player.getItemInHand(InteractionHand.MAIN_HAND).getItem()).getAccessorySlots())) {
 				AccessoryStats.addModifier(player.getItemInHand(InteractionHand.MAIN_HAND));
 			} else {
 				for(int i = 0; i < player.getInventory().getContainerSize(); ++i) {
 					ItemStack itemstack = player.getInventory().getItem(i);
-					if (itemstack.getItem() instanceof AccessoryItem && useable_ids.contains(((AccessoryItem)itemstack.getItem()).getAccessoryType())) {
+					if (itemstack.getItem() instanceof AccessoryItem && !Collections.disjoint(useable_ids, ((AccessoryItem)itemstack.getItem()).getAccessorySlots())) {
 						AccessoryStats.addModifier(itemstack);
 					}
 				}
@@ -91,10 +92,10 @@ public class UnionEvents {
 			for (AccessoryModifiers modifier : AccessoryModifiers.values()) {
 				if (modifier != AccessoryModifiers.NONE && modifier != null) {
 					int level = 0;
-					if (modifier.equals(AccessoryStats.getModifier(UnionLib.getAccessoryInventory(player).getFirstRing()))) level++;
-					if (modifier.equals(AccessoryStats.getModifier(UnionLib.getAccessoryInventory(player).getSecondRing()))) level++;
-					if (modifier.equals(AccessoryStats.getModifierDebuff(UnionLib.getAccessoryInventory(player).getFirstRing()))) level++;
-					if (modifier.equals(AccessoryStats.getModifierDebuff(UnionLib.getAccessoryInventory(player).getSecondRing()))) level++;
+					for (AccessorySlot slot : AccessorySlot.values()) {
+						if (modifier.equals(AccessoryStats.getModifier(((CustomInventoryGetter)player).getUnionInventory().getAccessory(slot))))level++;
+						if (modifier.equals(AccessoryStats.getModifierDebuff(((CustomInventoryGetter)player).getUnionInventory().getAccessory(slot))))level++;
+					}
 
 					Stat stat = modifier.getStat();
 					if (level > 0) {

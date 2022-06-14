@@ -12,7 +12,7 @@ import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.combat.world.item.ItemFilters;
 import com.stereowalker.old.combat.config.Config;
-import com.stereowalker.unionlib.item.AccessoryItem;
+import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

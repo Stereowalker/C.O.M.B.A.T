@@ -13,6 +13,5 @@ public class Rankup {
 	public ImmutableMap<Stat,StatSettings> CLIENT_STATS = ImmutableMap.of();
 	
 	public Rankup() {
-		RankupNetRegistry.registerMessages();
 	}
 }

@@ -34,13 +34,11 @@ public class DisenchantmentTableBlockEntity extends BlockEntity implements Namea
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag pCompound) {
-		super.save(pCompound);
+	public void saveAdditional(CompoundTag pCompound) {
+		super.saveAdditional(pCompound);
 		if (this.hasCustomName()) {
 			pCompound.putString("CustomName", Component.Serializer.toJson(this.name));
 		}
-
-		return pCompound;
 	}
 
 	@Override

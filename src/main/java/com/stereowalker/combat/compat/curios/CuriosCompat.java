@@ -15,8 +15,8 @@ import com.stereowalker.combat.world.item.BackpackItem;
 import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.item.QuiverItem;
 import com.stereowalker.combat.world.item.SheathItem;
-import com.stereowalker.unionlib.item.AccessoryItem;
 import com.stereowalker.unionlib.util.ModHelper;
+import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;

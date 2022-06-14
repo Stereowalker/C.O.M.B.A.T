@@ -123,7 +123,7 @@ public class FrostbiteSword extends Item implements LegendaryGear {
 				BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 				for(BlockPos blockpos : BlockPos.betweenClosed(pos.offset((double)(-f), (double)(-f), (double)(-f)), pos.offset((double)f, (double)f, (double)f))) {
-					if (blockpos.closerThan(living.position(), (double)f)) {
+					if (blockpos.closerToCenterThan(living.position(), (double)f)) {
 						blockpos$mutableblockpos.set(blockpos.getX(), blockpos.getY(), blockpos.getZ());
 						BlockState blockstate1 = worldIn.getBlockState(blockpos$mutableblockpos);
 						if (blockstate1.getBlock() == Blocks.WATER) {
@@ -131,7 +131,7 @@ public class FrostbiteSword extends Item implements LegendaryGear {
 							//							boolean isFull = blockstate2.getBlock() == Blocks.WATER && blockstate2.get(FlowingFluidBlock.LEVEL) == 0; //TODO: Forge, modded waters?
 							//							if (blockstate2.getMaterial() == Material.WATER && isFull && blockstate.isValidPosition(worldIn, blockpos) && worldIn.func_217350_a(blockstate, blockpos, ISelectionContext.dummy()) && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(living, new net.minecraftforge.common.util.BlockSnapshot(worldIn, blockpos, blockstate2), net.minecraft.util.Direction.UP)) {
 							worldIn.setBlockAndUpdate(blockpos, blockstate);
-							worldIn.getBlockTicks().scheduleTick(blockpos, Blocks.ICE, Mth.nextInt(living.getRandom(), 60, 120));
+							worldIn.scheduleTick(blockpos, Blocks.ICE, Mth.nextInt(living.getRandom(), 60, 120));
 							//							}
 						}
 					}

@@ -54,9 +54,9 @@ public class CardboardBoxBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
-		return saveToTag(compound);
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
+		compound = saveToTag(compound);
 	}
 	
 	public CompoundTag saveToTag(CompoundTag compound) {

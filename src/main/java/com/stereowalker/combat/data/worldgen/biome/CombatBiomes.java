@@ -1,14 +1,14 @@
 package com.stereowalker.combat.data.worldgen.biome;
 
 import com.stereowalker.combat.data.worldgen.BiomeCombatFeatures;
-import com.stereowalker.combat.data.worldgen.CFeatures;
-import com.stereowalker.combat.data.worldgen.CSurfaceBuilders;
+//import com.stereowalker.combat.data.worldgen.CSurfaceBuilders;
+import com.stereowalker.combat.data.worldgen.placement.CVegetationPlacements;
+import com.stereowalker.combat.data.worldgen.placement.MiscAcrotlestPlacements;
 import com.stereowalker.combat.world.entity.CEntityType;
-import com.stereowalker.combat.world.level.levelgen.surfacebuilders.CSurfaceBuilder;
+//import com.stereowalker.combat.world.level.levelgen.surfacebuilders.CSurfaceBuilder;
 
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.Features;
-import net.minecraft.data.worldgen.StructureFeatures;
+import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
@@ -17,8 +17,8 @@ import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+//import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
+//import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
 
 public class CombatBiomes {
 	public static Biome makeDeadForestBiome(float depth, boolean isPlains) {
@@ -35,16 +35,29 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 20, 2, 8));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 10, 2, 2));
 
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder()).surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.DEFAULT, SurfaceBuilder.CONFIG_GRASS));
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+																													 * .surfaceBuilder
+																													 * (
+																													 * new
+																													 * ConfiguredSurfaceBuilder
+																													 * <
+																													 * >
+																													 * (
+																													 * SurfaceBuilder
+																													 * .
+																													 * DEFAULT,
+																													 * SurfaceBuilder
+																													 * .
+																													 * CONFIG_GRASS
+																													 * )
+																													 * )
+																													 */;
 		//		BiomeDefaultFeatures.func_235196_b_(this);
-		biomegenerationsettings$builder.addStructureStart(StructureFeatures.RUINED_PORTAL_STANDARD);
-		BiomeDefaultFeatures.addDefaultCarvers(biomegenerationsettings$builder);
-		//		BiomeDefaultFeatures.addStructures(this);
-		BiomeDefaultFeatures.addDefaultLakes(biomegenerationsettings$builder);
+		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultMonsterRoom(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addDeadOres(biomegenerationsettings$builder);
-		if (!isPlains) biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CFeatures.TREES_DEAD_OAK);
+		if (!isPlains) biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CVegetationPlacements.TREES_DEAD_OAK);
 		BiomeDefaultFeatures.addShatteredSavannaGrass(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addFossilDecoration(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultMushrooms(biomegenerationsettings$builder);
@@ -53,7 +66,8 @@ public class CombatBiomes {
 		BiomeDefaultFeatures.addDefaultSprings(biomegenerationsettings$builder);
 		//		      BiomeDefaultFeatures.func_222297_ap(this);
 
-		return (new Biome.BiomeBuilder())/**/.depth(depth).precipitation(Biome.Precipitation.RAIN).scale(0.2F).temperature(0.7F).downfall(0.8F).biomeCategory(isPlains?Biome.BiomeCategory.PLAINS:Biome.BiomeCategory.FOREST)/**/.specialEffects(getDeadAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.RAIN)
+				/* .scale(0.2F) */.temperature(0.7F).downfall(0.8F).biomeCategory(isPlains?Biome.BiomeCategory.PLAINS:Biome.BiomeCategory.FOREST)/**/.specialEffects(getDeadAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 
 	}
 
@@ -70,7 +84,13 @@ public class CombatBiomes {
 
 		MobSpawnSettings.Builder mobspawninfo$builder = (new MobSpawnSettings.Builder()).addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SQUID, 2, 1, 4)).addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.LICHU, 50, 6, 6));
 		BiomeDefaultFeatures.caveSpawns(mobspawninfo$builder);
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder()).surfaceBuilder(CSurfaceBuilders.PURIFIED_GRASS);
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+																													 * .surfaceBuilder
+																													 * (
+																													 * CSurfaceBuilders
+																													 * .
+																													 * PURIFIED_GRASS)
+																													 */;
 //		biomegenerationsettings$builder.addStructureStart(StructureFeatures.field_244136_b);
 //		biomegenerationsettings$builder.addStructureStart(StructureFeatures.field_244159_y);
 //		BiomeDefaultFeatures.addDefaultCarvers(biomegenerationsettings$builder);
@@ -90,7 +110,7 @@ public class CombatBiomes {
 //		}
 
 		BiomeDefaultFeatures.addSurfaceFreezing(biomegenerationsettings$builder);
-		return (new Biome.BiomeBuilder()).precipitation(isSnowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).biomeCategory(Biome.BiomeCategory.RIVER).depth(depth).scale(scale).temperature(temperature).downfall(0.5F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+		return (new Biome.BiomeBuilder()).precipitation(isSnowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).biomeCategory(Biome.BiomeCategory.RIVER).temperature(temperature).downfall(0.5F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 
 	public static Biome makeMagicalBiome(float depth, boolean isPlains) {
@@ -113,20 +133,37 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 10, 1, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1));
 
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder()).surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.DEFAULT, CSurfaceBuilder.ELYCEN_CALTAS_GRAVEL_CONFIG));
-		BiomeDefaultFeatures.addDefaultCarvers(biomegenerationsettings$builder);
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+																													 * .surfaceBuilder
+																													 * (
+																													 * new
+																													 * ConfiguredSurfaceBuilder
+																													 * <
+																													 * >
+																													 * (
+																													 * SurfaceBuilder
+																													 * .
+																													 * DEFAULT,
+																													 * CSurfaceBuilder
+																													 * .
+																													 * ELYCEN_CALTAS_GRAVEL_CONFIG
+																													 * )
+																													 * )
+																													 */;
+		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addSurfaceFreezing(biomegenerationsettings$builder);
-		biomegenerationsettings$builder.addStructureStart(StructureFeatures.RUINED_PORTAL_STANDARD);
-		BiomeDefaultFeatures.addDefaultLakes(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultMonsterRoom(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addShatteredSavannaGrass(biomegenerationsettings$builder);
-		if (!isPlains) biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CFeatures.TREES_MAGICAL);
+		if (!isPlains) biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CVegetationPlacements.TREES_MAGICAL);
 		BiomeDefaultFeatures.addDefaultExtraVegetation(biomegenerationsettings$builder);
 		//DE BiomeDefaultFeatures.addSparseGrass(this);
 
-		BiomeDefaultFeatures.addDefaultOverworldLandStructures(biomegenerationsettings$builder);
+		/*
+		 * BiomeDefaultFeatures.addDefaultOverworldLandStructures(
+		 * biomegenerationsettings$builder);
+		 */
 		//		BiomeDefaultFeatures.withForestRocks(biomegenerationsettings$builder);
 		//		BiomeDefaultFeatures.withLargeFern(biomegenerationsettings$builder);
 		//		BiomeDefaultFeatures.addDefaultSoftDisks(biomegenerationsettings$builder);
@@ -137,7 +174,8 @@ public class CombatBiomes {
 		//		BiomeDefaultFeatures.withSparseBerries(biomegenerationsettings$builder);
 
 
-		return (new Biome.BiomeBuilder())/**/.depth(depth).downfall(50F).precipitation(Biome.Precipitation.RAIN).scale(0.10F).temperature(0.1F).biomeCategory(isPlains?Biome.BiomeCategory.PLAINS:Biome.BiomeCategory.FOREST)/**/.specialEffects(getMagicAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+		return (new Biome.BiomeBuilder()).downfall(50F).precipitation(Biome.Precipitation.RAIN)
+				/* .scale(0.10F) */.temperature(0.1F).biomeCategory(isPlains?Biome.BiomeCategory.PLAINS:Biome.BiomeCategory.FOREST)/**/.specialEffects(getMagicAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 	
 	public static Biome makeAcrotlestForestBiome(float depth) {
@@ -151,7 +189,23 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.BIOG, 100, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.LICHU, 50, 6, 6));
 
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder()).surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.DEFAULT, CSurfaceBuilder.PURIFIED_GRASS_PURIFIED_DIRT_GRAVEL_CONFIG));
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+																													 * .surfaceBuilder
+																													 * (
+																													 * new
+																													 * ConfiguredSurfaceBuilder
+																													 * <
+																													 * >
+																													 * (
+																													 * SurfaceBuilder
+																													 * .
+																													 * DEFAULT,
+																													 * CSurfaceBuilder
+																													 * .
+																													 * PURIFIED_GRASS_PURIFIED_DIRT_GRAVEL_CONFIG
+																													 * )
+																													 * )
+																													 */;
 		
 		BiomeCombatFeatures.addAcrotlestCarvers(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestStructures(biomegenerationsettings$builder);
@@ -162,17 +216,18 @@ public class CombatBiomes {
 		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestOres(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultSoftDisks(biomegenerationsettings$builder);
-		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CFeatures.TREES_MONORIS);
+		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CVegetationPlacements.TREES_MONORIS);
 		BiomeDefaultFeatures.addDefaultFlowers(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addShatteredSavannaGrass(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultExtraVegetation(biomegenerationsettings$builder);
-		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, CFeatures.TSUNE_SPIKE);
-		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, Features.ICE_PATCH);
-		BiomeDefaultFeatures.addDefaultSprings(biomegenerationsettings$builder);
+		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, MiscAcrotlestPlacements.TSUNE_SPIKE);
+		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, MiscOverworldPlacements.ICE_PATCH);
+		BiomeCombatFeatures.addAcrotlestSprings(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addSurfaceFreezing(biomegenerationsettings$builder);
 
 
-		return (new Biome.BiomeBuilder()).depth(depth).downfall(0.8F).precipitation(Biome.Precipitation.SNOW).scale(0.2F).temperature(0.1F).biomeCategory(Biome.BiomeCategory.FOREST).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+		return (new Biome.BiomeBuilder()).downfall(0.8F).precipitation(Biome.Precipitation.SNOW)
+				/* .scale(0.2F) */.temperature(0.1F).biomeCategory(Biome.BiomeCategory.FOREST).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 	
 	public static Biome makeAcrotlestMountainsBiome(float depth) {
@@ -186,7 +241,23 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.BIOG, 100, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.LICHU, 50, 6, 6));
 		
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder()).surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.DEFAULT, CSurfaceBuilder.PURIFIED_GRASS_PURIFIED_DIRT_GRAVEL_CONFIG));
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+																													 * .surfaceBuilder
+																													 * (
+																													 * new
+																													 * ConfiguredSurfaceBuilder
+																													 * <
+																													 * >
+																													 * (
+																													 * SurfaceBuilder
+																													 * .
+																													 * DEFAULT,
+																													 * CSurfaceBuilder
+																													 * .
+																													 * PURIFIED_GRASS_PURIFIED_DIRT_GRAVEL_CONFIG
+																													 * )
+																													 * )
+																													 */;
 		BiomeCombatFeatures.addAcrotlestStructures(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestPortal(biomegenerationsettings$builder, true);
 		BiomeCombatFeatures.addEtherionTower(biomegenerationsettings$builder, true);
@@ -197,13 +268,14 @@ public class CombatBiomes {
 		BiomeCombatFeatures.addAcrotlestOres(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultSoftDisks(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultFlowers(biomegenerationsettings$builder);
-		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, CFeatures.TSUNE_SPIKE);
-		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, Features.ICE_PATCH);
+		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, MiscAcrotlestPlacements.TSUNE_SPIKE);
+		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, MiscOverworldPlacements.ICE_PATCH);
 		BiomeDefaultFeatures.addShatteredSavannaGrass(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultSprings(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addSurfaceFreezing(biomegenerationsettings$builder);
 
-		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW).biomeCategory(Biome.BiomeCategory.ICY).depth(depth).scale(0.3F).temperature(0.0F).downfall(0.8F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW).biomeCategory(Biome.BiomeCategory.ICY)
+				/* .scale(0.3F) */.temperature(0.0F).downfall(0.8F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 	
 	public static Biome makeHisovSandsBiome(float depth) {
@@ -217,7 +289,23 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.RED_BIOG, 25, 1, 1));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.LICHU, 50, 6, 6));
 		
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder()).surfaceBuilder(new ConfiguredSurfaceBuilder<>(SurfaceBuilder.DEFAULT, CSurfaceBuilder.HOMSE_HOMSE_GRAVEL_CONFIG));
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+																													 * .surfaceBuilder
+																													 * (
+																													 * new
+																													 * ConfiguredSurfaceBuilder
+																													 * <
+																													 * >
+																													 * (
+																													 * SurfaceBuilder
+																													 * .
+																													 * DEFAULT,
+																													 * CSurfaceBuilder
+																													 * .
+																													 * HOMSE_HOMSE_GRAVEL_CONFIG
+																													 * )
+																													 * )
+																													 */;
 		BiomeCombatFeatures.addAcrotlestCarvers(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestStructures(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestPortal(biomegenerationsettings$builder, true);
@@ -229,12 +317,13 @@ public class CombatBiomes {
 		BiomeCombatFeatures.addAcrotlestOres(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultSoftDisks(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultFlowers(biomegenerationsettings$builder);
-		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, CFeatures.TSUNE_SPIKE);
-		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, CFeatures.MAGENTA_TSUNE_COLUMN);
+		biomegenerationsettings$builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, MiscAcrotlestPlacements.MAGENTA_TSUNE_COLUMN);
 		BiomeDefaultFeatures.addDefaultSprings(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addSurfaceFreezing(biomegenerationsettings$builder);
 
-		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW).biomeCategory(Biome.BiomeCategory.DESERT).depth(depth).scale(0.05F).temperature(1.0F).downfall(0.1F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW)
+				.biomeCategory(Biome.BiomeCategory.DESERT)
+				/* .scale(0.05F) */.temperature(1.0F).downfall(0.1F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 
 	public static BiomeSpecialEffects getDeadAmbience() {		//R+0,G+1,B+3			<-----				//R+0,G+2,B+3				<----				//R+0,G+3,B+1				<------

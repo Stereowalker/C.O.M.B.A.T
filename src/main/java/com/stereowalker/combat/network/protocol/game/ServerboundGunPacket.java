@@ -2,14 +2,14 @@ package com.stereowalker.combat.network.protocol.game;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.world.item.GunItem;
-import com.stereowalker.unionlib.network.client.CUnionPacket;
+import com.stereowalker.unionlib.network.protocol.game.ServerboundUnionPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
-public class ServerboundGunPacket extends CUnionPacket {
+public class ServerboundGunPacket extends ServerboundUnionPacket {
 	private GunAction action;
 
 	public ServerboundGunPacket(final GunAction action) {

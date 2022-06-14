@@ -1,7 +1,7 @@
 package com.stereowalker.rankup.network.protocol.game;
 
 import com.stereowalker.combat.Combat;
-import com.stereowalker.unionlib.network.server.SUnionPacket;
+import com.stereowalker.unionlib.network.protocol.game.ClientboundUnionPacket;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -10,7 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
-public class ClientboundPlayerLevelUpPacket extends SUnionPacket {
+public class ClientboundPlayerLevelUpPacket extends ClientboundUnionPacket {
 	int level;
 	
 	public ClientboundPlayerLevelUpPacket(int levelIn) {

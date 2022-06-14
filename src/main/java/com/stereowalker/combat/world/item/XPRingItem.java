@@ -1,6 +1,8 @@
 package com.stereowalker.combat.world.item;
 
 import com.stereowalker.combat.world.entity.CombatEntityStats;
+import com.stereowalker.unionlib.entity.AccessorySlot.Group;
+import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -11,10 +13,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class XPRingItem extends AbstractRingItem {
+public class XPRingItem extends AccessoryItem {
 
 	public XPRingItem(Properties properties) {
-		super(properties);
+		super(properties, Group.FINGER);
 	}
 	
 	@Override

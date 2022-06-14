@@ -138,8 +138,8 @@ public class AlloyFurnaceBlockEntity extends BaseContainerBlockEntity implements
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+	public void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
 		ContainerHelper.saveAllItems(compound, this.items);
 		compound.putInt("BurnTime", this.burnTime);
 		compound.putInt("CookTime", this.cookTime);
@@ -149,7 +149,6 @@ public class AlloyFurnaceBlockEntity extends BaseContainerBlockEntity implements
 			compoundnbt.putInt(recipeId.toString(), craftedAmount);
 		});
 		compound.put("RecipesUsed", compoundnbt);
-		return compound;
 	}
 
 	@Override

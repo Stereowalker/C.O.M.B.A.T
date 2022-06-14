@@ -6,23 +6,24 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Predicate;
 
+import com.mojang.datafixers.util.Pair;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
-import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory.ClassType;
+import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
+import com.stereowalker.combat.data.worldgen.CStructureFeatures;
 import com.stereowalker.combat.event.AbominationEvents;
 import com.stereowalker.combat.event.LegendaryWeaponEvents;
 import com.stereowalker.combat.event.MagicEvents;
 import com.stereowalker.combat.network.protocol.game.ClientboundPlayerStatsPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundClientMotionPacket;
-import com.stereowalker.combat.tags.CEntityTypeTags;
+import com.stereowalker.combat.tags.EntityTypeCTags;
 import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.effect.CMobEffects;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.combat.world.entity.monster.Vampire;
-import com.stereowalker.combat.world.entity.vehicle.BoatMod;
 import com.stereowalker.combat.world.inventory.FletchingMenu;
 import com.stereowalker.combat.world.item.AccessoryItemCheck;
 import com.stereowalker.combat.world.item.ArchItem;
@@ -35,7 +36,6 @@ import com.stereowalker.combat.world.item.ScytheItem;
 import com.stereowalker.combat.world.item.SoulBowItem;
 import com.stereowalker.combat.world.item.SpearItem;
 import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
-import com.stereowalker.combat.world.level.levelgen.feature.CStructureFeature;
 import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
@@ -44,9 +44,10 @@ import com.stereowalker.rankup.skill.api.SkillUtil;
 import com.stereowalker.unionlib.util.EntityHelper;
 import com.stereowalker.unionlib.util.math.UnionMathHelper;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -73,10 +74,11 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -92,7 +94,7 @@ import net.minecraftforge.event.world.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = "combat")
@@ -263,7 +265,7 @@ public class GameEvents {
 	}
 
 	@SubscribeEvent
-	public static void fovUpdate(FOVUpdateEvent event) {
+	public static void fovUpdate(FOVModifierEvent event) {
 		float f = 1.0F;
 		if (event.getEntity().isUsingItem() && event.getEntity().getUseItem().getItem() instanceof LongbowItem) {
 			int i = event.getEntity().getTicksUsingItem();
@@ -306,9 +308,8 @@ public class GameEvents {
 	}
 
 	public static void setTower(ServerPlayer player) {
-		BlockPos blockpos = player.getLevel().getChunkSource().getGenerator().findNearestMapFeature(player.getLevel(), CStructureFeature.ETHERION_TOWER, player.blockPosition(), 100, false);
-		if (blockpos == null) blockpos = BlockPos.ZERO;
-		if (CombatEntityStats.getNearestEtherionTowerPos(player) != blockpos) CombatEntityStats.setNearestEtherionTowerPos(player, blockpos);
+		Pair<BlockPos, Holder<ConfiguredStructureFeature<?, ?>>> blockpos = player.getLevel().getChunkSource().getGenerator().findNearestMapFeature(player.getLevel(), HolderSet.direct(CStructureFeatures.ETHERION_TOWER, CStructureFeatures.ETHERION_TOWER_ACROTLEST), player.blockPosition(), 100, false);
+		if (CombatEntityStats.getNearestEtherionTowerPos(player) != blockpos.getFirst()) CombatEntityStats.setNearestEtherionTowerPos(player, blockpos.getFirst() != null ? blockpos.getFirst() : BlockPos.ZERO);
 	}
 
 	@SubscribeEvent
@@ -349,21 +350,6 @@ public class GameEvents {
 
 	protected static boolean isSoulGem(ItemStack stack) {
 		return stack.getItem() == CItems.EMPTY_SOUL_GEM;
-	}
-
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void rowBoat(LivingUpdateEvent event) {
-		if(event.getEntityLiving() instanceof Player) {
-			Player player = (Player)event.getEntityLiving();
-			if (player.getVehicle() instanceof BoatMod) {
-				LocalPlayer psp = Minecraft.getInstance().player;
-				BoatMod entityboat = (BoatMod)player.getVehicle();
-				if(psp != null && player != null && entityboat != null) {
-					entityboat.setInput(psp.input.left, psp.input.right, psp.input.up, psp.input.down);
-				}
-			}
-		}
 	}
 
 	@SuppressWarnings("resource")
@@ -407,14 +393,14 @@ public class GameEvents {
 		}
 		int runeDropChance = 3;
 		boolean flag = UnionMathHelper.probabilityCheck(runeDropChance);
-		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && ((event.getEntityLiving() instanceof Monster && flag) || event.getEntityLiving().getType().is(CEntityTypeTags.BOSSES))) {
+		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && ((event.getEntityLiving() instanceof Monster && flag) || event.getEntityLiving().getType().is(EntityTypeCTags.BOSSES))) {
 			if(event.getSource().getEntity() instanceof Player) {
 				Skill skill = PlayerSkills.generateRandomSkill((Player)event.getSource().getEntity(), false);
 				if (skill != Skills.EMPTY) event.getEntityLiving().spawnAtLocation(SkillUtil.addSkillToItemStack(new ItemStack(CItems.SKILL_RUNESTONE), skill));
 			}
 		}
 
-		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && event.getEntityLiving().getType().is(CEntityTypeTags.BOSSES)) {
+		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && event.getEntityLiving().getType().is(EntityTypeCTags.BOSSES)) {
 			if(event.getSource().getEntity() instanceof Player) {
 				//				for (EntityType<?> entity : ForgeRegistries.ENTITIES) {
 				//					if (entity.getRegistryName().toString() == "c") {

@@ -9,9 +9,9 @@ import com.stereowalker.combat.world.level.levelgen.feature.StructurePieceTypes;
 import com.stereowalker.combat.world.level.storage.loot.CLootTables;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
@@ -36,6 +36,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
@@ -59,8 +60,8 @@ public class EtherionTowerPieces {
 			this.overworld = overworld;
 		}
 
-		public Piece(ServerLevel pLevel, CompoundTag pTag) {
-			super(StructurePieceTypes.ETHERION_TOWER, pTag, pLevel, (p_162451_) -> {
+		public Piece(StructureManager pStructureManager, CompoundTag pTag) {
+			super(StructurePieceTypes.ETHERION_TOWER, pTag, pStructureManager, (p_162451_) -> {
 				return makeSettings(Rotation.valueOf(pTag.getString("Rot")), BlockPos.ZERO);
 			});
 			this.overworld = true;
@@ -70,14 +71,14 @@ public class EtherionTowerPieces {
 		 * (abstract) Helper method to read subclass data from NBT
 		 */
 		@Override
-		protected void addAdditionalSaveData(ServerLevel pLevel, CompoundTag pTag) {
-			super.addAdditionalSaveData(pLevel, pTag);
+		protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag pTag) {
+			super.addAdditionalSaveData(pContext, pTag);
 			pTag.putString("Rot", this.placeSettings.getRotation().name());
 		}
 
 		@Override
 		protected void handleDataMarker(String function, BlockPos pos, ServerLevelAccessor worldIn, Random rand, BoundingBox sbb) {
-			Biome biome = worldIn.getBiome(pos);
+			Holder<Biome> biome = worldIn.getBiome(pos);
 			boolean flag = !this.overworld;
 			EntityType<?>[] monster = (!flag) ? 
 					new EntityType<?>[] {EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.HUSK} : 
@@ -149,8 +150,9 @@ public class EtherionTowerPieces {
 			}
 		}
 
-		public static boolean checkType(Biome biome, Biome.BiomeCategory type) {
-			return type.equals(biome.getBiomeCategory());
+		@SuppressWarnings("deprecation")
+		public static boolean checkType(Holder<Biome> biome, Biome.BiomeCategory type) {
+			return type.equals(Biome.getBiomeCategory(biome));
 		}
 
 		public static void replaceBlocks(LevelAccessor worldIn, BlockPos pos, Block newBrickBlock, Block newBrickStairs, Block newBrickSlab, Block newLog, Block newWoodStairs, Block newWoodSlab) {
@@ -210,14 +212,14 @@ public class EtherionTowerPieces {
 		 * the end, it adds Fences...
 		 */
 		@Override
-		public boolean postProcess(WorldGenLevel seedReader, StructureFeatureManager mamager, ChunkGenerator chunkGenerator, Random randomIn, BoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn, BlockPos pos) {
+		public void postProcess(WorldGenLevel seedReader, StructureFeatureManager mamager, ChunkGenerator chunkGenerator, Random randomIn, BoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn, BlockPos pos) {
 			StructurePlaceSettings placementsettings = makeSettings(this.placeSettings.getRotation(), BlockPos.ZERO);
 			BlockPos blockpos = BlockPos.ZERO;
 			BlockPos blockpos1 = this.templatePosition.offset(StructureTemplate.calculateRelativePosition(placementsettings, new BlockPos(3 - blockpos.getX(), 0, 0 - blockpos.getZ())));
 			int i = seedReader.getHeight(Heightmap.Types.WORLD_SURFACE_WG, blockpos1.getX(), blockpos1.getZ());
 			BlockPos blockpos2 = this.templatePosition;
 			this.templatePosition = this.templatePosition.offset(0, i - 90 - 1, 0);
-			boolean flag = super.postProcess(seedReader, mamager, chunkGenerator, randomIn, structureBoundingBoxIn, chunkPosIn, pos);
+			super.postProcess(seedReader, mamager, chunkGenerator, randomIn, structureBoundingBoxIn, chunkPosIn, pos);
 			if (new ResourceLocation(this.templateName).equals(EtherionTowerPieces.TOP)) {
 				BlockPos blockpos3 = this.templatePosition.offset(StructureTemplate.calculateRelativePosition(placementsettings, new BlockPos(3, 0, 5)));
 				BlockState blockstate = seedReader.getBlockState(blockpos3.below());
@@ -227,7 +229,6 @@ public class EtherionTowerPieces {
 			}
 
 			this.templatePosition = blockpos2;
-			return flag;
 		}
 	}
 }

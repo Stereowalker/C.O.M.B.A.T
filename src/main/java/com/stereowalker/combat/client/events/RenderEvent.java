@@ -149,9 +149,9 @@ public class RenderEvent {
 			if (player.isUsingItem() && player.getUseItemRemainingTicks() > 0 && player.getUsedItemHand() == event.getHand()) {
 				//				event.getMatrixStack().pushPose();
 				boolean flag3 = handside == HumanoidArm.RIGHT;
-				transformBlockFirstPerson(event.getMatrixStack(), event.getPartialTicks(), handside, stack);
-				transformSideFirstPerson(event.getMatrixStack(), handside, event.getEquipProgress());
-				Minecraft.getInstance().getItemInHandRenderer().renderItem(player, stack, flag3 ? ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !flag3, event.getMatrixStack(), event.getBuffers(), event.getLight());
+				transformBlockFirstPerson(event.getPoseStack(), event.getPartialTicks(), handside, stack);
+				transformSideFirstPerson(event.getPoseStack(), handside, event.getEquipProgress());
+				Minecraft.getInstance().getItemInHandRenderer().renderItem(player, stack, flag3 ? ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !flag3, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());
 				event.setCanceled(false);
 				//				event.getMatrixStack().popPose();
 			}

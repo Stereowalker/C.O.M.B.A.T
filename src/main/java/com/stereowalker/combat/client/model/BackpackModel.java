@@ -21,8 +21,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class BackpackModel extends Model {
 
-	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Combat.getInstance().getModid(), "textures/entity/backpack.png");
-	public static final ResourceLocation OVERLAY_LOCATION = new ResourceLocation(Combat.getInstance().getModid(), "textures/entity/backpack_overlay.png");
+	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Combat.MODID, "textures/entity/backpack.png");
+	public static final ResourceLocation OVERLAY_LOCATION = new ResourceLocation(Combat.MODID, "textures/entity/backpack_overlay.png");
 	private final ModelPart backpackBody;
 	private final ModelPart rightTopStrap;
 	private final ModelPart rightFrontStrap;

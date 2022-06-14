@@ -3,12 +3,12 @@ package com.stereowalker.combat.network.protocol.game;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
-import com.stereowalker.unionlib.network.client.CUnionPacket;
+import com.stereowalker.unionlib.network.protocol.game.ServerboundUnionPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 
-public class ServerboundMageSetupPacket extends CUnionPacket {
+public class ServerboundMageSetupPacket extends ServerboundUnionPacket {
 	private int colorR;
 	private int colorG;
 	private int colorB;

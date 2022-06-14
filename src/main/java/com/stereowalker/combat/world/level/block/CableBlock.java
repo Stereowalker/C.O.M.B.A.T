@@ -256,7 +256,7 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 		if(facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL) {
 			return stateIn.setValue(FACING_TO_PROPERTY_MAP_H.get(facing), Boolean.valueOf(this.canConnect(facingState, facingState.isFaceSturdy(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())) ? CableConnectionType.RECIEVE : CableConnectionType.NONE);
