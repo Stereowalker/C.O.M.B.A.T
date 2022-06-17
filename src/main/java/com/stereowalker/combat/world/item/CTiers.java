@@ -19,7 +19,6 @@ import net.minecraftforge.common.TierSortingRegistry;
 
 public enum CTiers implements Tier
 {
-//	COPPER(2, 158, 6.0F, 1.5F, 19, CItems.COPPER_INGOT),
 	BRONZE(2, 213, 5.1F, 2.3F, 18, () -> {
 	      return Ingredient.of(ItemCTags.INGOTS_BRONZE);
 	   }),
@@ -32,13 +31,13 @@ public enum CTiers implements Tier
 	PASQUEM(3, 1750, 10.0F, 3.5F, 5, () -> {
 	      return Ingredient.of(CItems.PASQUEM_INGOT);
 	   }),
-	PELGAN(4, 125, 9.0F, 1.0F, 21, () -> {
-	      return Ingredient.of(CItems.PELGAN_INGOT);
-	   }),
+//	PELGAN(4, 125, 9.0F, 1.0F, 21, () -> {
+//	      return Ingredient.of(CItems.PELGAN_INGOT);
+//	   }),
 	SERABLE(1, 515, 18.5F, 0.5F, 30, () -> {
 	      return Ingredient.of(CItems.SERABLE_INGOT);
 	   }),
-	LOZYNE(5, 2342, 12.0F, 4.5F, 15, () -> {
+	LOZYNE(4, 2342, 12.0F, 4.5F, 15, () -> {
 	      return Ingredient.of(CItems.LOZYNE_INGOT);
 	   }),
 	//Endgame Metals
@@ -109,8 +108,8 @@ public enum CTiers implements Tier
 	@javax.annotation.Nullable public net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> getTag() { return getTagFromModdedTier(this); }
 	
 	public static void handleModdedTiers() {
-		var pelgan = Combat.getInstance().location("pelgan");
-		TierSortingRegistry.registerTier(PELGAN, pelgan, List.of(new ResourceLocation("diamond")), List.of());
+		var lozyne = Combat.getInstance().location("lozyne");
+		TierSortingRegistry.registerTier(LOZYNE, lozyne, List.of(new ResourceLocation("diamond")), List.of());
 	}
 
     public static TagKey<Block> getTagFromModdedTier(CTiers tier)
@@ -121,9 +120,8 @@ public enum CTiers implements Tier
                     case STEEL -> BlockTags.NEEDS_IRON_TOOL;
                     case MAGISTEEL -> BlockTags.NEEDS_DIAMOND_TOOL;
                     case PASQUEM -> BlockTags.NEEDS_DIAMOND_TOOL;
-                    case PELGAN -> BlockCTags.NEEDS_PELGAN_TOOL;
+                    case LOZYNE -> BlockCTags.NEEDS_LOZYNE_TOOL;
                     case SERABLE -> BlockTags.NEEDS_STONE_TOOL;
-                    case LOZYNE -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
                     case MYTHRIL -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
                     case POWERED_MYTHRIL -> Tags.Blocks.NEEDS_NETHERITE_TOOL;
                     case ETHERION -> Tags.Blocks.NEEDS_NETHERITE_TOOL;

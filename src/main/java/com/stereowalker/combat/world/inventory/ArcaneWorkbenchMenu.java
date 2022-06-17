@@ -437,7 +437,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_SHULKER_WAND, CItems.APPRENTICE_SHULKER_WAND, CItems.ADVANCED_SHULKER_WAND, CItems.MASTER_SHULKER_WAND, shrink);
 			//Rings
 			if (stack2.isEmpty()) stack2 = this.mergeItem(new ItemStack(CItems.AEROMANCER_RING), new ItemStack(UItems.GOLDEN_RING), new ItemStack(Items.PHANTOM_MEMBRANE), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
-			if (stack2.isEmpty()) stack2 = this.mergeItem(new ItemStack(CItems.ELECTROMANCER_RING), new ItemStack(UItems.GOLDEN_RING), new ItemStack(CItems.COPPER_INGOT), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
+			if (stack2.isEmpty()) stack2 = this.mergeItem(new ItemStack(CItems.ELECTROMANCER_RING), new ItemStack(UItems.GOLDEN_RING), new ItemStack(Items.COPPER_INGOT), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
 			if (stack2.isEmpty()) stack2 = this.mergeItem(new ItemStack(CItems.HYDROMANCER_RING), new ItemStack(UItems.GOLDEN_RING), new ItemStack(Items.NAUTILUS_SHELL), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
 			//		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(CItems.PYROMANCER_RING), new ItemStack(CItems.GOLDEN_RING), new ItemStack(Items.BLAZE_POWDER), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
 			//		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(CItems.TERRAMANCER_RING), new ItemStack(CItems.GOLDEN_RING), new ItemStack(Items.EMERALD), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
