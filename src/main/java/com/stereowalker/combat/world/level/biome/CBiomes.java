@@ -24,26 +24,18 @@ public class CBiomes {
 
 	public static final Type ACROTLEST = Type.getType("ACROTLEST");
 
-	public static final ResourceKey<Biome> DEAD_FOREST = addToList(makeKey("dead_forest"), CombatBiomes.makeDeadForestBiome(0.1f, false), BiomeType.WARM, 1/*50*/ , BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.DEAD , BiomeDictionary.Type.OVERWORLD);
-	public static final ResourceKey<Biome> DEAD_PLAINS = addToList(makeKey("dead_plains"), CombatBiomes.makeDeadForestBiome(0.05f, true), BiomeType.WARM, 1 , BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.COLD , BiomeDictionary.Type.DEAD , BiomeDictionary.Type.OVERWORLD);
-	public static final ResourceKey<Biome> MAGIC_FOREST = addToList(makeKey("magic_forest"), CombatBiomes.makeMagicalBiome(0.2f, false), BiomeType.COOL, 1, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.MAGICAL , BiomeDictionary.Type.OVERWORLD);
-	public static final ResourceKey<Biome> MAGIC_PLAINS = addToList(makeKey("magic_plains"), CombatBiomes.makeMagicalBiome(0.125f, true), BiomeType.COOL, 1, BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.COLD , BiomeDictionary.Type.MAGICAL , BiomeDictionary.Type.OVERWORLD);
+	public static final ResourceKey<Biome> DEAD_FOREST_BI = addToList(makeKey("dead_forest"), CombatBiomes.makeDeadForestBiome(0.1f, false), BiomeType.WARM, 1/*50*/ , BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.DEAD , BiomeDictionary.Type.OVERWORLD);
+	public static final ResourceKey<Biome> DEAD_PLAINS_BI = addToList(makeKey("dead_plains"), CombatBiomes.makeDeadForestBiome(0.05f, true), BiomeType.WARM, 1 , BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.COLD , BiomeDictionary.Type.DEAD , BiomeDictionary.Type.OVERWORLD);
+	public static final ResourceKey<Biome> MAGIC_FOREST_BI = addToList(makeKey("magic_forest"), CombatBiomes.makeMagicalBiome(0.2f, false), BiomeType.COOL, 1, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.MAGICAL , BiomeDictionary.Type.OVERWORLD);
+	public static final ResourceKey<Biome> MAGIC_PLAINS_BI = addToList(makeKey("magic_plains"), CombatBiomes.makeMagicalBiome(0.125f, true), BiomeType.COOL, 1, BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.COLD , BiomeDictionary.Type.MAGICAL , BiomeDictionary.Type.OVERWORLD);
 	
-	public static final ResourceKey<Biome> ACROTLEST_FOREST = addToList(makeKey("acrotlest_forest"), CombatBiomes.makeAcrotlestForestBiome(4.0f), BiomeType.ICY, 0, ACROTLEST, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.SNOWY);
-	public static final ResourceKey<Biome> ACROTLEST_MOUNTAINS = addToList(makeKey("acrotlest_mountains"), CombatBiomes.makeAcrotlestMountainsBiome(5.0f), BiomeType.ICY, 0, ACROTLEST,BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.SNOWY);
-	public static final ResourceKey<Biome> ACROTLEST_RIVER = addToList(makeKey("acrotlest_river"), CombatBiomes.makeAcrotlestRiverBiome(2.7f, 0.0f, 0.0f, 0x55aaff, true), BiomeType.ICY, 0, ACROTLEST,BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.SNOWY);
-	public static final ResourceKey<Biome> HISOV_SANDS = addToList(makeKey("hisov_sands"), CombatBiomes.makeHisovSandsBiome(4.5f), BiomeType.ICY, 0, ACROTLEST, BiomeDictionary.Type.SANDY, BiomeDictionary.Type.COLD , BiomeDictionary.Type.DEAD);
+	public static final ResourceKey<Biome> ACROTLEST_FOREST = makeKey("acrotlest_forest");
+	public static final ResourceKey<Biome> ACROTLEST_MOUNTAINS_BI = addToList(makeKey("acrotlest_mountains"), CombatBiomes.makeAcrotlestMountainsBiome(5.0f), BiomeType.ICY, 0, ACROTLEST,BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.SNOWY);
+	public static final ResourceKey<Biome> ACROTLEST_RIVER_BI = addToList(makeKey("acrotlest_river"), CombatBiomes.makeAcrotlestRiverBiome(2.7f, 0.0f, 0.0f, 0x55aaff, true), BiomeType.ICY, 0, ACROTLEST,BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.SNOWY);
+	public static final ResourceKey<Biome> HISOV_SANDS_BI = addToList(makeKey("hisov_sands"), CombatBiomes.makeHisovSandsBiome(4.5f), BiomeType.ICY, 0, ACROTLEST, BiomeDictionary.Type.SANDY, BiomeDictionary.Type.COLD , BiomeDictionary.Type.DEAD);
 
 	private static ResourceKey<Biome> makeKey(String name) {
 		return ResourceKey.create(Registry.BIOME_REGISTRY, Combat.getInstance().location(name));
-	}
-	
-	public static List<ResourceLocation> getAcrotlestBiomes(){
-		List<ResourceLocation> list = new ArrayList<ResourceLocation>();
-		BiomeDictionary.getBiomes(ACROTLEST).forEach((biome) -> {
-			list.add(biome.location());
-		});
-		return list;
 	}
 	
 	public static List<ResourceLocation> getMagicBiomes(){

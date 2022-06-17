@@ -6,6 +6,7 @@ import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.world.level.levelgen.feature.StructurePieceTypes;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -29,7 +30,7 @@ public class MagicStoneDepositPieces {
 	public static class Piece extends CustomTemplateStructurePiece {
 
 		public Piece(StructureManager pStructureManager, ResourceLocation pLocation, BlockPos pPos, Rotation pRotation, int pDown) {
-			super(StructurePieceTypes.AGIC_STONE_DEPOT, 0, pStructureManager, pLocation, pLocation.toString(), makeSettings(pRotation, BlockPos.ZERO), makePosition(BlockPos.ZERO, pPos, pDown));
+			super(StructurePieceTypes.AGIC_STONE_DEPOT, 0, pStructureManager, pLocation, pLocation.toString(), makeSettings(pRotation, BlockPos.ZERO), makePosition(BlockPos.ZERO, pPos, pDown, Direction.DOWN));
 		}
 
 		public Piece(StructureManager pStructureManager, CompoundTag pTag) {

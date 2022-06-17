@@ -6,9 +6,11 @@ import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.world.entity.CEntityType;
 import com.stereowalker.combat.world.level.block.CBlocks;
 import com.stereowalker.combat.world.level.levelgen.feature.StructurePieceTypes;
+import com.stereowalker.combat.world.level.levelgen.feature.configurations.EtherionTowerConfiguration.Variant;
 import com.stereowalker.combat.world.level.storage.loot.CLootTables;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -43,28 +45,28 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 public class EtherionTowerPieces {
-	private static final ResourceLocation BOTTOM = Combat.getInstance().location("etherion_tower/tower_bottom");
-	private static final ResourceLocation TOP = Combat.getInstance().location("etherion_tower/tower_top");
+	private static final ResourceLocation BOTTOM = Combat.getInstance().location("etherion_tower/bottom");
+	private static final ResourceLocation TOP = Combat.getInstance().location("etherion_tower/top");
 
-	public static void addPieces(StructureManager templateManager, BlockPos blockPos, Rotation rotation, StructurePieceAccessor pPieces, Random random, boolean overworld) {
-		pPieces.addPiece(new EtherionTowerPieces.Piece(templateManager, BOTTOM, blockPos, rotation, 0, overworld));
-		pPieces.addPiece(new EtherionTowerPieces.Piece(templateManager, TOP, blockPos, rotation, 32, overworld));
+	public static void addPieces(StructureManager templateManager, BlockPos blockPos, Rotation rotation, StructurePieceAccessor pPieces, Random random, Variant variant) {
+		pPieces.addPiece(new EtherionTowerPieces.Piece(templateManager, BOTTOM, blockPos, rotation, 0, variant));
+		pPieces.addPiece(new EtherionTowerPieces.Piece(templateManager, TOP, blockPos, rotation, 32, variant));
 
 	}
 
 	public static class Piece extends CustomTemplateStructurePiece {
-		private final boolean overworld;
+		private final Variant variant;
 
-		public Piece(StructureManager pStructureManager, ResourceLocation pLocation, BlockPos pPos, Rotation pRotation, int pDown, boolean overworld) {
-			super(StructurePieceTypes.ETHERION_TOWER, 0, pStructureManager, pLocation, pLocation.toString(), makeSettings(pRotation, BlockPos.ZERO), makePosition(BlockPos.ZERO, pPos, pDown));
-			this.overworld = overworld;
+		public Piece(StructureManager pStructureManager, ResourceLocation pLocation, BlockPos pPos, Rotation pRotation, int pDown, Variant variant) {
+			super(StructurePieceTypes.ETHERION_TOWER, 0, pStructureManager, pLocation, pLocation.toString(), makeSettings(pRotation, BlockPos.ZERO), makePosition(BlockPos.ZERO, pPos, pDown, Direction.UP));
+			this.variant = variant;
 		}
 
 		public Piece(StructureManager pStructureManager, CompoundTag pTag) {
 			super(StructurePieceTypes.ETHERION_TOWER, pTag, pStructureManager, (p_162451_) -> {
 				return makeSettings(Rotation.valueOf(pTag.getString("Rot")), BlockPos.ZERO);
 			});
-			this.overworld = true;
+			this.variant = Variant.byId(pTag.getInt("Variant"));
 		}
 
 		/**
@@ -74,12 +76,13 @@ public class EtherionTowerPieces {
 		protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag pTag) {
 			super.addAdditionalSaveData(pContext, pTag);
 			pTag.putString("Rot", this.placeSettings.getRotation().name());
+			pTag.putInt("Variant", this.variant.ordinal());
 		}
 
 		@Override
 		protected void handleDataMarker(String function, BlockPos pos, ServerLevelAccessor worldIn, Random rand, BoundingBox sbb) {
 			Holder<Biome> biome = worldIn.getBiome(pos);
-			boolean flag = !this.overworld;
+			boolean flag = variant == Variant.ACROLEST;
 			EntityType<?>[] monster = (!flag) ? 
 					new EntityType<?>[] {EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.HUSK} : 
 						new EntityType<?>[] {CEntityType.BIOG, CEntityType.LICHU};
@@ -136,14 +139,15 @@ public class EtherionTowerPieces {
 			}
 			if ("replace".equals(function)) {
 				worldIn.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+				if (variant == Variant.DESERT) {
+					replaceBlocks(worldIn, pos, Blocks.SANDSTONE, Blocks.SANDSTONE_STAIRS, Blocks.SANDSTONE_SLAB, Blocks.ACACIA_LOG, Blocks.ACACIA_STAIRS, Blocks.ACACIA_SLAB);
+				} else if (variant == Variant.BADLANDS) {
+					replaceBlocks(worldIn, pos, Blocks.RED_SANDSTONE, Blocks.RED_SANDSTONE_STAIRS, Blocks.RED_SANDSTONE_SLAB, Blocks.ACACIA_LOG, Blocks.ACACIA_STAIRS, Blocks.ACACIA_SLAB);
+				}
 				if (!flag) {
-					if (checkType(biome, Biome.BiomeCategory.DESERT)) {
-						replaceBlocks(worldIn, pos, Blocks.SANDSTONE, Blocks.SANDSTONE_STAIRS, Blocks.SANDSTONE_SLAB, Blocks.ACACIA_LOG, Blocks.ACACIA_STAIRS, Blocks.ACACIA_SLAB);
+					if (checkType(biome, Biome.BiomeCategory.MESA)) {
 					}
-					else if (checkType(biome, Biome.BiomeCategory.MESA)) {
-						replaceBlocks(worldIn, pos, Blocks.RED_SANDSTONE, Blocks.RED_SANDSTONE_STAIRS, Blocks.RED_SANDSTONE_SLAB, Blocks.ACACIA_LOG, Blocks.ACACIA_STAIRS, Blocks.ACACIA_SLAB);
-					}
-				} else /* if (dimension == CDimensionType.ACROTLEST) */ {
+				} else {
 					replaceBlocks(worldIn, pos, CBlocks.MEZEPINE_BRICKS, CBlocks.MEZEPINE_BRICK_STAIRS, CBlocks.MEZEPINE_BRICK_SLAB, CBlocks.MONORIS_LOG, CBlocks.MONORIS_STAIRS, CBlocks.MONORIS_SLAB);
 					replaceLights(worldIn, pos, CBlocks.PYRANITE_TORCH, CBlocks.PYRANITE_WALL_TORCH, CBlocks.PYRANITE_LANTERN);
 				}
@@ -164,24 +168,23 @@ public class EtherionTowerPieces {
 							BlockState stairs = worldIn.getBlockState(newPos);
 							worldIn.setBlock(newPos, newBrickStairs.defaultBlockState().setValue(StairBlock.HALF, stairs.getValue(StairBlock.HALF)).setValue(StairBlock.SHAPE, stairs.getValue(StairBlock.SHAPE)).setValue(StairBlock.FACING, stairs.getValue(StairBlock.FACING)), 3);
 						}
-						if (worldIn.getBlockState(newPos).getBlock() == Blocks.OAK_STAIRS) {
+						else if (worldIn.getBlockState(newPos).getBlock() == Blocks.OAK_STAIRS) {
 							BlockState stairs = worldIn.getBlockState(newPos);
 							worldIn.setBlock(newPos, newWoodStairs.defaultBlockState().setValue(StairBlock.HALF, stairs.getValue(StairBlock.HALF)).setValue(StairBlock.SHAPE, stairs.getValue(StairBlock.SHAPE)).setValue(StairBlock.FACING, stairs.getValue(StairBlock.FACING)), 3);
 						}
-						if (worldIn.getBlockState(newPos).getBlock() == Blocks.OAK_LOG) {
+						else if (worldIn.getBlockState(newPos).getBlock() == Blocks.OAK_LOG) {
 							BlockState log = worldIn.getBlockState(newPos);
 							worldIn.setBlock(newPos, newLog.defaultBlockState().setValue(RotatedPillarBlock.AXIS, log.getValue(RotatedPillarBlock.AXIS)), 3);
 						}
-						if (worldIn.getBlockState(newPos).getBlock() == Blocks.STONE_BRICK_SLAB) {
+						else if (worldIn.getBlockState(newPos).getBlock() == Blocks.STONE_BRICK_SLAB) {
 							BlockState slab = worldIn.getBlockState(newPos);
 							worldIn.setBlock(newPos, newBrickSlab.defaultBlockState().setValue(SlabBlock.TYPE, slab.getValue(SlabBlock.TYPE)), 3);
 						}
-						if (worldIn.getBlockState(newPos).getBlock() == Blocks.OAK_SLAB) {
+						else if (worldIn.getBlockState(newPos).getBlock() == Blocks.OAK_SLAB) {
 							BlockState slab = worldIn.getBlockState(newPos);
 							worldIn.setBlock(newPos, newWoodSlab.defaultBlockState().setValue(SlabBlock.TYPE, slab.getValue(SlabBlock.TYPE)), 3);
 						}
-						if (worldIn.getBlockState(newPos).getBlock() == Blocks.STONE_BRICKS) worldIn.setBlock(newPos, newBrickBlock.defaultBlockState(), 3);
-
+						else if (worldIn.getBlockState(newPos).getBlock() == Blocks.STONE_BRICKS) worldIn.setBlock(newPos, newBrickBlock.defaultBlockState(), 3);
 					}
 				}
 			}

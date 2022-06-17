@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#forge:is_snowy"
+    "#minecraft:is_badlands"
   ]
 }

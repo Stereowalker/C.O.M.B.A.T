@@ -2,5 +2,9 @@
   "replace": false,
   "values": [
     "#forge:is_overworld"
+  ],
+  "remove": [
+    "#combat:etherion_tower_badlands",
+    "#combat:etherion_tower_desert"
   ]
 }

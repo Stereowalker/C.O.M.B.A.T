@@ -22,20 +22,6 @@ public abstract class ProbabilityFeature extends CStructureFeature<ProbabilitySt
 		super(ProbabilityStructureConfiguration.CODEC, p_197166_);
 	}
 
-//	@Override
-//	protected boolean isFeatureChunk(ChunkGenerator pGenerator, BiomeSource pBiomeSource, long pSeed,
-//			WorldgenRandom pRandom, ChunkPos pChunkPos, Biome pBiome, ChunkPos pPotentialPos,
-//			ProbabilityStructureConfiguration pConfig, LevelHeightAccessor pLevel) {
-//		for(Biome biome : pBiomeSource.getBiomesWithin(pChunkPos.x * 16 + 9, pGenerator.getSeaLevel(), pChunkPos.z * 16 + 9, 32)) {
-//			if (!biome.getGenerationSettings().isValidStart(this)) {
-//				return false;
-//			}
-//		}
-//		pRandom.setLargeFeatureSeed(pSeed, pChunkPos.x, pChunkPos.z);
-//		double d0 = pConfig.probability;
-//		return  pRandom.nextInt(Mth.floor(1/d0)) == 0;
-//	}
-	
 	protected boolean isSurfaceFlat(@Nonnull ChunkGenerator generator, int chunkX, int chunkZ, LevelHeightAccessor pLevel) {
 		int offset = getSize() * 16;
 		

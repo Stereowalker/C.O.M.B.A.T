@@ -3,6 +3,7 @@ package com.stereowalker.combat.world.level.levelgen.structure;
 import java.util.function.Function;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Mirror;
@@ -26,7 +27,7 @@ public abstract class CustomTemplateStructurePiece extends TemplateStructurePiec
 		return (new StructurePlaceSettings()).setRotation(pRotation).setMirror(Mirror.NONE).setRotationPivot(pCenter).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 	}
 
-	protected static BlockPos makePosition(BlockPos pOffset, BlockPos pPos, int pDown) {
-		return pPos.offset(pOffset).below(pDown);
+	protected static BlockPos makePosition(BlockPos pOffset, BlockPos pPos, int distance, Direction direction) {
+		return pPos.offset(pOffset).relative(direction, distance);
 	}
 }

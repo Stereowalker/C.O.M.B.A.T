@@ -9,6 +9,7 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,7 +30,6 @@ public class ModdedBiomeGeneration
 			BiomeCombatFeatures.addTridox(event.getGeneration(), CBiomes.getMagicBiomes().contains(event.getName()));
 			BiomeCombatFeatures.addYellowMagicClusters(event.getGeneration(), CBiomes.getMagicBiomes().contains(event.getName()));
 			BiomeCombatFeatures.addCassiterite(event.getGeneration());
-//			BiomeCombatFeatures.addMagicStoneDeposits(event.getGeneration());
 			
 			if (hasTypeWithCategory(event, BiomeDictionary.Type.FOREST, Biome.BiomeCategory.FOREST)) 
 				BiomeCombatFeatures.addVampires(event.getSpawns());
@@ -38,14 +38,6 @@ public class ModdedBiomeGeneration
 					hasTypeWithCategory(event, BiomeDictionary.Type.SANDY, Biome.BiomeCategory.DESERT) || hasTypeWithCategory(event, BiomeDictionary.Type.CONIFEROUS, Biome.BiomeCategory.TAIGA)) 
 				BiomeCombatFeatures.addRubies(event.getGeneration());
 			
-			if (!hasTypeWithCategory(event, BiomeDictionary.Type.OCEAN, Biome.BiomeCategory.OCEAN) && 
-					!hasTypeWithCategory(event, BiomeDictionary.Type.RIVER, Biome.BiomeCategory.RIVER)) 
-				BiomeCombatFeatures.addEtherionTower(event.getGeneration(), CBiomes.getAcrotlestBiomes().contains(event.getName()));
-			
-			if (event.getCategory() != Biome.BiomeCategory.OCEAN && 
-					event.getCategory() != Biome.BiomeCategory.RIVER && 
-					event.getCategory() == Biome.BiomeCategory.ICY) 
-				BiomeCombatFeatures.addAcrotlestPortal(event.getGeneration(), CBiomes.getAcrotlestBiomes().contains(event.getName()));
 		}
 		//TODO: Re Add Structures
 //		for(Biome biome : ForgeRegistries.BIOMES)

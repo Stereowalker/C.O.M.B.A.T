@@ -60,37 +60,6 @@ public class BiomeCombatFeatures {
 		}
 	}
 	
-	//TODO: Re-purpose for something else
-//	public static void addCopper(BiomeGenerationSettings.Builder builder, boolean isDeadBiome) {
-//		if (Config.SERVER.generate_copper_ore.get()) {
-//			if (isDeadBiome) {
-//				builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_COPPER);
-//			}
-//			else {
-//				builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.ORE_COPPER);
-//			}
-//		}
-//	}
-	
-	
-	public static void addAcrotlestPortal(BiomeGenerationSettings.Builder builder, boolean isAcrotlestBiome) {
-		if (isAcrotlestBiome) {
-//			builder.addStructureStart(CStructureFeatures.ACROTLEST_PORTAL);
-		}
-		else {
-//			builder.addStructureStart(CStructureFeatures.OVERWORLD_PORTAL);
-		}
-	}
-	
-	public static void addEtherionTower(BiomeGenerationSettings.Builder builder, boolean isAcrotlestBiome) {
-		if (isAcrotlestBiome) {
-//			builder.addStructureStart(CStructureFeatures.ETHERION_TOWER_ACROTLEST);
-		}
-		else {
-//			builder.addStructureStart(CStructureFeatures.ETHERION_TOWER);
-		}
-	}
-
 	public static void addVampires(MobSpawnSettings.Builder builder) {
 		builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.VAMPIRE, 1, 1, 1));
 	}
@@ -108,17 +77,7 @@ public class BiomeCombatFeatures {
 	}
 	
 	public static void addAcrotlestStructures(BiomeGenerationSettings.Builder builder) {
-//		builder.addStructureStart(CStructureFeatures.ACROTLEST_MINESHAFT_NORMAL);
-//		builder.addStructureStart(StructureFeatures.VILLAGE_SNOWY);
 	}
-//
-//	//	public static void addAcrotlestStructures(Biome biomeIn) {
-//	//		biomeIn.addFeature(GenerationStep.Decoration.UNDERGROUND_STRUCTURES, CFeature.ACROTLEST_MINESHAFT.withConfiguration(new AcrotlestMineshaftConfig((double)0.004F, AcrotlestMineshaftStructure.Type.NORMAL)).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
-//	//		biomeIn.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, CFeature.BLUE_ICE_TOWER.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
-//	//		biomeIn.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, CFeature.OVERWORLD_PORTAL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
-//	//		biomeIn.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, Feature.VILLAGE.withConfiguration(new VillageConfig("village/plains/town_centers", 6)).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
-//	//		biomeIn.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, CFeature.ETHERION_TOWER.withConfiguration(new ProbabilityStructureConfig(Config.etherionTowerProbability.get().floatValue())).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
-//	//	}
 	
 	public static void addAcrotlestSprings(BiomeGenerationSettings.Builder pBuilder) {
 	      pBuilder.addFeature(GenerationStep.Decoration.FLUID_SPRINGS, MiscAcrotlestPlacements.SPRING_BIABLE);

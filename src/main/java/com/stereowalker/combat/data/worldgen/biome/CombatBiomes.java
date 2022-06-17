@@ -178,7 +178,7 @@ public class CombatBiomes {
 				/* .scale(0.10F) */.temperature(0.1F).biomeCategory(isPlains?Biome.BiomeCategory.PLAINS:Biome.BiomeCategory.FOREST)/**/.specialEffects(getMagicAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 	
-	public static Biome makeAcrotlestForestBiome(float depth) {
+	public static Biome makeAcrotlestForestBiome() {
 		MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 12, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG, 10, 4, 4));
@@ -209,8 +209,6 @@ public class CombatBiomes {
 		
 		BiomeCombatFeatures.addAcrotlestCarvers(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestStructures(biomegenerationsettings$builder);
-		BiomeCombatFeatures.addAcrotlestPortal(biomegenerationsettings$builder, true);
-		BiomeCombatFeatures.addEtherionTower(biomegenerationsettings$builder, true);
 		BiomeCombatFeatures.addAcrotlestLakes(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultMonsterRoom(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomegenerationsettings$builder);
@@ -259,8 +257,6 @@ public class CombatBiomes {
 																													 * )
 																													 */;
 		BiomeCombatFeatures.addAcrotlestStructures(biomegenerationsettings$builder);
-		BiomeCombatFeatures.addAcrotlestPortal(biomegenerationsettings$builder, true);
-		BiomeCombatFeatures.addEtherionTower(biomegenerationsettings$builder, true);
 		BiomeCombatFeatures.addAcrotlestCarvers(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestLakes(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultMonsterRoom(biomegenerationsettings$builder);
@@ -308,8 +304,6 @@ public class CombatBiomes {
 																													 */;
 		BiomeCombatFeatures.addAcrotlestCarvers(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestStructures(biomegenerationsettings$builder);
-		BiomeCombatFeatures.addAcrotlestPortal(biomegenerationsettings$builder, true);
-		BiomeCombatFeatures.addEtherionTower(biomegenerationsettings$builder, true);
 		BiomeCombatFeatures.addAcrotlestLakes(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addDefaultMonsterRoom(biomegenerationsettings$builder);
 //		BiomeDefaultFeatures.addDoubleFlowers(this);

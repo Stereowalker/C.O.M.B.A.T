@@ -17,4 +17,8 @@ public interface StructurePieceTypes {
 	StructurePieceType ACROTLEST_PORTAL = StructurePieceType.setTemplatePieceId(AcrotlestPortalPieces.Piece::new, Combat.getInstance().getModid()+"ACPortal");
 	StructurePieceType ETHERION_TOWER = StructurePieceType.setTemplatePieceId(EtherionTowerPieces.Piece::new, Combat.getInstance().getModid()+"ETTower");
 	StructurePieceType AGIC_STONE_DEPOT = StructurePieceType.setTemplatePieceId(MagicStoneDepositPieces.Piece::new, Combat.getInstance().getModid()+"MSDepot");
+	
+	public static void init() {
+		
+	}
 }

@@ -6,7 +6,6 @@ import com.stereowalker.combat.data.worldgen.features.COreFeatures;
 import com.stereowalker.old.combat.config.Config;
 
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.placement.OrePlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -16,8 +15,6 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
 public class COrePlacements {
-	public static final Holder<PlacedFeature> ORE_IRON_MIDDLE = PlacementUtils.register("ore_iron_middle", OreFeatures.ORE_IRON, OrePlacements.commonOrePlacement(10, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
-
 	public static final Holder<PlacedFeature> ORE_PELGAN = register("ore_plegan", COreFeatures.ORE_PELGAN, OrePlacements.commonOrePlacement(20, HeightRangePlacement.triangle(VerticalAnchor.absolute(60), VerticalAnchor.absolute(200))));
 	public static final Holder<PlacedFeature> ORE_LOZYNE = register("ore_lozyne", COreFeatures.ORE_LOZYNE, OrePlacements.commonOrePlacement(1, HeightRangePlacement.triangle(VerticalAnchor.absolute(-120), VerticalAnchor.absolute(60))));
 	public static final Holder<PlacedFeature> ORE_SERABLE = register("ore_serable", COreFeatures.ORE_SERABLE, OrePlacements.commonOrePlacement(5, HeightRangePlacement.triangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(32))));

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:desert",
+    "#minecraft:has_structure/village_desert"
+  ]
+}

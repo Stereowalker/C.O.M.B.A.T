@@ -30,6 +30,7 @@ import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.item.DyeableWeaponItem;
 import com.stereowalker.combat.world.item.alchemy.CPotions;
 import com.stereowalker.combat.world.item.crafting.CRecipeSerializer;
+import com.stereowalker.combat.world.item.crafting.CRecipeType;
 import com.stereowalker.combat.world.item.enchantment.CEnchantments;
 import com.stereowalker.combat.world.level.biome.CBiomeRegistry;
 import com.stereowalker.combat.world.level.block.CBlocks;
@@ -38,6 +39,7 @@ import com.stereowalker.combat.world.level.levelgen.CNoiseGeneratorSettings;
 import com.stereowalker.combat.world.level.levelgen.carver.CWorldCarver;
 import com.stereowalker.combat.world.level.levelgen.feature.CFeature;
 import com.stereowalker.combat.world.level.levelgen.feature.CStructureFeature;
+import com.stereowalker.combat.world.level.levelgen.feature.StructurePieceTypes;
 import com.stereowalker.combat.world.level.material.CFluids;
 import com.stereowalker.combat.world.level.storage.loot.functions.CLootItemFunctions;
 import com.stereowalker.combat.world.spellcraft.Spells;
@@ -261,6 +263,7 @@ public class CombatRegistryEvents
 
 	@SubscribeEvent
 	public static void registerRecipeSerializers(final RegistryEvent.Register<RecipeSerializer<?>> event) {
+		new CRecipeType();
 		CRecipeSerializer.registerAll(event.getRegistry());
 	}
 
@@ -288,7 +291,9 @@ public class CombatRegistryEvents
 	//Worldgen Registries
 	@SubscribeEvent
 	public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
+		CBiomeRegistry.registerAll(event.getRegistry());
 		NoiseGeneratorSettings.register(CNoiseGeneratorSettings.ACROTLEST, CNoiseGeneratorSettings.acrotlestSettings(false));
+		StructurePieceTypes.init();
 		CLootItemFunctions.registerAll();
 		new COreFeatures();
 		new CTreeFeatures();
@@ -296,7 +301,6 @@ public class CombatRegistryEvents
 		new COrePlacements();
 		new CTreePlacements();
 		new CVegetationPlacements();
-		CBiomeRegistry.registerAll(event.getRegistry());
 	}
 
 	@SubscribeEvent

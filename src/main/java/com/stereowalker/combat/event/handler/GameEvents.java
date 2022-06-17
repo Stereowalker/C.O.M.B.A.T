@@ -309,7 +309,8 @@ public class GameEvents {
 
 	public static void setTower(ServerPlayer player) {
 		Pair<BlockPos, Holder<ConfiguredStructureFeature<?, ?>>> blockpos = player.getLevel().getChunkSource().getGenerator().findNearestMapFeature(player.getLevel(), HolderSet.direct(CStructureFeatures.ETHERION_TOWER, CStructureFeatures.ETHERION_TOWER_ACROTLEST), player.blockPosition(), 100, false);
-		if (CombatEntityStats.getNearestEtherionTowerPos(player) != blockpos.getFirst()) CombatEntityStats.setNearestEtherionTowerPos(player, blockpos.getFirst() != null ? blockpos.getFirst() : BlockPos.ZERO);
+		if (blockpos == null) CombatEntityStats.setNearestEtherionTowerPos(player, BlockPos.ZERO);
+		else if (CombatEntityStats.getNearestEtherionTowerPos(player) != blockpos.getFirst()) CombatEntityStats.setNearestEtherionTowerPos(player, blockpos.getFirst() != null ? blockpos.getFirst() : BlockPos.ZERO);
 	}
 
 	@SubscribeEvent

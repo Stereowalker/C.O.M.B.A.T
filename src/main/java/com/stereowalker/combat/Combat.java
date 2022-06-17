@@ -155,7 +155,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 
 	@Override
 	public void registerClientboundPackets(SimpleChannel arg0) {
-		RankupNetRegistry.registerMessages();
+		RankupNetRegistry.registerMessages(arg0);
 		arg0.registerMessage(0, ClientboundAbominationPacket.class, ClientboundAbominationPacket::encode, ClientboundAbominationPacket::decode, ClientboundAbominationPacket::handle);
 		arg0.registerMessage(1, ClientboundPlayerStatsPacket.class, ClientboundPlayerStatsPacket::encode, ClientboundPlayerStatsPacket::decode, ClientboundPlayerStatsPacket::handle);
 		
@@ -163,9 +163,9 @@ public class Combat extends MinecraftMod implements IPacketHolder
 
 	@Override
 	public void registerServerboundPackets(SimpleChannel arg0) {
-		int netID = 1;
+		int netID = 2;
 		//client
-		PacketRegistry.registerMessage(arg0, netID++, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, 2, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundGunPacket.class, (packetBuffer) -> {return new ServerboundGunPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundMageSetupPacket.class, (packetBuffer) -> {return new ServerboundMageSetupPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundSetLimiterPacket.class, (packetBuffer) -> {return new ServerboundSetLimiterPacket(packetBuffer);});
@@ -186,7 +186,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 	}
 
 	public static void debug(Object message) {
-		if (Config.COMMON.debug_mode.get())Combat.getInstance().getLogger().debug(message);
+		if (Config.COMMON.debug_mode.get())Combat.getInstance().getLogger().info(message);
 	}
 
 	private void setup(final FMLCommonSetupEvent event)

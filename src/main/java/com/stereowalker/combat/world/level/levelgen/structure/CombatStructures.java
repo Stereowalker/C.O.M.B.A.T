@@ -9,6 +9,8 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 
 public interface CombatStructures {
 	ResourceKey<ConfiguredStructureFeature<?, ?>> ETHERION_TOWER = createKey("etherion_tower");
+	ResourceKey<ConfiguredStructureFeature<?, ?>> ETHERION_TOWER_DESERT = createKey("etherion_tower_desert");
+	ResourceKey<ConfiguredStructureFeature<?, ?>> ETHERION_TOWER_BADLANDS = createKey("etherion_tower_badlands");
 	ResourceKey<ConfiguredStructureFeature<?, ?>> ETHERION_TOWER_ACROTLEST = createKey("etherion_tower_acrotlest");
 	ResourceKey<ConfiguredStructureFeature<?, ?>> ACROTLEST_MINESHAFT_NORMAL = createKey("acrotlest_mineshaft");
 	ResourceKey<ConfiguredStructureFeature<?, ?>> ACROTLEST_PORTAL = createKey("acrotlest_portal");
