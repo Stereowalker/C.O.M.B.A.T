@@ -21,7 +21,7 @@ public class CNoiseGeneratorSettings {
 
 	static NoiseSettings SET(boolean pIsAmplified) {
 		TerrainShaper overworldShaper = TerrainProvider.overworld(pIsAmplified);
-		float f = 0.6f;
+		float f = 0.5f;
 		ToFloatFunction<Float> tofloatfunction = pIsAmplified ? TerrainShaper::getAmplifiedOffset : TerrainShaper.NO_TRANSFORM;
 		CubicSpline<TerrainShaper.Point> cubicspline = TerrainShaper.buildErosionOffsetSpline(-0.15F+f, 0.0F+f, 0.0F+f, 0.1F+f, 0.0F+f, -0.03F+f, false, false, tofloatfunction);
 		CubicSpline<TerrainShaper.Point> cubicspline1 = TerrainShaper.buildErosionOffsetSpline(-0.1F+f, 0.03F+f, 0.1F+f, 0.1F+f, 0.01F+f, -0.03F+f, false, false, tofloatfunction);

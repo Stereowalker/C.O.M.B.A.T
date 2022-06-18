@@ -1,8 +1,14 @@
 package com.stereowalker.combat.compat.curios;
 
+import java.util.UUID;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.stereowalker.combat.Combat;
@@ -15,6 +21,8 @@ import com.stereowalker.combat.world.item.BackpackItem;
 import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.item.QuiverItem;
 import com.stereowalker.combat.world.item.SheathItem;
+import com.stereowalker.unionlib.entity.AccessorySlot;
+import com.stereowalker.unionlib.entity.AccessorySlot.Group;
 import com.stereowalker.unionlib.util.ModHelper;
 import com.stereowalker.unionlib.world.item.AccessoryItem;
 
@@ -29,6 +37,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -190,6 +200,16 @@ public class CuriosCompat {
 				public void curioTick(String identifier, int index, LivingEntity livingEntity) {
 					ICurio.super.curioTick(identifier, index, livingEntity);
 					ring.accessoryTick(livingEntity.level, livingEntity, stack, -999);
+				}
+				@Override
+				public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext,
+						UUID uuid) {
+					String slot = slotContext.identifier();
+					int index = slotContext.index();
+					ImmutableMultimap.Builder<Attribute, AttributeModifier> map = ImmutableMultimap.builder();
+					map.putAll(ring.getAttributeModifiers(slot.equals("ring") ? Group.FINGER : Group.NECK, stack));
+					map.putAll(ring.getAttributeModifiers(slot.equals("ring") ? index == 0 ? AccessorySlot.FINGER_1 : AccessorySlot.FINGER_2 : AccessorySlot.NECK_1, stack));
+					return map.build();
 				}
 				@Override
 				public ItemStack getStack() {

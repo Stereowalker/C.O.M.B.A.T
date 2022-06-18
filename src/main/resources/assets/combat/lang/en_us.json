@@ -1173,6 +1173,11 @@
 	"attribute.name.combat.jump_strength": "Jump Strength",
 	"attribute.name.combat.attack_reach": "Attack Reach",
 	"attribute.name.combat.physical_resistance": "Physical Resisitance",
+	"attribute.name.combat.fire_affinity": "Fire Affinity",
+	"attribute.name.combat.water_affinity": "Water Affinity",
+	"attribute.name.combat.wind_affinity": "Wind Affinity",
+	"attribute.name.combat.earth_affinity": "Earth Affinity",
+	"attribute.name.combat.lightning_affinity": "Lightning Affinity",
 	///////////////////////////////////////////////////////////[UPGRADEABLE_ATTRIBUTES]///////////////////////////////////////////////////////////
 	"stat.combat.vitality": "Vitality",
 	"stat.combat.agility": "Agility",

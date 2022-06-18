@@ -397,10 +397,10 @@ public class CItems {
 	public static final Item STEEL_CHESTPLATE = register("steel_chestplate", new ArmorItem(CArmorMaterials.STEEL, EquipmentSlot.CHEST, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item STEEL_LEGGINGS = register("steel_leggings", new ArmorItem(CArmorMaterials.STEEL, EquipmentSlot.LEGS, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item STEEL_BOOTS = register("steel_boots", new ArmorItem(CArmorMaterials.STEEL, EquipmentSlot.FEET, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
-	public static final Item PELGAN_HELMET = register("pelgan_helmet", new ArmorItem(CArmorMaterials.PELGAN, EquipmentSlot.HEAD, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
-	public static final Item PELGAN_CHESTPLATE = register("pelgan_chestplate", new ArmorItem(CArmorMaterials.PELGAN, EquipmentSlot.CHEST, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
-	public static final Item PELGAN_LEGGINGS = register("pelgan_leggings", new ArmorItem(CArmorMaterials.PELGAN, EquipmentSlot.LEGS, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
-	public static final Item PELGAN_BOOTS = register("pelgan_boots", new ArmorItem(CArmorMaterials.PELGAN, EquipmentSlot.FEET, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+//	public static final Item PELGAN_HELMET = register("pelgan_helmet", new ArmorItem(CArmorMaterials.PELGAN, EquipmentSlot.HEAD, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+//	public static final Item PELGAN_CHESTPLATE = register("pelgan_chestplate", new ArmorItem(CArmorMaterials.PELGAN, EquipmentSlot.CHEST, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+//	public static final Item PELGAN_LEGGINGS = register("pelgan_leggings", new ArmorItem(CArmorMaterials.PELGAN, EquipmentSlot.LEGS, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+//	public static final Item PELGAN_BOOTS = register("pelgan_boots", new ArmorItem(CArmorMaterials.PELGAN, EquipmentSlot.FEET, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_HELMET = register("serable_helmet", new ArmorItem(CArmorMaterials.SERABLE, EquipmentSlot.HEAD, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_CHESTPLATE = register("serable_chestplate", new ArmorItem(CArmorMaterials.SERABLE, EquipmentSlot.CHEST, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_LEGGINGS = register("serable_leggings", new ArmorItem(CArmorMaterials.SERABLE, EquipmentSlot.LEGS, new Item.Properties().tab(CCreativeModeTab.BATTLE)));

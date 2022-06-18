@@ -19,7 +19,6 @@ public enum CArmorMaterials implements ArmorMaterial
 	SOUL("soul", 15, new int[]{2, 5, 6, 2}, 9, SoundEvents.ARMOR_EQUIP_IRON, 0, 0.0F, () -> {
 		return null;
 	}),
-	//	COPPER("copper", 7, new int[] {2, 5, 6, 2}, 14, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0, CItems.COPPER_INGOT),
 	BRONZE("bronze", 12, new int[] {2, 5, 6, 2}, 11, SoundEvents.ARMOR_EQUIP_IRON, 0, 0.0F, () -> {
 		return Ingredient.of(CItems.BRONZE_INGOT);
 	}),
@@ -29,9 +28,9 @@ public enum CArmorMaterials implements ArmorMaterial
 	PASQUEM("pasquem", 20, new int[] {4, 7, 8, 5}, 5, SoundEvents.ARMOR_EQUIP_IRON, 3.0F, 0.4F, () -> {
 		return Ingredient.of(CItems.PASQUEM_INGOT);
 	}),
-	PELGAN("pelgan", 15, new int[]{3, 8, 9, 3}, 14, SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.1F, () -> {
-		return Ingredient.of(CItems.PELGAN_INGOT);
-	}),
+//	PELGAN("pelgan", 15, new int[]{3, 8, 9, 3}, 14, SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.1F, () -> {
+//		return Ingredient.of(CItems.PELGAN_INGOT);
+//	}),
 	SERABLE("serable", 25, new int[]{2, 4, 5, 3}, 35, SoundEvents.ARMOR_EQUIP_GOLD, 0.0F, 0.2F, () -> {
 		return Ingredient.of(CItems.SERABLE_INGOT);
 	}),

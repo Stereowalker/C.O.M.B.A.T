@@ -1,0 +1,17 @@
+{
+  "type": "combat:alloy_smelting_1_output_3_inputs",
+  "ingredient1": {
+    "item": "minecraft:iron_ingot"
+  },
+  "ingredient2": {
+    "item": "combat:pelgan_ingot"
+  },
+  "ingredient3": {
+    "item": "minecraft:quartz"
+  },
+  "result1": {
+    "item": "combat:mythril_ingot"
+  },
+  "experience": 10.0,
+  "cookingtime": 500
+}

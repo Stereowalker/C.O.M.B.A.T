@@ -30,7 +30,7 @@ public class CBiomeRegistry {
 	public static void registerAll(IForgeRegistry<Biome> registry) {
 		registry.register(register(CBiomes.ACROTLEST_FOREST, CombatBiomes.makeAcrotlestForestBiome()));
 		BiomeManager.addBiome(BiomeType.ICY, new BiomeEntry(CBiomes.ACROTLEST_FOREST, 0));
-		BiomeDictionary.addTypes(CBiomes.ACROTLEST_FOREST, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.SNOWY);
+		BiomeDictionary.addTypes(CBiomes.ACROTLEST_FOREST, BiomeDictionary.Type.COLD , BiomeDictionary.Type.SNOWY);
 		
 		for(Pair<ResourceKey<Biome>,Biome> biome: CBiomes.BIOMES) {
 			registry.register(register(biome.getLeft(), biome.getRight()));
