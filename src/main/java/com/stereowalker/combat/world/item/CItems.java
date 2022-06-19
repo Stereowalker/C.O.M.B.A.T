@@ -473,14 +473,14 @@ public class CItems {
 	public static final Item MYTHRIL_AXE = register("mythril_axe", new MythrilAxeItem(CTiers.MYTHRIL, 7.0F, -3.1F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS).fireResistant()));
 	public static final Item ETHERION_AXE = register("etherion_axe", new AxeItem(CTiers.ETHERION, 6.0F, -3.1F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS).fireResistant()));
 
-	public static final Item BRONZE_HOE = register("bronze_hoe", new HoeItem(CTiers.BRONZE, -2, -2.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
-	public static final Item STEEL_HOE = register("steel_hoe", new HoeItem(CTiers.STEEL, -2, -1.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
-	public static final Item PASQUEM_HOE = register("pasquem_hoe", new HoeItem(CTiers.PASQUEM, -3, 0.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
+	public static final Item BRONZE_HOE = register("bronze_hoe", new CustomHoeItem(CTiers.BRONZE, -2, -2.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
+	public static final Item STEEL_HOE = register("steel_hoe", new CustomHoeItem(CTiers.STEEL, -2, -1.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS) ));
+	public static final Item PASQUEM_HOE = register("pasquem_hoe", new CustomHoeItem(CTiers.PASQUEM, -3, 0.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
 //	public static final Item PELGAN_HOE = register("pelgan_hoe", new HoeItem(CTiers.PELGAN, -1, -1.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
-	public static final Item SERABLE_HOE = register("serable_hoe", new HoeItem(CTiers.SERABLE, 0, -1.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
-	public static final Item LOZYNE_HOE = register("lozyne_hoe", new HoeItem(CTiers.LOZYNE, -4, 0.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
+	public static final Item SERABLE_HOE = register("serable_hoe", new CustomHoeItem(CTiers.SERABLE, 0, -1.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
+	public static final Item LOZYNE_HOE = register("lozyne_hoe", new CustomHoeItem(CTiers.LOZYNE, -4, 0.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
 	public static final Item MYTHRIL_HOE = register("mythril_hoe", new MythrilHoeItem(CTiers.MYTHRIL, -7, 0.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS).fireResistant()));
-	public static final Item ETHERION_HOE = register("etherion_hoe", new HoeItem(CTiers.ETHERION, -6, 0.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS).fireResistant()));
+	public static final Item ETHERION_HOE = register("etherion_hoe", new CustomHoeItem(CTiers.ETHERION, -6, 0.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS).fireResistant()));
 
 	public static final Item BRONZE_PICKAXE = register("bronze_pickaxe", new PickaxeItem(CTiers.BRONZE, 1, -2.8F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
 	public static final Item STEEL_PICKAXE = register("steel_pickaxe", new PickaxeItem(CTiers.STEEL, 1, -2.8F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));

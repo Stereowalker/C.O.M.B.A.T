@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MythrilHoeItem extends HoeItem implements Mythril {
+public class MythrilHoeItem extends CustomHoeItem implements Mythril {
 
 	private float attackSpeed;
 
