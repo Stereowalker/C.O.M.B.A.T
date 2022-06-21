@@ -304,6 +304,7 @@ public class CItems {
 //	public static final Item PELGAN_DAGGER = register("pelgan_dagger", new DaggerItem(CTiers.PELGAN, 1, -1.2F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_DAGGER = register("serable_dagger", new DaggerItem(CTiers.SERABLE, 1, -1.2F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item LOZYNE_DAGGER = register("lozyne_dagger", new DaggerItem(CTiers.LOZYNE, 1, -1.2F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+	public static final Item MYTHRIL_DAGGER = register("mythril_dagger", new MythrilDaggerItem(CTiers.MYTHRIL, 1, -1.2F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 	public static final Item ETHERION_DAGGER = register("etherion_dagger", new DaggerItem(CTiers.ETHERION, 1, -1.2F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 
 	public static final Item WOODEN_HAMMER = register("wooden_hammer", new HammerItem(Tiers.WOOD, 4, -3.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
@@ -317,6 +318,7 @@ public class CItems {
 //	public static final Item PELGAN_HAMMER = register("pelgan_hammer", new HammerItem(CTiers.PELGAN, 4, -3.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_HAMMER = register("serable_hammer", new HammerItem(CTiers.SERABLE, 4, -3.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item LOZYNE_HAMMER = register("lozyne_hammer", new HammerItem(CTiers.LOZYNE, 4, -3.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+	public static final Item MYTHRIL_HAMMER = register("mythril_hammer", new MythrilHammerItem(CTiers.MYTHRIL, 4, -3.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 	public static final Item ETHERION_HAMMER = register("etherion_hammer", new HammerItem(CTiers.ETHERION, 4, -3.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 
 	public static final Item WOODEN_CHAKRAM = register("wooden_chakram", new ChakramItem(Tiers.WOOD, 3, -2.5F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
@@ -330,6 +332,7 @@ public class CItems {
 //	public static final Item PELGAN_CHAKRAM = register("pelgan_chakram", new ChakramItem(CTiers.PELGAN, 3, -2.5F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_CHAKRAM = register("serable_chakram", new ChakramItem(CTiers.SERABLE, 3, -2.5F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item LOZYNE_CHAKRAM = register("lozyne_chakram", new ChakramItem(CTiers.LOZYNE, 3, -2.5F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+	public static final Item MYTHRIL_CHAKRAM = register("mythril_chakram", new MythrilChakramItem(CTiers.MYTHRIL, 3, -2.5F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 
 	public static final Item WOODEN_KATANA = register("wooden_katana", new KatanaItem(Tiers.WOOD, 3, -1.8F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item STONE_KATANA = register("stone_katana", new KatanaItem(Tiers.STONE, 3, -1.8F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
@@ -343,6 +346,7 @@ public class CItems {
 //	public static final Item PELGAN_KATANA = register("pelgan_katana", new KatanaItem(CTiers.PELGAN, 3, -1.8F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_KATANA = register("serable_katana", new KatanaItem(CTiers.SERABLE, 3, -1.8F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item LOZYNE_KATANA = register("lozyne_katana", new KatanaItem(CTiers.LOZYNE, 3, -1.8F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+	public static final Item MYTHRIL_KATANA = register("mythril_katana", new MythrilKatanaItem(CTiers.MYTHRIL, 3, -1.8F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 	public static final Item ETHERION_KATANA = register("etherion_katana", new KatanaItem(CTiers.ETHERION, 3, -1.8F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 
 	public static final Item WOODEN_RAPIER = register("wooden_rapier", new RapierItem(Tiers.WOOD, 2, -1.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
@@ -358,6 +362,7 @@ public class CItems {
 	public static final Item SERABLE_RAPIER = register("serable_rapier", new RapierItem(CTiers.SERABLE, 2, -1.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item LOZYNE_RAPIER = register("lozyne_rapier", new RapierItem(CTiers.LOZYNE, 2, -1.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item ETHERION_RAPIER = register("etherion_rapier", new RapierItem(CTiers.ETHERION, 2, -1.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
+	public static final Item MYTHRIL_RAPIER = register("mythril_rapier", new MythrilRapierItem(CTiers.MYTHRIL, 2, -1.6F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 
 	public static final Item WOODEN_HALBERD = register("wooden_halberd", new HalberdItem(Tiers.WOOD, 12.0F, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item STONE_HALBERD = register("stone_halberd", new HalberdItem(Tiers.STONE, 14.0F, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
@@ -370,6 +375,7 @@ public class CItems {
 //	public static final Item PELGAN_HALBERD = register("pelgan_halberd", new HalberdItem(CTiers.PELGAN, 12.0F, -3.5F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_HALBERD = register("serable_halberd", new HalberdItem(CTiers.SERABLE, 12.0F, -3.4F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item LOZYNE_HALBERD = register("lozyne_halberd", new HalberdItem(CTiers.LOZYNE, 14.0F, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+	public static final Item MYTHRIL_HALBERD = register("mythril_halberd", new MythrilHalberdItem(CTiers.MYTHRIL, 14.0F, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 
 	public static final Item WOODEN_SCYTHE = register("wooden_scythe", new ScytheItem(Tiers.WOOD, 12, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item STONE_SCYTHE = register("stone_scythe", new ScytheItem(Tiers.STONE, 12, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
@@ -383,7 +389,8 @@ public class CItems {
 //	public static final Item PELGAN_SCYTHE = register("pelgan_scythe", new ScytheItem(CTiers.PELGAN, 12, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item SERABLE_SCYTHE = register("serable_scythe", new ScytheItem(CTiers.SERABLE, 12, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item LOZYNE_SCYTHE = register("lozyne_scythe", new ScytheItem(CTiers.LOZYNE, 12, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
-	public static final Item ETHERION_SCYTHE = register("etherion_scythe", new ScytheItem(CTiers.ETHERION, 12, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
+	public static final Item ETHERION_SCYTHE = register("etherion_scythe", new ScytheItem(CTiers.ETHERION, 12, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
+	public static final Item MYTHRIL_SCYTHE = register("mythril_scythe", new MythrilScytheItem(CTiers.MYTHRIL, 12, -3.7F, new Item.Properties().tab(CCreativeModeTab.BATTLE).fireResistant()));
 
 	public static final Item BRONZE_HELMET = register("bronze_helmet", new ArmorItem(CArmorMaterials.BRONZE, EquipmentSlot.HEAD, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
 	public static final Item BRONZE_CHESTPLATE = register("bronze_chestplate", new ArmorItem(CArmorMaterials.BRONZE, EquipmentSlot.CHEST, new Item.Properties().tab(CCreativeModeTab.BATTLE)));
@@ -497,6 +504,7 @@ public class CItems {
 //	public static final Item PELGAN_SHOVEL = register("pelgan_shovel", new ShovelItem(CTiers.PELGAN, 1.5F, -3.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
 	public static final Item SERABLE_SHOVEL = register("serable_shovel", new ShovelItem(CTiers.SERABLE, 1.5F, -3.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
 	public static final Item LOZYNE_SHOVEL = register("lozyne_shovel", new ShovelItem(CTiers.LOZYNE, 1.5F, -3.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS)));
+	public static final Item MYTHRIL_SHOVEL = register("mythril_shovel", new MythrilShovelItem(CTiers.MYTHRIL, 1.5F, -3.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS).fireResistant()));
 	public static final Item ETHERION_SHOVEL = register("etherion_shovel", new ShovelItem(CTiers.ETHERION, 1.5F, -3.0F, new Item.Properties().tab(CCreativeModeTab.TAB_TOOLS).fireResistant()));
 
 

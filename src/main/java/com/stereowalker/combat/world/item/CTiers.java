@@ -41,10 +41,10 @@ public enum CTiers implements Tier
 	      return Ingredient.of(CItems.LOZYNE_INGOT);
 	   }),
 	//Endgame Metals
-	MYTHRIL(2, 5513, 7.1F, 4.0F, 3, () -> {
+	MYTHRIL(2, 5513, 7.1F, 4.0F, 0, () -> {
 		return Ingredient.of(CItems.MYTHRIL_INGOT);
 	}),
-	POWERED_MYTHRIL(4, 5513, 14.2F, 8.0F, 3, () -> {
+	POWERED_MYTHRIL(4, 5513, 14.2F, 8.0F, 0, () -> {
 		return Ingredient.of(CItems.MYTHRIL_INGOT);
 	}),
 	ETHERION(4, 7286, 16.9F, 6.1F, 29, () -> {

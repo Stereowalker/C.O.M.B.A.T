@@ -10,15 +10,14 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MythrilSwordItem extends SwordItem implements Mythril {
+public class MythrilScytheItem extends ScytheItem implements Mythril {
 	private final float attackSpeed;
 
-	public MythrilSwordItem(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
+	public MythrilScytheItem(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
 		this.attackSpeed = attackSpeedIn;
 	}

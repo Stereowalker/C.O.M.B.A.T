@@ -7,17 +7,16 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MythrilAxeItem extends AxeItem implements Mythril {
+public class MythrilHalberdItem extends HalberdItem implements Mythril {
 
 	private float attackSpeed;
 
-	public MythrilAxeItem(Tier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
+	public MythrilHalberdItem(Tier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 		this.attackSpeed = attackSpeedIn;
 	}

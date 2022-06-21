@@ -8,17 +8,16 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MythrilSwordItem extends SwordItem implements Mythril {
+public class MythrilHammerItem extends SwordItem implements Mythril {
 	private final float attackSpeed;
 
-	public MythrilSwordItem(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
+	public MythrilHammerItem(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
 		this.attackSpeed = attackSpeedIn;
 	}
@@ -29,7 +28,7 @@ public class MythrilSwordItem extends SwordItem implements Mythril {
 	 */
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!attacker.level.isClientSide && isUsingEnergy(stack) && !EnergyUtils.isDrained(stack, EnergyUtils.EnergyType.DIVINE_ENERGY) && (!(attacker instanceof Player) || !((Player)attacker).getAbilities().instabuild)) {
+		if (shouldDrain(attacker, stack)) {
 			EnergyUtils.addEnergyToItem(stack, -10, EnergyUtils.EnergyType.DIVINE_ENERGY);
 		}
 		return super.hurtEnemy(stack, target, attacker);
@@ -41,7 +40,7 @@ public class MythrilSwordItem extends SwordItem implements Mythril {
 	@Override
 	public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
 		if (state.getDestroySpeed(worldIn, pos) != 0.0F) {
-			if (!entityLiving.level.isClientSide && isUsingEnergy(stack) && !EnergyUtils.isDrained(stack, EnergyUtils.EnergyType.DIVINE_ENERGY) && (!(entityLiving instanceof Player) || !((Player)entityLiving).getAbilities().instabuild)) {
+			if (shouldDrain(entityLiving, stack)) {
 				EnergyUtils.addEnergyToItem(stack, -10, EnergyUtils.EnergyType.DIVINE_ENERGY);
 			}
 		}

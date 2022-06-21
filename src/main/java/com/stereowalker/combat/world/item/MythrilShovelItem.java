@@ -7,19 +7,20 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MythrilAxeItem extends AxeItem implements Mythril {
+public class MythrilShovelItem extends ShovelItem implements Mythril {
 
 	private float attackSpeed;
 
-	public MythrilAxeItem(Tier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
-		super(tier, attackDamageIn, attackSpeedIn, builder);
-		this.attackSpeed = attackSpeedIn;
+	public MythrilShovelItem(Tier pTier, float pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
+		super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+		this.attackSpeed = pAttackSpeedModifier;
 	}
 
 	@Override
@@ -38,6 +39,9 @@ public class MythrilAxeItem extends AxeItem implements Mythril {
 		return result;
 	}
 
+	/**
+	 * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
+	 */
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, ItemStack stack) {
 		return equipmentSlot == EquipmentSlot.MAINHAND && isUsingEnergy(stack) ? 

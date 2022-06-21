@@ -112,17 +112,17 @@ public class DaggerItem extends TieredItem {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		ItemStack itemstack = playerIn.getItemInHand(handIn);
-		if (PlayerSkills.hasSkill(playerIn, Skills.DAGGER_THROW)) {
+		if (PlayerSkills.hasSkill(playerIn, Skills.DAGGER_THROW) && !playerIn.isCrouching()) {
 			if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
 				return new InteractionResultHolder<>(InteractionResult.FAIL, itemstack);
 			} else if (EnchantmentHelper.getRiptide(itemstack) > 0 && !playerIn.isInWaterOrRain()) {
 				return new InteractionResultHolder<>(InteractionResult.FAIL, itemstack);
 			} else {
 				playerIn.startUsingItem(handIn);
-				return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
+				return InteractionResultHolder.sidedSuccess(itemstack, worldIn.isClientSide);
 			}
 		} else {
-			return new InteractionResultHolder<>(InteractionResult.FAIL, itemstack);
+			return super.use(worldIn, playerIn, handIn);
 		}
 	}
 
