@@ -24,7 +24,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:god_wand"
+            "items": [
+              "combat:god_wand"
+            ]
           }
         ]
       }

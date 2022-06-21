@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:apprentice_stick_wand"
+            "items": [
+              "combat:apprentice_stick_wand"
+            ]
           }
         ]
       }
@@ -31,7 +33,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:apprentice_blaze_wand"
+            "items": [
+              "combat:apprentice_blaze_wand"
+            ]
           }
         ]
       }
@@ -41,7 +45,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:apprentice_golden_wand"
+            "items": [
+              "combat:apprentice_golden_wand"
+            ]
           }
         ]
       }
@@ -51,7 +57,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:apprentice_shulker_wand"
+            "items": [
+              "combat:apprentice_shulker_wand"
+            ]
           }
         ]
       }
@@ -61,7 +69,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:apprentice_serable_wand"
+            "items": [
+              "combat:apprentice_serable_wand"
+            ]
           }
         ]
       }

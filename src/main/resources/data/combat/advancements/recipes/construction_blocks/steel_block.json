@@ -11,10 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:steel_ingot",
-            "count": {
-              "min": 9
-            }
+            "items": [
+              "combat:steel_ingot"
+            ]
           }
         ]
       }

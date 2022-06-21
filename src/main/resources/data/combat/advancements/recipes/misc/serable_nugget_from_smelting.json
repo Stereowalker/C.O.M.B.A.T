@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_pickaxe"
+            "items": [
+              "combat:serable_pickaxe"
+            ]
           }
         ]
       }
@@ -21,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_shovel"
+            "items": [
+              "combat:serable_shovel"
+            ]
           }
         ]
       }
@@ -31,7 +35,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_axe"
+            "items": [
+              "combat:serable_axe"
+            ]
           }
         ]
       }
@@ -41,7 +47,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_hoe"
+            "items": [
+              "combat:serable_hoe"
+            ]
           }
         ]
       }
@@ -51,7 +59,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_sword"
+            "items": [
+              "combat:serable_sword"
+            ]
           }
         ]
       }
@@ -61,7 +71,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_helmet"
+            "items": [
+              "combat:serable_helmet"
+            ]
           }
         ]
       }
@@ -71,7 +83,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_chestplate"
+            "items": [
+              "combat:serable_chestplate"
+            ]
           }
         ]
       }
@@ -81,7 +95,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_leggings"
+            "items": [
+              "combat:serable_leggings"
+            ]
           }
         ]
       }
@@ -91,7 +107,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_boots"
+            "items": [
+              "combat:serable_boots"
+            ]
           }
         ]
       }
@@ -101,7 +119,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_horse_armor"
+            "items": [
+              "combat:serable_horse_armor"
+            ]
           }
         ]
       }

@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:ghast_tear"
+            "items": [
+              "minecraft:ghast_tear"
+            ]
           }
         ]
       }
@@ -21,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:wither_rose"
+            "items": [
+              "minecraft:wither_rose"
+            ]
           }
         ]
       }

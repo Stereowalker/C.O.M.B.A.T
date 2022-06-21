@@ -11,10 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:tridox",
-            "count": {
-              "min": 9
-            }
+            "items": [
+              "combat:tridox"
+            ]
           }
         ]
       }

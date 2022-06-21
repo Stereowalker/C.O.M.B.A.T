@@ -1,0 +1,30 @@
+{
+    "name": "book.combat.entry.magisteel_ingot.name",
+    "icon": "combat:magisteel_ingot",
+    "category": "combat:materials",
+	"advancement": "combat:magic/mine_tridox",
+    "secret": false,
+    "priority": false,
+    "read_by_default": false,
+    "sortnum": 70,
+    "pages": [
+        {
+            "type": "text",
+            "text": "book.combat.entry.magisteel_ingot.page.1"
+        },
+		{
+            "type": "spotlight",
+			"item": "combat:magisteel_ingot",
+            "title": "book.combat.entry.magisteel_ingot.heading.1",
+            "text": "book.combat.entry.magisteel_ingot.page.2"
+        },
+        {
+            "type": "text",
+            "text": "book.combat.entry.magisteel_ingot.page.3"
+        },
+		{
+            "type": "empty",
+            "draw_filler": false
+        }
+    ]
+}

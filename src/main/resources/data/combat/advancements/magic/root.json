@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:stick"
+            "items": [
+              "minecraft:stick"
+            ]
           }
         ]
       }
@@ -31,7 +33,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:blaze_powder"
+            "items": [
+              "minecraft:blaze_powder"
+            ]
           }
         ]
       }
@@ -41,7 +45,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:gold_rod"
+            "items": [
+              "combat:gold_rod"
+            ]
           }
         ]
       }
@@ -51,7 +57,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:shulker_shell"
+            "items": [
+              "minecraft:shulker_shell"
+            ]
           }
         ]
       }
@@ -61,7 +69,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_rod"
+            "items": [
+              "combat:serable_rod"
+            ]
           }
         ]
       }

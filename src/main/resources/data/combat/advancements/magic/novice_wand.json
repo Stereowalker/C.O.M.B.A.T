@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:novice_stick_wand"
+            "items": [
+              "combat:novice_stick_wand"
+            ]
           }
         ]
       }
@@ -31,7 +33,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:novice_blaze_wand"
+            "items": [
+              "combat:novice_blaze_wand"
+            ]
           }
         ]
       }
@@ -41,7 +45,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:novice_golden_wand"
+            "items": [
+              "combat:novice_golden_wand"
+            ]
           }
         ]
       }
@@ -51,7 +57,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:novice_shulker_wand"
+            "items": [
+              "combat:novice_shulker_wand"
+            ]
           }
         ]
       }
@@ -61,7 +69,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:novice_serable_wand"
+            "items": [
+              "combat:novice_serable_wand"
+            ]
           }
         ]
       }

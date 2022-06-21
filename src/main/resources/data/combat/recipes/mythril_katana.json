@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X",
+    "X",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "combat:katana_handle"
+    },
+    "X": {
+      "item": "combat:mythril_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:mythril_katana"
+  }
+}

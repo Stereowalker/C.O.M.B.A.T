@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "  X",
+    " YX",
+    "#  "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "Y": {
+      "item": "combat:mythril_axe"
+    },
+    "X": {
+      "item": "combat:mythril_ingot"
+    }
+  },
+  "result": {
+    "item": "combat:mythril_halberd"
+  }
+}

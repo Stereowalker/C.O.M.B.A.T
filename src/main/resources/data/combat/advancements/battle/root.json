@@ -16,20 +16,19 @@
     "background": "combat:textures/gui/advancements/backgrounds/battle.png"
   },
   "criteria": {
-    "basic_wand": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "minecraft:stick"
-          }
-        ]
-      }
+    "killed_something": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {}
+    },
+    "killed_by_something": {
+      "trigger": "minecraft:entity_killed_player",
+      "conditions": {}
     }
   },
   "requirements": [
     [
-      "basic_wand"
+      "killed_something",
+      "killed_by_something"
     ]
   ]
 }

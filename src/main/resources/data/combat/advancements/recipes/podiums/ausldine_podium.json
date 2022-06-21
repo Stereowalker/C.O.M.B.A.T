@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:ausldine_planks"
+            "items": [
+              "combat:ausldine_planks"
+            ]
           }
         ]
       }

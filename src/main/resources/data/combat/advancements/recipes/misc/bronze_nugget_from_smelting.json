@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_pickaxe"
+            "items": [
+              "combat:bronze_pickaxe"
+            ]
           }
         ]
       }
@@ -21,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_shovel"
+            "items": [
+              "combat:bronze_shovel"
+            ]
           }
         ]
       }
@@ -31,7 +35,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_axe"
+            "items": [
+              "combat:bronze_axe"
+            ]
           }
         ]
       }
@@ -41,7 +47,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_hoe"
+            "items": [
+              "combat:bronze_hoe"
+            ]
           }
         ]
       }
@@ -51,7 +59,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_sword"
+            "items": [
+              "combat:bronze_sword"
+            ]
           }
         ]
       }
@@ -61,7 +71,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_helmet"
+            "items": [
+              "combat:bronze_helmet"
+            ]
           }
         ]
       }
@@ -71,7 +83,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_chestplate"
+            "items": [
+              "combat:bronze_chestplate"
+            ]
           }
         ]
       }
@@ -81,7 +95,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_leggings"
+            "items": [
+              "combat:bronze_leggings"
+            ]
           }
         ]
       }
@@ -91,7 +107,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_boots"
+            "items": [
+              "combat:bronze_boots"
+            ]
           }
         ]
       }
@@ -101,7 +119,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:bronze_horse_armor"
+            "items": [
+              "combat:bronze_horse_armor"
+            ]
           }
         ]
       }

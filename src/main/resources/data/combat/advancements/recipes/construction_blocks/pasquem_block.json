@@ -11,10 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:pasquem_ingot",
-            "count": {
-              "min": 9
-            }
+            "items": [
+              "combat:pasquem_ingot"
+            ]
           }
         ]
       }

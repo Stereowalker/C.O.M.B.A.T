@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:serable_ingot"
+            "items": [
+              "combat:serable_ingot"
+            ]
           }
         ]
       }

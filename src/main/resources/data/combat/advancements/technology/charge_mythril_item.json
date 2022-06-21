@@ -24,10 +24,37 @@
             "item": "combat:mythril_sword"
           },
           {
+            "item": "combat:mythril_dagger"
+          },
+          {
+            "item": "combat:mythril_hammer"
+          },
+          {
             "item": "combat:mythril_axe"
           },
           {
+            "item": "combat:mythril_hoe"
+          },
+          {
             "item": "combat:mythril_pickaxe"
+          },
+          {
+            "item": "combat:mythril_shovel"
+          },
+          {
+            "item": "combat:mythril_chakram"
+          },
+          {
+            "item": "combat:mythril_katana"
+          },
+          {
+            "item": "combat:mythril_rapier"
+          },
+          {
+            "item": "combat:mythril_halberd"
+          },
+          {
+            "item": "combat:mythril_scythe"
           }
         ]
       }

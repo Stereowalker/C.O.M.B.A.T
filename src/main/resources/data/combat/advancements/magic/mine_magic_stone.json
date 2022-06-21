@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:red_magic_stone"
+            "items": [
+              "combat:red_magic_stone"
+            ]
           }
         ]
       }

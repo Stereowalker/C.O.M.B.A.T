@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:soul_gem"
+            "items": [
+              "combat:soul_gem"
+            ]
           }
         ]
       }

@@ -11,10 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:ruby",
-            "count": {
-              "min": 9
-            }
+            "items": [
+              "combat:ruby"
+            ]
           }
         ]
       }

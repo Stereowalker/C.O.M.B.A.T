@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:mythril_ingot"
+            "items": [
+              "combat:mythril_sword"
+            ]
           }
         ]
       }

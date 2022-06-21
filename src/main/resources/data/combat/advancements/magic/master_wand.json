@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:master_stick_wand"
+            "items": [
+              "combat:master_stick_wand"
+            ]
           }
         ]
       }
@@ -31,7 +33,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:master_blaze_wand"
+            "items": [
+              "combat:master_blaze_wand"
+            ]
           }
         ]
       }
@@ -41,7 +45,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:master_golden_wand"
+            "items": [
+              "combat:master_golden_wand"
+            ]
           }
         ]
       }
@@ -51,7 +57,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:master_shulker_wand"
+            "items": [
+              "combat:master_shulker_wand"
+            ]
           }
         ]
       }
@@ -61,7 +69,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:master_serable_wand"
+            "items": [
+              "combat:master_serable_wand"
+            ]
           }
         ]
       }

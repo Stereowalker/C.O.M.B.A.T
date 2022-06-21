@@ -11,10 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:pelgan_ingot",
-            "count": {
-              "min": 9
-            }
+            "items": [
+              "combat:pelgan_ingot"
+            ]
           }
         ]
       }

@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "combat:gold_rod"
+            "items": [
+              "combat:gold_rod"
+            ]
           }
         ]
       }
