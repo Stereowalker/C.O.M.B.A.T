@@ -2,6 +2,7 @@ package com.stereowalker.combat.core.registries;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
+import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.client.particle.AcrotlestPortalParticle;
 import com.stereowalker.combat.client.particle.CDripParticle;
@@ -28,6 +29,7 @@ import com.stereowalker.combat.world.entity.monster.ZombieCow;
 import com.stereowalker.combat.world.inventory.CMenuType;
 import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.item.DyeableWeaponItem;
+import com.stereowalker.combat.world.item.SoulGemItem;
 import com.stereowalker.combat.world.item.alchemy.CPotions;
 import com.stereowalker.combat.world.item.crafting.CRecipeSerializer;
 import com.stereowalker.combat.world.item.crafting.CRecipeType;
@@ -189,6 +191,9 @@ public class CombatRegistryEvents
 		event.getItemColors().register((stack, tintIndex) -> {
 			return tintIndex == 0 ? -1 : ((DyeableWeaponItem)stack.getItem()).getColor(stack);
 		}, CItems.LIGHT_SABER, CItems.MAGISTEEL_SWORD, CItems.MAGISTEEL_AXE);
+		event.getItemColors().register((stack, tintIndex) -> {
+			return ((SoulGemItem)stack.getItem()).getCat() == SpellCategory.NONE ? 0x56a6bf : ((SoulGemItem)stack.getItem()).getCat().getColor().getValue();
+		}, CItems.SOUL_GEM, CItems.CRUSHED_SOUL_GEM, CItems.DROWNED_SOUL_GEM, CItems.SCORCHED_SOUL_GEM, CItems.SHOCKED_SOUL_GEM, CItems.SHREDDED_SOUL_GEM);
 	}
 
 	@SubscribeEvent

@@ -1,0 +1,22 @@
+{
+    "name": "book.combat.entry.soul_gem.name",
+    "icon": "combat:soul_gem",
+    "category": "combat:magic",
+	"advancement": "combat:magic/obtain_soul_gem",
+    "secret": false,
+    "priority": false,
+    "read_by_default": false,
+    "sortnum": 70,
+    "pages": [
+        {
+            "type": "text",
+            "text": "book.combat.entry.soul_gem.page.1"
+        },
+		{
+            "type": "spotlight",
+			"item": "combat:soul_gem",
+            "title": "book.combat.entry.soul_gem.heading.1",
+            "text": "book.combat.entry.soul_gem.page.2"
+        }
+    ]
+}

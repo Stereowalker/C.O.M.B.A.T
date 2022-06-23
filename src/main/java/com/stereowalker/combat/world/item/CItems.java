@@ -241,7 +241,12 @@ public class CItems {
 	public static final Item SOUL_BOOTS = register("soul_boots", new SoulArmorItem(CArmorMaterials.SOUL, EquipmentSlot.FEET, new Item.Properties()));
 	public static final Item MANA_PILL = register("mana_pill", new ManaPillIem(new Item.Properties().tab(CCreativeModeTab.MAGIC).stacksTo(16)));
 	public static final Item EMPTY_SOUL_GEM = register("empty_soul_gem", new EmptySoulGemItem(new Item.Properties().tab(CCreativeModeTab.MAGIC)));
-	public static final Item SOUL_GEM = register("soul_gem", new Item(new Item.Properties().tab(CCreativeModeTab.MAGIC)));
+	public static final Item SOUL_GEM = register("soul_gem", new SoulGemItem(SpellCategory.NONE, new Item.Properties().tab(CCreativeModeTab.MAGIC)));
+	public static final Item SCORCHED_SOUL_GEM = register("scorched_soul_gem", new SoulGemItem(SpellCategory.FIRE, new Item.Properties().tab(CCreativeModeTab.MAGIC)));
+	public static final Item CRUSHED_SOUL_GEM = register("crushed_soul_gem", new SoulGemItem(SpellCategory.EARTH, new Item.Properties().tab(CCreativeModeTab.MAGIC)));
+	public static final Item DROWNED_SOUL_GEM = register("drowned_soul_gem", new SoulGemItem(SpellCategory.WATER, new Item.Properties().tab(CCreativeModeTab.MAGIC)));
+	public static final Item SHOCKED_SOUL_GEM = register("shocked_soul_gem", new SoulGemItem(SpellCategory.LIGHTNING, new Item.Properties().tab(CCreativeModeTab.MAGIC)));
+	public static final Item SHREDDED_SOUL_GEM = register("shredded_soul_gem", new SoulGemItem(SpellCategory.WIND, new Item.Properties().tab(CCreativeModeTab.MAGIC)));
 	public static final Item MANA_ORB = register("mana_orb", new ManaOrbItem(new Item.Properties().tab(CCreativeModeTab.MAGIC).stacksTo(1)));
 	public static final Item MAGIC_ORB = register("magic_orb", new MagicOrbItem(new Item.Properties().tab(CCreativeModeTab.MAGIC).stacksTo(1)));
 	public static final Item PURPLE_MAGIC_STONE = register("purple_magic_stone", new MagicStoneItem(new Item.Properties().tab(CCreativeModeTab.MAGIC)));
