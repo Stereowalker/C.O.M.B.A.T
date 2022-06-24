@@ -20,11 +20,11 @@ public enum SpellCategory {
 	//NONE
 	NONE("none", TextColor.parseColor("#FFFFFF"), ClassType.UNCLASSED),
 	//ELEMENTALS
-	FIRE("fire", TextColor.parseColor("#FF5555"), CAttributes.FIRE_AFFINITY, ClassType.ELEMENTAL),
-	WATER("water", TextColor.parseColor("#55FFFF"), CAttributes.WATER_AFFINITY, ClassType.ELEMENTAL),
-	LIGHTNING("lightning", TextColor.parseColor("#5555FF"), CAttributes.LIGHTNING_AFFINITY, ClassType.ELEMENTAL),
-	EARTH("earth", TextColor.parseColor("#00AA00"), CAttributes.EARTH_AFFINITY, ClassType.ELEMENTAL),
-	WIND("wind", TextColor.parseColor("#AAAAAA"), CAttributes.WIND_AFFINITY, ClassType.ELEMENTAL),
+	FIRE("fire", TextColor.parseColor("#FF6655"), CAttributes.FIRE_AFFINITY, ClassType.ELEMENTAL),
+	WATER("water", TextColor.parseColor("#44EEFF"), CAttributes.WATER_AFFINITY, ClassType.ELEMENTAL),
+	LIGHTNING("lightning", TextColor.parseColor("#6666FF"), CAttributes.LIGHTNING_AFFINITY, ClassType.ELEMENTAL),
+	EARTH("earth", TextColor.parseColor("#119900"), CAttributes.EARTH_AFFINITY, ClassType.ELEMENTAL),
+	WIND("wind", TextColor.parseColor("#999999"), CAttributes.WIND_AFFINITY, ClassType.ELEMENTAL),
 	//SPECIAL
 	RESTORATION("restoration", TextColor.parseColor("#FFFF55"), ClassType.PRIMEVAL),
 	CONJURATION("conjuration", TextColor.parseColor("#AA00AA"), ClassType.PRIMEVAL),
