@@ -50,7 +50,7 @@ public class PlayerLevelsScreen extends Screen {
 		//		this.statsRowList = new StatsRowList(this.minecraft, xSize, 0, yPos, yPos+ySize, 21);
 		this.statsRowList = new StatsRowList(this.minecraft, this.width, this.height, yPos, yPos+ySize, 21);
 		//		this.statsRowList.setLeftPos(xPos);
-		this.statsRowList.addStat(CombatRegistries.STATS.getValues());
+		this.statsRowList.addStat(this.minecraft.level.registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY));
 		this.addWidget(this.statsRowList);
 
 		this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 144, 200, 20, new TranslatableComponent("gui.show_skills"), (onPress) -> {

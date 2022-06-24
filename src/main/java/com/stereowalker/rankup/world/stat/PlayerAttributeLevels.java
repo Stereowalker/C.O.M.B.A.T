@@ -1,5 +1,7 @@
 package com.stereowalker.rankup.world.stat;
 
+import java.util.Map.Entry;
+
 import com.google.common.collect.Maps;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
@@ -7,7 +9,9 @@ import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,12 +19,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 
 public class PlayerAttributeLevels {
-	public static StatProfile getStatPoints(LivingEntity entity, Stat stat) {
+	public static StatProfile getStatProfile(LivingEntity entity, ResourceKey<Stat> key) {
 		StatProfile newStatProfile = new StatProfile(0, Maps.newHashMap());
 		if(entity != null) {
 			CompoundTag compound = getRankNBT(entity); 
-			if (compound != null && compound.contains(stat.getRegistryName().getPath(), 10)) {
-				newStatProfile.read(compound.getCompound(stat.getRegistryName().getPath()));
+			if (compound != null && compound.contains(key.location().toString(), 10)) {
+				newStatProfile.read(compound.getCompound(key.location().toString()));
 				return newStatProfile;
 			}
 		}
@@ -59,11 +63,11 @@ public class PlayerAttributeLevels {
 		return false;
 	}
 
-	public static void setStatProfile(LivingEntity entity, Stat stat, StatProfile statPoints) {
+	public static void setStatProfile(LivingEntity entity, ResourceKey<Stat> key, StatProfile statPoints) {
 		CompoundTag compound = entity.getPersistentData().getCompound("combat:RankUp"); 
 		CompoundTag nbt = new CompoundTag();
 		statPoints.write(nbt);
-		compound.put(stat.getRegistryName().getPath(), nbt);
+		compound.put(key.location().toString(), nbt);
 	}
 
 	public static void setExperience(LivingEntity entity, int experience) {
@@ -86,10 +90,10 @@ public class PlayerAttributeLevels {
 		compound.putBoolean("init_player", value);
 	}
 
-	public static boolean addStatPoints(LivingEntity entity, Stat level, int amount) {
-		StatProfile statProfile = getStatPoints(entity, level);
+	public static boolean addStatPoints(LivingEntity entity, ResourceKey<Stat> key, int amount) {
+		StatProfile statProfile = getStatProfile(entity, key);
 		statProfile.setPoints(statProfile.getPoints()+amount);
-		setStatProfile(entity, level, statProfile);
+		setStatProfile(entity, key, statProfile);
 		return true;
 	}
 
@@ -112,12 +116,13 @@ public class PlayerAttributeLevels {
 		compound = getOrCreateRankNBT(entity);
 		if(entity.isAlive()) {
 			if (!entity.level.isClientSide) {
-				for (Stat stat : CombatRegistries.STATS) {
-					if (!compound.contains(stat.getRegistryName().getPath())) {
+				Registry<Stat> registry = entity.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
+				for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
+					if (!compound.contains(stat.getKey().location().getPath())) {
 						if (entity instanceof Player)
-							setStatProfile(entity, stat, new StatProfile(Rankup.statsManager.STATS.get(stat).getDefaultPoints(), Maps.newHashMap()));
+							setStatProfile(entity, stat.getKey(), new StatProfile(Rankup.statsManager.STATS.get(stat.getKey().location()).getDefaultPoints(), Maps.newHashMap()));
 						else
-							setStatProfile(entity, stat, new StatProfile(StatEvents.calculatePointsFromBase(entity, stat), Maps.newHashMap()));
+							setStatProfile(entity, stat.getKey(), new StatProfile(StatEvents.calculatePointsFromBase(entity, stat.getValue()), Maps.newHashMap()));
 
 					}
 				}

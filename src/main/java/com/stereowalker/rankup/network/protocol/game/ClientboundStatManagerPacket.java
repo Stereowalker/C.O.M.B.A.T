@@ -10,35 +10,37 @@ import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.world.stat.StatSettings;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 public class ClientboundStatManagerPacket {
-	private Stat stat;
+	private ResourceLocation stat;
 	private StatSettings settings;
 	
-	public ClientboundStatManagerPacket(final Stat statIn, final StatSettings settingsIn) {
+	public ClientboundStatManagerPacket(final ResourceLocation statIn, final StatSettings settingsIn) {
 		this.stat = statIn;
 		this.settings = settingsIn;
 	}
 	
 	public static void encode(final ClientboundStatManagerPacket msg, final FriendlyByteBuf packetBuffer) {
-		packetBuffer.writeResourceLocation(msg.stat.getRegistryName());
+		packetBuffer.writeResourceLocation(msg.stat);
 		packetBuffer.writeNbt(msg.settings.serialize());
 	}
 	
 	public static ClientboundStatManagerPacket decode(final FriendlyByteBuf packetBuffer) {
-		return new ClientboundStatManagerPacket(CombatRegistries.STATS.getValue(packetBuffer.readResourceLocation()), new StatSettings(packetBuffer.readNbt()));
+		return new ClientboundStatManagerPacket(packetBuffer.readResourceLocation(), new StatSettings(packetBuffer.readNbt()));
 	}
 	
 	@SuppressWarnings("deprecation")
 	public static void handle(final ClientboundStatManagerPacket msg, final Supplier<NetworkEvent.Context> contextSupplier) {
 		final NetworkEvent.Context context = contextSupplier.get();
 		context.enqueueWork(() -> DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-			final Stat stat = msg.stat;
+			final ResourceLocation stat = msg.stat;
 			final StatSettings settings = msg.settings;
 			update(stat, settings);
 		}));
@@ -46,10 +48,10 @@ public class ClientboundStatManagerPacket {
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public static void update(final Stat stat, final StatSettings settings) {
+	public static void update(final ResourceLocation stat, final StatSettings settings) {
 		Map<Stat,StatSettings> statMap = new HashMap<>();
 		statMap.putAll(Combat.rankupInstance.CLIENT_STATS);
-		statMap.put(stat, settings);
+		statMap.put(Minecraft.getInstance().level.registryAccess().registry(CombatRegistries.STATS_REGISTRY).get().get(stat), settings);
 		Combat.rankupInstance.CLIENT_STATS = ImmutableMap.copyOf(statMap);
 	}
 }

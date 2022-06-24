@@ -1,11 +1,11 @@
 package com.stereowalker.rankup.world.stat;
 
+import java.util.Map.Entry;
 import java.util.Random;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
-import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.network.protocol.game.ClientboundEntityStatsPacket;
@@ -15,14 +15,18 @@ import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerStatsPacke
 import com.stereowalker.rankup.network.protocol.game.ClientboundStatManagerPacket;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
@@ -43,7 +47,7 @@ public class StatEvents {
 	}
 
 	public static void sendStatsToClient(ServerPlayer player) {
-		for (Stat stat : Rankup.statsManager.STATS.keySet()) {
+		for (ResourceLocation stat : Rankup.statsManager.STATS.keySet()) {
 			Combat.getInstance().channel.sendTo(new ClientboundStatManagerPacket(stat, Rankup.statsManager.STATS.get(stat)), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 		}
 	}
@@ -56,8 +60,8 @@ public class StatEvents {
 		if (player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || !wasDeath) {
 			PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(original));
 		}
-		for (Stat levels : CombatRegistries.STATS) {
-			PlayerAttributeLevels.setStatProfile(player, levels, PlayerAttributeLevels.getStatPoints(original, levels));
+		for (Entry<ResourceKey<Stat>, Stat> levels : player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).entrySet()) {
+			PlayerAttributeLevels.setStatProfile(player, levels.getKey(), PlayerAttributeLevels.getStatProfile(original, levels.getKey()));
 		}
 		PlayerAttributeLevels.setLevel(player, PlayerAttributeLevels.getLevel(original));
 		PlayerAttributeLevels.setUpgradePoints(player, PlayerAttributeLevels.getUpgradePoints(original));
@@ -86,9 +90,10 @@ public class StatEvents {
 		if (sendMessage) new ClientboundPlayerLevelUpPacket(PlayerAttributeLevels.getLevel(player)).send((ServerPlayer)player);
 		MutableComponent upText = new TextComponent("You are now at Level "+PlayerAttributeLevels.getLevel(player)+" and have recieved [").withStyle(ChatFormatting.AQUA);
 		int upPoints = 0;
-		for (Stat stat : CombatRegistries.STATS) {
-			int min = Rankup.statsManager.STATS.get(stat).getMinPointsPerLevel();
-			int max = Rankup.statsManager.STATS.get(stat).getMaxPointsPerLevel();
+		Registry<Stat> registry = player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
+		for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
+			int min = Rankup.statsManager.STATS.get(stat.getKey().location()).getMinPointsPerLevel();
+			int max = Rankup.statsManager.STATS.get(stat.getKey().location()).getMaxPointsPerLevel();
 			int i;
 			if (max > 0)
 				i = min + new Random().nextInt(Mth.clamp(max - min, 0, max));
@@ -96,10 +101,10 @@ public class StatEvents {
 				i = 0;
 
 			if (Combat.RPG_CONFIG.levelUpType == LevelType.ASSIGN_POINTS) {
-				PlayerAttributeLevels.addStatPoints(player, stat, i);
-				upText.append(stat.getName().append("+"+i).withStyle(ChatFormatting.GREEN)).append(", ");
+				PlayerAttributeLevels.addStatPoints(player, stat.getKey(), i);
+				upText.append(new TranslatableComponent(Util.makeDescriptionId("stat", stat.getKey().location())).append("+"+i).withStyle(ChatFormatting.GREEN)).append(", ");
 			} else {
-				upPoints += Rankup.statsManager.STATS.get(stat).getUpgradePointsPerLevel();
+				upPoints += Rankup.statsManager.STATS.get(stat.getKey().location()).getUpgradePointsPerLevel();
 			}
 		}
 		if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS) {
@@ -119,15 +124,16 @@ public class StatEvents {
 			}
 		}
 
-		for (Stat stat : CombatRegistries.STATS) {
-			StatSettings statSettings = Rankup.statsManager.STATS.get(stat);
-			double addition = StatProfile.getTotalPoints(entity, stat);
+		Registry<Stat> registry = entity.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
+		for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
+			StatSettings statSettings = Rankup.statsManager.STATS.get(stat.getKey().location());
+			double addition = StatProfile.getTotalPoints(entity, stat.getKey());
 
 			if (entity instanceof ServerPlayer) {
 				ServerPlayer player = (ServerPlayer) entity;
 				if (statSettings.getEffortStat() != null) {
-					if (Combat.RPG_CONFIG.enableTraining && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints() * statSettings.getEffortValueModifier()) {
-						StatProfile.setEffortPoints(player, stat, PlayerAttributeLevels.getStatPoints(player, stat).getEffortPoints()+1);
+					if (Combat.RPG_CONFIG.enableTraining && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatProfile(player, stat.getKey()).getEffortPoints() * statSettings.getEffortValueModifier()) {
+						StatProfile.setEffortPoints(player, stat.getKey(), PlayerAttributeLevels.getStatProfile(player, stat.getKey()).getEffortPoints()+1);
 					}
 				}
 
@@ -156,41 +162,26 @@ public class StatEvents {
 
 	@SuppressWarnings("unchecked")
 	public static int calculatePointsFromBase(LivingEntity entity, Stat stat) {
-		Attribute attribute;
-
-		if (stat == Stats.VITALITY) {
-			attribute = Attributes.MAX_HEALTH;
-
-		} else if (stat == Stats.AGILITY) {
-			attribute = Attributes.MOVEMENT_SPEED;
-
-		} else if (stat == Stats.DEFENCE) {
-			attribute = CAttributes.PHYSICAL_RESISTANCE;
-
-		} else if (stat == Stats.STRENGTH) {
-			attribute = Attributes.ATTACK_DAMAGE;
-
-		} else {
-			attribute = null;
-		}
-
-		if (!entity.level.isClientSide() && Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(attribute) && attribute != null && DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
+		Attribute attribute = stat.getBaseAttribute();
+		Registry<Stat> registry = entity.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
+		if (!entity.level.isClientSide() && Rankup.statsManager.STATS.get(registry.getKey(stat)).getAttributeMap().containsKey(attribute) && attribute != null && DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
 			double baseValue = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute);
-			return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(attribute));
+			return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(registry.getKey(stat)).getAttributeMap().get(attribute));
 		} else {
 			return 0;
 		}
 	}
 
 	public static void initializeAllStats(LivingEntity entity) {
-		for (Stat stat : CombatRegistries.STATS) {
-			StatSettings statSettings = Rankup.statsManager.STATS.get(stat);
-			double points = PlayerAttributeLevels.getStatPoints(entity, stat).getPoints();
+		Registry<Stat> registry = entity.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
+		for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
+			StatSettings statSettings = Rankup.statsManager.STATS.get(stat.getKey().location());
+			double points = PlayerAttributeLevels.getStatProfile(entity, stat.getKey()).getPoints();
 
 			statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
 
 				double baseValue = modifierPerPoint.doubleValue() * points;
-				stat.init(entity, attribute, baseValue, points);
+				stat.getValue().init(entity, attribute, baseValue, points);
 			});
 		}
 	}

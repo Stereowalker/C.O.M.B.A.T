@@ -217,7 +217,7 @@ public class StatSettings {
 	public double getEffortValueModifier() {
 		return effortValue;
 	}
-
+	
 	public CompoundTag serialize() {
 		CompoundTag nbt = new CompoundTag();
 		nbt.putBoolean("enabled", this.enabled);

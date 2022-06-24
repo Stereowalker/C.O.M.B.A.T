@@ -27,43 +27,44 @@ import net.minecraft.util.profiling.ProfilerFiller;
  * Loads stat settings from json files
  * @author Stereowalker
  */
-public class StatsManager implements IResourceReloadListener<Map<Stat,StatSettings>> {
-	private static final JsonParser parser = new JsonParser();
+public class StatsManager implements IResourceReloadListener<Map<ResourceLocation,StatSettings>> {
 	private static final Logger LOGGER = LogManager.getLogger();
-	public ImmutableMap<Stat,StatSettings> STATS = ImmutableMap.of();
+	public ImmutableMap<ResourceLocation,StatSettings> STATS = ImmutableMap.of();
 
 	@Override
-	public CompletableFuture<Map<Stat,StatSettings>> load(ResourceManager manager, ProfilerFiller profiler, Executor executor) {
+	public CompletableFuture<Map<ResourceLocation,StatSettings>> load(ResourceManager manager, ProfilerFiller profiler, Executor executor) {
 		return CompletableFuture.supplyAsync(() -> {
-			Map<Stat,StatSettings> statMap = new HashMap<>();
+			Map<ResourceLocation,StatSettings> statMap = new HashMap<>();
 			
 			for (Stat stat : CombatRegistries.STATS) {
-				statMap.put(stat, null);
+				statMap.put(stat.getRegistryName(), null);
 			}
-
-			for (ResourceLocation id : manager.listResources("combat_stats", (s) -> s.endsWith(".json"))) {
+			for (ResourceLocation id : manager.listResources("combat/stat_settings/", (s) -> s.endsWith(".json"))) {
 				ResourceLocation statId = new ResourceLocation(
 						id.getNamespace(),
-						id.getPath().replace("combat_stats/", "").replace(".json", "")
+						id.getPath().replace("combat/stat_settings/", "").replace(".json", "")
 						);
 
+				
 				if (CombatRegistries.STATS.containsKey(statId)) {
-					try {
-						Resource resource = manager.getResource(id);
-						try (InputStream stream = resource.getInputStream(); 
-								InputStreamReader reader = new InputStreamReader(stream)) {
-							
-							JsonObject object = parser.parse(reader).getAsJsonObject();
-							StatSettings statSettings = new StatSettings(object, statId);
-							LOGGER.info("Found stat settings for "+statId);
-							
-							statMap.put(CombatRegistries.STATS.getValue(statId), statSettings);
-						}
-					} catch (Exception e) {
-						LOGGER.warn("Error reading stat settings " + statId + "!", e);
-					}
+					LOGGER.warn("Overrriding existing stat " + statId + "");
 				} else {
-					LOGGER.warn("No such stat exists with the id " + statId + "!");
+					LOGGER.warn("No such stat exists with the id " + statId + ", registering a new one");
+				}
+				
+				try {
+					Resource resource = manager.getResource(id);
+					try (InputStream stream = resource.getInputStream(); 
+							InputStreamReader reader = new InputStreamReader(stream)) {
+						
+						JsonObject object = JsonParser.parseReader(reader).getAsJsonObject();
+						StatSettings statSettings = new StatSettings(object, statId);
+						LOGGER.info("Found stat settings for "+statId);
+						
+						statMap.put(statId, statSettings);
+					}
+				} catch (Exception e) {
+					LOGGER.warn("Error reading stat settings " + statId + "!", e);
 				}
 			}
 
@@ -72,13 +73,13 @@ public class StatsManager implements IResourceReloadListener<Map<Stat,StatSettin
 	}
 
 	@Override
-	public CompletableFuture<Void> apply(Map<Stat,StatSettings> data, ResourceManager manager, ProfilerFiller profiler, Executor executor) {
+	public CompletableFuture<Void> apply(Map<ResourceLocation,StatSettings> data, ResourceManager manager, ProfilerFiller profiler, Executor executor) {
 		return CompletableFuture.runAsync(() -> {
-			Map<Stat,StatSettings> statMap = new HashMap<>();
+			Map<ResourceLocation,StatSettings> statMap = new HashMap<>();
 			data.forEach((stat,setting) -> {
 				if (setting == null) {
-					LOGGER.warn("No settings included for the " + stat.getRegistryName() + " stat! Add these settings to enable it");
-					statMap.put(stat, new StatSettings(null, stat.getRegistryName()));
+					LOGGER.warn("No settings included for the " + stat + " stat! Add these settings to enable it");
+					statMap.put(stat, new StatSettings(null, stat));
 				} else {
 					statMap.put(stat, setting);
 				}

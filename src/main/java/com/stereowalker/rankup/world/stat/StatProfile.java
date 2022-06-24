@@ -9,6 +9,7 @@ import com.stereowalker.unionlib.util.NBTHelper.NbtType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 
 public class StatProfile {
@@ -35,26 +36,26 @@ public class StatProfile {
 		this.effortPoints = points;
 	}
 
-	public static void setPoints(LivingEntity entity, Stat stat, int points) {
-		StatProfile statProfile = PlayerAttributeLevels.getStatPoints(entity, stat);
+	public static void setPoints(LivingEntity entity, ResourceKey<Stat> stat, int points) {
+		StatProfile statProfile = PlayerAttributeLevels.getStatProfile(entity, stat);
 		statProfile.setPoints(points);
 		PlayerAttributeLevels.setStatProfile(entity, stat, statProfile);
 	}
 
-	public static void setEffortPoints(LivingEntity entity, Stat stat, int points) {
-		StatProfile statProfile = PlayerAttributeLevels.getStatPoints(entity, stat);
+	public static void setEffortPoints(LivingEntity entity, ResourceKey<Stat> stat, int points) {
+		StatProfile statProfile = PlayerAttributeLevels.getStatProfile(entity, stat);
 		statProfile.setEffortPoints(points);
 		PlayerAttributeLevels.setStatProfile(entity, stat, statProfile);
 	}
 
-	public static void addModifier(LivingEntity entity, Stat stat, String id, int points) {
-		StatProfile statProfile = PlayerAttributeLevels.getStatPoints(entity, stat);
+	public static void addModifier(LivingEntity entity, ResourceKey<Stat> stat, String id, int points) {
+		StatProfile statProfile = PlayerAttributeLevels.getStatProfile(entity, stat);
 		statProfile.getModifiers().put(id, points);
 		PlayerAttributeLevels.setStatProfile(entity, stat, statProfile);
 	}
 
-	public static void removeModifier(LivingEntity entity, Stat stat, String id) {
-		StatProfile statProfile = PlayerAttributeLevels.getStatPoints(entity, stat);
+	public static void removeModifier(LivingEntity entity, ResourceKey<Stat> stat, String id) {
+		StatProfile statProfile = PlayerAttributeLevels.getStatProfile(entity, stat);
 		statProfile.getModifiers().remove(id);
 		PlayerAttributeLevels.setStatProfile(entity, stat, statProfile);
 	}
@@ -88,8 +89,8 @@ public class StatProfile {
 		return points;
 	}
 
-	public static int getTotalPoints(LivingEntity entity, Stat stat) {
-		StatProfile statProfile = PlayerAttributeLevels.getStatPoints(entity, stat);
+	public static int getTotalPoints(LivingEntity entity, ResourceKey<Stat> stat) {
+		StatProfile statProfile = PlayerAttributeLevels.getStatProfile(entity, stat);
 		int points = statProfile.getPoints();
 		if (Combat.RPG_CONFIG.enableTraining)
 			points+=statProfile.getEffortPoints();

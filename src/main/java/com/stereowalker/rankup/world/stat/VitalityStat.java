@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 public class VitalityStat extends Stat {
 
 	public VitalityStat() {
-		super("0abbb72f-760a-46ed-8ae3-57fb010a4507");
+		super("0abbb72f-760a-46ed-8ae3-57fb010a4507", Attributes.MAX_HEALTH);
 	}
 
 	@Override

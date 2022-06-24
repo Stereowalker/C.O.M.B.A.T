@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.stereowalker.combat.Combat;
+import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.AccessoryModifiers;
 import com.stereowalker.rankup.AccessoryStats;
 import com.stereowalker.rankup.api.stat.Stat;
@@ -14,6 +15,7 @@ import com.stereowalker.unionlib.entity.player.CustomInventoryGetter;
 import com.stereowalker.unionlib.util.ModHelper;
 import com.stereowalker.unionlib.world.item.AccessoryItem;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -97,12 +99,12 @@ public class UnionEvents {
 						if (modifier.equals(AccessoryStats.getModifierDebuff(((CustomInventoryGetter)player).getUnionInventory().getAccessory(slot))))level++;
 					}
 
-					Stat stat = modifier.getStat();
+					ResourceKey<Stat> statKey = ResourceKey.create(CombatRegistries.STATS_REGISTRY, modifier.getStat());
 					if (level > 0) {
-						StatProfile.addModifier(player, stat, modifier.name(), level * modifier.getAmount());
+						StatProfile.addModifier(player, statKey, modifier.name(), level * modifier.getAmount());
 					}
 					else {
-						StatProfile.removeModifier(player, stat, modifier.name());
+						StatProfile.removeModifier(player, statKey, modifier.name());
 					}
 				}
 			}

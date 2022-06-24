@@ -1,5 +1,6 @@
 package com.stereowalker.rankup.compat.curios.accessories;
 
+import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.compat.curios.CuriosCompat;
 import com.stereowalker.combat.compat.curios.CuriosPredicates;
 import com.stereowalker.rankup.AccessoryModifiers;
@@ -7,6 +8,8 @@ import com.stereowalker.rankup.AccessoryStats;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.world.stat.StatProfile;
 
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -47,12 +50,12 @@ public class CuriosAccesories {
 							if (modifier.equals(AccessoryStats.getModifierDebuff(CuriosCompat.getSlotsForType(player, AccessoryStats.accessory_ids[x], i)))) level++;
 						}
 					}
-					Stat stat = modifier.getStat();
+					ResourceKey<Stat> statKey = ResourceKey.create(CombatRegistries.STATS_REGISTRY, modifier.getStat());
 					if (level > 0) {
-						StatProfile.addModifier(player, stat, modifier.name(), level * modifier.getAmount());
+						StatProfile.addModifier(player, statKey, modifier.name(), level * modifier.getAmount());
 					}
 					else {
-						StatProfile.removeModifier(player, stat, modifier.name());
+						StatProfile.removeModifier(player, statKey, modifier.name());
 					}
 				}
 			}

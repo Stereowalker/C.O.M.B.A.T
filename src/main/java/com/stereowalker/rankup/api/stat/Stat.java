@@ -2,7 +2,10 @@ package com.stereowalker.rankup.api.stat;
 
 import java.util.UUID;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.stereowalker.combat.Combat;
+import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 
 import net.minecraft.Util;
@@ -12,14 +15,34 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class Stat extends ForgeRegistryEntry<Stat>{
+	
+	public static final Codec<Stat> CODEC = RecordCodecBuilder.create((p_67790_) -> {
+		return p_67790_.group(Codec.STRING.fieldOf("uniqueId").forGetter((p_160992_) -> {
+			return p_160992_.getUniqueID().toString();
+		}), ResourceLocation.CODEC.fieldOf("baseAttribute").forGetter((p_160992_) -> {
+			return p_160992_.getBaseAttribute().getRegistryName();
+		})).apply(p_67790_, Stat::new);
+	});
+	
 	private String translationKey;
 	UUID uniqueId;
+	Attribute baseAttribute;
 	
-	public Stat(String uniqueId) {
+	public Stat(String uniqueId, ResourceLocation baseAttribute) {
+		this(uniqueId, ForgeRegistries.ATTRIBUTES.getValue(baseAttribute));
+	}
+	
+	public Stat(String uniqueId, Attribute baseAttribute) {
 		this.uniqueId = UUID.fromString(uniqueId);
+		this.baseAttribute = baseAttribute;
+	}
+	
+	public Stat() {
+		this.uniqueId = null;
 	}
 	
 	public String getTranslationKey() {
@@ -47,11 +70,14 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 	 * @param player
 	 */
 	public void init(LivingEntity entity, Attribute attribute, double baseValue, double points){
-//		System.out.println("INIT "+attribute.getRegistryName()+" "+baseValue);
 	}
 	
 	public UUID getUniqueID() {
 		return uniqueId;
+	}
+	
+	public Attribute getBaseAttribute() {
+		return baseAttribute;
 	}
 	
 	public ResourceLocation getButtonTexture() {
@@ -72,18 +98,18 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 	}
 	
 	public int getExperienceCost(Player player) {
-		return getExperienceCost(PlayerAttributeLevels.getStatPoints(player, this).getPoints());
+		return getExperienceCost(PlayerAttributeLevels.getStatProfile(player, player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).getResourceKey(this).get()).getPoints());
 	}
 	
 	public int getCurrentPoints(Player player) {
-		return PlayerAttributeLevels.getStatPoints(player, this).getPoints();
+		return PlayerAttributeLevels.getStatProfile(player, player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).getResourceKey(this).get()).getPoints();
 	}
 	
 	public int getAdditionalPoints(Player player) {
-		return PlayerAttributeLevels.getStatPoints(player, this).getModifierPoints();
+		return PlayerAttributeLevels.getStatProfile(player, player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).getResourceKey(this).get()).getModifierPoints();
 	}
 	
 	public int getEffortPoints(Player player) {
-		return PlayerAttributeLevels.getStatPoints(player, this).getEffortPoints();
+		return PlayerAttributeLevels.getStatProfile(player, player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).getResourceKey(this).get()).getEffortPoints();
 	}
 }

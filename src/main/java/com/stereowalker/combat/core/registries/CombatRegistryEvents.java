@@ -329,7 +329,7 @@ public class CombatRegistryEvents
 	public static void registerCombatRegistries(final NewRegistryEvent event) {
 		event.create(new RegistryBuilder<Spell>().setName(Combat.getInstance().location("spell")).setType(c(Spell.class)).setMaxID(MAX_VARINT));
 		event.create(new RegistryBuilder<Skill>().setName(Combat.getInstance().location("skill")).setType(c(Skill.class)).setMaxID(MAX_VARINT));
-		event.create(new RegistryBuilder<Stat>().setName(Combat.getInstance().location("stat")).setType(c(Stat.class)).setMaxID(MAX_VARINT));
+		event.create(new RegistryBuilder<Stat>().setName(Combat.getInstance().location("stats")).setType(c(Stat.class)).setMaxID(MAX_VARINT).dataPackRegistry(Stat.CODEC, Stat.CODEC));
 	}
 
 	//Custom C.O.M.B.A.T. Registries

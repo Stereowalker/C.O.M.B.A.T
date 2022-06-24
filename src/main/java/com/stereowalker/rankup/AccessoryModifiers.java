@@ -4,65 +4,63 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.stereowalker.rankup.api.stat.Stat;
-import com.stereowalker.rankup.world.stat.Stats;
-
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 
 public enum AccessoryModifiers {
 	NONE (null, -1, null, null, Rarity.VERY_COMMON),
 	
-	VITALITY_01 (Stats.VITALITY,  20, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_COMMON),
-	VITALITY_02 (Stats.VITALITY,  40, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.COMMON),
-	VITALITY_03 (Stats.VITALITY,  60, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.COMMON),
-	VITALITY_04 (Stats.VITALITY,  80, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.COMMON),
-	VITALITY_05 (Stats.VITALITY, 100, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.UNCOMMON),
-	VITALITY_06 (Stats.VITALITY, 120, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.UNCOMMON),
-	VITALITY_07 (Stats.VITALITY, 140, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.RARE),
-	VITALITY_08 (Stats.VITALITY, 160, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.RARE),
-	VITALITY_09 (Stats.VITALITY, 180, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_RARE),
-	VITALITY_10 (Stats.VITALITY, 200, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_RARE),
+	VITALITY_01 (new ResourceLocation("combat:vitality"),  20, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_COMMON),
+	VITALITY_02 (new ResourceLocation("combat:vitality"),  40, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.COMMON),
+	VITALITY_03 (new ResourceLocation("combat:vitality"),  60, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.COMMON),
+	VITALITY_04 (new ResourceLocation("combat:vitality"),  80, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.COMMON),
+	VITALITY_05 (new ResourceLocation("combat:vitality"), 100, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.UNCOMMON),
+	VITALITY_06 (new ResourceLocation("combat:vitality"), 120, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.UNCOMMON),
+	VITALITY_07 (new ResourceLocation("combat:vitality"), 140, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.RARE),
+	VITALITY_08 (new ResourceLocation("combat:vitality"), 160, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.RARE),
+	VITALITY_09 (new ResourceLocation("combat:vitality"), 180, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_RARE),
+	VITALITY_10 (new ResourceLocation("combat:vitality"), 200, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_RARE),
 	
-	VITALITY_X1 (Stats.VITALITY,  -20, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_COMMON),
-	VITALITY_X2 (Stats.VITALITY,  -40, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.COMMON),
-	VITALITY_X3 (Stats.VITALITY,  -60, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.UNCOMMON),
-	VITALITY_X4 (Stats.VITALITY,  -80, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.RARE),
-	VITALITY_X5 (Stats.VITALITY, -100, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_RARE),
+	VITALITY_X1 (new ResourceLocation("combat:vitality"),  -20, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_COMMON),
+	VITALITY_X2 (new ResourceLocation("combat:vitality"),  -40, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.COMMON),
+	VITALITY_X3 (new ResourceLocation("combat:vitality"),  -60, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.UNCOMMON),
+	VITALITY_X4 (new ResourceLocation("combat:vitality"),  -80, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.RARE),
+	VITALITY_X5 (new ResourceLocation("combat:vitality"), -100, Operation.MULTIPLY_BASE, ModifierType.VITALITY, Rarity.VERY_RARE),
 	
-	AGILITY_01 (Stats.AGILITY,  20, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_COMMON),
-	AGILITY_02 (Stats.AGILITY,  40, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.COMMON),
-	AGILITY_03 (Stats.AGILITY,  60, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.COMMON),
-	AGILITY_04 (Stats.AGILITY,  80, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.COMMON),
-	AGILITY_05 (Stats.AGILITY, 100, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.UNCOMMON),
-	AGILITY_06 (Stats.AGILITY, 120, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.UNCOMMON),
-	AGILITY_07 (Stats.AGILITY, 140, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.RARE),
-	AGILITY_08 (Stats.AGILITY, 160, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.RARE),
-	AGILITY_09 (Stats.AGILITY, 180, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_RARE),
-	AGILITY_10 (Stats.AGILITY, 200, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_RARE),
+	AGILITY_01 (new ResourceLocation("combat:agility"),  20, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_COMMON),
+	AGILITY_02 (new ResourceLocation("combat:agility"),  40, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.COMMON),
+	AGILITY_03 (new ResourceLocation("combat:agility"),  60, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.COMMON),
+	AGILITY_04 (new ResourceLocation("combat:agility"),  80, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.COMMON),
+	AGILITY_05 (new ResourceLocation("combat:agility"), 100, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.UNCOMMON),
+	AGILITY_06 (new ResourceLocation("combat:agility"), 120, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.UNCOMMON),
+	AGILITY_07 (new ResourceLocation("combat:agility"), 140, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.RARE),
+	AGILITY_08 (new ResourceLocation("combat:agility"), 160, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.RARE),
+	AGILITY_09 (new ResourceLocation("combat:agility"), 180, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_RARE),
+	AGILITY_10 (new ResourceLocation("combat:agility"), 200, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_RARE),
 	
-	AGILITY_X1 (Stats.AGILITY,  -20, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_COMMON),
-	AGILITY_X2 (Stats.AGILITY,  -40, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.COMMON),
-	AGILITY_X3 (Stats.AGILITY,  -60, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.UNCOMMON),
-	AGILITY_X4 (Stats.AGILITY,  -80, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.RARE),
-	AGILITY_X5 (Stats.AGILITY, -100, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_RARE),
+	AGILITY_X1 (new ResourceLocation("combat:agility"),  -20, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_COMMON),
+	AGILITY_X2 (new ResourceLocation("combat:agility"),  -40, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.COMMON),
+	AGILITY_X3 (new ResourceLocation("combat:agility"),  -60, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.UNCOMMON),
+	AGILITY_X4 (new ResourceLocation("combat:agility"),  -80, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.RARE),
+	AGILITY_X5 (new ResourceLocation("combat:agility"), -100, Operation.MULTIPLY_BASE, ModifierType.AGILITY, Rarity.VERY_RARE),
 	
-	MAGIC_01 (Stats.MAGIC,  20, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_COMMON),
-	MAGIC_02 (Stats.MAGIC,  40, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.COMMON),
-	MAGIC_03 (Stats.MAGIC,  60, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.COMMON),
-	MAGIC_04 (Stats.MAGIC,  80, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.COMMON),
-	MAGIC_05 (Stats.MAGIC, 100, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.UNCOMMON),
-	MAGIC_06 (Stats.MAGIC, 120, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.UNCOMMON),
-	MAGIC_07 (Stats.MAGIC, 140, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.RARE),
-	MAGIC_08 (Stats.MAGIC, 160, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.RARE),
-	MAGIC_09 (Stats.MAGIC, 180, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_RARE),
-	MAGIC_10 (Stats.MAGIC, 200, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_RARE),
+	MAGIC_01 (new ResourceLocation("combat:magic"),  20, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_COMMON),
+	MAGIC_02 (new ResourceLocation("combat:magic"),  40, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.COMMON),
+	MAGIC_03 (new ResourceLocation("combat:magic"),  60, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.COMMON),
+	MAGIC_04 (new ResourceLocation("combat:magic"),  80, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.COMMON),
+	MAGIC_05 (new ResourceLocation("combat:magic"), 100, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.UNCOMMON),
+	MAGIC_06 (new ResourceLocation("combat:magic"), 120, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.UNCOMMON),
+	MAGIC_07 (new ResourceLocation("combat:magic"), 140, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.RARE),
+	MAGIC_08 (new ResourceLocation("combat:magic"), 160, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.RARE),
+	MAGIC_09 (new ResourceLocation("combat:magic"), 180, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_RARE),
+	MAGIC_10 (new ResourceLocation("combat:magic"), 200, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_RARE),
 	
-	MAGIC_X1 (Stats.MAGIC,  -20, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_COMMON),
-	MAGIC_X2 (Stats.MAGIC,  -40, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.COMMON),
-	MAGIC_X3 (Stats.MAGIC,  -60, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.UNCOMMON),
-	MAGIC_X4 (Stats.MAGIC,  -80, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.RARE),
-	MAGIC_X5 (Stats.MAGIC, -100, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_RARE);
+	MAGIC_X1 (new ResourceLocation("combat:magic"),  -20, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_COMMON),
+	MAGIC_X2 (new ResourceLocation("combat:magic"),  -40, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.COMMON),
+	MAGIC_X3 (new ResourceLocation("combat:magic"),  -60, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.UNCOMMON),
+	MAGIC_X4 (new ResourceLocation("combat:magic"),  -80, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.RARE),
+	MAGIC_X5 (new ResourceLocation("combat:magic"), -100, Operation.MULTIPLY_BASE, ModifierType.MAGIC, Rarity.VERY_RARE);
 //	
 //	ATTACK_DAMAGE_01 (Attributes.ATTACK_DAMAGE, "16b2d160-b860-48e6-98dd-5fa801bb3b60", 0.01D, Operation.MULTIPLY_BASE, ModifierType.ATTACK_DAMAGE, Rarity.VERY_COMMON),
 //	ATTACK_DAMAGE_02 (Attributes.ATTACK_DAMAGE, "16b2d160-b860-48e6-98dd-5fa801bb3b61", 0.02D, Operation.MULTIPLY_BASE, ModifierType.ATTACK_DAMAGE, Rarity.COMMON),
@@ -136,7 +134,7 @@ public enum AccessoryModifiers {
 //	KNOCKBACK_RESISTANCE_06 (Attributes.KNOCKBACK_RESISTANCE, "16b2d160-b860-48e6-98dd-5fa801bb3be5", 6.0D, Operation.ADDITION, ModifierType.KNOCKBACK_RESISTANCE, Rarity.VERY_RARE),
 //	KNOCKBACK_RESISTANCE_07 (Attributes.KNOCKBACK_RESISTANCE, "16b2d160-b860-48e6-98dd-5fa801bb3be6", 7.0D, Operation.ADDITION, ModifierType.KNOCKBACK_RESISTANCE, Rarity.VERY_RARE);
 	
-	Stat stat;
+	ResourceLocation stat;
 	int amount;
 	boolean isDebuff;
 	AttributeModifier.Operation operation;
@@ -144,7 +142,7 @@ public enum AccessoryModifiers {
 	ModifierType type;
 	Rarity rarity;
 	
-	AccessoryModifiers(Stat statIn, int amount, AttributeModifier.Operation operation, ModifierType type, Rarity rarity) {
+	AccessoryModifiers(ResourceLocation statIn, int amount, AttributeModifier.Operation operation, ModifierType type, Rarity rarity) {
 		this.amount = amount;
 		this.stat = statIn;
 		this.operation = operation;
@@ -152,7 +150,7 @@ public enum AccessoryModifiers {
 		this.rarity = rarity;
 	}
 	
-	public Stat getStat() {
+	public ResourceLocation getStat() {
 		return stat;
 	}
 
