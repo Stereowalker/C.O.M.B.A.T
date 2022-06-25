@@ -3,6 +3,7 @@ package com.stereowalker.combat.api.world.spellcraft;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -20,11 +21,11 @@ public enum SpellCategory {
 	//NONE
 	NONE("none", TextColor.parseColor("#FFFFFF"), ClassType.UNCLASSED),
 	//ELEMENTALS
-	FIRE("fire", TextColor.parseColor("#FF6655"), CAttributes.FIRE_AFFINITY, ClassType.ELEMENTAL),
-	WATER("water", TextColor.parseColor("#44EEFF"), CAttributes.WATER_AFFINITY, ClassType.ELEMENTAL),
-	LIGHTNING("lightning", TextColor.parseColor("#6666FF"), CAttributes.LIGHTNING_AFFINITY, ClassType.ELEMENTAL),
-	EARTH("earth", TextColor.parseColor("#119900"), CAttributes.EARTH_AFFINITY, ClassType.ELEMENTAL),
-	WIND("wind", TextColor.parseColor("#999999"), CAttributes.WIND_AFFINITY, ClassType.ELEMENTAL),
+	FIRE("fire", TextColor.parseColor("#FF6655"), () -> CAttributes.FIRE_AFFINITY, ClassType.ELEMENTAL),
+	WATER("water", TextColor.parseColor("#44EEFF"), () -> CAttributes.WATER_AFFINITY, ClassType.ELEMENTAL),
+	LIGHTNING("lightning", TextColor.parseColor("#6666FF"), () -> CAttributes.LIGHTNING_AFFINITY, ClassType.ELEMENTAL),
+	EARTH("earth", TextColor.parseColor("#119900"), () -> CAttributes.EARTH_AFFINITY, ClassType.ELEMENTAL),
+	WIND("wind", TextColor.parseColor("#999999"), () -> CAttributes.WIND_AFFINITY, ClassType.ELEMENTAL),
 	//SPECIAL
 	RESTORATION("restoration", TextColor.parseColor("#FFFF55"), ClassType.PRIMEVAL),
 	CONJURATION("conjuration", TextColor.parseColor("#AA00AA"), ClassType.PRIMEVAL),
@@ -38,12 +39,12 @@ public enum SpellCategory {
 	private TextColor categoryColor;
 	private ClassType classType;
 	private String name;
-	private Attribute attachedAttribute;
+	private Supplier<Attribute> attachedAttribute;
 	private float rColor;
 	private float gColor;
 	private float bColor;
 
-	private SpellCategory(String name, TextColor categoryColorIn, Attribute attachedAttribute, @Nullable ClassType type) {
+	private SpellCategory(String name, TextColor categoryColorIn, Supplier<Attribute> attachedAttribute, @Nullable ClassType type) {
 		this.name = name;
 		this.categoryColor = categoryColorIn;
 		this.classType = type;
@@ -75,7 +76,7 @@ public enum SpellCategory {
 	}
 
 	public Attribute getAttachedAttribute() {
-		return attachedAttribute;
+		return attachedAttribute.get();
 	}
 
 	public ClassType getClassType() {
