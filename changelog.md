@@ -1,3 +1,7 @@
+[9.0.1-beta]
+- Fixed a bug where spells registered by other mods crash the game
+- Added a maximum possible level. By default this is 100, but is configurable in the server config
+
 [9.0.0-beta]
 - Initial 1.18.2 port.
 - Removed Pelgan tools and armor
