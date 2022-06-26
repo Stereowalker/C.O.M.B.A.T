@@ -104,6 +104,7 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
 			return newButton;
 		}
 
+		@SuppressWarnings("resource")
 		public static Button addUpgrade(int xPos, Stat stat, ResourceLocation name, boolean isEnabled) {
 			Button upgradeButton;
 			boolean upgradeActive;
@@ -121,6 +122,7 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
 			return upgradeButton;
 		}
 
+		@SuppressWarnings("resource")
 		@Override
 		public void render(PoseStack matrixStack, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
 			Player player = Minecraft.getInstance().player;

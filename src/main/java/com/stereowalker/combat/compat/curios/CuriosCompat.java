@@ -6,9 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.stereowalker.combat.Combat;
@@ -149,6 +147,7 @@ public class CuriosCompat {
 		CuriosRendererRegistry.register(CItems.SHEATH, () -> {
 			return new ICurioRenderer() {
 				
+				@SuppressWarnings("resource")
 				@Override
 				public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext,
 						PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer,
@@ -197,9 +196,8 @@ public class CuriosCompat {
 					return !livingEntity.isCrouching();
 				};
 				@Override
-				public void curioTick(String identifier, int index, LivingEntity livingEntity) {
-					ICurio.super.curioTick(identifier, index, livingEntity);
-					ring.accessoryTick(livingEntity.level, livingEntity, stack, -999);
+				public void curioTick(SlotContext slotContext) {
+					ring.accessoryTick(slotContext.entity().level, slotContext.entity(), stack, -999);
 				}
 				@Override
 				public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext,
@@ -304,6 +302,7 @@ public class CuriosCompat {
 		if (entity.isCrouching()) stack.translate(0, 0, -0.1D);
 	}
 
+	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)
 	public static void rotateWhenOnRight(com.mojang.blaze3d.vertex.PoseStack stack) {
 		if (Minecraft.getInstance().options.mainHand == HumanoidArm.RIGHT) stack.mulPose(Vector3f.YN.rotationDegrees(180));

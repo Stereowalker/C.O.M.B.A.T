@@ -120,9 +120,9 @@ public class PlayerAttributeLevels {
 				for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
 					if (!compound.contains(stat.getKey().location().getPath())) {
 						if (entity instanceof Player)
-							setStatProfile(entity, stat.getKey(), new StatProfile(Rankup.statsManager.STATS.get(stat.getKey().location()).getDefaultPoints(), Maps.newHashMap()));
+							setStatProfile(entity, stat.getKey(), new StatProfile(Rankup.statsManager.STATS.get(stat.getKey()).getDefaultPoints(), Maps.newHashMap()));
 						else
-							setStatProfile(entity, stat.getKey(), new StatProfile(StatEvents.calculatePointsFromBase(entity, stat.getValue()), Maps.newHashMap()));
+							setStatProfile(entity, stat.getKey(), new StatProfile(StatEvents.calculatePointsFromBase(entity, stat.getKey()), Maps.newHashMap()));
 
 					}
 				}

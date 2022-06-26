@@ -56,6 +56,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CombatHooks {
 
+	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)
 	public static double getAttackReachDistance() {
 		LocalPlayer player = (Minecraft.getInstance()).player;
@@ -66,6 +67,7 @@ public class CombatHooks {
 		return 0.0D;
 	}
 
+	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)
 	public static double getSquareAttackDistance(float partialTicks, Entity entity) {
 		double attrib = 0.0D;

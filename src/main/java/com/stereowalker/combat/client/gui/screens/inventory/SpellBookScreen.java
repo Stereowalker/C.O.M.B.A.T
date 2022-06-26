@@ -140,6 +140,7 @@ public class SpellBookScreen extends Screen {
 		}));
 	}
 
+	@SuppressWarnings("resource")
 	protected void saveNBTToServer() {
 		ItemStack mainStack = Minecraft.getInstance().player.getOffhandItem();
 		ItemStack offStack = Minecraft.getInstance().player.getMainHandItem();
@@ -148,6 +149,7 @@ public class SpellBookScreen extends Screen {
 		if (!bookInHands) Combat.getInstance().channel.sendTo(new ServerboundSpellbookNBTPacket(spellbook.getTag(), Minecraft.getInstance().player.getUUID()), Minecraft.getInstance().player.connection.getConnection(), NetworkDirection.PLAY_TO_SERVER);
 	}
 
+	@SuppressWarnings("resource")
 	protected void addEditSpellButton() {
 		for (InteractionHand hand : InteractionHand.values()) {
 			if (Minecraft.getInstance().player.getItemInHand(hand).getItem() instanceof ScrollItem) {
@@ -206,6 +208,7 @@ public class SpellBookScreen extends Screen {
 		this.updateButtons();
 	}
 
+	@SuppressWarnings("resource")
 	private void updateButtons() {
 		this.buttonNextPage.visible = this.currPage < this.getPageCount() - 1;
 		this.buttonPreviousPage.visible = this.currPage > 0;
@@ -389,6 +392,7 @@ public class SpellBookScreen extends Screen {
 			}
 		}
 
+		@SuppressWarnings("resource")
 		static Component spellBookPage(Spell spell) {
 			if (spell.getCastType() == Spell.CastType.PROJECTILE) {
 				return (spell.getName(SpellStats.getSpellKnowledge(Minecraft.getInstance().player, spell))

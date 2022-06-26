@@ -47,6 +47,7 @@ public class ClientboundStatManagerPacket {
 		context.setPacketHandled(true);
 	}
 	
+	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)
 	public static void update(final ResourceLocation stat, final StatSettings settings) {
 		Map<Stat,StatSettings> statMap = new HashMap<>();

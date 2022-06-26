@@ -16,6 +16,7 @@ public class WireItem extends Item {
 		super(properties);
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		ItemStack stack = context.getItemInHand();

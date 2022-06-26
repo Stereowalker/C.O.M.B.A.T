@@ -72,6 +72,7 @@ public class RankEvents {
 	public static void appendExperienceStorage(PlayerXpEvent.PickupXp event) {
 	}
 
+	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void createPlayer(EntityJoinWorldEvent event) {
 		if (!event.getWorld().isClientSide) {
