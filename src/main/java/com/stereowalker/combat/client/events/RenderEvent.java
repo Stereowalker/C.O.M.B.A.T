@@ -227,11 +227,6 @@ public class RenderEvent {
 				}
 			}
 
-			int x = gui().screenWidth / 2 - 91;
-			if (event.getType() == RenderGameOverlayEvent.ElementType.ALL || event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-				renderManaOverlay(event.getMatrixStack(), needsAir, iattributemaxMana, playerentity, totalHealth, x, j3, k2);
-			}
-
 			if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 				renderSpellOverlay(event.getMatrixStack(), playerentity, k2);
 			}

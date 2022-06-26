@@ -6,6 +6,7 @@ import java.util.SortedMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.stereowalker.combat.advancements.CCriteriaTriggers;
+import com.stereowalker.combat.client.GuiHelper;
 import com.stereowalker.combat.client.KeyMappings;
 import com.stereowalker.combat.client.gui.screens.inventory.CScreens;
 import com.stereowalker.combat.client.model.geom.CModelLayers;
@@ -207,6 +208,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 	@SuppressWarnings("resource")
 	public void clientRegistries(final FMLClientSetupEvent event)
 	{
+		GuiHelper.registerOverlays();
 		CItemProperties.register();
 		boolean useMain = false;
 		CModelLayers.init();
