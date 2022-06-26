@@ -29,7 +29,7 @@ public abstract class LivingEntityMixin extends Entity {
 
 	@Shadow @Nullable protected Player lastHurtByPlayer;
 	@Shadow protected int getExperienceReward(Player pPlayer) {return 0;}
-	
+
 	/**
 	 * Duplicates xp into the player
 	 */
@@ -40,18 +40,24 @@ public abstract class LivingEntityMixin extends Entity {
 		if ((LivingEntity)(Object)this instanceof Monster) {
 			amountModified = AbominationEvents.abominationXP((Monster)(Object)this, amount);
 		}
-		//In order to prevent players from getting experience from other players
-		if (lastHurtByPlayer != null && !((LivingEntity)(Object)this instanceof Player)) {
-			amountModified *= Math.max((PlayerAttributeLevels.getLevel((LivingEntity)(Object)this))-(PlayerAttributeLevels.getLevel(lastHurtByPlayer)), 1);
+		if (lastHurtByPlayer != null) {
+			boolean shouldLevelUp = Combat.RPG_CONFIG.maxLevel > 0 && PlayerAttributeLevels.getLevel(lastHurtByPlayer) < Combat.RPG_CONFIG.maxLevel;
+			//In order to prevent players from getting experience from other players
+			if (!((LivingEntity)(Object)this instanceof Player)) {
+				amountModified *= Math.max((PlayerAttributeLevels.getLevel((LivingEntity)(Object)this))-(PlayerAttributeLevels.getLevel(lastHurtByPlayer)), 1);
+				if (shouldLevelUp)
+					PlayerAttributeLevels.setExperience(lastHurtByPlayer, PlayerAttributeLevels.getExperience(lastHurtByPlayer)+amountModified);
+			}
+			//Make players take all the experence from players that theyve killed
+			if (((LivingEntity)(Object)this instanceof Player) && Combat.RPG_CONFIG.takeXpFromKilledPlayers) {
+				if (shouldLevelUp)
+					PlayerAttributeLevels.setExperience(lastHurtByPlayer, PlayerAttributeLevels.getExperience(lastHurtByPlayer)+PlayerAttributeLevels.getExperience((LivingEntity)(Object)this));
+				boolean shouldLevelUp2 = Combat.RPG_CONFIG.maxLevel > 0 && PlayerAttributeLevels.getLevel((LivingEntity)(Object)this) < Combat.RPG_CONFIG.maxLevel;
+				if (shouldLevelUp2)
+					PlayerAttributeLevels.setExperience((LivingEntity)(Object)this, 0);
+			}
+		}
 
-			PlayerAttributeLevels.setExperience(lastHurtByPlayer, PlayerAttributeLevels.getExperience(lastHurtByPlayer)+amountModified);
-		}
-		//Make players take all the experence from players that theyve killed
-		if (lastHurtByPlayer != null && ((LivingEntity)(Object)this instanceof Player) && Combat.RPG_CONFIG.takeXpFromKilledPlayers) {
-			PlayerAttributeLevels.setExperience(lastHurtByPlayer, PlayerAttributeLevels.getExperience(lastHurtByPlayer)+PlayerAttributeLevels.getExperience((LivingEntity)(Object)this));
-			PlayerAttributeLevels.setExperience((LivingEntity)(Object)this, 0);
-		}
-		
 		ExperienceOrb.award(level, position, amountModified);
 	}
 }

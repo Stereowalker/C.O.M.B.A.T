@@ -118,8 +118,13 @@ public class StatEvents {
 	public static void statUpdate(LivingEntity entity) {
 		if (entity instanceof ServerPlayer) {
 			ServerPlayer player = (ServerPlayer) entity;
-			if (PlayerAttributeLevels.getExperience(player) >= getMaxExperience(PlayerAttributeLevels.getLevel(player))) {
-				PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(player) - getMaxExperience(PlayerAttributeLevels.getLevel(player)));
+			boolean shouldLevelUp = Combat.RPG_CONFIG.maxLevel > 0 && PlayerAttributeLevels.getLevel(player) < Combat.RPG_CONFIG.maxLevel;
+			boolean nearingMaxLevel = Combat.RPG_CONFIG.maxLevel > 0 && PlayerAttributeLevels.getLevel(player) == Combat.RPG_CONFIG.maxLevel-1;
+			if (shouldLevelUp && PlayerAttributeLevels.getExperience(player) >= getMaxExperience(PlayerAttributeLevels.getLevel(player))) {
+				if (nearingMaxLevel)
+					PlayerAttributeLevels.setExperience(player, 0);
+				else	
+					PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(player)*100 - getMaxExperience(PlayerAttributeLevels.getLevel(player)));
 				levelUp(player, true);
 			}
 		}
@@ -164,7 +169,9 @@ public class StatEvents {
 	public static int calculatePointsFromBase(LivingEntity entity, Stat stat) {
 		Attribute attribute = stat.getBaseAttribute();
 		Registry<Stat> registry = entity.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
-		if (!entity.level.isClientSide() && Rankup.statsManager.STATS.get(registry.getKey(stat)).getAttributeMap().containsKey(attribute) && attribute != null && DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
+		if (!entity.level.isClientSide() 
+				&& Rankup.statsManager.STATS.get(registry.getKey(stat)).getAttributeMap().containsKey(attribute) && attribute != null 
+				&& DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
 			double baseValue = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute);
 			return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(registry.getKey(stat)).getAttributeMap().get(attribute));
 		} else {

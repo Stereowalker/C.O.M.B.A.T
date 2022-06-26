@@ -56,7 +56,7 @@ public enum SpellCategory {
 	}
 
 	private SpellCategory(String name, TextColor categoryColorIn, @Nullable ClassType type) {
-		this(name, categoryColorIn, null, type);
+		this(name, categoryColorIn, () -> null, type);
 	}
 
 	public String getName() {

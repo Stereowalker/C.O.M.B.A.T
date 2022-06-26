@@ -64,6 +64,14 @@ public class RpgConfig implements ConfigObject {
 	
 	@UnionConfig.Entry(name = "Experience Gained From Farming", type = Type.COMMON)
 	@UnionConfig.Range(min = 1, max = 1000)
-	@UnionConfig.Comment(comment = {"This determines the amount of experience you gain fro breaking crops","Set this to zero to disable this feature"})
+	@UnionConfig.Comment(comment = {"This determines the amount of experience you gain from breaking crops","Set this to zero to disable this feature"})
 	public int xpFromFarming = 1;
+	
+	@UnionConfig.Entry(name = "Maximum Level Attainable", type = Type.SERVER)
+	@UnionConfig.Range(min = 0, max = 1000)
+	@UnionConfig.Comment(comment = {
+			"This governs the highest level the player can ever reach",
+			"Any attempts to gain any levels after this limit will be futile",
+			"Set this to zero to disable this feature"})
+	public int maxLevel = 100;
 }
