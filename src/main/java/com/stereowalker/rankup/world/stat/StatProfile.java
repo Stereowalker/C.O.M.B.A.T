@@ -48,6 +48,16 @@ public class StatProfile {
 		PlayerAttributeLevels.setStatProfile(entity, stat, statProfile);
 	}
 
+	public static boolean hasModifier(LivingEntity entity, ResourceKey<Stat> stat, String id) {
+		StatProfile statProfile = PlayerAttributeLevels.getStatProfile(entity, stat);
+		return statProfile.getModifiers().containsKey(id);
+	}
+
+	public static int getModifier(LivingEntity entity, ResourceKey<Stat> stat, String id) {
+		StatProfile statProfile = PlayerAttributeLevels.getStatProfile(entity, stat);
+		return statProfile.getModifiers().get(id);
+	}
+
 	public static void addModifier(LivingEntity entity, ResourceKey<Stat> stat, String id, int points) {
 		StatProfile statProfile = PlayerAttributeLevels.getStatProfile(entity, stat);
 		statProfile.getModifiers().put(id, points);

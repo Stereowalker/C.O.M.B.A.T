@@ -118,7 +118,7 @@ public class PlayerAttributeLevels {
 			if (!entity.level.isClientSide) {
 				Registry<Stat> registry = entity.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
 				for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
-					if (!compound.contains(stat.getKey().location().getPath())) {
+					if (!compound.contains(stat.getKey().location().toString())) {
 						if (entity instanceof Player)
 							setStatProfile(entity, stat.getKey(), new StatProfile(Rankup.statsManager.STATS.get(stat.getKey()).getDefaultPoints(), Maps.newHashMap()));
 						else

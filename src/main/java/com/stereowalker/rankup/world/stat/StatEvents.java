@@ -123,7 +123,7 @@ public class StatEvents {
 				if (nearingMaxLevel)
 					PlayerAttributeLevels.setExperience(player, 0);
 				else	
-					PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(player)*100 - getMaxExperience(PlayerAttributeLevels.getLevel(player)));
+					PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(player) - getMaxExperience(PlayerAttributeLevels.getLevel(player)));
 				levelUp(player, true);
 			}
 		}

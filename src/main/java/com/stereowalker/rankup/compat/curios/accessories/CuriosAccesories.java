@@ -9,7 +9,6 @@ import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.world.stat.StatProfile;
 
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -51,11 +50,17 @@ public class CuriosAccesories {
 						}
 					}
 					ResourceKey<Stat> statKey = ResourceKey.create(CombatRegistries.STATS_REGISTRY, modifier.getStat());
-					if (level > 0) {
-						StatProfile.addModifier(player, statKey, modifier.name(), level * modifier.getAmount());
-					}
-					else {
-						StatProfile.removeModifier(player, statKey, modifier.name());
+					if (StatProfile.hasModifier(player, statKey, modifier.name())) {
+						if (level > 0 && StatProfile.getModifier(player, statKey, modifier.name()) != level * modifier.getAmount()) {
+							StatProfile.addModifier(player, statKey, modifier.name(), level * modifier.getAmount());
+						}
+						else if (level <= 0) {
+							StatProfile.removeModifier(player, statKey, modifier.name());
+						}
+					} else {
+						if (level > 0) {
+							StatProfile.addModifier(player, statKey, modifier.name(), level * modifier.getAmount());
+						}
 					}
 				}
 			}
