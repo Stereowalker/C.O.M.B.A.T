@@ -170,7 +170,7 @@ public class StatEvents {
 		if (!entity.level.isClientSide()) {
 			if (registry.containsKey(stat)) {
 				Attribute attribute = registry.get(stat).getBaseAttribute();
-				if (attribute != null 
+				if (attribute != null && Rankup.statsManager.STATS.get(stat) != null
 						&& Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(attribute) 
 						&& DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
 					double baseValue = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute);
