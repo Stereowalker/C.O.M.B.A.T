@@ -1,3 +1,9 @@
+[9.0.2-beta]
+- Used ResourceKey instead of ResourceLocation in StatSettings maps
+- Updated the visuals of the stat screen
+- Fixed stats not being added to players during level ups
+- Fix mana bar covering the chat
+
 [9.0.1-beta]
 - Fixed a bug where spells registered by other mods crash the game
 - Added a maximum possible level. By default this is 100, but is configurable in the server config
