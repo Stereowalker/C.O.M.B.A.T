@@ -43,20 +43,20 @@ public class PlayerLevelsScreen extends Screen {
 	@Override
 	public void init() {
 		int xPos = (this.width-226)/2;
-		int yPos = (this.height-86)/2;
+		int yPos = (this.height-96)/2;
 
-		int xSize = 226;
-		int ySize = 86;
+		int xSize = 336;
+		int ySize = /*106*/(this.height - 58) - yPos;
 		//		this.statsRowList = new StatsRowList(this.minecraft, xSize, 0, yPos, yPos+ySize, 21);
-		this.statsRowList = new StatsRowList(this.minecraft, this.width, this.height, yPos, yPos+ySize, 21);
+		this.statsRowList = new StatsRowList(this.minecraft, this.width/2, this.height, yPos, yPos+ySize, 21);
 		//		this.statsRowList.setLeftPos(xPos);
 		this.statsRowList.addStat(this.minecraft.level.registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY));
 		this.addWidget(this.statsRowList);
 
-		this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 144, 200, 20, new TranslatableComponent("gui.show_skills"), (onPress) -> {
+		this.addRenderableWidget(new Button(this.width / 2 - 100, this.height - 48, 200, 20, new TranslatableComponent("gui.show_skills"), (onPress) -> {
 			minecraft.setScreen(new PlayerSkillsScreen(minecraft, 0, null));
 		}));
-		this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 168, 200, 20, new TranslatableComponent("gui.done"), (onPress) -> {
+		this.addRenderableWidget(new Button(this.width / 2 - 100, this.height - 23, 200, 20, new TranslatableComponent("gui.done"), (onPress) -> {
 			this.minecraft.setScreen(null);
 		}));
 	}

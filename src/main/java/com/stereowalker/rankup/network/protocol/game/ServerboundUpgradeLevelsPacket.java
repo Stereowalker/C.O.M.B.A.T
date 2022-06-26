@@ -44,13 +44,12 @@ public class ServerboundUpgradeLevelsPacket {
 			if (sender == null) {
 				return;
 			}
-			final Stat stat = sender.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).get(msg.stat);
 			final ResourceKey<Stat> statKey = ResourceKey.create(CombatRegistries.STATS_REGISTRY, msg.stat);
 			final UUID uuid = msg.uuid;
 			if (uuid.equals(Player.createPlayerUUID(sender.getGameProfile()))) {
 				if (Combat.RPG_CONFIG.enableLevelingSystem && Rankup.statsManager.STATS.get(statKey).isEnabled()) {
 					if ((""+Combat.RPG_CONFIG.useXPToUpgrade).equals("true")) {
-						int cost = stat.getExperienceCost(sender);
+						int cost = Stat.getExperienceCost(sender, statKey);
 						if (EntityHelper.getActualExperienceTotal(sender) >= cost) {
 							sender.giveExperiencePoints(-cost);
 							PlayerAttributeLevels.addStatPoints(sender, statKey, 1);

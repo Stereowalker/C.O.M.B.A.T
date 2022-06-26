@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.Combat;
+import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.network.protocol.game.ServerboundUpgradeLevelsPacket;
 import com.stereowalker.rankup.world.stat.LevelType;
@@ -24,10 +25,11 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -35,32 +37,38 @@ import net.minecraftforge.network.NetworkDirection;
 
 @OnlyIn(Dist.CLIENT)
 public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row> {
+	int maxNameWidth;
 	public StatsRowList(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int itemHeightIn) {
 		super(mcIn, widthIn, heightIn, topIn, bottomIn, itemHeightIn);
-		//		this.centerListVertically = false;
-		//		this.func_244605_b(false);
-		//		this.func_244606_c(false);
+		this.x0+=(widthIn/2);
+		this.x1+=(widthIn/2);
 	}
 
-	public int addStat(Stat p_214333_1_, ResourceLocation name) {
-		return this.addEntry(StatsRowList.Row.create(this.x0, p_214333_1_, name));
+	public int addStat(ResourceKey<Stat> statKey) {
+		Component component = new TranslatableComponent(Util.makeDescriptionId("stat", statKey.location()));
+        int i = this.minecraft.font.width(component);
+        if (i > this.maxNameWidth) {
+           this.maxNameWidth = i;
+        }
+        int guiWidth = this.x0;
+        return this.addEntry(new StatsRowList.Row(ImmutableList.of(Row.addUpgrade(guiWidth + 170, statKey, Combat.rankupInstance.CLIENT_STATS.get(statKey).isEnabled())), statKey));
 	}
 
 	public void addStat(Registry<Stat> registry) {
-		for(Stat s : registry) {
-			this.addStat(s, registry.getKey(s));
+		for(java.util.Map.Entry<ResourceKey<Stat>, Stat> s : registry.entrySet()) {
+			this.addStat(s.getKey());
 		}
 
 	}
 
 	@Override
 	public int getRowWidth() {
-		return 100;
+		return 800;
 	}
 
 	@Override
 	protected int getScrollbarPosition() {
-		return super.getScrollbarPosition() + 99;
+		return super.getScrollbarPosition() + 80;
 	}
 
 	public Optional<AbstractWidget> getMouseOver(double p_238518_1_, double p_238518_3_) {
@@ -76,25 +84,18 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static class Row extends ContainerObjectSelectionList.Entry<StatsRowList.Row> {
+	public class Row extends ContainerObjectSelectionList.Entry<StatsRowList.Row> {
 		private final List<AbstractWidget> widgets;
-		private final Stat stat;
-		private final ResourceLocation name;
+		private final ResourceKey<Stat> statKey;
 
-		private Row(List<AbstractWidget> widgetsIn, Stat statIn, ResourceLocation nameIn) {
+		private Row(List<AbstractWidget> widgetsIn, ResourceKey<Stat> statIn) {
 			this.widgets = widgetsIn;
-			this.stat = statIn;
-			this.name = nameIn;
+			this.statKey = statIn;
 		}
 
-		/**
-		 * Creates an options row with button for the specified option
-		 */
-		public static StatsRowList.Row create(int guiWidth, Stat stat, ResourceLocation name) {
-			return new StatsRowList.Row(ImmutableList.of(addUpgrade(guiWidth + 170, stat, name, Combat.rankupInstance.CLIENT_STATS.get(stat).isEnabled())), stat, name);
-		}
-
-		public static Button addStat(int xPos, Stat stat, boolean isEnabled) {
+		@SuppressWarnings("resource")
+		public static Button addStat(int xPos, ResourceKey<Stat> statKey, boolean isEnabled) {
+			Stat stat = Minecraft.getInstance().level.registryAccess().registry(CombatRegistries.STATS_REGISTRY).get().get(statKey);
 			Button newButton;
 			PlayerLevelsScreen screen = new PlayerLevelsScreen(Minecraft.getInstance());
 			newButton = new ImageButton(xPos, 0, 20, 20, 0, 0, 20, isEnabled && stat != null ? stat.getButtonTexture() : stat.getLockedButtonTexture(), 20, 40, (p_213088_1_) -> {
@@ -105,18 +106,18 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
 		}
 
 		@SuppressWarnings("resource")
-		public static Button addUpgrade(int xPos, Stat stat, ResourceLocation name, boolean isEnabled) {
+		public static Button addUpgrade(int xPos, ResourceKey<Stat> statKey, boolean isEnabled) {
 			Button upgradeButton;
 			boolean upgradeActive;
 			boolean useXP = false;//TODO: Send that info from the server to the client
 			if (useXP) {
-				int cost = stat.getExperienceCost(Minecraft.getInstance().player);
+				int cost = Stat.getExperienceCost(Minecraft.getInstance().player, statKey);
 				upgradeActive = EntityHelper.getActualExperienceTotal(Minecraft.getInstance().player) >= cost;
 			} else {
 				upgradeActive = PlayerAttributeLevels.getUpgradePoints(Minecraft.getInstance().player) > 0;
 			}
 			upgradeButton = new Button(xPos, 0, 20, 20, new TextComponent("+"), (p_214328_1_) -> {
-				Combat.getInstance().channel.sendTo(new ServerboundUpgradeLevelsPacket(name, Minecraft.getInstance().player.getUUID()), Minecraft.getInstance().player.connection.getConnection(), NetworkDirection.PLAY_TO_SERVER);
+				Combat.getInstance().channel.sendTo(new ServerboundUpgradeLevelsPacket(statKey.location(), Minecraft.getInstance().player.getUUID()), Minecraft.getInstance().player.connection.getConnection(), NetworkDirection.PLAY_TO_SERVER);
 			});
 			upgradeButton.active = upgradeActive && isEnabled;
 			return upgradeButton;
@@ -128,25 +129,21 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
 			Player player = Minecraft.getInstance().player;
 			this.widgets.forEach((widget) -> {
 				widget.y = top;
+				Stat stat = Minecraft.getInstance().level.registryAccess().registry(CombatRegistries.STATS_REGISTRY).get().get(statKey);
 				if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS) widget.render(matrixStack, mouseX, mouseY, partialTicks);
-				String na = Util.makeDescriptionId("stat", name);
-				MutableComponent normalStatDisplay = (new TranslatableComponent(na).append(": "+stat.getCurrentPoints(player)));
-				StatSettings settings = Combat.rankupInstance.CLIENT_STATS.get(stat);
-				if (Combat.RPG_CONFIG.enableTraining)
-					normalStatDisplay = (new TranslatableComponent(na).append(": "+stat.getCurrentPoints(player))).append(new TextComponent(" +"+stat.getEffortPoints(player)).withStyle(ChatFormatting.YELLOW));
-				MutableComponent lockedStatDisplay = (new TranslatableComponent(na).append(": Locked"));
-				MutableComponent bonusStatDisplay = (new TextComponent("").append(normalStatDisplay)).append(new TextComponent(" +"+stat.getAdditionalPoints(player)).withStyle(ChatFormatting.GREEN));
-				MutableComponent debuffStatDisplay = (new TextComponent("").append(normalStatDisplay)).append(new TextComponent(" "+stat.getAdditionalPoints(player)).withStyle(ChatFormatting.RED));
+				String na = Util.makeDescriptionId("stat", statKey.location());
+				MutableComponent normalStatDisplay = (new TranslatableComponent(": "+stat.getCurrentPoints(player)));
+				StatSettings settings = Combat.rankupInstance.CLIENT_STATS.get(statKey);
+				if (Combat.RPG_CONFIG.enableTraining && stat.getEffortPoints(player) > 0)
+					normalStatDisplay.append(new TextComponent(" +"+stat.getEffortPoints(player)).withStyle(ChatFormatting.YELLOW));
 				int points = stat.getAdditionalPoints(player);
-				if (points == 0) {
-					GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, !settings.isEnabled() ? lockedStatDisplay : normalStatDisplay, widget.x-160, top+5, 0xffffff);
-				}
-				else if (points > 0) {
-					GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, !settings.isEnabled() ? lockedStatDisplay : bonusStatDisplay, widget.x-160, top+5, 0xffffff);
-				}
-				else if (points < 0) {
-					GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, !settings.isEnabled() ? lockedStatDisplay : debuffStatDisplay, widget.x-160, top+5, 0xffffff);
-				}
+				MutableComponent bonusStatDisplay = normalStatDisplay.copy().append(new TextComponent(" +"+points).withStyle(ChatFormatting.GREEN));
+				MutableComponent debuffStatDisplay = normalStatDisplay.copy().append(new TextComponent(" "+points).withStyle(ChatFormatting.RED));
+				GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, new TranslatableComponent(na), widget.x-160, top+5, 0xffffff);
+				GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, 
+						!settings.isEnabled() ? new TranslatableComponent(": Locked") : 
+							points > 0 ? bonusStatDisplay :
+								points < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-155+(StatsRowList.this.maxNameWidth), top+5, 0xffffff);
 			});
 		}
 

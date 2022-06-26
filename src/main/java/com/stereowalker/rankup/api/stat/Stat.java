@@ -11,6 +11,7 @@ import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 import net.minecraft.Util;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -88,7 +89,7 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 		return Combat.getInstance().location("textures/gui/locked_level_button.png");
 	}
 	
-	public int getExperienceCost(int level) {
+	public static int getExperienceCost(int level) {
 		int n = level + 1;
 		int a = Combat.RPG_CONFIG.baseXpCost;
 		int d = Combat.RPG_CONFIG.xpCostStep;
@@ -97,8 +98,8 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 		return total;
 	}
 	
-	public int getExperienceCost(Player player) {
-		return getExperienceCost(PlayerAttributeLevels.getStatProfile(player, player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).getResourceKey(this).get()).getPoints());
+	public static int getExperienceCost(Player player, ResourceKey<Stat> stat) {
+		return getExperienceCost(PlayerAttributeLevels.getStatProfile(player, stat).getPoints());
 	}
 	
 	public int getCurrentPoints(Player player) {

@@ -5,11 +5,13 @@ import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.resource.StatsManager;
 import com.stereowalker.rankup.world.stat.StatSettings;
 
+import net.minecraft.resources.ResourceKey;
+
 public class Rankup {
 	
 	public static final StatsManager statsManager = new StatsManager();
 	
-	public ImmutableMap<Stat,StatSettings> CLIENT_STATS = ImmutableMap.of();
+	public ImmutableMap<ResourceKey<Stat>,StatSettings> CLIENT_STATS = ImmutableMap.of();
 	
 	public Rankup() {
 	}

@@ -10,8 +10,8 @@ import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.world.stat.StatSettings;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -47,12 +47,11 @@ public class ClientboundStatManagerPacket {
 		context.setPacketHandled(true);
 	}
 	
-	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)
 	public static void update(final ResourceLocation stat, final StatSettings settings) {
-		Map<Stat,StatSettings> statMap = new HashMap<>();
+		Map<ResourceKey<Stat>,StatSettings> statMap = new HashMap<>();
 		statMap.putAll(Combat.rankupInstance.CLIENT_STATS);
-		statMap.put(Minecraft.getInstance().level.registryAccess().registry(CombatRegistries.STATS_REGISTRY).get().get(stat), settings);
+		statMap.put(ResourceKey.create(CombatRegistries.STATS_REGISTRY, stat), settings);
 		Combat.rankupInstance.CLIENT_STATS = ImmutableMap.copyOf(statMap);
 	}
 }
