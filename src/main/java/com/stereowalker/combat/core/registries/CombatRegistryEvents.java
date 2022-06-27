@@ -57,6 +57,7 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SplashParticle;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.StatType;
@@ -70,16 +71,19 @@ import net.minecraft.world.entity.decoration.Motive;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -194,13 +198,19 @@ public class CombatRegistryEvents
 		event.getItemColors().register((stack, tintIndex) -> {
 			return ((SoulGemItem)stack.getItem()).getCat() == SpellCategory.NONE ? 0x56a6bf : ((SoulGemItem)stack.getItem()).getCat().getColor().getValue();
 		}, CItems.SOUL_GEM, CItems.CRUSHED_SOUL_GEM, CItems.DROWNED_SOUL_GEM, CItems.SCORCHED_SOUL_GEM, CItems.SHOCKED_SOUL_GEM, CItems.SHREDDED_SOUL_GEM);
+		event.getItemColors().register((p_92687_, p_92688_) -> {
+	         BlockState blockstate = ((BlockItem)p_92687_.getItem()).getBlock().defaultBlockState();
+	         return event.getBlockColors().getColor(blockstate, (BlockAndTintGetter)null, (BlockPos)null, p_92688_);
+	      }, CBlocks.REZAL_LEAVES);
+	      
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void registerBlockColors(ColorHandlerEvent.Block event) {
 		event.getBlockColors().register((state, reader, pos, color) -> {
-			return reader != null && pos != null ? BiomeColors.getAverageFoliageColor(reader, pos) : FoliageColor.getDefaultColor();
+			int originalRGB = reader != null && pos != null ? BiomeColors.getAverageFoliageColor(reader, pos) : FoliageColor.getDefaultColor();
+			return (0xFFFFFF - originalRGB) | 0xFF000000;
 		}, CBlocks.REZAL_LEAVES);
 	}
 
