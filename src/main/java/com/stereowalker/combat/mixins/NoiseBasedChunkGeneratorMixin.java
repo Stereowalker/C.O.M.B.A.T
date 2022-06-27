@@ -1,28 +1,20 @@
 package com.stereowalker.combat.mixins;
 
-import java.util.function.Supplier;
-
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.stereowalker.combat.world.level.block.CBlocks;
 //import com.stereowalker.combat.world.level.levelgen.AcrotlestAquifer;
 //import com.stereowalker.combat.world.level.levelgen.AcrotlestLayeredBaseStoneSource;
 import com.stereowalker.combat.world.level.levelgen.CNoiseGeneratorSettings;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Aquifer;
 //import net.minecraft.world.level.levelgen.BaseStoneSource;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
@@ -53,7 +45,7 @@ public class NoiseBasedChunkGeneratorMixin {
 //	@Shadow @Final protected NoiseSampler sampler;
 //	@Shadow @Final protected OreVeinifier oreVeinifier;
 //	@Shadow @Final protected NoodleCavifier noodleCavifier;
-	@Shadow @Final private Aquifer.FluidPicker globalFluidPicker;
+	@Shadow public Aquifer.FluidPicker globalFluidPicker;
 	@Inject(method = "<init>", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
 	public void init_inject(Registry<StructureSet> p_209106_, Registry<NormalNoise.NoiseParameters> p_209107_, BiomeSource p_209108_, long p_209109_, Holder<NoiseGeneratorSettings> p_209110_, CallbackInfo ci) {
 		NoiseGeneratorSettings noisegeneratorsettings = p_209110_.value();
