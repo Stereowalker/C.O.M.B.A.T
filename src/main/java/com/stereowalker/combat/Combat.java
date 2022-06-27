@@ -20,6 +20,7 @@ import com.stereowalker.combat.commands.CCommands;
 import com.stereowalker.combat.compat.curios.CuriosCompat;
 import com.stereowalker.combat.compat.curios.CuriosEvents;
 import com.stereowalker.combat.config.BattleConfig;
+import com.stereowalker.combat.config.ClientConfig;
 import com.stereowalker.combat.config.MagicConfig;
 import com.stereowalker.combat.config.RpgConfig;
 import com.stereowalker.combat.core.registries.RegistryOverrides;
@@ -100,6 +101,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 	public static final RpgConfig RPG_CONFIG = new RpgConfig();
 	public static final BattleConfig BATTLE_CONFIG = new BattleConfig();
 	public static final MagicConfig MAGIC_CONFIG = new MagicConfig();
+	public static final ClientConfig CLIENT_CONFIG = new ClientConfig();
 	public static CombatBlockEntityWithoutLevelRenderer itemStackRender;
 
 	public static boolean disableConfig() {
@@ -129,6 +131,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 		ConfigBuilder.registerConfig(RPG_CONFIG);
 		ConfigBuilder.registerConfig(BATTLE_CONFIG);
 		ConfigBuilder.registerConfig(MAGIC_CONFIG);
+		ConfigBuilder.registerConfig(CLIENT_CONFIG);
 		RegistryOverrides.override();
 		if (!Combat.disableConfig()) Config.registerConfigs();
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -173,7 +176,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public Screen getConfigScreen(Minecraft mc, Screen previousScreen) {
-		return new MinecraftModConfigsScreen(previousScreen, new TranslatableComponent("gui.combat.config.title"), RPG_CONFIG, BATTLE_CONFIG, MAGIC_CONFIG);
+		return new MinecraftModConfigsScreen(previousScreen, new TranslatableComponent("gui.combat.config.title"), CLIENT_CONFIG, RPG_CONFIG, BATTLE_CONFIG, MAGIC_CONFIG);
 		
 	}
 
@@ -215,7 +218,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 		EntityRendererHandler.bootStrap();
 		BlockEntityRenderHandler.registerRenders();
 		CScreens.registerScreens();
-		if (Config.CLIENT.toggle_custom_main_menu.get())
+		if (CLIENT_CONFIG.toggle_custom_main_menu)
 			TitleScreen.CUBE_MAP = new CubeMap(Combat.getInstance().location("textures/gui/title/background/panorama"));
 		if (useMain) TitleScreen.PANORAMA_OVERLAY = Combat.getInstance().location("textures/gui/title/background/combat_overlay.png");
 		RenderType rendertype = RenderType.cutoutMipped();

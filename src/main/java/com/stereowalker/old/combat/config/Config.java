@@ -14,14 +14,6 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 public class Config
 {
-    static final ForgeConfigSpec clientSpec;
-    public static final ClientConfig CLIENT;
-    static {
-        final Pair<ClientConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
-        clientSpec = Combat.disableConfig() ? null : specPair.getRight();
-        CLIENT = Combat.disableConfig() ? new ClientConfig(new Builder()) : specPair.getLeft();
-    }
-
     static final ForgeConfigSpec commonSpec;
     public static final CommonConfig COMMON;
     static {
@@ -42,7 +34,6 @@ public class Config
     	File configFile = new File(FMLPaths.CONFIGDIR.get().toString()+"//combat", "magic.toml");
     	configFile.getParentFile().mkdirs();
     	ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
-    	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
     }
     

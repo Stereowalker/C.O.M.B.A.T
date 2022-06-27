@@ -7,11 +7,11 @@ import java.util.Map.Entry;
 import org.lwjgl.glfw.GLFW;
 
 import com.google.common.collect.Multimap;
+import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.tags.ItemCTags;
 import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.combat.world.item.ItemFilters;
-import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.ChatFormatting;
@@ -198,7 +198,7 @@ public class TooltipEvents {
 	public static void tooltips(ItemTooltipEvent event) {
 		atributeTooltips(event.getItemStack(), event.getToolTip(), event.getPlayer());
 
-		if (Config.CLIENT.enable_enchantment_descriptions.get()) {
+		if (Combat.CLIENT_CONFIG.enable_enchantment_descriptions) {
 			enchantmentTooltips(event.getItemStack(), event.getToolTip());
 		}
 

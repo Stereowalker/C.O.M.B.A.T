@@ -3,7 +3,7 @@ package com.stereowalker.combat.client;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.stereowalker.old.combat.config.Config;
+import com.stereowalker.combat.Combat;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.settings.KeyConflictContext;
@@ -23,6 +23,6 @@ public class KeyMappings {
 	public static final KeyMapping OPEN_BACK_ITEM = new KeyMapping("key.combat.open_back_item", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, CATEGORY);
 	public static final KeyMapping STORE_ITEM = new KeyMapping("key.combat.store_item", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, CATEGORY);
 	public static final KeyMapping PRONE = new ToggleKeyMapping("key.combat.prone", KeyConflictContext.IN_GAME, GLFW.GLFW_KEY_LEFT_CONTROL, CATEGORY, () -> {
-		return Config.CLIENT.prone_toggle.get();
+		return Combat.CLIENT_CONFIG.prone_toggle;
 	});
 }
