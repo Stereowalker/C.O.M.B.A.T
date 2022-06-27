@@ -1220,6 +1220,9 @@
 	"combat.Enable Leveling System": "Leveling System",
 	"combat.gui.add_spell": "Add Spell",
 	"gui.show_skills": "Show Skills",
+	"config.combat.battle.file": "Battle Config",
+	"config.combat.client.file": "Client Config",
+	"config.combat.magic.file": "Magic Config",
 	///////////////////////////////////////////////////////////[CURIOS_IDENTIFIERS]///////////////////////////////////////////////////////////
 	"curios.identifier.book": "Book",
 	///////////////////////////////////////////////////////////[GAMERULES]///////////////////////////////////////////////////////////

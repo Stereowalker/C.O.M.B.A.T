@@ -1,3 +1,7 @@
+[9.0.3-beta]
+- Minor fixes
+- Changed the design of the mana indicator. The previous mana bar can still be reverted to in the config
+
 [9.0.2-beta]
 - Used ResourceKey instead of ResourceLocation in StatSettings maps
 - Updated the visuals of the stat screen
