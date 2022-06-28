@@ -3,7 +3,7 @@
   "modifier": {
     "name": "Increased Mana Capacity",
     "attribute": "combat:generic.max_mana",
-    "value": 10240,
+    "value": 80,
     "operation": "addition"
   }
 }
