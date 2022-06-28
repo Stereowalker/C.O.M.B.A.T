@@ -158,7 +158,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 
 	@Override
 	public void registerServerboundPackets(SimpleChannel arg0) {
-		int netID = 2;
+		int netID = 3;
 		//client
 		PacketRegistry.registerMessage(arg0, 2, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundGunPacket.class, (packetBuffer) -> {return new ServerboundGunPacket(packetBuffer);});
