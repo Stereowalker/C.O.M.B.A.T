@@ -48,9 +48,9 @@ public class StatsManager implements IResourceReloadListener<Map<ResourceKey<Sta
 
 				
 				if (CombatRegistries.STATS.containsKey(statId)) {
-					LOGGER.warn("Overrriding existing stat " + statId + "");
+					LOGGER.info("Found the stat, " + statId + ", in the registry. The creation if it's settings can proceed as usual");
 				} else {
-					LOGGER.warn("No such stat exists with the id " + statId + ", registering a new one");
+					LOGGER.info("No such stat exists with the id, " + statId + ", in the registry. Will still create it's settings, but the stat should be created in the datapack in order for this setting to be used");
 				}
 				
 				try {

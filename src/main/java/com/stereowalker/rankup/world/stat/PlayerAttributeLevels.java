@@ -120,7 +120,11 @@ public class PlayerAttributeLevels {
 				for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
 					if (!compound.contains(stat.getKey().location().toString())) {
 						if (entity instanceof Player)
-							setStatProfile(entity, stat.getKey(), new StatProfile(Rankup.statsManager.STATS.get(stat.getKey()).getDefaultPoints(), Maps.newHashMap()));
+							if (Rankup.statsManager.STATS.get(stat.getKey()) != null) {
+								setStatProfile(entity, stat.getKey(), new StatProfile(Rankup.statsManager.STATS.get(stat.getKey()).getDefaultPoints(), Maps.newHashMap()));
+							} else {
+								Combat.debug(stat.getKey()+"' settings are not set");
+							}
 						else
 							setStatProfile(entity, stat.getKey(), new StatProfile(StatEvents.calculatePointsFromBase(entity, stat.getKey()), Maps.newHashMap()));
 

@@ -51,7 +51,12 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
            this.maxNameWidth = i;
         }
         int guiWidth = this.x0;
-        return this.addEntry(new StatsRowList.Row(ImmutableList.of(Row.addUpgrade(guiWidth + 170, statKey, Combat.rankupInstance.CLIENT_STATS.get(statKey).isEnabled())), statKey));
+        if (Combat.rankupInstance.CLIENT_STATS.get(statKey) != null) {
+        	return this.addEntry(new StatsRowList.Row(ImmutableList.of(Row.addUpgrade(guiWidth + 170, statKey, Combat.rankupInstance.CLIENT_STATS.get(statKey).isEnabled())), statKey));
+        } else {
+        	Combat.getInstance().getLogger().warn("The stat {} does not exist in the registry", statKey);
+        	return this.addEntry(new StatsRowList.Row(ImmutableList.of(Row.addUpgrade(guiWidth + 170, statKey, false)), statKey));
+		}
 	}
 
 	public void addStat(Registry<Stat> registry) {
@@ -141,9 +146,10 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
 				MutableComponent debuffStatDisplay = normalStatDisplay.copy().append(new TextComponent(" "+points).withStyle(ChatFormatting.RED));
 				GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, new TranslatableComponent(na), widget.x-160, top+5, 0xffffff);
 				GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, 
-						!settings.isEnabled() ? new TranslatableComponent(": Locked") : 
-							points > 0 ? bonusStatDisplay :
-								points < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-155+(StatsRowList.this.maxNameWidth), top+5, 0xffffff);
+						settings == null ? new TranslatableComponent(": Error") : 
+							!settings.isEnabled() ? new TranslatableComponent(": Locked") : 
+								points > 0 ? bonusStatDisplay :
+									points < 0 ? debuffStatDisplay : normalStatDisplay, widget.x-155+(StatsRowList.this.maxNameWidth), top+5, 0xffffff);
 			});
 		}
 

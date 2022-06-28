@@ -131,36 +131,40 @@ public class StatEvents {
 		Registry<Stat> registry = entity.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
 		for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
 			StatSettings statSettings = Rankup.statsManager.STATS.get(stat.getKey());
-			double addition = StatProfile.getTotalPoints(entity, stat.getKey());
+			if (statSettings != null) {
+				double addition = StatProfile.getTotalPoints(entity, stat.getKey());
 
-			if (entity instanceof ServerPlayer) {
-				ServerPlayer player = (ServerPlayer) entity;
-				if (statSettings.getEffortStat() != null) {
-					if (Combat.RPG_CONFIG.enableTraining && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatProfile(player, stat.getKey()).getEffortPoints() * statSettings.getEffortValueModifier()) {
-						StatProfile.setEffortPoints(player, stat.getKey(), PlayerAttributeLevels.getStatProfile(player, stat.getKey()).getEffortPoints()+1);
+				if (entity instanceof ServerPlayer) {
+					ServerPlayer player = (ServerPlayer) entity;
+					if (statSettings.getEffortStat() != null) {
+						if (Combat.RPG_CONFIG.enableTraining && player.getStats().getValue(net.minecraft.stats.Stats.CUSTOM.get(statSettings.getEffortStat())) > PlayerAttributeLevels.getStatProfile(player, stat.getKey()).getEffortPoints() * statSettings.getEffortValueModifier()) {
+							StatProfile.setEffortPoints(player, stat.getKey(), PlayerAttributeLevels.getStatProfile(player, stat.getKey()).getEffortPoints()+1);
+						}
 					}
+
 				}
 
+				statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
+
+					double baseValue = modifierPerPoint.doubleValue() * addition;
+
+
+					if (entity.getAttribute(attribute) != null && entity.isAlive()) {
+						if (addition > 0 && Combat.RPG_CONFIG.enableLevelingSystem && (!statSettings.isLimitable() || !CombatEntityStats.isLimiterOn(entity)) && statSettings.isEnabled()) {
+							if (entity.getAttribute(attribute).getBaseValue() != baseValue) {
+								entity.getAttribute(attribute).setBaseValue(baseValue);
+							}
+						}
+						else {
+							if (entity.getAttribute(attribute).getBaseValue() != DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute)) {
+								entity.getAttribute(attribute).setBaseValue(DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute));
+							}
+						}
+					}
+				});
+			} else {
+				Combat.debug(stat.getKey()+"' settings are not set");
 			}
-
-			statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
-
-				double baseValue = modifierPerPoint.doubleValue() * addition;
-
-
-				if (entity.getAttribute(attribute) != null && entity.isAlive()) {
-					if (addition > 0 && Combat.RPG_CONFIG.enableLevelingSystem && (!statSettings.isLimitable() || !CombatEntityStats.isLimiterOn(entity)) && statSettings.isEnabled()) {
-						if (entity.getAttribute(attribute).getBaseValue() != baseValue) {
-							entity.getAttribute(attribute).setBaseValue(baseValue);
-						}
-					}
-					else {
-						if (entity.getAttribute(attribute).getBaseValue() != DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute)) {
-							entity.getAttribute(attribute).setBaseValue(DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute));
-						}
-					}
-				}
-			});
 		}
 	}
 
@@ -175,6 +179,8 @@ public class StatEvents {
 						&& DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
 					double baseValue = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute);
 					return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(attribute));
+				} else {
+					Combat.debug(stat+"' settings are not set");
 				}
 			} else {
 				Combat.getInstance().getLogger().warn("The stat {} does not exist in the registry", stat);
@@ -189,11 +195,14 @@ public class StatEvents {
 			StatSettings statSettings = Rankup.statsManager.STATS.get(stat.getKey());
 			double points = PlayerAttributeLevels.getStatProfile(entity, stat.getKey()).getPoints();
 
-			statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
+			if (statSettings != null)
+				statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
 
-				double baseValue = modifierPerPoint.doubleValue() * points;
-				stat.getValue().init(entity, attribute, baseValue, points);
-			});
+					double baseValue = modifierPerPoint.doubleValue() * points;
+					stat.getValue().init(entity, attribute, baseValue, points);
+				});
+			else
+				Combat.debug(stat+"' settings are not set");
 		}
 	}
 }
