@@ -1,3 +1,16 @@
+[9.0.4-beta]
+- Fix wrong parameter in Accesstransformer
+- Re-added the ruby texture
+- Changed the default prone key map to 'Left Alt"
+- Added Rezal Sapling model
+- Specified "minVersion" property in mixins
+- Changed the color of Rezal Leaves
+- Fix back item key map not working
+- Prevented wrongly registered stats from stopping world loading
+- Added textures for the gravity minus and plus effects
+- Reduced The additional mana Manaborns have
+- Removed missing tag entries
+
 [9.0.3-beta]
 - Minor fixes
 - Changed the design of the mana indicator. The previous mana bar can still be reverted to in the config
