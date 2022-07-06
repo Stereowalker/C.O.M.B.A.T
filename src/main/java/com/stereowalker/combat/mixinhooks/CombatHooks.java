@@ -107,7 +107,7 @@ public class CombatHooks {
 
 
 	/**
-	 * Hooked {@link Inventory#dropAllItems() }
+	 * Hooked {@link Inventory#dropAll() }
 	 * @param original - original value
 	 * @param object - the itemstack to check if to keep in the inventory
 	 * @return true if the item should stay in the inventory, false if it should pop out
