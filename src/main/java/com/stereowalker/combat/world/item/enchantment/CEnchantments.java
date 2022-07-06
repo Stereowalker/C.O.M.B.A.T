@@ -35,8 +35,8 @@ public class CEnchantments {
 	public static final Enchantment COOLDOWN_REDUCTION = register("cooldown_reduction", new CooldownReductionEnchantment(Rarity.UNCOMMON, new EquipmentSlot[] {EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND}));
 	public static final Enchantment NO_COOLDOWN = register("no_cooldown", new NoCooldownEnchantment(Rarity.VERY_RARE, new EquipmentSlot[] {EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND}));
 	//All
-	public static final Enchantment RETAINING = register("retaining", new RestoringEnchantment(Rarity.RARE, EquipmentSlot.values()));
-	public static final Enchantment RESTORING = register("restoring", new RetainingEnchantment(Rarity.RARE, EquipmentSlot.values()));
+	public static final Enchantment RETAINING = register("retaining", new RetainingEnchantment(Rarity.RARE, EquipmentSlot.values()));
+	public static final Enchantment RESTORING = register("restoring", new RestoringEnchantment(Rarity.RARE, EquipmentSlot.values()));
 	//Armor
 	public static final Enchantment ABSORPTION = register("absorption", new AbsorptionEnchantment(Rarity.VERY_RARE, ARMOR_SLOTS));
 	
