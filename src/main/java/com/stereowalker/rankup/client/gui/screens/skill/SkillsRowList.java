@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.stereowalker.rankup.client.gui.screens.PlayerStatusRowList;
 import com.stereowalker.rankup.network.protocol.game.ServerboundActivateSkillPacket;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.Skill;
@@ -31,15 +32,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SkillsRowList extends ContainerObjectSelectionList<SkillsRowList.Row> {
+public class SkillsRowList extends PlayerStatusRowList<SkillsRowList.Row> {
 	int maxNameWidth;
-	int width;
 	PlayerSkillsScreen screen;
 	public SkillsRowList(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int itemHeightIn, PlayerSkillsScreen screen) {
 		super(mcIn, widthIn, heightIn, topIn, bottomIn, itemHeightIn);
-		this.x0+=(widthIn/2);
-		this.x1+=(widthIn/2);
-		this.width = widthIn;
 		this.screen = screen;
 	}
 
@@ -75,16 +72,6 @@ public class SkillsRowList extends ContainerObjectSelectionList<SkillsRowList.Ro
 			upgradeButton.active = false;
 			return upgradeButton;
 		}
-	}
-
-	@Override
-	public int getRowWidth() {
-		return this.width;
-	}
-
-	@Override
-	protected int getScrollbarPosition() {
-		return super.getScrollbarPosition() + 80;
 	}
 
 	public Optional<AbstractWidget> getMouseOver(double p_238518_1_, double p_238518_3_) {

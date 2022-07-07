@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.api.stat.Stat;
+import com.stereowalker.rankup.client.gui.screens.PlayerStatusRowList;
 import com.stereowalker.rankup.network.protocol.game.ServerboundUpgradeLevelsPacket;
 import com.stereowalker.rankup.world.stat.LevelType;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
@@ -34,16 +35,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row> {
+public class StatsRowList extends PlayerStatusRowList<StatsRowList.Row> {
 	int maxNameWidth;
-	int width;
 	public StatsRowList(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int itemHeightIn) {
 		super(mcIn, widthIn, heightIn, topIn, bottomIn, itemHeightIn);
-		this.x0+=(widthIn/2);
-		this.x1+=(widthIn/2);
-		this.width = widthIn;
-//		this.setRenderBackground(false);
-//		this.setRenderTopAndBottom(false);
 	}
 
 	public int addStat(ResourceKey<Stat> statKey) {
@@ -66,16 +61,6 @@ public class StatsRowList extends ContainerObjectSelectionList<StatsRowList.Row>
 			this.addStat(s.getKey());
 		}
 
-	}
-
-	@Override
-	public int getRowWidth() {
-		return this.width;
-	}
-
-	@Override
-	protected int getScrollbarPosition() {
-		return super.getScrollbarPosition() + 80;
 	}
 
 	public Optional<AbstractWidget> getMouseOver(double p_238518_1_, double p_238518_3_) {

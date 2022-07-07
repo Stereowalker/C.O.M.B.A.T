@@ -23,7 +23,8 @@ public class Skills {
 	public static final Skill ADRENALINE_RUSH_1 = register("adrenalne_rush_1", new AdreanalineSkill(new Builder().setPrimaryColor(0x63E53A).setSecondaryColor(0x7FCB15).setLevel(1).isSpawnSkill()));
 	public static final Skill ADRENALINE_RUSH_2 = register("adrenalne_rush_2", new AdreanalineSkill(new Builder().setPrimaryColor(0x64E63B).setSecondaryColor(0x7FCB15).setLevel(2).setSuperSkill(ADRENALINE_RUSH_1)));
 	public static final Skill TREASURE_HUNTER = register("treasure_hunter", new Skill(new Builder().setPrimaryColor(0xAF01E3).setSecondaryColor(0x75F856).setNoLevels()));
-	public static final Skill BURNING_STRIKE = register("burning_strike", new BurningStrikeSkill(new Builder().setPrimaryColor(0xAF75EF).setSecondaryColor(0xBEA88B).setNoLevels()));
+	public static final Skill BURNING_FIST = register("burning_fist", new Skill(new Builder().setPrimaryColor(0xAF75EF).setSecondaryColor(0xBEA88B).isActiveSkill().setLevel(1)));
+	public static final Skill BURNING_STRIKE = register("burning_strike", new Skill(new Builder().setPrimaryColor(0xAF75EF).setSecondaryColor(0xBEA88B).isActiveSkill().setLevel(2).setSuperSkill(BURNING_FIST)));
 	public static final Skill FREEZING_STRIKE = register("freezing_strike", new FrozenStrikeSkill(new Builder().setPrimaryColor(0xAA73A8).setSecondaryColor(0x08D86C).setNoLevels()));
 	public static final Skill INSIGHT = register("insight", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).setNoLevels()));
 	public static final Skill LIMITER = register("limiter", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).isActiveSkill().setNoLevels()));

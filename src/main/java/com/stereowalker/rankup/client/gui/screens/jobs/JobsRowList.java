@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.client.RenderBars;
 import com.stereowalker.rankup.api.job.Job;
+import com.stereowalker.rankup.client.gui.screens.PlayerStatusRowList;
 import com.stereowalker.rankup.world.job.JobProfile;
 import com.stereowalker.rankup.world.job.PlayerJobs;
 
@@ -30,15 +31,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class JobsRowList extends ContainerObjectSelectionList<JobsRowList.Row> {
+public class JobsRowList extends PlayerStatusRowList<JobsRowList.Row> {
 	int maxNameWidth;
 	PlayerJobsScreen jobsScreen;
-	int width;
 	public JobsRowList(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int itemHeightIn, PlayerJobsScreen jobsScreen) {
 		super(mcIn, widthIn, heightIn, topIn, bottomIn, itemHeightIn);
-		this.x0+=(widthIn/2);
-		this.x1+=(widthIn/2);
-		this.width = widthIn;
 		this.jobsScreen = jobsScreen;
 	}
 
@@ -55,16 +52,6 @@ public class JobsRowList extends ContainerObjectSelectionList<JobsRowList.Row> {
 			}
 		}
 
-	}
-
-	@Override
-	public int getRowWidth() {
-		return this.width;
-	}
-
-	@Override
-	protected int getScrollbarPosition() {
-		return super.getScrollbarPosition() + 80;
 	}
 
 	public Optional<AbstractWidget> getMouseOver(double p_238518_1_, double p_238518_3_) {

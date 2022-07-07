@@ -98,11 +98,8 @@ public class CombatHooks {
 	}
 
 	public static int getFireAttackModifier(LivingEntity living) {
-		if (living instanceof Player) {
-			Player player = (Player)living;
-			return EnchantmentHelper.getFireAspect(living) + (PlayerSkills.hasSkill(player, Skills.BURNING_STRIKE) ? 1 : 0);
-		}
-		return 0;
+		int burning_fist = (PlayerSkills.isSkillActive(living, Skills.BURNING_FIST) && living.getMainHandItem().isEmpty() ? 1 : 0);
+		return EnchantmentHelper.getFireAspect(living) + (PlayerSkills.isSkillActive(living, Skills.BURNING_STRIKE) ? 1 : 0) + burning_fist;
 	}
 
 
@@ -203,7 +200,6 @@ public class CombatHooks {
 		return stack;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static BlockState inceaseSnow(BlockState old, ServerLevel world, BlockPos pos) {
 		int snowRate = Config.COMMON.snowPileupRate.get();
 
@@ -225,7 +221,6 @@ public class CombatHooks {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public static boolean doesSnowGenerate(boolean old, BlockGetter worldIn, BlockPos pos) {
 		return worldIn.getBlockState(pos).isAir() || worldIn.getBlockState(pos).getBlock() == Blocks.SNOW;
 	}
