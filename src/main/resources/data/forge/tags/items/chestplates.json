@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "combat:bronze_chestplate",
+    "combat:pasquem_chestplate",
+    "combat:steel_chestplate",
+    "combat:serable_chestplate",
+    "combat:lozyne_chestplate",
+    "combat:etherion_chestplate"
+  ]
+}

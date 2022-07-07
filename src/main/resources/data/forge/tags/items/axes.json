@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "combat:bronze_axe",
+    "combat:steel_axe",
+    "combat:magisteel_axe",
+    "combat:pasquem_axe",
+    "combat:serable_axe",
+    "combat:lozyne_axe",
+    "combat:mythril_axe",
+    "combat:etherion_axe"
+  ]
+}

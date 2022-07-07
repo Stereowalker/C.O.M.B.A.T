@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+	"combat:moon_boots",
+    "combat:bronze_boots",
+    "combat:pasquem_boots",
+    "combat:steel_boots",
+    "combat:serable_boots",
+    "combat:lozyne_boots",
+    "combat:etherion_boots"
+  ]
+}

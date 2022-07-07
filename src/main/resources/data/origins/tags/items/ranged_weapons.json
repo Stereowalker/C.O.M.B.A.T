@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "combat:longbow",
+    "combat:spear",
+    "combat:steel_bow",
+    "combat:golden_bow",
+    "combat:iron_bow",
+    "combat:bronze_bow",
+    "combat:lozyne_bow",
+    "combat:steel_longbow",
+    "combat:golden_longbow",
+    "combat:iron_longbow",
+    "combat:bronze_longbow",
+    "combat:lozyne_longbow",
+    "combat:steel_crossbow",
+    "combat:golden_crossbow",
+    "combat:iron_crossbow",
+    "combat:bronze_crossbow",
+    "combat:lozyne_crossbow"
+  ]
+}

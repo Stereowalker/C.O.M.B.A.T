@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "combat:bronze_hoe",
+    "combat:steel_hoe",
+    "combat:pasquem_hoe",
+    "combat:serable_hoe",
+    "combat:lozyne_hoe",
+    "combat:mythril_hoe",
+    "combat:etherion_hoe"
+  ]
+}

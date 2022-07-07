@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "combat:bronze_shovel",
+    "combat:steel_shovel",
+    "combat:pasquem_shovel",
+    "combat:serable_shovel",
+    "combat:lozyne_shovel",
+    "combat:mythril_shovel",
+    "combat:etherion_shovel"
+  ]
+}

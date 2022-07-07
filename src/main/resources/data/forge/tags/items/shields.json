@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "combat:round_shield",
+    "combat:iron_tower_shield",
+    "combat:iron_round_shield",
+    "combat:golden_tower_shield",
+    "combat:golden_round_shield",
+    "combat:bronze_tower_shield",
+    "combat:bronze_round_shield",
+    "combat:steel_tower_shield",
+    "combat:steel_round_shield",
+    "combat:lozyne_tower_shield",
+    "combat:lozyne_round_shield"
+  ]
+}

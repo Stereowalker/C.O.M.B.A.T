@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "combat:bronze_helmet",
+    "combat:pasquem_helmet",
+    "combat:steel_helmet",
+    "combat:serable_helmet",
+    "combat:lozyne_helmet",
+    "combat:etherion_helmet"
+  ]
+}

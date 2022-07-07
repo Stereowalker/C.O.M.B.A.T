@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#combat:double_edge_straight_weapon",
+    "#combat:single_edge_curved_weapon",
+    "#combat:edgeless_thrustung_weapon"
+  ]
+}

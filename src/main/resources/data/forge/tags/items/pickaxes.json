@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "combat:steel_pickaxe",
+    "combat:pasquem_pickaxe",
+    "combat:serable_pickaxe",
+    "combat:lozyne_pickaxe",
+    "combat:mythril_pickaxe",
+    "combat:etherion_pickaxe"
+  ]
+}
