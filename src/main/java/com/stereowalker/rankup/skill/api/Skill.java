@@ -81,6 +81,10 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 		return new TranslatableComponent(this.getTranslationKey());
 	}
 
+	public MutableComponent getDescription() {
+		return new TranslatableComponent(this.getTranslationKey()+".desc");
+	}
+
 	protected String getDefaultTranslationKey() {
 		if (this.translationKey == null) {
 			this.translationKey = Util.makeDescriptionId("skill", this.getRegistryName());

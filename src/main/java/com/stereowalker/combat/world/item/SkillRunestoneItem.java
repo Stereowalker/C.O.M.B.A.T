@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
+import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.rankup.skill.api.SkillUtil;
 
@@ -37,7 +38,7 @@ public class SkillRunestoneItem extends Item {
 	
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		if (PlayerSkills.grantSkill(playerIn, SkillUtil.getSkillFromItem(playerIn.getItemInHand(handIn)), true) == PlayerSkills.SkillGrantAction.SUCCESS) {
+		if (PlayerSkills.grantSkill(playerIn, SkillUtil.getSkillFromItem(playerIn.getItemInHand(handIn)), SkillGrantReason.ITEM) == PlayerSkills.SkillGrantAction.SUCCESS) {
 			playerIn.setItemInHand(handIn, ItemStack.EMPTY);
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, playerIn.getItemInHand(handIn));
 		}

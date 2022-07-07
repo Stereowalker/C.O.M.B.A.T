@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.stereowalker.combat.commands.arguments.SkillArgument;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
+import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
 import com.stereowalker.rankup.skill.api.Skill;
 
 import net.minecraft.commands.CommandSourceStack;
@@ -36,7 +37,7 @@ public class SkillCommand {
 		int i = 0;
 		PlayerSkills.SkillGrantAction action = null;
 		for(Player player : players) {
-			PlayerSkills.SkillGrantAction action2 = PlayerSkills.grantSkill(player, skill, true);
+			PlayerSkills.SkillGrantAction action2 = PlayerSkills.grantSkill(player, skill, SkillGrantReason.COMMAND);
 			if (action2 == PlayerSkills.SkillGrantAction.SUCCESS) {
 				i++;
 			}
@@ -90,7 +91,6 @@ public class SkillCommand {
 		if (PlayerSkills.hasSkill(player, skill)) {
 			i++;
 		}
-		PlayerSkills.grantRandomSkill(player);
 		if (i == 0) {
 			throw new SimpleCommandExceptionType(new TranslatableComponent("commands.skill.query.failed", skill.getName(), player.getDisplayName())).create();
 		} else {

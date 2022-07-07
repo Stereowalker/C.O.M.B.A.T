@@ -4,6 +4,7 @@ import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerSkillsPacket;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
+import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
 import com.stereowalker.rankup.skill.api.Skill;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -45,7 +46,7 @@ public class SkillsEvents {
 				}
 			}
 			if (!PlayerSkills.hasSkill(playerEntity, PlayerSkills.getStartingSkill(playerEntity)) && PlayerSkills.getStartingSkill(playerEntity) != Skills.EMPTY) {
-				PlayerSkills.grantSkill(playerEntity, PlayerSkills.getStartingSkill(playerEntity), true);
+				PlayerSkills.grantSkill(playerEntity, PlayerSkills.getStartingSkill(playerEntity), SkillGrantReason.STARTER);
 			}
 		}
 	}

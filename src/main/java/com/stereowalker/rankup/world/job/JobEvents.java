@@ -6,6 +6,7 @@ import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.api.job.Job;
 import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerJobsPacket;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
+import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 
 import net.minecraft.ChatFormatting;
@@ -57,7 +58,7 @@ public class JobEvents {
 					if (statValue >= job.getAmountToUnlock()) {
 						jobProfile.giveJob();
 						list.broadcastMessage(new TranslatableComponent("chat.job.earned", player.getDisplayName(), jobDisplay(jobName, jobDesc)), ChatType.SYSTEM, Util.NIL_UUID);
-						PlayerSkills.grantSkill(player, CombatRegistries.SKILLS.getValue(job.jobSkills.get(0)), true);
+						PlayerSkills.grantSkill(player, CombatRegistries.SKILLS.getValue(job.jobSkills.get(0)), SkillGrantReason.JOB);
 						madeChange = true;
 					}
 				} else {
@@ -74,7 +75,7 @@ public class JobEvents {
 						int jobLevel = jobProfile.getLevel();
 						list.broadcastMessage(new TranslatableComponent("chat.job.upgraded", player.getDisplayName(), jobDisplay(jobName, jobDesc), jobLevel), ChatType.SYSTEM, Util.NIL_UUID);
 						if (job.jobSkills.size() >= jobLevel && job.jobSkills.get(jobLevel-1) != null) {
-							PlayerSkills.grantSkill(player, CombatRegistries.SKILLS.getValue(job.jobSkills.get(jobLevel-1)), true);
+							PlayerSkills.grantSkill(player, CombatRegistries.SKILLS.getValue(job.jobSkills.get(jobLevel-1)), SkillGrantReason.JOB);
 						}
 						madeChange = true;
 					}
