@@ -56,7 +56,7 @@ public class CombatBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLev
 	@Override
 	public void onResourceManagerReload(ResourceManager pResourceManager) {
 		this.modelTowerShield = new ShieldModel(this.entityModelSet.bakeLayer(ModelLayers.SHIELD));
-		this.modelRoundShield = new RoundShieldModel(this.entityModelSet.bakeLayer(ModelLayers.SHIELD));
+		this.modelRoundShield = new RoundShieldModel(this.entityModelSet.bakeLayer(CModelLayers.ROUND_SHIELD));
 		this.spear = new SpearModel(this.entityModelSet.bakeLayer(CModelLayers.SPEAR));
 		this.backpack = new BackpackModel(this.entityModelSet.bakeLayer(CModelLayers.BACKPACK));
 		this.quiver = new QuiverModel(this.entityModelSet.bakeLayer(CModelLayers.QUIVER));
