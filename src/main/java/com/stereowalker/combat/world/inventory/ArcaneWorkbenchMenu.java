@@ -19,7 +19,6 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -429,12 +428,6 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 		}
 		else {
 			ItemStack stack2 = ItemStack.EMPTY;
-			//Wands
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_STICK_WAND, CItems.APPRENTICE_STICK_WAND, CItems.ADVANCED_STICK_WAND, CItems.MASTER_STICK_WAND, shrink);
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_BLAZE_WAND, CItems.APPRENTICE_BLAZE_WAND, CItems.ADVANCED_BLAZE_WAND, CItems.MASTER_BLAZE_WAND, shrink);
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_GOLDEN_WAND, CItems.APPRENTICE_GOLDEN_WAND, CItems.ADVANCED_GOLDEN_WAND, CItems.MASTER_GOLDEN_WAND, shrink);
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_SERABLE_WAND, CItems.APPRENTICE_SERABLE_WAND, CItems.ADVANCED_SERABLE_WAND, CItems.MASTER_SERABLE_WAND, shrink);
-			if (stack2.isEmpty()) stack2 = this.upgradeWands(CItems.NOVICE_SHULKER_WAND, CItems.APPRENTICE_SHULKER_WAND, CItems.ADVANCED_SHULKER_WAND, CItems.MASTER_SHULKER_WAND, shrink);
 			//Rings
 			if (stack2.isEmpty()) stack2 = this.mergeItem(new ItemStack(CItems.AEROMANCER_RING), new ItemStack(UItems.GOLDEN_RING), new ItemStack(Items.PHANTOM_MEMBRANE), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
 			if (stack2.isEmpty()) stack2 = this.mergeItem(new ItemStack(CItems.ELECTROMANCER_RING), new ItemStack(UItems.GOLDEN_RING), new ItemStack(Items.COPPER_INGOT), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
@@ -443,14 +436,5 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 			//		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(CItems.TERRAMANCER_RING), new ItemStack(CItems.GOLDEN_RING), new ItemStack(Items.EMERALD), 10, new ItemStack(Items.NETHER_WART), 10, ItemStack.EMPTY, 0, 16, shrink);
 			return stack2;
 		}
-	}
-
-	public ItemStack upgradeWands(Item novice, Item apprentice, Item advanced, Item master, boolean shrink) {
-		ItemStack stack = ItemStack.EMPTY;
-//		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(novice), new ItemStack(basic), new ItemStack(Items.LAPIS_LAZULI), 10, new ItemStack(CItems.YELLOW_MAGIC_STONE), 16, ItemStack.EMPTY, 0, 10, shrink);
-		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(apprentice), new ItemStack(novice), new ItemStack(Items.QUARTZ), 10, new ItemStack(CItems.YELLOW_MAGIC_STONE), 32, ItemStack.EMPTY, 0, 10, shrink);
-		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(advanced), new ItemStack(apprentice), new ItemStack(CItems.PYRANITE), 10, new ItemStack(CItems.RED_MAGIC_STONE), 16, ItemStack.EMPTY, 0, 10, shrink);
-		if (stack.isEmpty()) stack = this.mergeItem(new ItemStack(master), new ItemStack(advanced), new ItemStack(Items.DRAGON_BREATH), 10, new ItemStack(CItems.RED_MAGIC_STONE), 32, ItemStack.EMPTY, 0, 10, shrink);
-		return stack;
 	}
 }

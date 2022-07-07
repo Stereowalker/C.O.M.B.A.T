@@ -1,0 +1,25 @@
+{
+  "type": "combat:arcane_conversion_2_inputs",
+  "base": {
+    "item": "combat:apprentice_golden_wand"
+  },
+  "addition1": {
+    "item": "combat:pyranite"
+  },
+  "additionCost1": 10,
+  
+  "addition2": {
+    "item": "combat:red_magic_stone"
+  },
+  "additionCost2": 16,
+  
+  "addition3": {
+    "item": "combat:soul_gem"
+  },
+  "additionCost3": 1,
+  
+  "tridoxCost": 10,
+  "result": {
+    "item": "combat:advanced_golden_wand"
+  }
+}

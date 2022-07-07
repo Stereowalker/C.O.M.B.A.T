@@ -1,0 +1,25 @@
+{
+  "type": "combat:arcane_conversion_2_inputs",
+  "base": {
+    "item": "combat:advanced_shulker_wand"
+  },
+  "addition1": {
+    "item": "minecraft:dragon_breath"
+  },
+  "additionCost1": 10,
+  
+  "addition2": {
+    "item": "combat:red_magic_stone"
+  },
+  "additionCost2": 32,
+  
+  "addition3": {
+    "item": "combat:soul_gem"
+  },
+  "additionCost3": 1,
+  
+  "tridoxCost": 10,
+  "result": {
+    "item": "combat:master_shulker_wand"
+  }
+}
