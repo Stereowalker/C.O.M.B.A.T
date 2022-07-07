@@ -85,7 +85,7 @@ public class AttackTargetEntityWithCcurrentItemEvent {
 
 						float f4 = 0.0F;
 						boolean flag4 = false;
-						int j = EnchantmentHelper.getFireAspect(player) + (PlayerSkills.hasSkill(player, Skills.BURNING_STRIKE) ? 1 : 0);
+						int j = EnchantmentHelper.getFireAspect(player);
 						if (targetEntity instanceof LivingEntity) {
 							f4 = ((LivingEntity)targetEntity).getHealth();
 							if (j > 0 && !targetEntity.isOnFire()) {

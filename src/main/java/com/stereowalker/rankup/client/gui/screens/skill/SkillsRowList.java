@@ -121,11 +121,11 @@ public class SkillsRowList extends ContainerObjectSelectionList<SkillsRowList.Ro
 
 			if (skill.isActiveSkill()) 
 				if (PlayerSkills.isSkillActive(player, skill))
-					this.widgets.get(1).setMessage(new TextComponent("Deactivate"));
+					this.widgets.get(1).setMessage(new TextComponent("Deactivate").withStyle(ChatFormatting.RED));
 				else
-					this.widgets.get(1).setMessage(new TextComponent("Activate"));
+					this.widgets.get(1).setMessage(new TextComponent("Activate").withStyle(ChatFormatting.GREEN));
 			else
-				this.widgets.get(1).setMessage(new TextComponent("Passive"));
+				this.widgets.get(1).setMessage(new TextComponent("Passive").withStyle(ChatFormatting.BLUE));
 
 			this.widgets.forEach((widget) -> {
 				widget.y = top + 20 - (widget.getHeight()/2);

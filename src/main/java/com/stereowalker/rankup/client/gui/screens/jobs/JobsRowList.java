@@ -5,11 +5,9 @@ import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.client.RenderBars;
 import com.stereowalker.rankup.api.job.Job;
-import com.stereowalker.rankup.network.protocol.game.ServerboundUpgradeLevelsPacket;
 import com.stereowalker.rankup.world.job.JobProfile;
 import com.stereowalker.rankup.world.job.PlayerJobs;
 
@@ -30,7 +28,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkDirection;
 
 @OnlyIn(Dist.CLIENT)
 public class JobsRowList extends ContainerObjectSelectionList<JobsRowList.Row> {
@@ -92,7 +89,6 @@ public class JobsRowList extends ContainerObjectSelectionList<JobsRowList.Row> {
 			this.jobKey = statIn;
 		}
 
-		@SuppressWarnings("resource")
 		public static Button addUpgrade(ResourceKey<Job> statKey) {
 			Button upgradeButton;
 			upgradeButton = new Button(0, 0, 20, 20, new TextComponent("+"), (p_214328_1_) -> {
