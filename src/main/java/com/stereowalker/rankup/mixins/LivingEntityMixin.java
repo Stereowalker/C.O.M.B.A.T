@@ -1,4 +1,4 @@
-package com.stereowalker.combat.mixins.rankup;
+package com.stereowalker.rankup.mixins;
 
 import javax.annotation.Nullable;
 
@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.event.AbominationEvents;
+import com.stereowalker.rankup.world.job.Jobs;
+import com.stereowalker.rankup.world.job.PlayerJobs;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -45,8 +48,15 @@ public abstract class LivingEntityMixin extends Entity {
 			//In order to prevent players from getting experience from other players
 			if (!((LivingEntity)(Object)this instanceof Player)) {
 				amountModified *= Math.max((PlayerAttributeLevels.getLevel((LivingEntity)(Object)this))-(PlayerAttributeLevels.getLevel(lastHurtByPlayer)), 1);
-				if (shouldLevelUp)
-					PlayerAttributeLevels.setExperience(lastHurtByPlayer, PlayerAttributeLevels.getExperience(lastHurtByPlayer)+amountModified);
+				if (shouldLevelUp) {
+					if (lastHurtByPlayer.getMainHandItem().getItem() instanceof ProjectileWeaponItem) {
+						if (PlayerJobs.getJobProfile(lastHurtByPlayer, Jobs.ARCHER_KEY).hasJob()) {
+							PlayerAttributeLevels.addExperience(lastHurtByPlayer, amountModified*PlayerJobs.getJobProfile(lastHurtByPlayer, Jobs.ARCHER_KEY).getLevel());
+						}
+					}
+					else
+						PlayerAttributeLevels.addExperience(lastHurtByPlayer, amountModified);
+				}
 			}
 			//Make players take all the experence from players that theyve killed
 			if (((LivingEntity)(Object)this instanceof Player) && Combat.RPG_CONFIG.takeXpFromKilledPlayers) {

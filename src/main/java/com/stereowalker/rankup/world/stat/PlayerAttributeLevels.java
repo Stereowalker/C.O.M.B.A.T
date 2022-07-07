@@ -101,6 +101,11 @@ public class PlayerAttributeLevels {
 		setLevel(entity, getLevel(entity)+1);
 		return true;
 	}
+	
+	public static boolean addExperience(LivingEntity entity, int experience) {
+		setExperience(entity, getExperience(entity)+experience);
+		return true;
+	}
 
 	public static boolean addUpgradePoints(LivingEntity entity, int points) {
 		if (getUpgradePoints(entity)+points >= 0) {

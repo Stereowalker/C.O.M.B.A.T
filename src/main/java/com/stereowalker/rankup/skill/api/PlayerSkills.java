@@ -22,6 +22,14 @@ public class PlayerSkills {
 		return false;
 	}
 	
+	public static boolean isSkillActive(LivingEntity entity, Skill skill) {
+		if(entity != null) {
+			CompoundTag compound = getRankSkillNBT(entity);
+			return compound.getBoolean("skill_active_"+skill.getRegistryName().getPath());
+		}
+		return false;
+	}
+	
 	public static Skill getStartingSkill(Player player) {
 		if (player != null) {
 			CompoundTag compoundNBT = getRankSkillNBT(player);
@@ -38,6 +46,11 @@ public class PlayerSkills {
 	public static void setSkill(Player player, Skill skill, boolean flag) {
 		CompoundTag compound = getRankSkillNBT(player);
 		compound.putBoolean(skill.getRegistryName().getPath(), flag);
+	}
+	
+	public static void setSkillActive(Player player, Skill skill, boolean flag) {
+		CompoundTag compound = getRankSkillNBT(player);
+		compound.putBoolean("skill_active_"+skill.getRegistryName().getPath(), flag);
 	}
 
 	public static enum SkillGrantAction {
@@ -59,7 +72,7 @@ public class PlayerSkills {
 		}
 	}
 	
-	public static SkillGrantAction grantSkill(Player player, Skill skill, boolean grantSkill) {
+	public static SkillGrantAction grantSkill(Player player, Skill skill, boolean actuallyGrantSkill) {
 		if (skill == Skills.EMPTY) {
 			return SkillGrantAction.CANNOT_GIVE_EMPTY_SKILL;
 		} else if (hasSkill(player, skill)) {
@@ -67,7 +80,7 @@ public class PlayerSkills {
 		} else if (skill.isSubSkill() && !hasSkill(player, skill.getSuperSkill())){
 			return SkillGrantAction.REQUIRES_SUPER_SKILL;
 		} else {
-			if (grantSkill) setSkill(player, skill, true);
+			if (actuallyGrantSkill) setSkill(player, skill, true);
 			return SkillGrantAction.SUCCESS;
 		}
 	}
@@ -111,7 +124,7 @@ public class PlayerSkills {
 			Combat.debug("Attempt "+attemps+" To Award Random Skill");
 			List<Skill> elegibleSkills = new ArrayList<Skill>();
 			for (Skill skill : CombatRegistries.SKILLS) {
-				if (!hasSkill(player, skill) && (onlyStartSkills?skill.isSpawnSkill():true)) {
+				if (!skill.isJobSkill() && !hasSkill(player, skill) && (onlyStartSkills?skill.isSpawnSkill():true)) {
 					elegibleSkills.add(skill);
 				}
 			}
@@ -161,6 +174,7 @@ public class PlayerSkills {
 			for (Skill skill : CombatRegistries.SKILLS) {
 				if (!compound.contains(skill.getRegistryName().getPath())) {
 					setSkill(player, skill, false);
+					setSkillActive(player, skill, false);
 					Combat.debug("Set " + name + "'s "+skill.getRegistryName().getPath()+" skill to " + hasSkill(player, skill));
 				}
 			}

@@ -50,8 +50,8 @@ public class ClientboundStatManagerPacket {
 	@OnlyIn(Dist.CLIENT)
 	public static void update(final ResourceLocation stat, final StatSettings settings) {
 		Map<ResourceKey<Stat>,StatSettings> statMap = new HashMap<>();
-		statMap.putAll(Combat.rankupInstance.CLIENT_STATS);
+		statMap.putAll(Combat.rankupInstance.CLIENT_STAT_SETTINGS);
 		statMap.put(ResourceKey.create(CombatRegistries.STATS_REGISTRY, stat), settings);
-		Combat.rankupInstance.CLIENT_STATS = ImmutableMap.copyOf(statMap);
+		Combat.rankupInstance.CLIENT_STAT_SETTINGS = ImmutableMap.copyOf(statMap);
 	}
 }

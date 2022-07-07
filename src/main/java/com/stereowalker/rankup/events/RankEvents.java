@@ -3,6 +3,7 @@ package com.stereowalker.rankup.events;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.skill.SkillsEvents;
+import com.stereowalker.rankup.world.job.JobEvents;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 import com.stereowalker.rankup.world.stat.StatEvents;
 
@@ -30,9 +31,15 @@ public class RankEvents {
 			if (Combat.RPG_CONFIG.enableLevelingSystem) {
 				StatEvents.registerEntityStats(event.getEntityLiving());
 				StatEvents.statUpdate(event.getEntityLiving());
+				if (event.getEntityLiving() instanceof ServerPlayer) {
+					ServerPlayer player = (ServerPlayer)event.getEntityLiving();
+					JobEvents.registerEntityStats(player);
+					JobEvents.jobUpdate(player, player.getLevel().getServer().getPlayerList());
+					JobEvents.playerToClient(player);
+				}
 			}
 			if (event.getEntityLiving() instanceof ServerPlayer) {
-				StatEvents.sendPlayerToClient((ServerPlayer) event.getEntityLiving());
+				StatEvents.playerToClient((ServerPlayer) event.getEntityLiving());
 			} else if (!(event.getEntityLiving() instanceof Player)){
 				for (ServerPlayer player : event.getEntityLiving().level.getEntitiesOfClass(ServerPlayer.class, event.getEntityLiving().getBoundingBox().inflate(40))) {
 					StatEvents.sendEntityToClient(player, event.getEntityLiving());
@@ -61,6 +68,7 @@ public class RankEvents {
 	public static void clonePlayer(PlayerEvent.Clone event) {
 		StatEvents.restoreStats(event.getPlayer(), event.getOriginal(), event.isWasDeath());
 		SkillsEvents.restoreStats(event.getPlayer(), event.getOriginal());
+		JobEvents.restoreJobs(event.getPlayer(), event.getOriginal(), event.isWasDeath());
 	}
 
 	@SubscribeEvent
@@ -80,6 +88,9 @@ public class RankEvents {
 				if (Combat.RPG_CONFIG.enableLevelingSystem) {
 					StatEvents.registerEntityStats((LivingEntity)event.getEntity());
 					StatEvents.statUpdate((LivingEntity)event.getEntity());
+					if (event.getEntity() instanceof ServerPlayer) {
+						JobEvents.registerEntityStats((ServerPlayer)event.getEntity());
+					}
 				}
 			}
 			if (event.getEntity() instanceof Player && !PlayerAttributeLevels.hasInitPlayer((Player)event.getEntity())) {

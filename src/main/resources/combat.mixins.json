@@ -11,7 +11,7 @@
   	"LivingEntityMixin",
 	"NoiseBasedChunkGeneratorMixin",
   	"PlayerMixin",
-	"rankup.LivingEntityMixin"
+  	"InventoryMixin"
   ],
   "client": [
     "client.CreateWorldScreenMixin",

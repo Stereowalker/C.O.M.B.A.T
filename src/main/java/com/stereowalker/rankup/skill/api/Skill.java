@@ -24,6 +24,8 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 	private int secondaryColor;
 	private int level;
 	private boolean isSpawnSkill;
+	private boolean isJobSkill;
+	private boolean isActiveSkill;
 
 	public Skill(Builder builder) {
 		this.superSkill = builder.superSkill;
@@ -31,6 +33,8 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 		this.secondaryColor = builder.secondaryColor;
 		this.level = builder.level;
 		this.isSpawnSkill = builder.isSpawnSkill;
+		this.isJobSkill = builder.isJobSkill;
+		this.isActiveSkill = builder.isActiveSkill;
 	}
 	
 	public Skill getSuperSkill() {
@@ -51,6 +55,14 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 	
 	public boolean isSpawnSkill() {
 		return isSpawnSkill;
+	}
+	
+	public boolean isJobSkill() {
+		return isJobSkill;
+	}
+	
+	public boolean isActiveSkill() {
+		return isActiveSkill;
 	}
 	
 	public boolean isSubSkill() {
@@ -123,6 +135,8 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 		int secondaryColor;
 		int level;
 		boolean isSpawnSkill;
+		boolean isJobSkill;
+		boolean isActiveSkill;
 		
 		public Builder setSuperSkill(Skill superSkill) {
 			this.superSkill = superSkill;
@@ -151,6 +165,16 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 		
 		public Builder isSpawnSkill() {
 			this.isSpawnSkill = true;
+			return this;
+		}
+		
+		public Builder isJobSkill() {
+			this.isJobSkill = true;
+			return this;
+		}
+		
+		public Builder isActiveSkill() {
+			this.isActiveSkill = true;
 			return this;
 		}
 	}

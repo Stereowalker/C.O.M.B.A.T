@@ -45,10 +45,12 @@ import com.stereowalker.combat.world.level.levelgen.feature.StructurePieceTypes;
 import com.stereowalker.combat.world.level.material.CFluids;
 import com.stereowalker.combat.world.level.storage.loot.functions.CLootItemFunctions;
 import com.stereowalker.combat.world.spellcraft.Spells;
+import com.stereowalker.rankup.api.job.Job;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.rankup.skill.api.SkillUtil;
+import com.stereowalker.rankup.world.job.Jobs;
 import com.stereowalker.rankup.world.stat.Stats;
 
 import net.minecraft.client.Minecraft;
@@ -340,6 +342,7 @@ public class CombatRegistryEvents
 		event.create(new RegistryBuilder<Spell>().setName(Combat.getInstance().location("spell")).setType(c(Spell.class)).setMaxID(MAX_VARINT));
 		event.create(new RegistryBuilder<Skill>().setName(Combat.getInstance().location("skill")).setType(c(Skill.class)).setMaxID(MAX_VARINT));
 		event.create(new RegistryBuilder<Stat>().setName(Combat.getInstance().location("stats")).setType(c(Stat.class)).setMaxID(MAX_VARINT).dataPackRegistry(Stat.CODEC, Stat.CODEC));
+		event.create(new RegistryBuilder<Job>().setName(Combat.getInstance().location("jobs")).setType(c(Job.class)).setMaxID(MAX_VARINT).dataPackRegistry(Job.CODEC, Job.CODEC));
 	}
 
 	//Custom C.O.M.B.A.T. Registries
@@ -356,6 +359,11 @@ public class CombatRegistryEvents
 	@SubscribeEvent
 	public static void registerLeveledStats(final RegistryEvent.Register<Stat> event) {
 		Stats.registerAll(event.getRegistry());
+	}
+
+	@SubscribeEvent
+	public static void registerjobs(final RegistryEvent.Register<Job> event) {
+		Jobs.registerAll(event.getRegistry());
 	}
 	
 	@SuppressWarnings("unchecked") //Ugly hack to let us pass in a typed Class object. Remove when we remove type specific references.

@@ -11,7 +11,7 @@ public class Rankup {
 	
 	public static final StatsManager statsManager = new StatsManager();
 	
-	public ImmutableMap<ResourceKey<Stat>,StatSettings> CLIENT_STATS = ImmutableMap.of();
+	public ImmutableMap<ResourceKey<Stat>,StatSettings> CLIENT_STAT_SETTINGS = ImmutableMap.of();
 	
 	public Rankup() {
 	}

@@ -81,14 +81,6 @@ public class Stat extends ForgeRegistryEntry<Stat>{
 		return baseAttribute;
 	}
 	
-	public ResourceLocation getButtonTexture() {
-		return new ResourceLocation(this.getRegistryName().getNamespace(),"textures/upgradeableattribute/"+this.getRegistryName().getPath()+".png");
-	}
-	
-	public ResourceLocation getLockedButtonTexture() {
-		return Combat.getInstance().location("textures/gui/locked_level_button.png");
-	}
-	
 	public static int getExperienceCost(int level) {
 		int n = level + 1;
 		int a = Combat.RPG_CONFIG.baseXpCost;

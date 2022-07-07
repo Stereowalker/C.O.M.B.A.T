@@ -158,11 +158,11 @@ public class Combat extends MinecraftMod implements IPacketHolder
 
 	@Override
 	public void registerServerboundPackets(SimpleChannel arg0) {
-		int netID = 3;
+		int netID = 5;
 		//client
-		PacketRegistry.registerMessage(arg0, 2, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
-		PacketRegistry.registerMessage(arg0, netID++, ServerboundGunPacket.class, (packetBuffer) -> {return new ServerboundGunPacket(packetBuffer);});
-		PacketRegistry.registerMessage(arg0, netID++, ServerboundMageSetupPacket.class, (packetBuffer) -> {return new ServerboundMageSetupPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, 2, ServerboundGunPacket.class, (packetBuffer) -> {return new ServerboundGunPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, 3, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
+		PacketRegistry.registerMessage(arg0, 4, ServerboundMageSetupPacket.class, (packetBuffer) -> {return new ServerboundMageSetupPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundSetLimiterPacket.class, (packetBuffer) -> {return new ServerboundSetLimiterPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundStoreItemPacket.class, (packetBuffer) -> {return new ServerboundStoreItemPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundPronePacket.class, (packetBuffer) -> {return new ServerboundPronePacket(packetBuffer);});

@@ -24,6 +24,9 @@ apply plugin: 'org.spongepowered.mixin'
 
 mixin {
     add sourceSets.main, modId+".refmap.json"
+    add sourceSets.main, "Rankup-refmap.json"
+    config "${modId}.mixins.json"
+    config "rankup.mixins.json"
 }
 
 version = modMinecraftVersion + "-" +modVersion
@@ -44,7 +47,6 @@ minecraft {
             workingDirectory project.file('run/client')
 
             property 'forge.logging.markers', 'REGISTRIES'
-			arg "-mixin.config="+modId+".mixins.json"
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
@@ -63,7 +65,6 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
             property 'forge.logging.markers', 'REGISTRIES'
-			arg "-mixin.config="+modId+".mixins.json"
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
@@ -166,7 +167,6 @@ curseforge {
 		mainArtifact(jar) {
 			displayName = modFilename+"-$project.version"
 		}
-		addArtifact deobfJar
 		addArtifact apiJar
 		addArtifact sourcesJar
 	}

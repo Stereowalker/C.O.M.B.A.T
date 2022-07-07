@@ -1,13 +1,12 @@
-package com.stereowalker.rankup.client.gui.screens.stats;
+package com.stereowalker.rankup.client.gui.screens.jobs;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.client.KeyMappings;
-import com.stereowalker.combat.client.RenderBars;
-import com.stereowalker.rankup.client.gui.screens.jobs.PlayerJobsScreen;
 import com.stereowalker.rankup.client.gui.screens.skill.PlayerSkillsScreen;
+import com.stereowalker.rankup.client.gui.screens.stats.PlayerLevelsScreen;
 import com.stereowalker.rankup.world.stat.LevelType;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 import com.stereowalker.rankup.world.stat.StatEvents;
@@ -31,35 +30,32 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PlayerLevelsScreen extends Screen {
+public class PlayerJobsScreen extends Screen {
 	private static final ResourceLocation BARS = Combat.getInstance().location("textures/gui/upgradeableattribute/bars.png");
-	private StatsRowList statsRowList;
+	private JobsRowList jobsList;
 	int offset = -5;
 
-	public PlayerLevelsScreen(Minecraft mc) {
-		super(new TextComponent("").append(mc.player.getDisplayName()).append("'s Stats"));
+	public PlayerJobsScreen(Minecraft mc) {
+		super(new TextComponent("").append(mc.player.getDisplayName()).append("'s Jobs"));
 		this.minecraft = mc;
 	}
 
 	@Override
 	public void init() {
-		int xPos = (this.width-226)/2;
 		int yPos = 80;
 
 		int ySize = /*106*/(this.height - 58) - yPos;
-		//		this.statsRowList = new StatsRowList(this.minecraft, xSize, 0, yPos, yPos+ySize, 21);
-		this.statsRowList = new StatsRowList(this.minecraft, this.width/2, this.height, yPos, yPos+ySize, 21);
-		//		this.statsRowList.setLeftPos(xPos);
-		this.statsRowList.addStat(this.minecraft.level.registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY));
-		this.addWidget(this.statsRowList);
+		this.jobsList = new JobsRowList(this.minecraft, this.width/2, this.height, yPos, yPos+ySize, 21, this);
+		this.jobsList.addStat(this.minecraft.level.registryAccess().registryOrThrow(CombatRegistries.JOBS_REGISTRY));
+		this.addWidget(this.jobsList);
 
-		Button b = this.addRenderableWidget(new Button(this.width / 2 - 125, this.height - 48, 80, 20, new TranslatableComponent("gui.show_stats"), (onPress) -> {
+		this.addRenderableWidget(new Button(this.width / 2 - 125, this.height - 48, 80, 20, new TranslatableComponent("gui.show_stats"), (onPress) -> {
 			minecraft.setScreen(new PlayerLevelsScreen(minecraft));
 		}));
 		this.addRenderableWidget(new Button(this.width / 2 - 40, this.height - 48, 80, 20, new TranslatableComponent("gui.show_skills"), (onPress) -> {
 			minecraft.setScreen(new PlayerSkillsScreen(minecraft, 0, null));
 		}));
-		this.addRenderableWidget(new Button(this.width / 2 + 45, this.height - 48, 80, 20, new TranslatableComponent("gui.show_jobs"), (onPress) -> {
+		Button b = this.addRenderableWidget(new Button(this.width / 2 + 45, this.height - 48, 80, 20, new TranslatableComponent("gui.show_jobs"), (onPress) -> {
 			minecraft.setScreen(new PlayerJobsScreen(minecraft));
 		}));
 		b.active = false;
@@ -95,7 +91,7 @@ public class PlayerLevelsScreen extends Screen {
 	@Override
 	public void render(PoseStack pPoseStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderDirtBackground(0);
-		this.statsRowList.render(pPoseStack, mouseX, mouseY, partialTicks);
+		this.jobsList.render(pPoseStack, mouseX, mouseY, partialTicks);
 		
 		GuiComponent.drawCenteredString(pPoseStack, this.font, this.title, this.width / 2, 20, 16777215);
 		GuiComponent.drawCenteredString(pPoseStack, this.font, "Level: " +PlayerAttributeLevels.getLevel(minecraft.player), this.width / 2 - 94, 40, 0xFFFFFF);
@@ -103,12 +99,30 @@ public class PlayerLevelsScreen extends Screen {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, BARS);
 		int barWidth = 226;
-		float val = (float)PlayerAttributeLevels.getExperience(minecraft.player)/ (float)StatEvents.getMaxExperience(PlayerAttributeLevels.getLevel(minecraft.player));
-		RenderBars.drawBar(this, pPoseStack, this.width / 2 - (barWidth/2), 50, barWidth, RenderBars.Color.GREEN, RenderBars.Divisor.FOUR, val);
+		int k = (int)(PlayerAttributeLevels.getExperience(minecraft.player) * ((float)barWidth+1.0F) / StatEvents.getMaxExperience(PlayerAttributeLevels.getLevel(minecraft.player)));
+		int barPos = 50;
+		k = Mth.clamp(k, 0, barWidth+1);
+		this.blit(pPoseStack, this.width / 2 - (barWidth/2), barPos, 0, 40, barWidth, 5);
+		this.blit(pPoseStack, this.width / 2 - (barWidth/2), barPos, 0, 45, k, 5);
+		int ex = 0;
+		if (PlayerAttributeLevels.getLevel(minecraft.player) > 900) {
+			ex = 80;
+		} else if (PlayerAttributeLevels.getLevel(minecraft.player) > 700) {
+			ex = 90;
+		} else if (PlayerAttributeLevels.getLevel(minecraft.player) > 500) {
+			ex = 100;
+		} else if (PlayerAttributeLevels.getLevel(minecraft.player) > 300) {
+			ex = 110;
+		} else if (PlayerAttributeLevels.getLevel(minecraft.player) > 100) {
+			ex = 120;
+		} else if (PlayerAttributeLevels.getLevel(minecraft.player) > 0) {
+			ex = 130;
+		} 
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		this.blit(pPoseStack, this.width / 2 - (barWidth/2), barPos, 0, ex, barWidth, 5);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-		if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS)
-			GuiComponent.drawCenteredString(pPoseStack, this.font, "Upgrade Points: "+PlayerAttributeLevels.getUpgradePoints(minecraft.player), this.width / 2, 65, 16777215);
-		
 		super.render(pPoseStack, mouseX, mouseY, partialTicks);
 		for(Widget widget : this.renderables) {
 			if (widget instanceof AbstractWidget)

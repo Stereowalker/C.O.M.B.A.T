@@ -37,12 +37,12 @@ public class StatEvents {
 		PlayerAttributeLevels.addLevelsOnSpawn(entity);
 	}
 
-	public static void sendPlayerToClient(ServerPlayer player) {
+	public static void playerToClient(ServerPlayer player) {
 		Combat.getInstance().channel.sendTo(new ClientboundPlayerStatsPacket(player), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 	}
 
 	public static void sendEntityToClient(ServerPlayer player, LivingEntity target) {
-		Combat.getInstance().channel.sendTo(new ClientboundEntityStatsPacket(target), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+		new ClientboundEntityStatsPacket(target).send(player);
 	}
 
 	public static void sendStatsToClient(ServerPlayer player) {
@@ -174,11 +174,13 @@ public class StatEvents {
 		if (!entity.level.isClientSide()) {
 			if (registry.containsKey(stat)) {
 				Attribute attribute = registry.get(stat).getBaseAttribute();
-				if (attribute != null && Rankup.statsManager.STATS.get(stat) != null
-						&& Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(attribute) 
-						&& DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
-					double baseValue = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute);
-					return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(attribute));
+				if (Rankup.statsManager.STATS.get(stat) != null) {
+					if (attribute != null
+							&& Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(attribute) 
+							&& DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
+						double baseValue = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute);
+						return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(attribute));
+					}
 				} else {
 					Combat.debug(stat+"' settings are not set");
 				}
