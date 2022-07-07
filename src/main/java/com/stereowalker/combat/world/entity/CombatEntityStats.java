@@ -46,7 +46,6 @@ public class CombatEntityStats {
 	public static String allyID = "Ally";
 	public static String alliesID = "Allies";
 	public static String xpStoredID = "XPStored";
-	public static String limiterId = "Limiter";
 	public static String vampireId = "IsVampire";
 	public static String manabornBonusId = "IsManaborn";
 	public static String primevalAffinityID = "PrimevalAffinity";
@@ -145,14 +144,6 @@ public class CombatEntityStats {
 			}
 		}
 		return 0;
-	}
-
-	public static boolean isLimiterOn(LivingEntity entity) {
-		if(entity != null) {
-			CompoundTag compound = getModNBT(entity);
-			return compound.getBoolean(limiterId);
-		}
-		return false;
 	}
 
 	public static boolean isHoldFlagActive(LivingEntity entity) {
@@ -305,11 +296,6 @@ public class CombatEntityStats {
 		compound.putInt(xpStoredID, mana);
 	}
 
-	public static void setLimiter(LivingEntity entity, boolean speedActivated) {
-		CompoundTag compound = getModNBT(entity);
-		compound.putBoolean(limiterId, speedActivated);
-	}
-
 	public static void setVampire(LivingEntity entity, boolean vampire) {
 		CompoundTag compound = getModNBT(entity);
 		compound.putBoolean(vampireId, vampire);
@@ -424,9 +410,6 @@ public class CombatEntityStats {
 				if (!compound.contains(xpStoredID)) {
 					setStoredXP(player, 0);
 					Combat.debug("Set " + name + "'s stored xp to " + getStoredXP(player));
-				}
-				if (!compound.contains(limiterId)) {
-					setLimiter(player, false);
 				}
 				if (!compound.contains(holdFlagID)) {
 					setHoldFlag(player, false);

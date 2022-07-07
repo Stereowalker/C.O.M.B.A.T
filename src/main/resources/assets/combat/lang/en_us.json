@@ -976,8 +976,10 @@
 	"skill.combat.burning_strike": "Burning Strike",
 	"skill.combat.freezing_strike": "Freezing Strike",
 	"skill.combat.insight": "Insight",
+	"skill.combat.limiter": "Limiter",
+	"skill.combat.limiter.desc": "Puts a damper on stats that can be limited",
 	"skill.combat.archers_elbow": "Archers Elbow",
-	"skill.combat.archers_elbow.desc": "Job Skill\n All arrows shot from bows or\n crossbows deal 10% more damage",
+	"skill.combat.archers_elbow.desc": "Job Skill\nAll arrows shot from bows or crossbows deal 10% more damage",
 	///////////////////////////////////////////////////////////[SPELLS]///////////////////////////////////////////////////////////
 	"spell.combat.none": "None",
 	"spell.combat.none.desc": "...",
@@ -1182,7 +1184,7 @@
 	"stat.combat.interact_with_woodcutter": "Interactions with Woodcutter",
 	"stat.combat.shots_fired": "Shots Fired",
 	"stat.combat.spells_casted": "Spells Casted",
-	"stat.combat.mobs_killed_with_bow": "Mobs Killed With Bow",
+	"stat.combat.mobs_killed_with_bow": "Mobs Killed With Bows",
 	///////////////////////////////////////////////////////////[ATTRIBUTES]///////////////////////////////////////////////////////////
 	"attribute.name.combat.max_mana": "Max Mana",
 	"attribute.name.combat.magic_strength": "Magic Strength",
@@ -1233,6 +1235,7 @@
 	"config.combat.battle.file": "Battle Config",
 	"config.combat.client.file": "Client Config",
 	"config.combat.magic.file": "Magic Config",
+	"chat.skill.earned": "%1$s has unlocked the skill %2$s",
 	"chat.job.earned": "%1$s has earned the job %2$s",
 	"chat.job.upgraded": "%1$s has raised their %2$s job to level %3$s",
 	///////////////////////////////////////////////////////////[CURIOS_IDENTIFIERS]///////////////////////////////////////////////////////////

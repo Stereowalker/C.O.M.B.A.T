@@ -7,7 +7,6 @@ import com.stereowalker.combat.network.protocol.game.ServerboundBackItemPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundGunPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundGunPacket.GunAction;
 import com.stereowalker.combat.network.protocol.game.ServerboundPronePacket;
-import com.stereowalker.combat.network.protocol.game.ServerboundSetLimiterPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundSpellbookNBTPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundStoreItemPacket;
 import com.stereowalker.combat.world.item.AbstractMagicCastingItem;
@@ -98,10 +97,6 @@ public class KeybindingEvent {
 				if (Combat.RPG_CONFIG.enableLevelingSystem) {
 					while (KeyMappings.PLAYER_LEVELS.consumeClick()) {
 						mc.setScreen(new PlayerLevelsScreen(mc));
-					}
-
-					while (KeyMappings.TOGGLE_LIMITER.consumeClick()) {
-						new ServerboundSetLimiterPacket().send();
 					}
 				}
 

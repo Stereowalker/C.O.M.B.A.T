@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
-import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.network.protocol.game.ClientboundEntityStatsPacket;
@@ -13,6 +12,9 @@ import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerDisplaySta
 import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerLevelUpPacket;
 import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerStatsPacket;
 import com.stereowalker.rankup.network.protocol.game.ClientboundStatManagerPacket;
+import com.stereowalker.rankup.skill.Skills;
+import com.stereowalker.rankup.skill.api.PlayerSkills;
+import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -53,9 +55,6 @@ public class StatEvents {
 
 	public static void restoreStats(Player player, Player original, boolean wasDeath) {
 		PlayerAttributeLevels.getOrCreateRankNBT(player);
-		if (!wasDeath) {
-			CombatEntityStats.setLimiter(player, CombatEntityStats.isLimiterOn(original));
-		}
 		if (player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || !wasDeath) {
 			PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(original));
 		}
@@ -141,16 +140,19 @@ public class StatEvents {
 							StatProfile.setEffortPoints(player, stat.getKey(), PlayerAttributeLevels.getStatProfile(player, stat.getKey()).getEffortPoints()+1);
 						}
 					}
-
+					if (addition > 110 && statSettings.isLimitable() && !PlayerSkills.hasSkill(player, Skills.LIMITER)) {
+						PlayerSkills.grantSkill(player, Skills.LIMITER, SkillGrantReason.LIMITER);
+					}
 				}
 
 				statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
 
+					
 					double baseValue = modifierPerPoint.doubleValue() * addition;
 
 
 					if (entity.getAttribute(attribute) != null && entity.isAlive()) {
-						if (addition > 0 && Combat.RPG_CONFIG.enableLevelingSystem && (!statSettings.isLimitable() || !CombatEntityStats.isLimiterOn(entity)) && statSettings.isEnabled()) {
+						if (addition > 0 && Combat.RPG_CONFIG.enableLevelingSystem && (!statSettings.isLimitable() || !PlayerSkills.isSkillActive(entity, Skills.LIMITER)) && statSettings.isEnabled()) {
 							if (entity.getAttribute(attribute).getBaseValue() != baseValue) {
 								entity.getAttribute(attribute).setBaseValue(baseValue);
 							}

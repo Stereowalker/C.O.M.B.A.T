@@ -29,7 +29,7 @@ public class ServerboundActivateSkillPacket extends ServerboundUnionPacket {
 	
 	@Override
 	public boolean handleOnServer(ServerPlayer arg0) {
-		PlayerSkills.setSkillActive(arg0, skill, PlayerSkills.isSkillActive(arg0, skill));
+		PlayerSkills.setSkillActive(arg0, skill, !PlayerSkills.isSkillActive(arg0, skill));
 		return true;
 	}
 }

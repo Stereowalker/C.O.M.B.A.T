@@ -33,7 +33,6 @@ import com.stereowalker.combat.network.protocol.game.ServerboundHeldItemStackNBT
 import com.stereowalker.combat.network.protocol.game.ServerboundMageSetupPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundPronePacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundRequestStatsPacket;
-import com.stereowalker.combat.network.protocol.game.ServerboundSetLimiterPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundSpellbookNBTPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundStoreItemPacket;
 import com.stereowalker.combat.tags.BiomeCTags;
@@ -144,7 +143,7 @@ public class Combat extends MinecraftMod implements IPacketHolder
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public KeyMapping[] getModKeyMappings() {
-		return new KeyMapping[] {KeyMappings.NEXT_SPELL, KeyMappings.PREV_SPELL, KeyMappings.PLAYER_LEVELS, KeyMappings.TOGGLE_LIMITER,
+		return new KeyMapping[] {KeyMappings.NEXT_SPELL, KeyMappings.PREV_SPELL, KeyMappings.PLAYER_LEVELS,
 				KeyMappings.RELOAD, KeyMappings.FIRE, KeyMappings.OPEN_BACK_ITEM, KeyMappings.STORE_ITEM, KeyMappings.PRONE};
 	}
 
@@ -163,7 +162,6 @@ public class Combat extends MinecraftMod implements IPacketHolder
 		PacketRegistry.registerMessage(arg0, 2, ServerboundGunPacket.class, (packetBuffer) -> {return new ServerboundGunPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, 3, ServerboundBackItemPacket.class, (packetBuffer) -> {return new ServerboundBackItemPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, 4, ServerboundMageSetupPacket.class, (packetBuffer) -> {return new ServerboundMageSetupPacket(packetBuffer);});
-		PacketRegistry.registerMessage(arg0, netID++, ServerboundSetLimiterPacket.class, (packetBuffer) -> {return new ServerboundSetLimiterPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundStoreItemPacket.class, (packetBuffer) -> {return new ServerboundStoreItemPacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundPronePacket.class, (packetBuffer) -> {return new ServerboundPronePacket(packetBuffer);});
 		PacketRegistry.registerMessage(arg0, netID++, ServerboundClientMotionPacket.class, (packetBuffer) -> {return new ServerboundClientMotionPacket(packetBuffer);});

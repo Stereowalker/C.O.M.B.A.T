@@ -3,8 +3,6 @@ package com.stereowalker.rankup.client.gui.screens.skill;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.compress.utils.Lists;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.rankup.network.protocol.game.ServerboundActivateSkillPacket;
@@ -21,14 +19,13 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -68,8 +65,8 @@ public class SkillsRowList extends ContainerObjectSelectionList<SkillsRowList.Ro
 
 	public Button activateSkill(Skill skill) {
 		if (skill.isActiveSkill()) {
-			return new Button(0, 0, 40, 20, new TextComponent("Activate"), (p_214328_1_) -> {
-				new ServerboundActivateSkillPacket(skill);
+			return new Button(0, 0, 60, 20, new TextComponent("Activate"), (p_214328_1_) -> {
+				new ServerboundActivateSkillPacket(skill).send();
 			});
 		} else {
 			Button upgradeButton;
@@ -116,11 +113,11 @@ public class SkillsRowList extends ContainerObjectSelectionList<SkillsRowList.Ro
 		public void render(PoseStack matrixStack, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
 			Player player = SkillsRowList.this.minecraft.player;
 			final int hoverY = index == 0 ? Math.max(top+15, mouseY) : mouseY;
-			final int hoverX = Math.min(left+(width/2)-90, mouseX);
+			final int hoverX = Math.min(left+(width/2), mouseX);
 			this.widgets.get(0).x = left;
 			this.widgets.get(1).x = left+width - 80;
 
-			List<FormattedText> cpmos = this.findOptimalLines(ComponentUtils.mergeStyles(new TranslatableComponent(skill.getTranslationKey()+".desc"), Style.EMPTY.withColor(ChatFormatting.GOLD)), left+width - hoverX);
+			List<FormattedText> cpmos = this.findOptimalLines(ComponentUtils.mergeStyles(new TranslatableComponent(skill.getTranslationKey()+".desc"), Style.EMPTY.withColor(ChatFormatting.GOLD)), Mth.ceil((float)width*0.75f));
 
 			if (skill.isActiveSkill()) 
 				if (PlayerSkills.isSkillActive(player, skill))
@@ -132,12 +129,12 @@ public class SkillsRowList extends ContainerObjectSelectionList<SkillsRowList.Ro
 
 			this.widgets.forEach((widget) -> {
 				widget.y = top + 20 - (widget.getHeight()/2);
-//				System.out.println(widget.getHeight());
-				widget.render(matrixStack, mouseX, mouseY, partialTicks);
-				if (widget.isHoveredOrFocused()) {
-					SkillsRowList.this.screen.renderComponentTooltip(matrixStack, cpmos, hoverX, hoverY, SkillsRowList.this.minecraft.font);
-				}
 			});
+			this.widgets.get(0).render(matrixStack, mouseX, mouseY, partialTicks);
+			this.widgets.get(1).render(matrixStack, mouseX, mouseY, partialTicks);
+			if (this.widgets.get(0).isHoveredOrFocused()) {
+				SkillsRowList.this.screen.renderComponentTooltip(matrixStack, cpmos, hoverX, hoverY, SkillsRowList.this.minecraft.font);
+			}
 			GuiComponent.drawString(matrixStack, SkillsRowList.this.minecraft.font, this.skill.getName(), left + 40, top+16, 0xffffff);
 		}
 

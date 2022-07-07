@@ -19,7 +19,6 @@ public class KeyMappings {
 	public static final KeyMapping RELOAD = new KeyMapping("key.combat.reload", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY);
 	public static final KeyMapping FIRE = new KeyMapping("key.combat.fire", KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, CATEGORY);
 	public static final KeyMapping PLAYER_LEVELS = new KeyMapping("key.combat.player_levels", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_GRAVE_ACCENT, CATEGORY);
-	public static final KeyMapping TOGGLE_LIMITER = new KeyMapping("key.combat.toggle_limiter", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Z, CATEGORY);
 	public static final KeyMapping OPEN_BACK_ITEM = new KeyMapping("key.combat.open_back_item", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, CATEGORY);
 	public static final KeyMapping STORE_ITEM = new KeyMapping("key.combat.store_item", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_M, CATEGORY);
 	public static final KeyMapping PRONE = new ToggleKeyMapping("key.combat.prone", KeyConflictContext.IN_GAME, GLFW.GLFW_KEY_LEFT_ALT, CATEGORY, () -> {

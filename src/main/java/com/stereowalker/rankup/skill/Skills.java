@@ -26,6 +26,7 @@ public class Skills {
 	public static final Skill BURNING_STRIKE = register("burning_strike", new BurningStrikeSkill(new Builder().setPrimaryColor(0xAF75EF).setSecondaryColor(0xBEA88B).setNoLevels()));
 	public static final Skill FREEZING_STRIKE = register("freezing_strike", new FrozenStrikeSkill(new Builder().setPrimaryColor(0xAA73A8).setSecondaryColor(0x08D86C).setNoLevels()));
 	public static final Skill INSIGHT = register("insight", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).setNoLevels()));
+	public static final Skill LIMITER = register("limiter", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).isActiveSkill().setNoLevels()));
 	public static final Skill ARCHERS_ELBOW = register("archers_elbow", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).isJobSkill().setNoLevels()));
 	public static final Skill ARROW_SAVINGS = register("arrow_savings", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).isJobSkill().setNoLevels()));
 	
