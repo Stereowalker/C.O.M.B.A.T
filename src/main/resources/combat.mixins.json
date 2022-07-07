@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.stereowalker.combat.mixins",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "combat.refmap.json",
+  "refmap": "C.O.M.B.A.T-refmap.json",
   "mixins": [
 	"AnimalMixin",
 	"BaseFireBlockMixin",

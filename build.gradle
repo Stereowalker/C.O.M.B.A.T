@@ -23,8 +23,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 mixin {
-    add sourceSets.main, modId+".refmap.json"
-    add sourceSets.main, "Rankup-refmap.json"
+    add sourceSets.main, modFilename+"-refmap.json"
     config "${modId}.mixins.json"
     config "rankup.mixins.json"
 }

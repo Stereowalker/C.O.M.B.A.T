@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.stereowalker.rankup.mixins",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "Rankup-refmap.json",
+  "refmap": "C.O.M.B.A.T-refmap.json",
   "mixins": [
 	"LivingEntityMixin",
 	"AbstractArrowMixin",
