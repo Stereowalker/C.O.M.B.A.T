@@ -1,3 +1,26 @@
+[9.0.5-beta]
+
+- Added a new Burning Fist Skill and made it a required skill to obtain Burning Strike
+
+- Stat limiting is no longer handled by keybinds but by a skill which is unlocked after getting 110 agility or more
+
+- Fix Round Shields rendering incorrectly
+
+- Added tags for other Tiered and Origins to regignize this mods items
+
+- Skills unlocked via Runestone are announced to chat
+
+- Added a job system
+
+- Fix Retaining spell not working
+
+- Fix the retaining enchantment working with vanishing curse and the restoring enchantment working with mending
+
+- Fix soul constructs not consuming mana
+
+- Fix Primeval spells casting with 0 strength
+
+
 [9.0.4-beta]
 - Fix wrong parameter in Accesstransformer
 - Re-added the ruby texture

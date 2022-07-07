@@ -1,8 +1,6 @@
 package com.stereowalker.combat.event;
 
 import com.stereowalker.combat.world.item.ScytheItem;
-import com.stereowalker.rankup.skill.Skills;
-import com.stereowalker.rankup.skill.api.PlayerSkills;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;

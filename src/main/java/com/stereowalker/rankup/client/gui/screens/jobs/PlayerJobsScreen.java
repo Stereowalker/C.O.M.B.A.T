@@ -7,7 +7,6 @@ import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.client.KeyMappings;
 import com.stereowalker.rankup.client.gui.screens.skill.PlayerSkillsScreen;
 import com.stereowalker.rankup.client.gui.screens.stats.PlayerLevelsScreen;
-import com.stereowalker.rankup.world.stat.LevelType;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 import com.stereowalker.rankup.world.stat.StatEvents;
 
