@@ -10,9 +10,9 @@ import com.stereowalker.rankup.AccessoryModifiers;
 import com.stereowalker.rankup.AccessoryStats;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.world.stat.StatProfile;
-import com.stereowalker.unionlib.entity.AccessorySlot;
-import com.stereowalker.unionlib.entity.player.CustomInventoryGetter;
 import com.stereowalker.unionlib.util.ModHelper;
+import com.stereowalker.unionlib.world.entity.AccessorySlot;
+import com.stereowalker.unionlib.world.entity.player.CustomInventoryGetter;
 import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.resources.ResourceKey;

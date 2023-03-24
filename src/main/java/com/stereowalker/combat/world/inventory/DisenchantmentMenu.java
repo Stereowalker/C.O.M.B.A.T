@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.level.block.EnchantmentTableBlock;
 
 public class DisenchantmentMenu extends AbstractContainerMenu {
 	private final Container outputSlot = new ResultContainer();
@@ -119,29 +121,15 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 		});
 	}
 
-	private float getPower(net.minecraft.world.level.Level world, net.minecraft.core.BlockPos pos) {
-		return world.getBlockState(pos).getEnchantPowerBonus(world, pos);
-	}
-
 	@Override
 	public void slotsChanged(Container inventoryIn) {
 		if (inventoryIn == this.inputSlots) {
 			this.worldCallable.execute((p_217002_2_, p_217002_3_) -> {
 				float power = 0;
 
-				for(int k = -1; k <= 1; ++k) {
-					for(int l = -1; l <= 1; ++l) {
-						if ((k != 0 || l != 0) && p_217002_2_.isEmptyBlock(p_217002_3_.offset(l, 0, k)) && p_217002_2_.isEmptyBlock(p_217002_3_.offset(l, 1, k))) {
-							power += getPower(p_217002_2_, p_217002_3_.offset(l * 2, 0, k * 2));
-							power += getPower(p_217002_2_, p_217002_3_.offset(l * 2, 1, k * 2));
-
-							if (l != 0 && k != 0) {
-								power += getPower(p_217002_2_, p_217002_3_.offset(l * 2, 0, k));
-								power += getPower(p_217002_2_, p_217002_3_.offset(l * 2, 1, k));
-								power += getPower(p_217002_2_, p_217002_3_.offset(l, 0, k * 2));
-								power += getPower(p_217002_2_, p_217002_3_.offset(l, 1, k * 2));
-							}
-						}
+				for(BlockPos blockpos : EnchantmentTableBlock.BOOKSHELF_OFFSETS) {
+					if (EnchantmentTableBlock.isValidBookShelf(p_217002_2_, p_217002_3_, blockpos)) {
+						power += p_217002_2_.getBlockState(p_217002_3_.offset(blockpos)).getEnchantPowerBonus(p_217002_2_, p_217002_3_.offset(blockpos));
 					}
 				}
 				this.power = (int) power;
@@ -158,6 +146,7 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 		if (input1.isEnchanted() && input2.getItem() == Items.BOOK) {
 			ListTag enchantList = input1.getEnchantmentTags();
 			ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
+			System.out.println("POWER "+power);
 			int pow = Mth.ceil(this.power/10) == 0 ? 1 : Mth.ceil(this.power/10);
 			for (int i = 0; i < pow; i++) {
 				CompoundTag compoundnbt = enchantList.getCompound(i);

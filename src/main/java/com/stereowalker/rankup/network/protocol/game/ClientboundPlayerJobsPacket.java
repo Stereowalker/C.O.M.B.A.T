@@ -4,10 +4,13 @@ import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.world.job.PlayerJobs;
 import com.stereowalker.unionlib.network.protocol.game.ClientboundUnionPacket;
 
+import io.github.apace100.origins.power.OriginsPowerTypes;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ClientboundPlayerJobsPacket extends ClientboundUnionPacket {
 	private CompoundTag stats;
@@ -32,6 +35,7 @@ public class ClientboundPlayerJobsPacket extends ClientboundUnionPacket {
 	}
 	
 	@Override
+	@OnlyIn(Dist.CLIENT)
 	public boolean handleOnClient(LocalPlayer player) {
 		if (player != null) {
 			PlayerJobs.setRankNBT(stats, player);
