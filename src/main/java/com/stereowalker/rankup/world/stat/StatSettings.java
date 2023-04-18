@@ -13,8 +13,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class StatSettings {
 	private static final Marker STAT_SETTINGS = MarkerManager.getMarker("STAT_SETTINGS");
@@ -27,7 +25,7 @@ public class StatSettings {
 	private final int upgradePointsPerLevel;
 	private final ResourceLocation effortStat;
 	private final double effortValue;
-	private final ImmutableMap<Attribute,Double> attributeMap;
+	private final ImmutableMap<ResourceLocation,Double> attributeMap;
 
 	public StatSettings(JsonObject object, ResourceLocation owner) {
 		boolean enabledIn = false;
@@ -39,7 +37,7 @@ public class StatSettings {
 		ResourceLocation effortStatIn = null;
 		double effortValueIn = 0;
 		
-		ImmutableMap.Builder<Attribute,Double> attributeMapIn = ImmutableMap.builder();
+		ImmutableMap.Builder<ResourceLocation,Double> attributeMapIn = ImmutableMap.builder();
 
 		String NOTHING = "nothing";
 		String ENABLED = "enabled";
@@ -62,7 +60,7 @@ public class StatSettings {
 					for (JsonElement elem : object.get(ATTRIBUTES).getAsJsonArray()) {
 						if (elem.isJsonObject()) {
 							JsonObject object2 = elem.getAsJsonObject();
-							Attribute attribute = null;
+							ResourceLocation attribute = null;
 							double value = 0;
 
 							String ATTRIBUTE = "attribute";
@@ -70,7 +68,7 @@ public class StatSettings {
 							if(object2 != null && object2.entrySet().size() != 0) {
 								if(object2.has(ATTRIBUTE) && object2.get(ATTRIBUTE).isJsonPrimitive()) {
 									workingOn = ATTRIBUTE;
-									attribute = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(object2.get(ATTRIBUTE).getAsString()));
+									attribute = new ResourceLocation(object2.get(ATTRIBUTE).getAsString());
 									workingOn = NOTHING;
 								}
 								if(object2.has(MODIFIER_PER_POINT) && object2.get(MODIFIER_PER_POINT).isJsonPrimitive()) {
@@ -192,7 +190,7 @@ public class StatSettings {
 	/**
 	 * @return the attributeMap
 	 */
-	public ImmutableMap<Attribute,Double> getAttributeMap() {
+	public ImmutableMap<ResourceLocation,Double> getAttributeMap() {
 		return attributeMap;
 	}
 
@@ -230,9 +228,9 @@ public class StatSettings {
 		nbt.putDouble("effortValue", this.effortValue);
 		
 		ListTag list = new ListTag();
-		for (Attribute attribute : this.attributeMap.keySet()) {
+		for (ResourceLocation attribute : this.attributeMap.keySet()) {
 			CompoundTag nbt2 = new CompoundTag();
-			nbt2.putString("attribute", attribute.getRegistryName().toString());
+			nbt2.putString("attribute", attribute.toString());
 			nbt2.putDouble("value", this.attributeMap.get(attribute));
 			list.add(nbt2);
 		}
@@ -252,10 +250,10 @@ public class StatSettings {
 		this.effortStat = new ResourceLocation(nbt.getString("effortStat"));
 		this.effortValue = nbt.getDouble("effortValue");
 		
-		ImmutableMap.Builder<Attribute,Double> attributeMapIn = ImmutableMap.builder();
+		ImmutableMap.Builder<ResourceLocation,Double> attributeMapIn = ImmutableMap.builder();
 		for (Tag nbt3 : nbt.getList("attributeMap", NBTHelper.NbtType.CompoundNBT)) {
 			CompoundTag nbt2 = (CompoundTag)nbt3;
-			attributeMapIn.put(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(nbt2.getString("attribute"))), nbt2.getDouble("value"));
+			attributeMapIn.put(new ResourceLocation(nbt2.getString("attribute")), nbt2.getDouble("value"));
 		}
 		this.attributeMap = attributeMapIn.build();
 	}

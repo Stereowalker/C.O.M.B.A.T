@@ -20,10 +20,10 @@ public class NecronomiconItem extends AbstractSpellBookItem {
 		if(entityIn instanceof Player) {
 			Player player = (Player)entityIn;
 			if (!stack.getTag().contains("Owner")) {
-				stack.getTag().putString("Owner", Player.createPlayerUUID(player.getGameProfile()).toString());
+				stack.getTag().putString("Owner", player.getUUID().toString());
 			}
 			if (stack.getTag().contains("Owner")) {
-				if (!stack.getTag().getString("Owner").contentEquals(Player.createPlayerUUID(player.getGameProfile()).toString())) {
+				if (!stack.getTag().getString("Owner").contentEquals(player.getUUID().toString())) {
 					player.addEffect(new MobEffectInstance(MobEffects.WITHER, 20, 20));
 					player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 40, 1));
 					player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1));
@@ -49,7 +49,7 @@ public class NecronomiconItem extends AbstractSpellBookItem {
 	public static boolean isOwner(ItemStack stack, Player player) {
 		if (!(stack.getTag() == null)) {
 			if (stack.getTag().contains("Owner")) {
-				if (stack.getTag().getString("Owner").contentEquals(Player.createPlayerUUID(player.getGameProfile()).toString())) {
+				if (stack.getTag().getString("Owner").contentEquals(player.getUUID().toString())) {
 					return true;
 				}
 			}

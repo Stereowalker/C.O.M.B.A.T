@@ -100,7 +100,7 @@ dependencies {
 	
 	implementation fg.deobf("curse.maven:biomes-o-plenty-220318:"+bopID)
 	//implementation fg.deobf("com.stereowalker.survive:Survive:"+modMinecraftVersion+"-"+surviveVersion+"")
-	implementation fg.deobf("curse.maven:origins-474438:"+originsID)
+	//implementation fg.deobf("curse.maven:origins-474438:"+originsID)
 
 }
 

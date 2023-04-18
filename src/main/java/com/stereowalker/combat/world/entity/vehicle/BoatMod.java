@@ -106,7 +106,7 @@ public class BoatMod extends Boat {
 	}
 
 	public void setModdedType(BoatMod.Type pBoatType) {
-		this.setType(Boat.Type.OAK);
+		this.setVariant(Boat.Type.OAK);
 		this.entityData.set(MODDED_DATA_ID_TYPE, pBoatType.ordinal());
 	}
 

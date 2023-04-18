@@ -1,11 +1,10 @@
 package com.stereowalker.combat.world.level.block;
 
-import java.util.Random;
-
 import com.stereowalker.combat.world.item.CItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -44,7 +43,7 @@ public class CornBlock extends CropBlock {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
 		if (rand.nextInt(3) != 0) {
 			super.tick(state, worldIn, pos, rand);
 		}

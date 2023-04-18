@@ -17,16 +17,16 @@ public class GunEvents {
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void fireGun(PlayerInteractEvent.RightClickItem event) {
-		if (event.getPlayer().getMainHandItem().getItem() instanceof GunItem && KeyMappings.FIRE.getKey().getValue() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-			event.setCanceled(true);
-		}
+//		if (event.getPlayer().getMainHandItem().getItem() instanceof GunItem && KeyMappings.FIRE.getKey().getValue() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+//			event.setCanceled(true);
+//		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void fireGun(PlayerInteractEvent.LeftClickBlock event) {
-		if (event.getPlayer().getMainHandItem().getItem() instanceof GunItem && KeyMappings.FIRE.getKey().getValue() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-			event.setCanceled(true);
-		}
+//		if (event.getPlayer().getMainHandItem().getItem() instanceof GunItem && KeyMappings.FIRE.getKey().getValue() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+//			event.setCanceled(true);
+//		}
 	}
 }

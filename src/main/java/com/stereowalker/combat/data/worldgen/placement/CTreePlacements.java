@@ -1,28 +1,35 @@
 package com.stereowalker.combat.data.worldgen.placement;
 
-import java.util.List;
-
 import com.stereowalker.combat.data.worldgen.features.CTreeFeatures;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
 public class CTreePlacements {
-	public static final Holder<PlacedFeature> AUSLDINE_CHECKED = register("ausldine_checked", CTreeFeatures.AUSLDINE, PlacementUtils.filteredByBlockSurvival(CBlocks.AUSLDINE_SAPLING));
-	public static final Holder<PlacedFeature> DEAD_OAK_CHECKED = register("dead_oak_checked", CTreeFeatures.DEAD_OAK, PlacementUtils.filteredByBlockSurvival(Blocks.AIR));
-	public static final Holder<PlacedFeature> REZAL_CHECKED = register("rezal_checked", CTreeFeatures.REZAL, PlacementUtils.filteredByBlockSurvival(CBlocks.REZAL_LEAVES));
-	public static final Holder<PlacedFeature> MONORIS_CHECKED = register("monoris_checked", CTreeFeatures.MONORIS, PlacementUtils.filteredByBlockSurvival(CBlocks.MONORIS_SAPLING));
+	   public static final ResourceKey<PlacedFeature> AUSLDINE_CHECKED = PlacementUtils.createKey("combat:ausldine_checked");
+	   public static final ResourceKey<PlacedFeature> DEAD_OAK_CHECKED = PlacementUtils.createKey("combat:dead_oak_checked");
+	   public static final ResourceKey<PlacedFeature> REZAL_CHECKED = PlacementUtils.createKey("combat:rezal_checked");
+	   public static final ResourceKey<PlacedFeature> MONORIS_CHECKED = PlacementUtils.createKey("combat:monoris_checked");
+	   
+	   public static void init() {}
 
-	public static Holder<PlacedFeature> register(String p_206510_, Holder<? extends ConfiguredFeature<?, ?>> p_206511_, List<PlacementModifier> p_206512_) {
-		return PlacementUtils.register("combat"+p_206510_, p_206511_, p_206512_);
-	}
-
-	public static Holder<PlacedFeature> register(String p_206514_, Holder<? extends ConfiguredFeature<?, ?>> p_206515_, PlacementModifier... p_206516_) {
-		return PlacementUtils.register("combat"+p_206514_, p_206515_, p_206516_);
-	}
+	   public static void bootstrap(BootstapContext<PlacedFeature> p_255688_) {
+	      HolderGetter<ConfiguredFeature<?, ?>> holdergetter = p_255688_.lookup(Registries.CONFIGURED_FEATURE);
+	      Holder<ConfiguredFeature<?, ?>> holder = holdergetter.getOrThrow(CTreeFeatures.AUSLDINE);
+	      Holder<ConfiguredFeature<?, ?>> holder1 = holdergetter.getOrThrow(CTreeFeatures.DEAD_OAK);
+	      Holder<ConfiguredFeature<?, ?>> holder2 = holdergetter.getOrThrow(CTreeFeatures.REZAL);
+	      Holder<ConfiguredFeature<?, ?>> holder3 = holdergetter.getOrThrow(CTreeFeatures.MONORIS);
+	      PlacementUtils.register(p_255688_, AUSLDINE_CHECKED, holder, PlacementUtils.filteredByBlockSurvival(CBlocks.AUSLDINE_SAPLING));
+	      PlacementUtils.register(p_255688_, DEAD_OAK_CHECKED, holder1, PlacementUtils.filteredByBlockSurvival(Blocks.AIR));
+	      PlacementUtils.register(p_255688_, REZAL_CHECKED, holder2, PlacementUtils.filteredByBlockSurvival(CBlocks.REZAL_LEAVES));
+	      PlacementUtils.register(p_255688_, MONORIS_CHECKED, holder3, PlacementUtils.filteredByBlockSurvival(CBlocks.MONORIS_SAPLING));
+	   }
 }

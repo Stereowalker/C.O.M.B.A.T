@@ -2,7 +2,7 @@ package com.stereowalker.combat.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.stereowalker.combat.world.level.block.entity.DisenchantmentTableBlockEntity;
 
 import net.minecraft.client.model.BookModel;
@@ -46,8 +46,8 @@ public class DisenchantmentTableRenderer implements BlockEntityRenderer<Disencha
 		}
 
 		float f2 = tileEntityIn.oRot + f1 * partialTicks;
-		matrixStackIn.mulPose(Vector3f.YP.rotation(-f2));
-		matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(80.0F));
+		matrixStackIn.mulPose(Axis.YP.rotation(-f2));
+		matrixStackIn.mulPose(Axis.ZP.rotationDegrees(80.0F));
 		//Flip Book
 		//      matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 		//      matrixStackIn.translate(-0.35D, 0.0D, 0);

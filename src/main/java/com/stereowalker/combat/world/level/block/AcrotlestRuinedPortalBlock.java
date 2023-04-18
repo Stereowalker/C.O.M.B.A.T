@@ -1,22 +1,18 @@
 package com.stereowalker.combat.world.level.block;
 
-import java.util.Random;
-
 import com.stereowalker.combat.core.particles.CParticleTypes;
 import com.stereowalker.combat.world.entity.CEntityType;
 import com.stereowalker.combat.world.level.dimension.DImensionalTeleportManager;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
@@ -33,14 +29,14 @@ public class AcrotlestRuinedPortalBlock extends Block {
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
-		if (worldIn.dimensionType().natural() && worldIn.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING) && random.nextInt(2000) < worldIn.getDifficulty().getId()) {
-			while(worldIn.getBlockState(pos).getBlock() == this) {
-				pos = pos.below();
+	public void randomTick(BlockState state, ServerLevel pLevel, BlockPos pPos, RandomSource random) {
+		if (pLevel.dimensionType().natural() && pLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING) && random.nextInt(2000) < pLevel.getDifficulty().getId()) {
+			while(pLevel.getBlockState(pPos).getBlock() == this) {
+				pPos = pPos.below();
 			}
 			//TODO: Change what spawns from portals
-			if (worldIn.getBlockState(pos).isValidSpawn(worldIn, pos, CEntityType.RED_BIOG)) {
-				Entity entity =  CEntityType.RED_BIOG.spawn(worldIn, (CompoundTag)null, (Component)null, (Player)null, pos.above(), MobSpawnType.STRUCTURE, false, false);
+			if (pLevel.getBlockState(pPos).isValidSpawn(pLevel, pPos, CEntityType.RED_BIOG)) {
+				Entity entity =  CEntityType.RED_BIOG.spawn(pLevel, pPos.above(), MobSpawnType.STRUCTURE);
 				if (entity != null) {
 					entity.setPortalCooldown();
 				}
@@ -61,7 +57,7 @@ public class AcrotlestRuinedPortalBlock extends Block {
 	//TODO: Use custom portal sounds
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		if (rand.nextInt(100) == 0) {
 			worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEvents.PORTAL_AMBIENT, SoundSource.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
 		}

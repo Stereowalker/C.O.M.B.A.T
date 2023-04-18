@@ -8,7 +8,6 @@ import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.world.item.CItems;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -106,7 +105,7 @@ public class ReforgeSpell extends Spell {
 		if (this.getRank() == Rank.APPRENTICE && IRON.test(caster.getOffhandItem().getItem())) message = "No Iron Tool In Offhand";
 		if (this.getRank() == Rank.ADVANCED && DIAMOND.test(caster.getOffhandItem().getItem())) message = "No Diamond Tool In Offhand";
 		if (this.getRank() == Rank.MASTER && NETHERITE.test(caster.getOffhandItem().getItem())) message = "No Netherite Tool In Offhand";
-		return new TranslatableComponent(message);
+		return Component.translatable(message);
 	}
 
 }

@@ -5,6 +5,7 @@ import com.stereowalker.combat.world.entity.CEntityType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,8 +14,8 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -67,7 +68,7 @@ public class Meteor extends Entity {
 	}
 
 	private void explode() {
-		this.level.explode(this, this.getX(), this.getY() + (double)(this.getBbHeight() / 16.0F), this.getZ(), this.getMeteorSize().getExplosion(), true, Explosion.BlockInteraction.DESTROY);
+		this.level.explode(this, this.getX(), this.getY() + (double)(this.getBbHeight() / 16.0F), this.getZ(), this.getMeteorSize().getExplosion(), true, ExplosionInteraction.BLOCK);
 	}
 
 	public void setMeteorSize(Meteor.MeteorSize size) {
@@ -91,7 +92,7 @@ public class Meteor extends Entity {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	

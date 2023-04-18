@@ -23,9 +23,10 @@ import com.stereowalker.combat.world.item.NecronomiconItem;
 import com.stereowalker.combat.world.item.ScrollItem;
 import com.stereowalker.combat.world.spellcraft.SpellStats;
 import com.stereowalker.combat.world.spellcraft.Spells;
+import com.stereowalker.unionlib.util.ScreenHelper;
 
+import net.minecraft.client.GameNarrator;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
@@ -33,11 +34,10 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
@@ -62,7 +62,7 @@ public class SpellBookScreen extends Screen {
 		 * Gets the text from the supplied page number
 		 */
 		public Component iGetPageText(int pageNum) {
-			return new TextComponent("");
+			return Component.literal("");
 		}
 	};
 	public static final ResourceLocation GRIMOIRE_TEXTURES = Combat.getInstance().location("textures/gui/grimoire.png");
@@ -73,7 +73,7 @@ public class SpellBookScreen extends Screen {
 	/** Holds a copy of the page text, split into page width lines */
 	private List<FormattedCharSequence> cachedPageLines = Collections.emptyList();
 	private int cachedPage = -1;
-	private Component field_243344_s = TextComponent.EMPTY;
+	private Component field_243344_s = CommonComponents.EMPTY;
 	private PageButton buttonNextPage;
 	private PageButton buttonPreviousPage;
 	/** Determines if a sound is played when the page is turned */
@@ -90,7 +90,7 @@ public class SpellBookScreen extends Screen {
 	}
 
 	private SpellBookScreen(SpellBookScreen.IBookInfo bookInfoIn, boolean pageTurnSoundsIn, ItemStack book, boolean openedViaKeybind) {
-		super(NarratorChatListener.NO_TITLE);
+		super(GameNarrator.NO_TITLE);
 		this.bookInfo = bookInfoIn;
 		this.pageTurnSounds = pageTurnSoundsIn;
 		this.spellbook = book;
@@ -134,19 +134,19 @@ public class SpellBookScreen extends Screen {
 	}
 
 	protected void addDoneButton() {
-		this.addRenderableWidget(new Button(this.width / 2 - 100, 210, 200, 20, new TranslatableComponent("gui.done"), (button) -> {
+		this.addRenderableWidget(ScreenHelper.buttonBuilder(Component.translatable("gui.done"), (button) -> {
 			this.saveNBTToServer();
 			this.minecraft.setScreen((Screen)null);
-		}));
+		}).bounds(this.width / 2 - 100, 210, 200, 20).build());
 	}
 
 	@SuppressWarnings("resource")
 	protected void saveNBTToServer() {
 		ItemStack mainStack = Minecraft.getInstance().player.getOffhandItem();
 		ItemStack offStack = Minecraft.getInstance().player.getMainHandItem();
-		if(mainStack.getItem() instanceof AbstractMagicCastingItem || (mainStack.getItem() instanceof AbstractSpellBookItem && bookInHands) || mainStack.getItem() instanceof ScrollItem) Combat.getInstance().channel.sendTo(new ServerboundHeldItemStackNBTPacket(mainStack.getTag(), false, Minecraft.getInstance().player.getUUID()), Minecraft.getInstance().player.connection.getConnection(), NetworkDirection.PLAY_TO_SERVER);
+		if(mainStack.getItem() instanceof AbstractMagicCastingItem || (mainStack.getItem() instanceof AbstractSpellBookItem && bookInHands) || mainStack.getItem() instanceof ScrollItem) new ServerboundHeldItemStackNBTPacket(mainStack.getTag(), false, Minecraft.getInstance().player.getUUID()).send();
 		if(offStack.getItem() instanceof AbstractMagicCastingItem || (offStack.getItem() instanceof AbstractSpellBookItem && bookInHands) || offStack.getItem() instanceof ScrollItem) Combat.getInstance().channel.sendTo(new ServerboundHeldItemStackNBTPacket(offStack.getTag(), true, Minecraft.getInstance().player.getUUID()), Minecraft.getInstance().player.connection.getConnection(), NetworkDirection.PLAY_TO_SERVER);
-		if (!bookInHands) Combat.getInstance().channel.sendTo(new ServerboundSpellbookNBTPacket(spellbook.getTag(), Minecraft.getInstance().player.getUUID()), Minecraft.getInstance().player.connection.getConnection(), NetworkDirection.PLAY_TO_SERVER);
+		if (!bookInHands) new ServerboundSpellbookNBTPacket(spellbook.getTag(), Minecraft.getInstance().player.getUUID()).send();;
 	}
 
 	@SuppressWarnings("resource")
@@ -155,11 +155,11 @@ public class SpellBookScreen extends Screen {
 			if (Minecraft.getInstance().player.getItemInHand(hand).getItem() instanceof ScrollItem) {
 				ItemStack scrollStack = Minecraft.getInstance().player.getItemInHand(hand);
 				AbstractSpellBookItem book = (AbstractSpellBookItem)spellbook.getItem();
-				addSpellButton = this.addRenderableWidget(new Button(this.width / 2 - 100, 187, 200, 20, new TranslatableComponent(Combat.getInstance().getModid()+".gui.add_spell"), (button) -> {
+				addSpellButton = this.addRenderableWidget(ScreenHelper.buttonBuilder(Component.translatable(Combat.getInstance().getModid()+".gui.add_spell"), (button) -> {
 					book.setSpellInBook(spellbook, this.currPage, SpellUtil.getSpellFromItem(scrollStack));
 					SpellUtil.addSpellToStack(scrollStack, Spells.NONE);
 					book.openGrimoire(spellbook, this.currPage);
-				}));
+				}).bounds(this.width / 2 - 100, 187, 200, 20).build());
 			}
 		}
 		this.updateButtons();
@@ -266,7 +266,7 @@ public class SpellBookScreen extends Screen {
 		if (this.cachedPage != this.currPage) {
 			FormattedText itextproperties = this.bookInfo.getPageText(this.currPage);
 			this.cachedPageLines = this.font.split(itextproperties, 114);
-			this.field_243344_s = new TranslatableComponent("book.pageIndicator", this.currPage + 1, Math.max(this.getPageCount(), 1));
+			this.field_243344_s = Component.translatable("book.pageIndicator", this.currPage + 1, Math.max(this.getPageCount(), 1));
 		}
 
 		this.cachedPage = this.currPage;
@@ -396,33 +396,33 @@ public class SpellBookScreen extends Screen {
 		static Component spellBookPage(Spell spell) {
 			if (spell.getCastType() == Spell.CastType.PROJECTILE) {
 				return (spell.getName(SpellStats.getSpellKnowledge(Minecraft.getInstance().player, spell))
-						.append(new TranslatableComponent("\nClass: ")).append(spell.getCategory().getColoredDisplayName())
-						.append(new TranslatableComponent("\nRank: ")).append(spell.getRank().getDisplayName()))
-						.append(new TranslatableComponent("\nCost per Shot: "+spell.getCost()))
-						.append(new TranslatableComponent("\nDescription: "+spell.getDescription().getString()));
+						.append(Component.translatable("\nClass: ")).append(spell.getCategory().getColoredDisplayName())
+						.append(Component.translatable("\nRank: ")).append(spell.getRank().getDisplayName()))
+						.append(Component.translatable("\nCost per Shot: "+spell.getCost()))
+						.append(Component.translatable("\nDescription: "+spell.getDescription().getString()));
 			}
 			else if (spell.getCastType() == Spell.CastType.RAY) {
 				return (spell.getName(SpellStats.getSpellKnowledge(Minecraft.getInstance().player, spell))
-						.append(new TranslatableComponent("\nClass: ")).append(spell.getCategory().getColoredDisplayName())
-						.append(new TranslatableComponent("\nRank: ")).append(spell.getRank().getDisplayName()))
-						.append(new TranslatableComponent("\nCost per Second: "+spell.getCost()))
-						.append(new TranslatableComponent("\nDescription: "+spell.getDescription().getString()));
+						.append(Component.translatable("\nClass: ")).append(spell.getCategory().getColoredDisplayName())
+						.append(Component.translatable("\nRank: ")).append(spell.getRank().getDisplayName()))
+						.append(Component.translatable("\nCost per Second: "+spell.getCost()))
+						.append(Component.translatable("\nDescription: "+spell.getDescription().getString()));
 			}
 			else if (spell.getCastType() == Spell.CastType.SURROUND) {
 				return (spell.getName(SpellStats.getSpellKnowledge(Minecraft.getInstance().player, spell))
-						.append(new TranslatableComponent("\nClass: ")).append(spell.getCategory().getColoredDisplayName())
-						.append(new TranslatableComponent("\nRank: ")).append(spell.getRank().getDisplayName()))
-						.append(new TranslatableComponent("\nCost per Second: "+spell.getCost()))
-						.append(new TranslatableComponent("\nCooldown/Active time: "+spell.getCooldown()+" seconds"))
-						.append(new TranslatableComponent("\nDescription: "+spell.getDescription().getString()));
+						.append(Component.translatable("\nClass: ")).append(spell.getCategory().getColoredDisplayName())
+						.append(Component.translatable("\nRank: ")).append(spell.getRank().getDisplayName()))
+						.append(Component.translatable("\nCost per Second: "+spell.getCost()))
+						.append(Component.translatable("\nCooldown/Active time: "+spell.getCooldown()+" seconds"))
+						.append(Component.translatable("\nDescription: "+spell.getDescription().getString()));
 			}
 			else {
 				return (spell.getName(SpellStats.getSpellKnowledge(Minecraft.getInstance().player, spell))
-						.append(new TranslatableComponent("\nClass: ")).append(spell.getCategory().getColoredDisplayName())
-						.append(new TranslatableComponent("\nRank: ")).append(spell.getRank().getDisplayName()))
-						.append(new TranslatableComponent("\nCost: "+spell.getCost()))
-						.append(new TranslatableComponent("\nCooldown: "+spell.getCooldown()+" seconds"))
-						.append(new TranslatableComponent("\nDescription: "+spell.getDescription().getString()));
+						.append(Component.translatable("\nClass: ")).append(spell.getCategory().getColoredDisplayName())
+						.append(Component.translatable("\nRank: ")).append(spell.getRank().getDisplayName()))
+						.append(Component.translatable("\nCost: "+spell.getCost()))
+						.append(Component.translatable("\nCooldown: "+spell.getCooldown()+" seconds"))
+						.append(Component.translatable("\nDescription: "+spell.getDescription().getString()));
 			}
 		}
 	}

@@ -1,16 +1,18 @@
 package com.stereowalker.combat.core.particles;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.stereowalker.combat.Combat;
 
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 
 public class CParticleTypes {
-	public static final List<ParticleType<?>> PARTICLES = new ArrayList<ParticleType<?>>();
+	public static final Map<ResourceLocation,ParticleType<?>> PARTICLES = new HashMap<ResourceLocation,ParticleType<?>>();
 	public static final SimpleParticleType ACROTLEST_PORTAL = register("acrotlest_portal", false);
 	public static final SimpleParticleType PYRANITE_FLAME = register("pyranite_flame", false);
 	public static final SimpleParticleType DRIPPING_OIL = register("dripping_oil", false);
@@ -22,8 +24,7 @@ public class CParticleTypes {
 
 	private static SimpleParticleType register(String key, boolean alwaysShow) {
 		SimpleParticleType particle = new SimpleParticleType(alwaysShow);
-		particle.setRegistryName(Combat.getInstance().location(key));
-		PARTICLES.add(particle);
+		PARTICLES.put(Combat.getInstance().location(key), particle);
 		return particle;
 		//		return (SimpleParticleType)Registry.<ParticleType<? extends IParticleData>>register(Registry.PARTICLE_TYPE, key, );
 	}
@@ -32,10 +33,10 @@ public class CParticleTypes {
 	//		return Registry.register(Registry.PARTICLE_TYPE, key, new ParticleType<>(false, deserializer));
 	//	}
 
-	public static void registerAll(IForgeRegistry<ParticleType<?>> registry) {
-		for(ParticleType<?> particle: PARTICLES) {
-			registry.register(particle);
-			Combat.debug("Particle: \""+particle.getRegistryName().toString()+"\" registered");
+	public static void registerAll(RegisterHelper<ParticleType<?>> registry) {
+		for(Entry<ResourceLocation, ParticleType<?>> particle: PARTICLES.entrySet()) {
+			registry.register(particle.getKey(), particle.getValue());
+			Combat.debug("Particle: \""+particle.getKey().toString()+"\" registered");
 		}
 		Combat.debug("All Particles Registered");
 	}

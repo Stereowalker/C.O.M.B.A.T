@@ -8,7 +8,6 @@ import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -67,7 +66,7 @@ public class AccessoryStats {
 				String typeText = AccessoryStats.getModifierDebuff(itemstack).getType().getName();
 				String name = amountText+" "+typeText;
 				if (name != null) {
-					tooltip.add(1, new TextComponent(name).withStyle(ChatFormatting.RED));
+					tooltip.add(1, Component.literal(name).withStyle(ChatFormatting.RED));
 				}
 			}
 			if (AccessoryStats.getModifier(itemstack) != null) {
@@ -75,7 +74,7 @@ public class AccessoryStats {
 				String typeText = AccessoryStats.getModifier(itemstack).getType().getName();
 				String name = amountText+" "+typeText;
 				if (name != null) {
-					tooltip.add(1, new TextComponent(name).withStyle(ChatFormatting.AQUA));
+					tooltip.add(1, Component.literal(name).withStyle(ChatFormatting.AQUA));
 				}
 			}
 		}

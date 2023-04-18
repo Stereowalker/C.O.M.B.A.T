@@ -3,7 +3,6 @@ package com.stereowalker.combat.event;
 import com.stereowalker.combat.compat.origins.OriginsCompat;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
-import com.stereowalker.combat.world.level.biome.CBiomes;
 import com.stereowalker.combat.world.spellcraft.SpellStats;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -13,6 +12,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.ModList;
 
 public class MagicEvents {
@@ -55,7 +55,7 @@ public class MagicEvents {
 							CombatEntityStats.setMana(player, Mth.floor(player.getAttributeValue(CAttributes.MAX_MANA)));
 						}
 						double multiplier;
-						if (CBiomes.getMagicBiomes().contains(entity.level.getBiome(entity.blockPosition()).value().getRegistryName())) multiplier = 1.0D;
+						if (entity.level.getBiome(entity.blockPosition()).is(Tags.Biomes.IS_MAGICAL)) multiplier = 1.0D;
 						else multiplier = 0.1D;
 						if (!player.getFoodData().needsFood()) multiplier*=5.0D;
 						float mana = (float) (multiplier*player.getAttributeValue(CAttributes.MANA_REGENERATION));

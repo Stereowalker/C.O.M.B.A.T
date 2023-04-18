@@ -8,15 +8,14 @@ import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.skill.Skills;
 
 import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class Skill extends ForgeRegistryEntry<Skill> {
+public class Skill {
 
 	private String translationKey;
 	private Skill superSkill;
@@ -78,23 +77,23 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 	}
 
 	public MutableComponent getName() {
-		return new TranslatableComponent(this.getTranslationKey());
+		return Component.translatable(this.getTranslationKey());
 	}
 
 	public MutableComponent getDescription() {
-		return new TranslatableComponent(this.getTranslationKey()+".desc");
+		return Component.translatable(this.getTranslationKey()+".desc");
 	}
 
 	protected String getDefaultTranslationKey() {
 		if (this.translationKey == null) {
-			this.translationKey = Util.makeDescriptionId("skill", this.getRegistryName());
+			this.translationKey = Util.makeDescriptionId("skill", CombatRegistries.SKILLS.get().getKey(this));
 		}
 
 		return this.translationKey;
 	}
 
 	public ResourceLocation getButtonTexture() {
-		return Combat.getInstance().location("textures/skill/"+this.getRegistryName().getPath()+".png");
+		return Combat.getInstance().location("textures/skill/"+CombatRegistries.SKILLS.get().getKey(this).getPath()+".png");
 	}
 
 	public ResourceLocation getLockedButtonTexture() {
@@ -107,7 +106,7 @@ public class Skill extends ForgeRegistryEntry<Skill> {
 	
 	public List<Skill> getSubSkills(){
 		List<Skill> skills = new ArrayList<Skill>();
-		for (Skill skill : CombatRegistries.SKILLS) {
+		for (Skill skill : CombatRegistries.SKILLS.get()) {
 			if (skill.getSuperSkill().equals(this)) {
 				skills.add(skill);
 			}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "combat:ausldine_checked",
+    "features": [
+      {
+        "chance": 0.5,
+        "feature": "combat:ausldine_checked"
+      },
+      {
+        "chance": 0.5,
+        "feature": "combat:rezal_checked"
+      }
+    ]
+  }
+}

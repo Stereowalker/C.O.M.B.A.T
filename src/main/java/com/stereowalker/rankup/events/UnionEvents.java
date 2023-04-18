@@ -15,55 +15,45 @@ import com.stereowalker.unionlib.world.entity.AccessorySlot;
 import com.stereowalker.unionlib.world.entity.player.CustomInventoryGetter;
 import com.stereowalker.unionlib.world.item.AccessoryItem;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber
 public class UnionEvents {
 	static List<AccessorySlot> useable_ids = Lists.newArrayList(AccessorySlot.FINGER_1, AccessorySlot.FINGER_2, AccessorySlot.NECK_1);
 
-	@SubscribeEvent
-	public static void addEffectsToAccessories(LivingUpdateEvent event) {
+	public static void addEffectsToAccessories(LivingEntity living) {
 		if (!ModHelper.isCuriosLoaded() && Combat.RPG_CONFIG.enableLevelingSystem) {
-			if (event.getEntityLiving() instanceof Player) {
-				addEffectsToAccessory((Player) event.getEntityLiving());
+			if (living instanceof Player) {
+				addEffectsToAccessory((Player) living);
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void addEffectsToChestItems(PlayerContainerEvent.Open event) {
+	public static void addEffectsToChestItems(Player player, AbstractContainerMenu menu) {
 		if (Combat.RPG_CONFIG.enableLevelingSystem) {
-			if (event.getEntityLiving() instanceof Player) {
-				AccessoryStats.addEffectsToChestItems(event.getContainer());
-			}
+			AccessoryStats.addEffectsToChestItems(menu);
 		}
 	}
 
-	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public static void modifierTooltip(ItemTooltipEvent event) {
+	public static void modifierTooltip(ItemStack itemStack, Player player, List<Component> list, TooltipFlag flags) {
 		if (Combat.RPG_CONFIG.enableLevelingSystem) {
-			if (event.getEntityLiving() instanceof Player) {
-				AccessoryStats.modifierTooltip(event.getToolTip(), event.getItemStack());
-			}
+			AccessoryStats.modifierTooltip(list, itemStack);
 		}
 	}
 
-	@SubscribeEvent
-	public static void addModifiers(LivingUpdateEvent event) {
+	public static void addModifiers(LivingEntity living) {
 		if (!ModHelper.isCuriosLoaded() && Combat.RPG_CONFIG.enableLevelingSystem) {
-			if (event.getEntityLiving() instanceof Player) {
-				addModifiers((Player) event.getEntityLiving());
+			if (living instanceof Player) {
+				addModifiersP((Player)living);
 			}
 		}
 	}
@@ -89,7 +79,7 @@ public class UnionEvents {
 		}
 	}
 
-	public static void addModifiers(Player player) {
+	public static void addModifiersP(Player player) {
 		if (player != null) {
 			for (AccessoryModifiers modifier : AccessoryModifiers.values()) {
 				if (modifier != AccessoryModifiers.NONE && modifier != null) {

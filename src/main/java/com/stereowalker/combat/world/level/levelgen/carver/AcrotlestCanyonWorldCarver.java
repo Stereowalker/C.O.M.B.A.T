@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.carver.CarvingContext;
 public class AcrotlestCanyonWorldCarver extends CanyonWorldCarver {
 	public AcrotlestCanyonWorldCarver(Codec<CanyonCarverConfiguration> p_64711_) {
 		super(p_64711_);
-		this.replaceableBlocks = ImmutableSet.of(CBlocks.PURIFIED_DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, CBlocks.PURIFIED_GRASS_BLOCK, CBlocks.MEZEPINE, CBlocks.SLYAPHY, Blocks.GREEN_TERRACOTTA);
+//		this.replaceableBlocks = ImmutableSet.of(CBlocks.PURIFIED_DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, CBlocks.PURIFIED_GRASS_BLOCK, CBlocks.MEZEPINE, CBlocks.SLYAPHY, Blocks.GREEN_TERRACOTTA);
 		this.liquids = ImmutableSet.of(CFluids.BIABLE);
 	}
 

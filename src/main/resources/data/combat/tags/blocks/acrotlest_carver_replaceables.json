@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "combat:purified_dirt",
+    "minecraft:coarse_dirt",
+    "minecraft:podzol",
+    "combat:mezepine",
+    "combat:slyaphy",
+    "minecraft:green_terracotta"
+  ]
+}

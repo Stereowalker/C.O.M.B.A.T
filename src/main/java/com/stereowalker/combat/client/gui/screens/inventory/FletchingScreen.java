@@ -109,12 +109,6 @@ public class FletchingScreen extends AbstractContainerScreen<FletchingMenu> impl
 	}
 
 	@Override
-	public void onClose() {
-		this.recipeBookComponent.removed();
-		super.onClose();
-	}
-
-	@Override
 	public RecipeBookComponent getRecipeBookComponent() {
 		return  this.recipeBookComponent ;
 	}

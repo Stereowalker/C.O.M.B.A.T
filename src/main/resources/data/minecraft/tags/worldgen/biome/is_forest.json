@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "combat:dead_forest",
+    "combat:magic_forest",
+    "combat:acrotlest_forest"
+  ]
+}

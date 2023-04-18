@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -81,11 +83,13 @@ public abstract class AbstractElectricFurnaceBlockEntity extends AbstractEnergyC
 		}
 	};
 	private final Object2IntOpenHashMap<ResourceLocation> recipes = new Object2IntOpenHashMap<>();
+	   private final RecipeManager.CachedCheck<Container, ? extends AbstractCookingRecipe> quickCheck;
 	//	private final Map<ResourceLocation, Integer> recipes = Maps.newHashMap();
 	protected final RecipeType<? extends AbstractCookingRecipe> recipeType;
 
 	protected AbstractElectricFurnaceBlockEntity(BlockEntityType<?> tileTypeIn, BlockPos pWorldPosition, BlockState pBlockState, RecipeType<? extends AbstractCookingRecipe> recipeTypeIn) {
 		super(tileTypeIn, pWorldPosition, pBlockState, 300);
+	      this.quickCheck = RecipeManager.createCheck((RecipeType)recipeTypeIn);
 		this.recipeType = recipeTypeIn;
 	}
 
@@ -122,25 +126,31 @@ public abstract class AbstractElectricFurnaceBlockEntity extends AbstractEnergyC
 		compound.put("RecipesUsed", compoundnbt);
 	}
 
-	@SuppressWarnings({ "unchecked", "resource" })
+	@SuppressWarnings("resource")
 	public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, AbstractElectricFurnaceBlockEntity pBlockEntity) {
 		boolean flag = pBlockEntity.isBurning();
 		boolean flag1 = false;
 
 		if (!pBlockEntity.getLevel().isClientSide) {
 			ItemStack itemstack = pBlockEntity.items.get(1);
-			if (pBlockEntity.isBurning() || !itemstack.isEmpty() && !pBlockEntity.items.get(0).isEmpty()) {
-				Recipe<?> irecipe = pBlockEntity.getLevel().getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>)pBlockEntity.recipeType, pBlockEntity, pBlockEntity.getLevel()).orElse(null);
+			boolean flag2 = !pBlockEntity.items.get(0).isEmpty();
+			if (pBlockEntity.isBurning() || !itemstack.isEmpty() && flag2) {
+				Recipe<?> irecipe;
+		         if (flag2) {
+		        	 irecipe = pBlockEntity.quickCheck.getRecipeFor(pBlockEntity, pLevel).orElse(null);
+		         } else {
+		        	 irecipe = null;
+		         }
 				if (!pBlockEntity.isBurning() && pBlockEntity.canSmelt(irecipe)) {
 					if (pBlockEntity.isBurning()) {
 						flag1 = true;
-						if (itemstack.hasContainerItem())
-							pBlockEntity.items.set(1, itemstack.getContainerItem());
+						if (itemstack.hasCraftingRemainingItem())
+							pBlockEntity.items.set(1, itemstack.getCraftingRemainingItem());
 						else
 							if (!itemstack.isEmpty()) {
 								itemstack.shrink(1);
 								if (itemstack.isEmpty()) {
-									pBlockEntity.items.set(1, itemstack.getContainerItem());
+									pBlockEntity.items.set(1, itemstack.getCraftingRemainingItem());
 								}
 							}
 					}
@@ -152,7 +162,7 @@ public abstract class AbstractElectricFurnaceBlockEntity extends AbstractEnergyC
 					pBlockEntity.energy--;
 					if (pBlockEntity.cookTime == pBlockEntity.cookTimeTotal) {
 						pBlockEntity.cookTime = 0;
-						pBlockEntity.cookTimeTotal = AbstractFurnaceBlockEntity.getTotalCookTime(pLevel, pBlockEntity.recipeType, pBlockEntity);
+						pBlockEntity.cookTimeTotal = getTotalCookTime(pLevel, pBlockEntity);
 						pBlockEntity.burn(irecipe);
 						flag1 = true;
 					}
@@ -243,6 +253,10 @@ public abstract class AbstractElectricFurnaceBlockEntity extends AbstractEnergyC
 		return true;
 	}
 
+	   private static int getTotalCookTime(Level pLevel, AbstractElectricFurnaceBlockEntity pBlockEntity) {
+	      return pBlockEntity.quickCheck.getRecipeFor(pBlockEntity, pLevel).map(AbstractCookingRecipe::getCookingTime).orElse(200);
+	   }
+
 	@Override
 	public int getContainerSize() {
 		return this.items.size();
@@ -284,7 +298,7 @@ public abstract class AbstractElectricFurnaceBlockEntity extends AbstractEnergyC
 		}
 
 		if (index == 0 && !flag) {
-			this.cookTimeTotal = AbstractFurnaceBlockEntity.getTotalCookTime(level, recipeType, this);
+			this.cookTimeTotal = getTotalCookTime(level, this);
 			this.cookTime = 0;
 			this.setChanged();
 		}

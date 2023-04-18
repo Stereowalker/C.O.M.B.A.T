@@ -6,7 +6,6 @@ import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.UseOnContext;
@@ -24,7 +23,7 @@ public class IgniteSpell extends AbstractBlockSpell {
 
 	@Override
 	public Component getFailedMessage(LivingEntity caster) {
-		return new TranslatableComponent("Unable to Set fire to block");
+		return Component.translatable("Unable to Set fire to block");
 	}
 
 	@Override

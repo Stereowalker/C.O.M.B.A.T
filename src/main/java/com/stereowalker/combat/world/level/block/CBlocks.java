@@ -1,12 +1,12 @@
 package com.stereowalker.combat.world.level.block;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.ToIntFunction;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.core.particles.CParticleTypes;
-import com.stereowalker.combat.world.item.CCreativeModeTab;
 import com.stereowalker.combat.world.level.block.grower.AusldineTreeGrower;
 import com.stereowalker.combat.world.level.block.grower.MonorisTreeGrower;
 import com.stereowalker.combat.world.level.block.state.properties.CWoodType;
@@ -15,12 +15,14 @@ import com.stereowalker.combat.world.level.material.CMaterial;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
@@ -28,7 +30,6 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LanternBlock;
-import net.minecraft.world.level.block.OreBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SandBlock;
@@ -38,18 +39,16 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
-import net.minecraft.world.level.block.WoodButtonBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 
 public class CBlocks {
-	private static final List<Block> BLOCKS = new ArrayList<Block>();
-	public static final List<CreativeModeTab> CREATIVE_MODE_TABS = new ArrayList<CreativeModeTab>();
-	public static final List<Block> BLOCKITEMS = new ArrayList<Block>();
+	public static final Map<ResourceLocation,Block> BLOCKS = new HashMap<ResourceLocation,Block>();
 	//-Fluids-\\
 	public static final Block OIL = register("oil", new LiquidCBlock(() ->(FlowingFluid) CFluids.OIL, Block.Properties.of(CMaterial.OIL).noCollission().strength(100.0F).lootFrom(() -> Blocks.AIR)));
 	public static final Block BIABLE = register("biable", new LiquidCBlock(() ->(FlowingFluid) CFluids.BIABLE, Block.Properties.of(CMaterial.BIABLE).noCollission().strength(100.0F).lootFrom(() -> Blocks.AIR)));
@@ -58,18 +57,18 @@ public class CBlocks {
 	public static final Block SLYAPHY = register("slyaphy", new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(2.0F, 6.0F)));
 	public static final Block COBBLED_SLYAPHY = register("cobbled_slyaphy", new Block(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(2.0F, 6.0F)));
 	//-Metals-\\
-	public static final Block PASQUEM_ORE = register("pasquem_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-	public static final Block TRIDOX_ORE = register("tridox_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), UniformInt.of(5, 10)));
-	public static final Block RUBY_ORE = register("ruby_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), UniformInt.of(3, 7)));
-	public static final Block PELGAN_ORE = register("pelgan_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-	public static final Block SLYAPHY_PELGAN_ORE = register("slyaphy_pelgan_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-	public static final Block LOZYNE_ORE = register("lozyne_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-	public static final Block SLYAPHY_LOZYNE_ORE = register("slyaphy_lozyne_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block PASQUEM_ORE = register("pasquem_ore", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block TRIDOX_ORE = register("tridox_ore", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), UniformInt.of(5, 10)));
+	public static final Block RUBY_ORE = register("ruby_ore", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), UniformInt.of(3, 7)));
+	public static final Block PELGAN_ORE = register("pelgan_ore", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block SLYAPHY_PELGAN_ORE = register("slyaphy_pelgan_ore", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block LOZYNE_ORE = register("lozyne_ore", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block SLYAPHY_LOZYNE_ORE = register("slyaphy_lozyne_ore", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
 	public static final Block PYRANITE_ORE = register("pyranite_ore", new PyraniteOreBlock(Block.Properties.of(Material.STONE).randomTicks().lightLevel((p_235418_0_) -> {
 		return 2;
 	}).strength(3.0F, 3.0F)));
-	public static final Block SERABLE_ORE = register("serable_ore", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
-	public static final Block CASSITERITE = register("cassiterite", new OreBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block SERABLE_ORE = register("serable_ore", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+	public static final Block CASSITERITE = register("cassiterite", new DropExperienceBlock(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
 	public static final Block BRONZE_BLOCK = register("bronze_block", new Block(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(2.0f, 3.0f).sound(SoundType.METAL)));
 	public static final Block PASQUEM_BLOCK = register("pasquem_block", new Block(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(2.0f, 3.0f).sound(SoundType.METAL)));
 	public static final Block TRIDOX_BLOCK = register("tridox_block", new Block(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(2.0f, 3.0f).sound(SoundType.METAL)));
@@ -80,71 +79,71 @@ public class CBlocks {
 	public static final Block SERABLE_BLOCK = register("serable_block", new Block(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(2.0f, 3.0f).sound(SoundType.METAL)));
 	public static final Block ETHERION_BLOCK = register("etherion_block", new Block(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(2.0f, 3.0f).sound(SoundType.METAL)));
 	public static final Block COPPER_BARS = register("copper_bars", new IronBarsBlock(Block.Properties.of(Material.METAL, MaterialColor.NONE).strength(5.0F, 6.0F).sound(SoundType.METAL).noOcclusion()));
-	public static final Block COPPER_DOOR = register("copper_door", new DoorBlock(Block.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0F).sound(SoundType.METAL).noOcclusion()));
-	public static final Block COPPER_TRAPDOOR = register("copper_trapdoor", new TrapDoorBlock(Block.Properties.of(Material.METAL).strength(5.0F).sound(SoundType.METAL).noOcclusion()));
+	public static final Block COPPER_DOOR = register("copper_door", new DoorBlock(Block.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0F).sound(SoundType.METAL).noOcclusion(), SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN));
+	public static final Block COPPER_TRAPDOOR = register("copper_trapdoor", new TrapDoorBlock(Block.Properties.of(Material.METAL).strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(Blocks::never), SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN));
 	//-Wood-\\
 	//Ausldine -> Acacia
 	public static final Block AUSLDINE_BEAM = register("ausldine_beam", new BeamBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1.0F, 2.0F)));
-	public static final Block AUSLDINE_BUTTON = register("ausldine_button", new WoodButtonBlock(Block.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final Block AUSLDINE_DOOR = register("ausldine_door", CreativeModeTab.TAB_REDSTONE, new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final Block AUSLDINE_FENCE_GATE = register("ausldine_fence_gate", CreativeModeTab.TAB_REDSTONE, new FenceGateBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block AUSLDINE_FENCE = register("ausldine_fence", CCreativeModeTab.COMBAT_TAB_MISC, new FenceBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block AUSLDINE_LEAVES = register("ausldine_leaves", CCreativeModeTab.COMBAT_TAB_MISC,  Blocks.leaves(SoundType.GRASS));
-	public static final Block AUSLDINE_LOG = register("ausldine_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.TERRACOTTA_CYAN, MaterialColor.TERRACOTTA_CYAN));
-	public static final Block AUSLDINE_PLANKS = register("ausldine_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block AUSLDINE_BUTTON = register("ausldine_button", Blocks.woodenButton());
+	public static final Block AUSLDINE_DOOR = register("ausldine_door", new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(3.0F).sound(SoundType.WOOD).noOcclusion(), SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN));
+	public static final Block AUSLDINE_FENCE_GATE = register("ausldine_fence_gate", new FenceGateBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD), SoundEvents.FENCE_GATE_CLOSE, SoundEvents.FENCE_GATE_OPEN));
+	public static final Block AUSLDINE_FENCE = register("ausldine_fence", new FenceBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block AUSLDINE_LEAVES = register("ausldine_leaves",  Blocks.leaves(SoundType.GRASS));
+	public static final Block AUSLDINE_LOG = register("ausldine_log", createLogBlock(MaterialColor.TERRACOTTA_CYAN, MaterialColor.TERRACOTTA_CYAN));
+	public static final Block AUSLDINE_PLANKS = register("ausldine_planks", new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block AUSLDINE_PODIUM = register("ausldine_podium", new PodiumBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final Block AUSLDINE_PRESSURE_PLATE = register("ausldine_pressure_plate", CreativeModeTab.TAB_REDSTONE, new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final Block AUSLDINE_SAPLING = register("ausldine_sapling", CCreativeModeTab.COMBAT_TAB_MISC, new MagicSaplingBlock(new AusldineTreeGrower(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
+	public static final Block AUSLDINE_PRESSURE_PLATE = register("ausldine_pressure_plate", new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).noCollission().strength(0.5F).sound(SoundType.WOOD), SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON));
+	public static final Block AUSLDINE_SAPLING = register("ausldine_sapling", new MagicSaplingBlock(new AusldineTreeGrower(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
 	public static final Block AUSLDINE_SIGN = register("ausldine_sign", new CStandingSignBlock(Block.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD), CWoodType.AUSLDINE));
-	public static final Block AUSLDINE_SLAB = register("ausldine_slab", CCreativeModeTab.BUILDING_BLOCKS, new SlabBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block AUSLDINE_STAIRS = register("ausldine_stairs", CCreativeModeTab.BUILDING_BLOCKS, new StairBlock(() -> CBlocks.AUSLDINE_PLANKS.defaultBlockState(), Block.Properties.copy(CBlocks.AUSLDINE_PLANKS)));
-	public static final Block AUSLDINE_TRAPDOOR = register("ausldine_trapdoor", CCreativeModeTab.COMBAT_TAB_MISC, new TrapDoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
+	public static final Block AUSLDINE_SLAB = register("ausldine_slab", new SlabBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block AUSLDINE_STAIRS = register("ausldine_stairs", new StairBlock(() -> CBlocks.AUSLDINE_PLANKS.defaultBlockState(), Block.Properties.copy(CBlocks.AUSLDINE_PLANKS)));
+	public static final Block AUSLDINE_TRAPDOOR = register("ausldine_trapdoor", new TrapDoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn(Blocks::never), SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN));
 	public static final Block AUSLDINE_WALL_SIGN = register("ausldine_wall_sign", new CWallSignBlock(Block.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> AUSLDINE_SIGN), CWoodType.AUSLDINE));
-	public static final Block AUSLDINE_WOOD = register("ausldine_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F).sound(SoundType.WOOD)));
-	public static final Block STRIPPED_AUSLDINE_LOG = register("stripped_ausldine_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.TERRACOTTA_CYAN, MaterialColor.TERRACOTTA_CYAN));
-	public static final Block STRIPPED_AUSLDINE_WOOD = register("stripped_ausldine_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F).sound(SoundType.WOOD)));
-	public static final Block POTTED_AUSLDINE_SAPLING = register("potted_ausldine_sapling", new FlowerPotBlock(Blocks.FLOWER_POT == null ? null : () -> (FlowerPotBlock) Blocks.FLOWER_POT.delegate.get(), () -> CBlocks.AUSLDINE_SAPLING.delegate.get(), Block.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
+	public static final Block AUSLDINE_WOOD = register("ausldine_wood", new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F).sound(SoundType.WOOD)));
+	public static final Block STRIPPED_AUSLDINE_LOG = register("stripped_ausldine_log", createLogBlock(MaterialColor.TERRACOTTA_CYAN, MaterialColor.TERRACOTTA_CYAN));
+	public static final Block STRIPPED_AUSLDINE_WOOD = register("stripped_ausldine_wood", new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F).sound(SoundType.WOOD)));
+	public static final Block POTTED_AUSLDINE_SAPLING = register("potted_ausldine_sapling", new FlowerPotBlock(Blocks.FLOWER_POT == null ? null : () -> (FlowerPotBlock) ForgeRegistries.BLOCKS.getDelegateOrThrow(Blocks.FLOWER_POT).get(), () -> ForgeRegistries.BLOCKS.getDelegateOrThrow(CBlocks.AUSLDINE_SAPLING).get(), Block.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
 	//Dead Oak -> Oak
 	public static final Block DEAD_OAK_BEAM = register("dead_oak_beam", new BeamBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1.0F, 2.0F)));
-	public static final Block DEAD_OAK_BUTTON = register("dead_oak_button", CreativeModeTab.TAB_REDSTONE, new WoodButtonBlock(Block.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final Block DEAD_OAK_DOOR = register("dead_oak_door", CreativeModeTab.TAB_REDSTONE, new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final Block DEAD_OAK_FENCE_GATE = register("dead_oak_fence_gate", CreativeModeTab.TAB_REDSTONE, new FenceGateBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block DEAD_OAK_FENCE = register("dead_oak_fence", CCreativeModeTab.COMBAT_TAB_MISC, new FenceBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block DEAD_OAK_LOG = register("dead_oak_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BLACK));
-	public static final Block DEAD_OAK_PLANKS = register("dead_oak_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block DEAD_OAK_BUTTON = register("dead_oak_button", Blocks.woodenButton());
+	public static final Block DEAD_OAK_DOOR = register("dead_oak_door", new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(3.0F).sound(SoundType.WOOD).noOcclusion(), SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN));
+	public static final Block DEAD_OAK_FENCE_GATE = register("dead_oak_fence_gate", new FenceGateBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F, 3.0F).sound(SoundType.WOOD), SoundEvents.FENCE_GATE_CLOSE, SoundEvents.FENCE_GATE_OPEN));
+	public static final Block DEAD_OAK_FENCE = register("dead_oak_fence", new FenceBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block DEAD_OAK_LOG = register("dead_oak_log", createLogBlock(MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BLACK));
+	public static final Block DEAD_OAK_PLANKS = register("dead_oak_planks", new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block DEAD_OAK_PODIUM = register("dead_oak_podium", new PodiumBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F, 3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final Block DEAD_OAK_PRESSURE_PLATE = register("dead_oak_pressure_plate", CreativeModeTab.TAB_REDSTONE, new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).noCollission().strength(0.5F).sound(SoundType.WOOD)));
+	public static final Block DEAD_OAK_PRESSURE_PLATE = register("dead_oak_pressure_plate", new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).noCollission().strength(0.5F).sound(SoundType.WOOD), SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON));
 	public static final Block DEAD_OAK_SIGN = register("dead_oak_sign", new CStandingSignBlock(Block.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD), CWoodType.DEAD_OAK));
-	public static final Block DEAD_OAK_SLAB = register("dead_oak_slab", CCreativeModeTab.BUILDING_BLOCKS, new SlabBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block DEAD_OAK_STAIRS = register("dead_oak_stairs", CCreativeModeTab.BUILDING_BLOCKS, new StairBlock(() -> CBlocks.DEAD_OAK_PLANKS.defaultBlockState(), Block.Properties.copy(CBlocks.DEAD_OAK_PLANKS)));
-	public static final Block DEAD_OAK_TRAPDOOR = register("dead_oak_trapdoor", CCreativeModeTab.COMBAT_TAB_MISC, new TrapDoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
+	public static final Block DEAD_OAK_SLAB = register("dead_oak_slab", new SlabBlock(Block.Properties.of(Material.WOOD, MaterialColor.TERRACOTTA_CYAN).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block DEAD_OAK_STAIRS = register("dead_oak_stairs", new StairBlock(() -> CBlocks.DEAD_OAK_PLANKS.defaultBlockState(), Block.Properties.copy(CBlocks.DEAD_OAK_PLANKS)));
+	public static final Block DEAD_OAK_TRAPDOOR = register("dead_oak_trapdoor", new TrapDoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn(Blocks::never), SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN));
 	public static final Block DEAD_OAK_WALL_SIGN = register("dead_oak_wall_sign", new CWallSignBlock(Block.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> DEAD_OAK_SIGN), CWoodType.DEAD_OAK));
-	public static final Block DEAD_OAK_WOOD = register("dead_oak_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F).sound(SoundType.WOOD)));
-	public static final Block STRIPPED_DEAD_OAK_LOG = register("stripped_dead_oak_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BLACK));
-	public static final Block STRIPPED_DEAD_OAK_WOOD = register("stripped_dead_oak_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F).sound(SoundType.WOOD)));
+	public static final Block DEAD_OAK_WOOD = register("dead_oak_wood", new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F).sound(SoundType.WOOD)));
+	public static final Block STRIPPED_DEAD_OAK_LOG = register("stripped_dead_oak_log", createLogBlock(MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BLACK));
+	public static final Block STRIPPED_DEAD_OAK_WOOD = register("stripped_dead_oak_wood", new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_BLACK).strength(2.0F).sound(SoundType.WOOD)));
 	//Monoris -> Oak
 	public static final Block MONORIS_BEAM = register("monoris_beam", new BeamBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1.0F, 2.0F)));
-	public static final Block MONORIS_BUTTON = register("monoris_button", CreativeModeTab.TAB_REDSTONE, new WoodButtonBlock(Block.Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final Block MONORIS_DOOR = register("monoris_door", CreativeModeTab.TAB_REDSTONE, new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final Block MONORIS_FENCE_GATE = register("monoris_fence_gate", CreativeModeTab.TAB_REDSTONE, new FenceGateBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block MONORIS_FENCE = register("monoris_fence", CCreativeModeTab.COMBAT_TAB_MISC, new FenceBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block MONORIS_LEAVES = register("monoris_leaves", CCreativeModeTab.COMBAT_TAB_MISC, Blocks.leaves(SoundType.GRASS));
-	public static final Block MONORIS_LOG = register("monoris_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.SNOW, MaterialColor.SNOW));
-	public static final Block MONORIS_PLANKS = register("monoris_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block MONORIS_BUTTON = register("monoris_button", Blocks.woodenButton());
+	public static final Block MONORIS_DOOR = register("monoris_door", new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(3.0F).sound(SoundType.WOOD).noOcclusion(), SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN));
+	public static final Block MONORIS_FENCE_GATE = register("monoris_fence_gate", new FenceGateBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD), SoundEvents.FENCE_GATE_CLOSE, SoundEvents.FENCE_GATE_OPEN));
+	public static final Block MONORIS_FENCE = register("monoris_fence", new FenceBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block MONORIS_LEAVES = register("monoris_leaves", Blocks.leaves(SoundType.GRASS));
+	public static final Block MONORIS_LOG = register("monoris_log", createLogBlock(MaterialColor.SNOW, MaterialColor.SNOW));
+	public static final Block MONORIS_PLANKS = register("monoris_planks", new Block(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final Block MONORIS_PODIUM = register("monoris_podium", new PodiumBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final Block MONORIS_SAPLING = register("monoris_sapling", CCreativeModeTab.COMBAT_TAB_MISC, new AcrotlestSaplingBlock(new MonorisTreeGrower(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
-	public static final Block MONORIS_SLAB = register("monoris_slab", CCreativeModeTab.BUILDING_BLOCKS, new SlabBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block MONORIS_STAIRS = register("monoris_stairs", CCreativeModeTab.BUILDING_BLOCKS, new StairBlock(() -> CBlocks.MONORIS_PLANKS.defaultBlockState(), Block.Properties.copy(CBlocks.MONORIS_PLANKS)));
-	public static final Block MONORIS_WOOD = register("monoris_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F).sound(SoundType.WOOD)));
-	public static final Block STRIPPED_MONORIS_LOG = register("stripped_monoris_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.SNOW, MaterialColor.SNOW));
-	public static final Block STRIPPED_MONORIS_WOOD = register("stripped_monoris_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F).sound(SoundType.WOOD)));
-	public static final Block POTTED_MONORIS_SAPLING = register("potted_monoris_sapling", new FlowerPotBlock(Blocks.FLOWER_POT == null ? null : () -> (FlowerPotBlock) Blocks.FLOWER_POT.delegate.get(), () -> CBlocks.MONORIS_SAPLING.delegate.get(), Block.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
+	public static final Block MONORIS_SAPLING = register("monoris_sapling", new AcrotlestSaplingBlock(new MonorisTreeGrower(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
+	public static final Block MONORIS_SLAB = register("monoris_slab", new SlabBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block MONORIS_STAIRS = register("monoris_stairs", new StairBlock(() -> CBlocks.MONORIS_PLANKS.defaultBlockState(), Block.Properties.copy(CBlocks.MONORIS_PLANKS)));
+	public static final Block MONORIS_WOOD = register("monoris_wood", new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F).sound(SoundType.WOOD)));
+	public static final Block STRIPPED_MONORIS_LOG = register("stripped_monoris_log", createLogBlock(MaterialColor.SNOW, MaterialColor.SNOW));
+	public static final Block STRIPPED_MONORIS_WOOD = register("stripped_monoris_wood", new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.SNOW).strength(2.0F).sound(SoundType.WOOD)));
+	public static final Block POTTED_MONORIS_SAPLING = register("potted_monoris_sapling", new FlowerPotBlock(Blocks.FLOWER_POT == null ? null : () -> (FlowerPotBlock) ForgeRegistries.BLOCKS.getDelegateOrThrow(Blocks.FLOWER_POT).get(), () -> ForgeRegistries.BLOCKS.getDelegateOrThrow(CBlocks.MONORIS_SAPLING).get(), Block.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
 	//Rezal -> Jungle
-	public static final Block REZAL_LEAVES = register("rezal_leaves", CCreativeModeTab.COMBAT_TAB_MISC, Blocks.leaves(SoundType.GRASS));
-	public static final Block REZAL_LOG = register("rezal_log", CCreativeModeTab.BUILDING_BLOCKS, createLogBlock(MaterialColor.COLOR_RED, MaterialColor.COLOR_GREEN));
-	public static final Block REZAL_PLANKS = register("rezal_planks", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final Block REZAL_WOOD = register("rezal_wood", CCreativeModeTab.BUILDING_BLOCKS, new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN).strength(2.0F).sound(SoundType.WOOD)));
-	public static final Block REZAL_SAPLING = register("rezal_sapling", CCreativeModeTab.COMBAT_TAB_MISC, new MagicSaplingBlock(new MonorisTreeGrower(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
+	public static final Block REZAL_LEAVES = register("rezal_leaves", Blocks.leaves(SoundType.GRASS));
+	public static final Block REZAL_LOG = register("rezal_log", createLogBlock(MaterialColor.COLOR_RED, MaterialColor.COLOR_GREEN));
+	public static final Block REZAL_PLANKS = register("rezal_planks", new Block(Block.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+	public static final Block REZAL_WOOD = register("rezal_wood", new RotatedPillarBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN).strength(2.0F).sound(SoundType.WOOD)));
+	public static final Block REZAL_SAPLING = register("rezal_sapling", new MagicSaplingBlock(new MonorisTreeGrower(), Block.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)));
 	
 	//Minecraft Wood
 	//Oak
@@ -218,58 +217,58 @@ public class CBlocks {
 	}).sound(SoundType.WOOD), ParticleTypes.FLAME));
 
 	//-Miscellaneous-\\
-	public static final Block WHITE_TSUNE = register("white_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.WHITE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block WHITE_TSUNE = register("white_tsune", new TsuneBlock(DyeColor.WHITE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block ORANGE_TSUNE = register("orange_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.ORANGE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block ORANGE_TSUNE = register("orange_tsune", new TsuneBlock(DyeColor.ORANGE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block MAGENTA_TSUNE = register("magenta_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.MAGENTA, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block MAGENTA_TSUNE = register("magenta_tsune", new TsuneBlock(DyeColor.MAGENTA, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block LIGHT_BLUE_TSUNE = register("light_blue_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.LIGHT_BLUE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block LIGHT_BLUE_TSUNE = register("light_blue_tsune", new TsuneBlock(DyeColor.LIGHT_BLUE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block YELLOW_TSUNE = register("yellow_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.YELLOW, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block YELLOW_TSUNE = register("yellow_tsune", new TsuneBlock(DyeColor.YELLOW, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block LIME_TSUNE = register("lime_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.LIME, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block LIME_TSUNE = register("lime_tsune", new TsuneBlock(DyeColor.LIME, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block PINK_TSUNE = register("pink_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.PINK, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block PINK_TSUNE = register("pink_tsune", new TsuneBlock(DyeColor.PINK, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block GRAY_TSUNE = register("gray_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.GRAY, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block GRAY_TSUNE = register("gray_tsune", new TsuneBlock(DyeColor.GRAY, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block LIGHT_GRAY_TSUNE = register("light_gray_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.LIGHT_GRAY, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block LIGHT_GRAY_TSUNE = register("light_gray_tsune", new TsuneBlock(DyeColor.LIGHT_GRAY, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block CYAN_TSUNE = register("cyan_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.CYAN, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block CYAN_TSUNE = register("cyan_tsune", new TsuneBlock(DyeColor.CYAN, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block PURPLE_TSUNE = register("purple_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.PURPLE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block PURPLE_TSUNE = register("purple_tsune", new TsuneBlock(DyeColor.PURPLE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block BLUE_TSUNE = register("blue_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.BLUE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block BLUE_TSUNE = register("blue_tsune", new TsuneBlock(DyeColor.BLUE, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
 	//Hisov Sands
-	public static final Block BROWN_TSUNE = register("brown_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.BROWN, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block BROWN_TSUNE = register("brown_tsune", new TsuneBlock(DyeColor.BROWN, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
 	//Aquifers
-	public static final Block GREEN_TSUNE = register("green_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.GREEN, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block GREEN_TSUNE = register("green_tsune", new TsuneBlock(DyeColor.GREEN, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block RED_TSUNE = register("red_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.RED, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block RED_TSUNE = register("red_tsune", new TsuneBlock(DyeColor.RED, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block BLACK_TSUNE = register("black_tsune", CCreativeModeTab.BUILDING_BLOCKS, new TsuneBlock(DyeColor.BLACK, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block BLACK_TSUNE = register("black_tsune", new TsuneBlock(DyeColor.BLACK, Block.Properties.of(Material.ICE_SOLID).strength(3.0F).friction(1.112625F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.GLASS)));
-	public static final Block ROBIN_SUMMONER = register("robin_summoner", CCreativeModeTab.COMBAT_TAB_MISC, new RobinSummonerBlock(Block.Properties.of(Material.METAL)));
-	public static final Block EMPTY_ROBIN_SUMMONER = register("empty_robin_summoner", CCreativeModeTab.COMBAT_TAB_MISC, new EmptySummonerBlock(Block.Properties.of(Material.GLASS).noOcclusion()));
+	public static final Block ROBIN_SUMMONER = register("robin_summoner", new RobinSummonerBlock(Block.Properties.of(Material.METAL)));
+	public static final Block EMPTY_ROBIN_SUMMONER = register("empty_robin_summoner", new EmptySummonerBlock(Block.Properties.of(Material.GLASS).noOcclusion()));
 	public static final Block CARDBOARD_BOX = register("cardboard_box", new CardboardBoxBlock(Block.Properties.of(Material.DECORATION).strength(1.0F, 1.0F).sound(SoundType.WOOL)));
 	public static final Block ACROTLEST_RUINED_PORTAL = register("acrotlest_ruined_portal", new AcrotlestRuinedPortalBlock(Block.Properties.of(Material.PORTAL).noCollission().randomTicks().strength(-1.0F).sound(SoundType.GLASS).lightLevel((p_235418_0_) -> {
 		return 11;
@@ -278,22 +277,22 @@ public class CBlocks {
 		return 11;
 	})));
 	public static final Block ALLOY_FURNACE = register("alloy_furnace", new AlloyFurnaceBlock(Block.Properties.of(Material.DECORATION).requiresCorrectToolForDrops().strength(2.0f, 3.0f).lightLevel(getLightValueLit(13))));
-	public static final Block LIMESTONE = register("limestone", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.STONE).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
+	public static final Block LIMESTONE = register("limestone", new Block(Block.Properties.of(Material.STONE).strength(1.5F, 6.0F).requiresCorrectToolForDrops()));
 	public static final Block MEZEPINE_BRICKS = register("mezepine_bricks", new Block(Block.Properties.of(Material.STONE).strength(0.75F, 3.0F)));
-	public static final Block MEZEPINE_FURNACE = register("mezepine_furnace", CCreativeModeTab.COMBAT_TAB_MISC, new MezepineFurnaceBlock(Block.Properties.of(Material.STONE).strength(1.75F).lightLevel((p_235418_0_) -> {
+	public static final Block MEZEPINE_FURNACE = register("mezepine_furnace", new MezepineFurnaceBlock(Block.Properties.of(Material.STONE).strength(1.75F).lightLevel((p_235418_0_) -> {
 		return 13;
 	})));
 	public static final Block MEZEPINE_SLAB = register("mezepine_slab", new SlabBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE).strength(1.0F, 3.0F)));
 	public static final Block MEZEPINE_BRICK_SLAB = register("mezepine_brick_slab", new SlabBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE).strength(1.0F, 3.0F)));
 	public static final Block MEZEPINE_BRICK_STAIRS = register("mezepine_brick_stairs", new StairBlock(() -> CBlocks.MEZEPINE_BRICKS.defaultBlockState(), Block.Properties.copy(CBlocks.MEZEPINE_BRICKS)));
-	public static final Block PURIFIED_DIRT = register("purified_dirt", CCreativeModeTab.BUILDING_BLOCKS, new Block(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.4F).sound(SoundType.GRAVEL)));
-	public static final Block PURIFIED_GRASS_BLOCK = register("purified_grass_block", CCreativeModeTab.BUILDING_BLOCKS, new GrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.5F).sound(SoundType.GRASS)));
-	public static final Block ELYCEN_BLOCK = register("elycen_block", CCreativeModeTab.BUILDING_BLOCKS, new GrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.5F).sound(SoundType.GRASS)));
+	public static final Block PURIFIED_DIRT = register("purified_dirt", new Block(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.4F).sound(SoundType.GRAVEL)));
+	public static final Block PURIFIED_GRASS_BLOCK = register("purified_grass_block", new GrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.5F).sound(SoundType.GRASS)));
+	public static final Block ELYCEN_BLOCK = register("elycen_block", new GrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.5F).sound(SoundType.GRASS)));
 	public static final Block CALTAS = register("caltas", new Block(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL)));
 	public static final Block WOODCUTTER = register("woodcutter", new WoodcutterBlock(Block.Properties.of(Material.STONE).strength(3.5F)));
 	public static final Block PYRANITE_FIRE = register("pyranite_fire", new PyraniteFireBlock(Block.Properties.of(Material.FIRE, MaterialColor.FIRE).noCollission().randomTicks().instabreak().lightLevel((p_235418_0_) -> {
 		return 13;
-	}).sound(SoundType.WOOL).noDrops()));
+	}).sound(SoundType.WOOL)));
 	public static final Block ARCANE_WORKBENCH = register("arcane_workbench", new ArcaneWorkbenchBlock(Block.Properties.of(Material.STONE, MaterialColor.GOLD).strength(5.0F, 1200.0F).lightLevel((p_235418_0_) -> {
 		return 2;
 	})));
@@ -316,10 +315,10 @@ public class CBlocks {
 	public static final Block PYRANITE_WALL_TORCH = register("pyranite_wall_torch", new WallTorchBlock(Block.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel((p_235418_0_) -> {
 		return 13;
 	}).sound(SoundType.WOOD).lootFrom(() -> PYRANITE_TORCH), CParticleTypes.PYRANITE_FLAME));
-	public static final Block MAGIC_STONE = register("magic_stone", new OreBlock(Block.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_ORANGE).strength(6.0F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block MAGIC_STONE = register("magic_stone", new DropExperienceBlock(Block.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_ORANGE).strength(6.0F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 15;
 	}).sound(SoundType.STONE), UniformInt.of(11, 23)));
-	public static final Block YELLOW_MAGIC_CLUSTER = register("yellow_magic_cluster", new OreBlock(Block.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_YELLOW).strength(6.0F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
+	public static final Block YELLOW_MAGIC_CLUSTER = register("yellow_magic_cluster", new DropExperienceBlock(Block.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_YELLOW).strength(6.0F).requiresCorrectToolForDrops().lightLevel((p_235418_0_) -> {
 		return 7;
 	}).sound(SoundType.STONE), UniformInt.of(5, 9)));
 	public static final Block DISENCHANTING_TABLE = register("disenchanting_table", new DisenchantmentTableBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_BLUE).strength(5.0F, 1200.0F)));
@@ -339,8 +338,7 @@ public class CBlocks {
 	}
 
 	public static Block register(String name, Block block) {
-		block.setRegistryName(Combat.getInstance().location(name));
-		CBlocks.BLOCKS.add(block);
+		BLOCKS.put(Combat.getInstance().location(name),block);
 		return block;
 	}
 
@@ -348,16 +346,16 @@ public class CBlocks {
 		return modIsLoaded ? register(name, block) : block;
 	}
 
-	public static Block register(String name, CreativeModeTab group, Block block) {
-		CBlocks.BLOCKITEMS.add(block);
-		CBlocks.CREATIVE_MODE_TABS.add(group);
-		return register(name, block);
-	}
+//	public static Block register(String name, CreativeModeTab group, Block block) {
+//		CBlocks.BLOCKITEMS.add(block);
+//		CBlocks.CREATIVE_MODE_TABS.add(group);
+//		return register(name, block);
+//	}
 
-	public static void registerAll(IForgeRegistry<Block> registry) {
-		for(Block block: BLOCKS) {
-			registry.register(block);
-			Combat.debug("Block: \""+block.getRegistryName().toString()+"\" registered");
+	public static void registerAll(RegisterHelper<Block> registry) {
+		for(Entry<ResourceLocation, Block> block: BLOCKS.entrySet()) {
+			registry.register(block.getKey(), block.getValue());
+			Combat.debug("Block: \""+block.getKey().toString()+"\" registered");
 		}
 		Combat.debug("All Blocks Registered");
 	}

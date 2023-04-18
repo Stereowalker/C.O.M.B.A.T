@@ -91,7 +91,7 @@ public class ManaGeneratorBlock extends BaseEntityBlock {
 			if(tile == null) {
 			}
 			if(tile instanceof ManaGeneratorBlockEntity) {
-				NetworkHooks.openGui((ServerPlayer)player, (ManaGeneratorBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
+				NetworkHooks.openScreen((ServerPlayer)player, (ManaGeneratorBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
 			}
 		}
 		return InteractionResult.SUCCESS;

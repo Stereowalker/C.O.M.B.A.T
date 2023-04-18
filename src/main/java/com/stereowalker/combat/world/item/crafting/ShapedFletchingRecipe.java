@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -213,7 +214,7 @@ public class ShapedFletchingRecipe implements FletchingRecipe, net.minecraftforg
 		}
 	}
 
-	public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>>  implements RecipeSerializer<ShapedFletchingRecipe> {
+	public static class Serializer implements RecipeSerializer<ShapedFletchingRecipe> {
 		@SuppressWarnings("unused")
 		private static final ResourceLocation NAME = new ResourceLocation("combat", "fletching");
 		@Override
@@ -255,5 +256,10 @@ public class ShapedFletchingRecipe implements FletchingRecipe, net.minecraftforg
 
 			buffer.writeItem(recipe.recipeOutput);
 		}
+	}
+
+	@Override
+	public CraftingBookCategory category() {
+		return CraftingBookCategory.EQUIPMENT;
 	}
 }

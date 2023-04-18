@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -85,12 +84,12 @@ public class ManaGeneratorBlockEntity extends AbstractEnergyGeneratorBlockEntity
 
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent("container.mana_generator");
+		return Component.translatable("container.mana_generator");
 	}
 
 	@Override
 	protected Component getDefaultName() {
-		return new TranslatableComponent(this.hasCustomName() ? this.customName : "container.mana_generator");
+		return Component.translatable(this.hasCustomName() ? this.customName : "container.mana_generator");
 	}
 
 	@Override

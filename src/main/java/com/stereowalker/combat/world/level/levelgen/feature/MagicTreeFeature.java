@@ -1,42 +1,32 @@
 package com.stereowalker.combat.world.level.levelgen.feature;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.OptionalInt;
-import java.util.Random;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 
 public class MagicTreeFeature extends Feature<TreeConfiguration> {
@@ -73,7 +63,7 @@ public class MagicTreeFeature extends Feature<TreeConfiguration> {
 		return isAirOrLeavesAt(p_236404_0_, p_236404_1_) || TreeFeature.isReplaceablePlant(p_236404_0_, p_236404_1_) || isWaterAt(p_236404_0_, p_236404_1_);
 	}
 
-	private boolean doPlace(WorldGenLevel pLevel, Random pRandom, BlockPos pPos, BiConsumer<BlockPos, BlockState> pTrunkBlockSetter, BiConsumer<BlockPos, BlockState> pFoliageBlockSetter, TreeConfiguration pConfig) {
+	private boolean doPlace(WorldGenLevel pLevel, RandomSource pRandom, BlockPos pPos, BiConsumer<BlockPos, BlockState> pTrunkBlockSetter, BiConsumer<BlockPos, BlockState> pFoliageBlockSetter, TreeConfiguration pConfig) {
 		int i = pConfig.trunkPlacer.getTreeHeight(pRandom);
 		int j = pConfig.foliagePlacer.foliageHeight(pRandom, i, pConfig);
 		int k = i - j;
@@ -104,7 +94,7 @@ public class MagicTreeFeature extends Feature<TreeConfiguration> {
 			for(int k = -j; k <= j; ++k) {
 				for(int l = -j; l <= j; ++l) {
 					blockpos$mutableblockpos.setWithOffset(pTopPosition, k, i, l);
-					if (!TreeFeature.isFree(pLevel, blockpos$mutableblockpos) || !pConfig.ignoreVines && isVine(pLevel, blockpos$mutableblockpos)) {
+					if (!pConfig.trunkPlacer.isFree(pLevel, blockpos$mutableblockpos) || !pConfig.ignoreVines && isVine(pLevel, blockpos$mutableblockpos)) {
 						return i - 2;
 					}
 				}
@@ -118,7 +108,7 @@ public class MagicTreeFeature extends Feature<TreeConfiguration> {
 	//    * Called when placing the tree feature.
 	//    */
 	//   private boolean place(LevelSimulatedRW generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, BoundingBox boundingBoxIn, TreeConfiguration configIn) {
-		//      int i = configIn.trunkPlacer.getHeight(rand);
+	//      int i = configIn.trunkPlacer.getHeight(rand);
 	//      int j = configIn.foliagePlacer.func_230374_a_(rand, i, configIn);
 	//      int k = i - j;
 	//      int l = configIn.foliagePlacer.func_230376_a_(rand, k);
@@ -196,12 +186,13 @@ public class MagicTreeFeature extends Feature<TreeConfiguration> {
 	 */
 	public final boolean place(FeaturePlaceContext<TreeConfiguration> pContext) {
 		WorldGenLevel worldgenlevel = pContext.level();
-		Random random = pContext.random();
+		RandomSource random = pContext.random();
 		BlockPos blockpos = pContext.origin();
 		TreeConfiguration treeconfiguration = pContext.config();
 		Set<BlockPos> set = Sets.newHashSet();
 		Set<BlockPos> set1 = Sets.newHashSet();
 		Set<BlockPos> set2 = Sets.newHashSet();
+	      Set<BlockPos> set3 = Sets.newHashSet();
 		BiConsumer<BlockPos, BlockState> biconsumer = (p_160555_, p_160556_) -> {
 			set.add(p_160555_.immutable());
 			worldgenlevel.setBlock(p_160555_, p_160556_, 19);
@@ -214,23 +205,24 @@ public class MagicTreeFeature extends Feature<TreeConfiguration> {
 			set2.add(p_160543_.immutable());
 			worldgenlevel.setBlock(p_160543_, p_160544_, 19);
 		};
+	      BiConsumer<BlockPos, BlockState> biconsumer3 = (p_225290_, p_225291_) -> {
+	          set3.add(p_225290_.immutable());
+	          worldgenlevel.setBlock(p_225290_, p_225291_, 19);
+	       };
 		boolean flag = this.doPlace(worldgenlevel, random, blockpos, biconsumer, biconsumer1, treeconfiguration);
-		if (flag && (!set.isEmpty() || !set1.isEmpty())) {
-			if (!treeconfiguration.decorators.isEmpty()) {
-				List<BlockPos> list = Lists.newArrayList(set);
-				List<BlockPos> list1 = Lists.newArrayList(set1);
-				list.sort(Comparator.comparingInt(Vec3i::getY));
-				list1.sort(Comparator.comparingInt(Vec3i::getY));
-				treeconfiguration.decorators.forEach((p_160528_) -> {
-					p_160528_.place(worldgenlevel, biconsumer2, random, list, list1);
-				});
-			}
+		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
+	         if (!treeconfiguration.decorators.isEmpty()) {
+	            TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(worldgenlevel, biconsumer3, random, set1, set2, set);
+	            treeconfiguration.decorators.forEach((p_225282_) -> {
+	               p_225282_.place(treedecorator$context);
+	            });
+	         }
 
-			return BoundingBox.encapsulatingPositions(Iterables.concat(set, set1, set2)).map((p_160521_) -> {
-				DiscreteVoxelShape discretevoxelshape = TreeFeature.updateLeaves(worldgenlevel, p_160521_, set, set2);
-				StructureTemplate.updateShapeAtEdge(worldgenlevel, 3, discretevoxelshape, p_160521_.minX(), p_160521_.minY(), p_160521_.minZ());
-				return true;
-			}).orElse(false);
+	         return BoundingBox.encapsulatingPositions(Iterables.concat(set, set1, set2, set3)).map((p_225270_) -> {
+	            DiscreteVoxelShape discretevoxelshape = TreeFeature.updateLeaves(worldgenlevel, p_225270_, set1, set3, set);
+	            StructureTemplate.updateShapeAtEdge(worldgenlevel, 3, discretevoxelshape, p_225270_.minX(), p_225270_.minY(), p_225270_.minZ());
+	            return true;
+	         }).orElse(false);
 		} else {
 			return false;
 		}

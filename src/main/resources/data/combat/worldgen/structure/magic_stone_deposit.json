@@ -1,0 +1,6 @@
+{
+  "type": "combat:magic_stone_deposit",
+  "biomes": "#combat:has_structure/magic_stone_deposit",
+  "spawn_overrides": {},
+  "step": "underground_structures"
+}

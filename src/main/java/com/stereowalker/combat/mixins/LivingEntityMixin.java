@@ -71,7 +71,7 @@ public abstract class LivingEntityMixin extends Entity {
 	 */
 	@Overwrite
 	protected float getDamageAfterMagicAbsorb(DamageSource source, float damage) {
-		boolean useVanilla = false;
+		boolean useVanilla = this.getAttribute(CAttributes.PHYSICAL_RESISTANCE) == null;
 		if (source.isBypassMagic()) {
 			return damage;
 		} else {
@@ -125,9 +125,9 @@ public abstract class LivingEntityMixin extends Entity {
 		}
 	}
 
-	@Inject(method = "createLivingAttributes",at = @At("RETURN"))
+	@Inject(method = "createLivingAttributes",at = @At("RETURN"), cancellable = true)
 	private static void createLivingAttributes_inject(CallbackInfoReturnable<AttributeSupplier.Builder> ci) {
-		ci.getReturnValue().add(CAttributes.PHYSICAL_RESISTANCE);
+		ci.setReturnValue(ci.getReturnValue().add(CAttributes.PHYSICAL_RESISTANCE));
 	}
 
 	/**

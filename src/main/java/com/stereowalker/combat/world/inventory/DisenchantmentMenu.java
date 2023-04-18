@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -80,7 +80,7 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 					Map<Enchantment, Integer> enchMap = Maps.newHashMap();
 					for (int i = 1; i < enchantList.size(); i++) {
 						CompoundTag compoundnbt = enchantList.getCompound(i);
-						Registry.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
+						BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
 							enchMap.put(enc, compoundnbt.getInt("lvl"));
 						});
 					}
@@ -150,7 +150,7 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 			int pow = Mth.ceil(this.power/10) == 0 ? 1 : Mth.ceil(this.power/10);
 			for (int i = 0; i < pow; i++) {
 				CompoundTag compoundnbt = enchantList.getCompound(i);
-				Registry.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
+				BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
 					EnchantedBookItem.addEnchantment(enchantedBook, new EnchantmentInstance(enc, compoundnbt.getInt("lvl")));
 				});
 			}
@@ -161,7 +161,7 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 			//			EnchantedBookItem.getEnchantments(input1);
 			ListTag enchantList = EnchantedBookItem.getEnchantments(input1);
 			CompoundTag compoundnbt = enchantList.getCompound(0);
-			Registry.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
+			BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
 				//	        	 enchMap.put(enc, compoundnbt.getInt("lvl"));
 				this.outputSlot.setItem(0, EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enc, compoundnbt.getInt("lvl"))));
 			});

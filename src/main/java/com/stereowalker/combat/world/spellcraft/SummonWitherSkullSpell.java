@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.WitherSkull;
-import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -32,7 +32,7 @@ public class SummonWitherSkullSpell extends Spell {
 				protected void onHit(HitResult pResult) {
 					super.onHit(pResult);
 					if (!this.level.isClientSide) {
-						Explosion.BlockInteraction explosion$blockinteraction = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getOwner()) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
+						Level.ExplosionInteraction explosion$blockinteraction = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.getOwner()) ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.MOB;
 						this.level.explode(this, this.getX(), this.getY(), this.getZ(), (float) strength, false, explosion$blockinteraction);
 						this.discard();
 					}

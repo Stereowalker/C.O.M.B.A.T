@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -37,25 +38,24 @@ public class StatsManager implements IResourceReloadListener<Map<ResourceKey<Sta
 		return CompletableFuture.supplyAsync(() -> {
 			Map<ResourceKey<Stat>,StatSettings> statMap = new HashMap<>();
 			
-			for (Stat stat : CombatRegistries.STATS) {
-				statMap.put(ResourceKey.create(CombatRegistries.STATS_REGISTRY, stat.getRegistryName()), null);
-			}
-			for (ResourceLocation id : manager.listResources("combat/stat_settings/", (s) -> s.endsWith(".json"))) {
+//			for (Stat stat : CombatRegistries.STATS.get()) {
+//				statMap.put(ResourceKey.create(CombatRegistries.STATS_REGISTRY, CombatRegistries.STATS.get().getKey(stat)), null);
+//			}
+			for (Entry<ResourceLocation, Resource> resource : manager.listResources("combat/stat_settings", (s) -> s.toString().endsWith(".json")).entrySet()) {
 				ResourceLocation statId = new ResourceLocation(
-						id.getNamespace(),
-						id.getPath().replace("combat/stat_settings/", "").replace(".json", "")
+						resource.getKey().getNamespace(),
+						resource.getKey().getPath().replace("combat/stat_settings/", "").replace(".json", "")
 						);
 
 				
-				if (CombatRegistries.STATS.containsKey(statId)) {
-					LOGGER.info("Found the stat, " + statId + ", in the registry. The creation if it's settings can proceed as usual");
-				} else {
-					LOGGER.info("No such stat exists with the id, " + statId + ", in the registry. Will still create it's settings, but the stat should be created in the datapack in order for this setting to be used");
-				}
+//				if (CombatRegistries.STATS.get().containsKey(statId)) {
+//					LOGGER.info("Found the stat, " + statId + ", in the registry. The creation if it's settings can proceed as usual");
+//				} else {
+//					LOGGER.info("No such stat exists with the id, " + statId + ", in the registry. Will still create it's settings, but the stat should be created in the datapack in order for this setting to be used");
+//				}
 				
 				try {
-					Resource resource = manager.getResource(id);
-					try (InputStream stream = resource.getInputStream(); 
+					try (InputStream stream = resource.getValue().open(); 
 							InputStreamReader reader = new InputStreamReader(stream)) {
 						
 						JsonObject object = JsonParser.parseReader(reader).getAsJsonObject();

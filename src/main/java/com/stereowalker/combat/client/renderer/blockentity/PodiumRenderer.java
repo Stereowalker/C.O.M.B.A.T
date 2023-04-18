@@ -1,7 +1,7 @@
 package com.stereowalker.combat.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.stereowalker.combat.world.level.block.entity.PodiumBlockEntity;
 
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ public class PodiumRenderer implements BlockEntityRenderer<PodiumBlockEntity> {
 		if (itemstack != ItemStack.EMPTY) {
 			matrixStackIn.pushPose();
 			matrixStackIn.translate(0.5D, 1.0D, 0.5D);
-			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(pBlockEntity.rotation));
+			matrixStackIn.mulPose(Axis.YP.rotationDegrees(pBlockEntity.rotation));
 			Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemTransforms.TransformType.GROUND, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, i);
 			matrixStackIn.popPose();
 		}

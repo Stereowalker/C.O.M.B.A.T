@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "combat:dead_oak_checked",
+    "features": [
+      {
+        "chance": 0.5,
+        "feature": "combat:dead_oak_checked"
+      }
+    ]
+  }
+}

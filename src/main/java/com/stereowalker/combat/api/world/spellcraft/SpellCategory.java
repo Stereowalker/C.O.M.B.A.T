@@ -12,7 +12,6 @@ import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
@@ -64,11 +63,11 @@ public enum SpellCategory {
 	}
 
 	public Component getDisplayName() {
-		return new TranslatableComponent("category." + this.name);
+		return Component.translatable("category." + this.name);
 	}
 
 	public Component getColoredDisplayName() {
-		return new TranslatableComponent("category." + this.name).withStyle(Style.EMPTY.withColor(getColor()));
+		return Component.translatable("category." + this.name).withStyle(Style.EMPTY.withColor(getColor()));
 	}
 
 	public TextColor getColor() {

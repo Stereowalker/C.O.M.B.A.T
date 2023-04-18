@@ -14,6 +14,7 @@ import com.stereowalker.rankup.world.stat.LevelType;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 import com.stereowalker.rankup.world.stat.StatSettings;
 import com.stereowalker.unionlib.util.EntityHelper;
+import com.stereowalker.unionlib.util.ScreenHelper;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -27,8 +28,6 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,7 +41,7 @@ public class StatsRowList extends PlayerStatusRowList<StatsRowList.Row> {
 	}
 
 	public int addStat(ResourceKey<Stat> statKey) {
-		Component component = new TranslatableComponent(Util.makeDescriptionId("stat", statKey.location()));
+		Component component = Component.translatable(Util.makeDescriptionId("stat", statKey.location()));
         int i = this.minecraft.font.width(component);
         if (i > this.maxNameWidth) {
            this.maxNameWidth = i;
@@ -96,9 +95,9 @@ public class StatsRowList extends PlayerStatusRowList<StatsRowList.Row> {
 			} else {
 				upgradeActive = PlayerAttributeLevels.getUpgradePoints(Minecraft.getInstance().player) > 0;
 			}
-			upgradeButton = new Button(xPos, 0, 20, 20, new TextComponent("+"), (p_214328_1_) -> {
+			upgradeButton = ScreenHelper.buttonBuilder(Component.literal("+"), (p_214328_1_) -> {
 				new ServerboundUpgradeLevelsPacket(statKey.location()).send();
-			});
+			}).bounds(xPos, 0, 20, 20).build();
 			upgradeButton.active = upgradeActive && isEnabled;
 			return upgradeButton;
 		}
@@ -112,21 +111,20 @@ public class StatsRowList extends PlayerStatusRowList<StatsRowList.Row> {
 			int points = stat.getAdditionalPoints(player);
 			String na = Util.makeDescriptionId("stat", statKey.location());
 			
-			MutableComponent normalStatDisplay = (new TranslatableComponent(": "+stat.getCurrentPoints(player)));
+			MutableComponent normalStatDisplay = (Component.translatable(": "+stat.getCurrentPoints(player)));
 			if (Combat.RPG_CONFIG.enableTraining && stat.getEffortPoints(player) > 0)
-				normalStatDisplay.append(new TextComponent(" +"+stat.getEffortPoints(player)).withStyle(ChatFormatting.YELLOW));
-			MutableComponent bonusStatDisplay = normalStatDisplay.copy().append(new TextComponent(" +"+points).withStyle(ChatFormatting.GREEN));
-			MutableComponent debuffStatDisplay = normalStatDisplay.copy().append(new TextComponent(" "+points).withStyle(ChatFormatting.RED));
+				normalStatDisplay.append(Component.literal(" +"+stat.getEffortPoints(player)).withStyle(ChatFormatting.YELLOW));
+			MutableComponent bonusStatDisplay = normalStatDisplay.copy().append(Component.literal(" +"+points).withStyle(ChatFormatting.GREEN));
+			MutableComponent debuffStatDisplay = normalStatDisplay.copy().append(Component.literal(" "+points).withStyle(ChatFormatting.RED));
 			
 			this.widgets.forEach((widget) -> {
-				widget.y = top;
-				widget.x = width - 20;
+				ScreenHelper.setWidgetPosition(widget, width - 20, top);
 				if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS) widget.render(matrixStack, mouseX, mouseY, partialTicks);
 			});
-			GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, new TranslatableComponent(na), left, top+5, 0xffffff);
+			GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, Component.translatable(na), left, top+5, 0xffffff);
 			GuiComponent.drawString(matrixStack, Minecraft.getInstance().font, 
-					settings == null ? new TranslatableComponent(": Error") : 
-						!settings.isEnabled() ? new TranslatableComponent(": Locked") : 
+					settings == null ? Component.translatable(": Error") : 
+						!settings.isEnabled() ? Component.translatable(": Locked") : 
 							points > 0 ? bonusStatDisplay :
 								points < 0 ? debuffStatDisplay : normalStatDisplay, left+5+(StatsRowList.this.maxNameWidth), top+5, 0xffffff);
 		}

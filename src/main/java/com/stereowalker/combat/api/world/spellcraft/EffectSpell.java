@@ -1,7 +1,6 @@
 package com.stereowalker.combat.api.world.spellcraft;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -32,7 +31,7 @@ public class EffectSpell extends Spell {
 	
 	@Override
 	public Component getFailedMessage(LivingEntity caster) {
-		return new TranslatableComponent("The effect is already active");
+		return Component.translatable("The effect is already active");
 	}
 
 }

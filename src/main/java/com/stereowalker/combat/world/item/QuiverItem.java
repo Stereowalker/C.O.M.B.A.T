@@ -6,7 +6,6 @@ import com.stereowalker.combat.world.inventory.QuiverContainer;
 import com.stereowalker.combat.world.inventory.QuiverMenu;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -67,7 +66,7 @@ public class QuiverItem extends InventoryItem<QuiverContainer> implements Dyeabl
 						count+=arrow2.getCount();
 					}
 				}
-				if (count != 0) tooltip.add(new TranslatableComponent(arrow.getDescriptionId()).append(" x"+count));
+				if (count != 0) tooltip.add(Component.translatable(arrow.getDescriptionId()).append(" x"+count));
 			}
 		}
 	}

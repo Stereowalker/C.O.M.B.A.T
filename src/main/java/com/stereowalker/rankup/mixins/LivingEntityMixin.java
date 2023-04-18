@@ -31,7 +31,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@Shadow @Nullable protected Player lastHurtByPlayer;
-	@Shadow protected int getExperienceReward(Player pPlayer) {return 0;}
+	@Shadow protected int getExperienceReward() {return 0;}
 
 	/**
 	 * Duplicates xp into the player

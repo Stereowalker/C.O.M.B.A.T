@@ -1,0 +1,5 @@
+{
+	"type": "combat:vitality",
+	"uniqueId": "0abbb72f-760a-46ed-8ae3-57fb010a4507",
+	"baseAttribute": "minecraft:generic.max_health"
+}

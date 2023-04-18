@@ -26,6 +26,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class MagisteelAxeItem extends AxeItem implements Magisteel {
 
@@ -46,38 +47,39 @@ public class MagisteelAxeItem extends AxeItem implements Magisteel {
 	}
 
 	@Override
-	public InteractionResult useOn(UseOnContext context) {
-		if (isUsingMana(context.getItemInHand())) {
-			Level level = context.getLevel();
-			BlockPos blockpos = context.getClickedPos();
-			Player player = context.getPlayer();
-			BlockState blockstate = level.getBlockState(blockpos);
-			Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(level, blockpos, player, context.getItemInHand(), net.minecraftforge.common.ToolActions.AXE_STRIP));
-			Optional<BlockState> optional1 = Optional.ofNullable(blockstate.getToolModifiedState(level, blockpos, player, context.getItemInHand(), net.minecraftforge.common.ToolActions.AXE_SCRAPE));
-			Optional<BlockState> optional2 = Optional.ofNullable(blockstate.getToolModifiedState(level, blockpos, player, context.getItemInHand(), net.minecraftforge.common.ToolActions.AXE_WAX_OFF));
-			ItemStack itemstack = context.getItemInHand();
-			Optional<BlockState> optional3 = Optional.empty();
-			if (optional.isPresent()) {
-				level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-				optional3 = optional;
-			} else if (optional1.isPresent()) {
-				level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				level.levelEvent(player, 3005, blockpos, 0);
-				optional3 = optional1;
-			} else if (optional2.isPresent()) {
-				level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
-				level.levelEvent(player, 3004, blockpos, 0);
-				optional3 = optional2;
-			}
+	public InteractionResult useOn(UseOnContext pContext) {
+		if (isUsingMana(pContext.getItemInHand())) {
+			Level level = pContext.getLevel();
+		      BlockPos blockpos = pContext.getClickedPos();
+		      Player player = pContext.getPlayer();
+		      BlockState blockstate = level.getBlockState(blockpos);
+		      Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_STRIP, false));
+		      Optional<BlockState> optional1 = optional.isPresent() ? Optional.empty() : Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_SCRAPE, false));
+		      Optional<BlockState> optional2 = optional.isPresent() || optional1.isPresent() ? Optional.empty() : Optional.ofNullable(blockstate.getToolModifiedState(pContext, net.minecraftforge.common.ToolActions.AXE_WAX_OFF, false));
+		      ItemStack itemstack = pContext.getItemInHand();
+		      Optional<BlockState> optional3 = Optional.empty();
+		      if (optional.isPresent()) {
+		         level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+		         optional3 = optional;
+		      } else if (optional1.isPresent()) {
+		         level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+		         level.levelEvent(player, 3005, blockpos, 0);
+		         optional3 = optional1;
+		      } else if (optional2.isPresent()) {
+		         level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+		         level.levelEvent(player, 3004, blockpos, 0);
+		         optional3 = optional2;
+		      }
 
-			if (optional3.isPresent()) {
-				if (player instanceof ServerPlayer) {
-					CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)player, blockpos, itemstack);
-				}
+		      if (optional3.isPresent()) {
+		         if (player instanceof ServerPlayer) {
+		            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)player, blockpos, itemstack);
+		         }
 
-				level.setBlock(blockpos, optional3.get(), 11);
+		         level.setBlock(blockpos, optional3.get(), 11);
+		         level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, optional3.get()));
 				if (player != null) {
-					EnergyUtils.addEnergyToItem(context.getItemInHand(), -10, EnergyUtils.EnergyType.MAGIC_ENERGY);
+					EnergyUtils.addEnergyToItem(pContext.getItemInHand(), -10, EnergyUtils.EnergyType.MAGIC_ENERGY);
 				}
 
 				return InteractionResult.sidedSuccess(level.isClientSide);
@@ -85,7 +87,7 @@ public class MagisteelAxeItem extends AxeItem implements Magisteel {
 				return InteractionResult.PASS;
 			}
 		} else {
-			return super.useOn(context);
+			return super.useOn(pContext);
 		}
 	}
 

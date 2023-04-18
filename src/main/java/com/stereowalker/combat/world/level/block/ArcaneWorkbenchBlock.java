@@ -1,13 +1,11 @@
 package com.stereowalker.combat.world.level.block;
 
-import java.util.Random;
-
 import com.stereowalker.combat.world.inventory.ArcaneWorkbenchMenu;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -27,7 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ArcaneWorkbenchBlock extends /* Container */Block {
-	private static final Component NAME = new TranslatableComponent("container.arcane_workbench");
+	private static final Component NAME = Component.translatable("container.arcane_workbench");
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
 	protected ArcaneWorkbenchBlock(Block.Properties builder) {
@@ -46,7 +44,7 @@ public class ArcaneWorkbenchBlock extends /* Container */Block {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		super.animateTick(stateIn, worldIn, pos, rand);
 
 //		for(int i = -2; i <= 2; ++i) {

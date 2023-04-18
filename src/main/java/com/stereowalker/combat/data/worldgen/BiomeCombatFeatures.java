@@ -34,21 +34,21 @@ public class BiomeCombatFeatures {
 	
 	public static void addPasquem(BiomeGenerationSettings.Builder builder, boolean isDeadBiome) {
 		if (isDeadBiome) {
-			builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_PASQUEM);
+//			builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_PASQUEM);
 		}
 		else {
 			builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.ORE_PASQUEM);
 		}
 	}
 
-	public static void addDeadOres(BiomeGenerationSettings.Builder builder) {
-		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_COAL);
-		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_IRON);
-		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_COPPER);
-		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_GOLD);
-		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_REDSTONE);
-		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_DIAMOND);
-		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_LAPIS);
+	public static void addDeadOres(BiomeGenerationSettings.PlainBuilder builder) {
+//		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_COAL);
+//		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_IRON);
+//		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_COPPER);
+//		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_GOLD);
+//		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_REDSTONE);
+//		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_DIAMOND);
+//		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.DEAD_ORE_LAPIS);
 	}
 	
 	public static void addYellowMagicClusters(BiomeGenerationSettings.Builder builder, boolean isMagicBiome) {
@@ -76,7 +76,7 @@ public class BiomeCombatFeatures {
 		builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COrePlacements.ORE_PYRANITE);
 	}
 	
-	public static void addAcrotlestStructures(BiomeGenerationSettings.Builder builder) {
+	public static void addAcrotlestStructures(BiomeGenerationSettings.PlainBuilder builder) {
 	}
 	
 	public static void addAcrotlestSprings(BiomeGenerationSettings.Builder pBuilder) {

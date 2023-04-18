@@ -1,55 +1,51 @@
 package com.stereowalker.combat.network.protocol.game;
 
 import java.util.UUID;
-import java.util.function.Supplier;
+
+import com.stereowalker.combat.Combat;
+import com.stereowalker.unionlib.network.protocol.game.ServerboundUnionPacket;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
 
-public class ServerboundHeldItemStackNBTPacket {
+public class ServerboundHeldItemStackNBTPacket extends ServerboundUnionPacket {
 	private CompoundTag clientTag;
 	private boolean isMainHand;
 	private UUID uuid;
 
 	public ServerboundHeldItemStackNBTPacket(final CompoundTag clientTag, final boolean isMainHand, final UUID uuid) {
-		this.uuid = uuid;
+		super(Combat.getInstance().channel);
 		this.clientTag = clientTag;
 		this.isMainHand = isMainHand;
+		this.uuid = uuid;
+	}
+	
+	public ServerboundHeldItemStackNBTPacket(FriendlyByteBuf packetBuffer) {
+		super(packetBuffer, Combat.getInstance().channel);
+		this.clientTag = packetBuffer.readNbt();
+		this.isMainHand = packetBuffer.readBoolean();
+		this.uuid = new UUID(packetBuffer.readLong(), packetBuffer.readLong());
 	}
 
-	public static void encode(final ServerboundHeldItemStackNBTPacket msg, final FriendlyByteBuf packetBuffer) {
-		packetBuffer.writeNbt(msg.clientTag);
-		packetBuffer.writeBoolean(msg.isMainHand);
-		packetBuffer.writeLong(msg.uuid.getMostSignificantBits());
-		packetBuffer.writeLong(msg.uuid.getLeastSignificantBits());
+	@Override
+	public void encode(final FriendlyByteBuf packetBuffer) {
+		packetBuffer.writeNbt(this.clientTag);
+		packetBuffer.writeBoolean(this.isMainHand);
+		packetBuffer.writeLong(this.uuid.getMostSignificantBits());
+		packetBuffer.writeLong(this.uuid.getLeastSignificantBits());
 	}
-
-	public static ServerboundHeldItemStackNBTPacket decode(final FriendlyByteBuf packetBuffer) {
-		return new ServerboundHeldItemStackNBTPacket(packetBuffer.readNbt(), packetBuffer.readBoolean(), new UUID(packetBuffer.readLong(), packetBuffer.readLong()));
-	}
-
-	public static void handle(final ServerboundHeldItemStackNBTPacket msg, final Supplier<NetworkEvent.Context> contextSupplier) {
-		final NetworkEvent.Context context = contextSupplier.get();
-		context.enqueueWork(() -> {
-			final ServerPlayer sender = context.getSender();
-			if (sender == null) {
-				return;
+	
+	@Override
+	public boolean handleOnServer(ServerPlayer sender) {
+		if (uuid.equals(sender.getUUID())) {
+			if (isMainHand) {
+				sender.getMainHandItem().setTag(clientTag);
 			}
-			final CompoundTag clientItem = msg.clientTag;
-			final boolean isMainHand = msg.isMainHand;
-			final UUID uuid = msg.uuid;
-			if (uuid.equals(Player.createPlayerUUID(sender.getGameProfile()))) {
-				if (isMainHand) {
-					sender.getMainHandItem().setTag(clientItem);
-				}
-				else {
-					sender.getOffhandItem().setTag(clientItem);
-				}
+			else {
+				sender.getOffhandItem().setTag(clientTag);
 			}
-		});
-		context.setPacketHandled(true);
+		}
+		return true;
 	}
 }

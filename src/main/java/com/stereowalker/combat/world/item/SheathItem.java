@@ -6,7 +6,6 @@ import com.stereowalker.combat.world.inventory.SheathContainer;
 import com.stereowalker.combat.world.inventory.SheathMenu;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -66,7 +65,7 @@ public class SheathItem extends InventoryItem<SheathContainer> implements Dyeabl
 						count+=arrow2.getCount();
 					}
 				}
-				if (count != 0) tooltip.add(new TranslatableComponent(item.getDescriptionId()).append(" x"+count));
+				if (count != 0) tooltip.add(Component.translatable(item.getDescriptionId()).append(" x"+count));
 			}
 		}
 	}

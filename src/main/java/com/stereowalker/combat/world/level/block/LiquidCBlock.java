@@ -9,8 +9,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +35,7 @@ public class LiquidCBlock extends LiquidBlock {
 	@Override
 	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
 		if (this == CBlocks.OIL) {
-			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 10, true, Explosion.BlockInteraction.BREAK);
+			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 10, true, ExplosionInteraction.TNT);
 			world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 		}
 		super.onCaughtFire(state, world, pos, face, igniter);

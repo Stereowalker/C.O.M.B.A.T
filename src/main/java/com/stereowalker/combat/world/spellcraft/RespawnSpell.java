@@ -5,7 +5,6 @@ import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -51,7 +50,7 @@ public class RespawnSpell extends Spell {
 	
 	@Override
 	public Component getFailedMessage(LivingEntity caster) {
-		return new TranslatableComponent("Your bed seems to be missing");
+		return Component.translatable("Your bed seems to be missing");
 	}
 
 }

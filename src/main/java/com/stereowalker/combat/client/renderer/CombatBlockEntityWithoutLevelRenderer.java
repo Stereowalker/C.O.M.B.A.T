@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
@@ -77,7 +78,7 @@ public class CombatBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLev
 				VertexConsumer ivertexbuilder = ItemRenderer.getFoilBufferDirect(bufferIn, this.modelRoundShield.renderType(Combat.getInstance().location("textures/entity/shield_base_nopattern.png")), false, itemStackIn.hasFoil());
 				this.modelRoundShield.handle().render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
 				if (flag) {
-					List<Pair<BannerPattern, DyeColor>> list = BannerBlockEntity.createPatterns(ShieldItem.getColor(itemStackIn), BannerBlockEntity.getItemPatterns(itemStackIn));
+					List<Pair<Holder<BannerPattern>, DyeColor>> list = BannerBlockEntity.createPatterns(ShieldItem.getColor(itemStackIn), BannerBlockEntity.getItemPatterns(itemStackIn));
 					BannerRenderer.renderPatterns(matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, this.modelRoundShield.plate(), material, false, list);
 				} else {
 					this.modelRoundShield.plate().render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);

@@ -1,22 +1,19 @@
 package com.stereowalker.combat.stats;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.stereowalker.combat.Combat;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.StatType;
 import net.minecraft.stats.Stats;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 
 public class CStats {
-	private static final List<StatType<?>> STATTYPES = new ArrayList<StatType<?>>();
+	private static final Map<ResourceLocation,StatType<?>> STATTYPES = new HashMap<ResourceLocation,StatType<?>>();
 	private static final Map<ResourceLocation,StatFormatter> CUSTOMSTATS = new HashMap<ResourceLocation,StatFormatter>();
 
 	public static final ResourceLocation SHOTS_FIRED = registerCustom("shots_fired", StatFormatter.DEFAULT);
@@ -38,16 +35,19 @@ public class CStats {
 //		CStats.STATTYPES.add(statType);
 //		return statType;
 //	}
-
-	public static void registerAll(IForgeRegistry<StatType<?>> registry) {
-		for(StatType<?> statType : STATTYPES) {
-			registry.register(statType);
-			Combat.debug("StatType: \""+statType.getRegistryName().toString()+"\" registered");
-		}
+	
+	public static void registerAllCustom(RegisterHelper<ResourceLocation> registry) {
 		for(Entry<ResourceLocation, StatFormatter> statType : CUSTOMSTATS.entrySet()) {
-			Registry.register(Registry.CUSTOM_STAT, statType.getKey().toString(), statType.getKey());
+			registry.register(statType.getKey(), statType.getKey());
 			Stats.CUSTOM.get(statType.getKey(), statType.getValue());
 			Combat.debug("Custom Stat: \""+statType.getKey()+"\" registered");
+		}
+	}
+
+	public static void registerAll(RegisterHelper<StatType<?>> registry) {
+		for(Entry<ResourceLocation, StatType<?>> statType : STATTYPES.entrySet()) {
+			registry.register(statType.getKey(), statType.getValue());
+			Combat.debug("StatType: \""+statType.getKey().toString()+"\" registered");
 		}
 		Combat.debug("All StatTypes Registered");
 	}

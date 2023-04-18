@@ -15,7 +15,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -50,15 +50,15 @@ public class CastCommand {
 		}
 		if (i == 0) {
 			if (casters.size() == 1) {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.cast.failed.single", spell.getKnownName(), casters.iterator().next().getDisplayName())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.cast.failed.single", spell.getKnownName(), casters.iterator().next().getDisplayName())).create();
 			} else {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.cast.failed.multiple", spell.getKnownName(), casters.size())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.cast.failed.multiple", spell.getKnownName(), casters.size())).create();
 			}
 		} else {
 			if (casters.size() == 1) {
-				source.sendSuccess(new TranslatableComponent("commands.cast.success.single", spell.getKnownName(), casters.iterator().next().getDisplayName()), true);
+				source.sendSuccess(Component.translatable("commands.cast.success.single", spell.getKnownName(), casters.iterator().next().getDisplayName()), true);
 			} else {
-				source.sendSuccess(new TranslatableComponent("commands.cast.success.multiple", spell.getKnownName(), casters.size()), true);
+				source.sendSuccess(Component.translatable("commands.cast.success.multiple", spell.getKnownName(), casters.size()), true);
 			}
 
 			return i;

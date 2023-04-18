@@ -7,6 +7,7 @@ import com.stereowalker.combat.data.worldgen.placement.MiscAcrotlestPlacements;
 import com.stereowalker.combat.world.entity.CEntityType;
 //import com.stereowalker.combat.world.level.levelgen.surfacebuilders.CSurfaceBuilder;
 
+import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.world.entity.EntityType;
@@ -19,9 +20,11 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 //import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
 //import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class CombatBiomes {
-	public static Biome makeDeadForestBiome(float depth, boolean isPlains) {
+	public static Biome makeDeadForestBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers, float depth, boolean isPlains) {
 		MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW, 8, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 16, 16));
@@ -35,7 +38,7 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 20, 2, 8));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 10, 2, 2));
 
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers))/*
 																													 * .surfaceBuilder
 																													 * (
 																													 * new
@@ -67,11 +70,11 @@ public class CombatBiomes {
 		//		      BiomeDefaultFeatures.func_222297_ap(this);
 
 		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.RAIN)
-				/* .scale(0.2F) */.temperature(0.7F).downfall(0.8F).biomeCategory(isPlains?Biome.BiomeCategory.PLAINS:Biome.BiomeCategory.FOREST)/**/.specialEffects(getDeadAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+				/* .scale(0.2F) */.temperature(0.7F).downfall(0.8F)/**/.specialEffects(getDeadAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 
 	}
 
-	public static Biome makeAcrotlestRiverBiome(float depth, float scale, float temperature, int waterColor, boolean isSnowy) {
+	public static Biome makeAcrotlestRiverBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers, float depth, float scale, float temperature, int waterColor, boolean isSnowy) {
 //		super((new Biome.BiomeBuilder()).surfaceBuilder(SurfaceBuilder.DEFAULT, CSurfaceBuilder.PURIFIED_GRASS_PURIFIED_DIRT_GRAVEL_CONFIG)
 //	      this.func_235063_a_(CombatBiomeFeatures.ACROTLEST_MINESHAFT_NORMAL);
 //	      CombatBiomeFeatures.addAcrotlestCarvers(this);
@@ -84,7 +87,7 @@ public class CombatBiomes {
 
 		MobSpawnSettings.Builder mobspawninfo$builder = (new MobSpawnSettings.Builder()).addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SQUID, 2, 1, 4)).addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.LICHU, 50, 6, 6));
 		BiomeDefaultFeatures.caveSpawns(mobspawninfo$builder);
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers))/*
 																													 * .surfaceBuilder
 																													 * (
 																													 * CSurfaceBuilders
@@ -110,10 +113,10 @@ public class CombatBiomes {
 //		}
 
 		BiomeDefaultFeatures.addSurfaceFreezing(biomegenerationsettings$builder);
-		return (new Biome.BiomeBuilder()).precipitation(isSnowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).biomeCategory(Biome.BiomeCategory.RIVER).temperature(temperature).downfall(0.5F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+		return (new Biome.BiomeBuilder()).precipitation(isSnowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).temperature(temperature).downfall(0.5F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 
-	public static Biome makeMagicalBiome(float depth, boolean isPlains) {
+	public static Biome makeMagicalBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers, float depth, boolean isPlains) {
 		MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
 		mobspawninfo$builder.creatureGenerationProbability(0.5f);
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 12, 4, 4));
@@ -133,7 +136,7 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 10, 1, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1));
 
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers))/*
 																													 * .surfaceBuilder
 																													 * (
 																													 * new
@@ -175,10 +178,10 @@ public class CombatBiomes {
 
 
 		return (new Biome.BiomeBuilder()).downfall(50F).precipitation(Biome.Precipitation.RAIN)
-				/* .scale(0.10F) */.temperature(0.1F).biomeCategory(isPlains?Biome.BiomeCategory.PLAINS:Biome.BiomeCategory.FOREST)/**/.specialEffects(getMagicAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+				/* .scale(0.10F) */.temperature(0.1F)/**/.specialEffects(getMagicAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 	
-	public static Biome makeAcrotlestForestBiome() {
+	public static Biome makeAcrotlestForestBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers) {
 		MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 12, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG, 10, 4, 4));
@@ -189,24 +192,7 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.BIOG, 100, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.LICHU, 50, 6, 6));
 
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
-																													 * .surfaceBuilder
-																													 * (
-																													 * new
-																													 * ConfiguredSurfaceBuilder
-																													 * <
-																													 * >
-																													 * (
-																													 * SurfaceBuilder
-																													 * .
-																													 * DEFAULT,
-																													 * CSurfaceBuilder
-																													 * .
-																													 * PURIFIED_GRASS_PURIFIED_DIRT_GRAVEL_CONFIG
-																													 * )
-																													 * )
-																													 */;
-		
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers));
 		BiomeCombatFeatures.addAcrotlestCarvers(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestStructures(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestLakes(biomegenerationsettings$builder);
@@ -225,10 +211,10 @@ public class CombatBiomes {
 
 
 		return (new Biome.BiomeBuilder()).downfall(0.8F).precipitation(Biome.Precipitation.SNOW)
-				/* .scale(0.2F) */.temperature(0.1F).biomeCategory(Biome.BiomeCategory.FOREST).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
+				.temperature(0.1F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 	
-	public static Biome makeAcrotlestMountainsBiome(float depth) {
+	public static Biome makeAcrotlestMountainsBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers, float depth) {
 		MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 12, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG, 10, 4, 4));
@@ -239,7 +225,7 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.BIOG, 100, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.LICHU, 50, 6, 6));
 		
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers))/*
 																													 * .surfaceBuilder
 																													 * (
 																													 * new
@@ -270,11 +256,11 @@ public class CombatBiomes {
 		BiomeDefaultFeatures.addDefaultSprings(biomegenerationsettings$builder);
 		BiomeDefaultFeatures.addSurfaceFreezing(biomegenerationsettings$builder);
 
-		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW).biomeCategory(Biome.BiomeCategory.ICY)
+		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW)
 				/* .scale(0.3F) */.temperature(0.0F).downfall(0.8F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 	
-	public static Biome makeHisovSandsBiome(float depth) {
+	public static Biome makeHisovSandsBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers, float depth) {
 		MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 12, 4, 4));
 		mobspawninfo$builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG, 10, 4, 4));
@@ -285,23 +271,7 @@ public class CombatBiomes {
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.RED_BIOG, 25, 1, 1));
 		mobspawninfo$builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CEntityType.LICHU, 50, 6, 6));
 		
-		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder())/*
-																													 * .surfaceBuilder
-																													 * (
-																													 * new
-																													 * ConfiguredSurfaceBuilder
-																													 * <
-																													 * >
-																													 * (
-																													 * SurfaceBuilder
-																													 * .
-																													 * DEFAULT,
-																													 * CSurfaceBuilder
-																													 * .
-																													 * HOMSE_HOMSE_GRAVEL_CONFIG
-																													 * )
-																													 * )
-																													 */;
+		BiomeGenerationSettings.Builder biomegenerationsettings$builder = (new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers));
 		BiomeCombatFeatures.addAcrotlestCarvers(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestStructures(biomegenerationsettings$builder);
 		BiomeCombatFeatures.addAcrotlestLakes(biomegenerationsettings$builder);
@@ -316,7 +286,6 @@ public class CombatBiomes {
 		BiomeDefaultFeatures.addSurfaceFreezing(biomegenerationsettings$builder);
 
 		return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW)
-				.biomeCategory(Biome.BiomeCategory.DESERT)
 				/* .scale(0.05F) */.temperature(1.0F).downfall(0.1F).specialEffects(getAcrotlestAmbience()).mobSpawnSettings(mobspawninfo$builder.build()).generationSettings(biomegenerationsettings$builder.build()).build();
 	}
 

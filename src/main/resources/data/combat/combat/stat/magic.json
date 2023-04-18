@@ -1,0 +1,5 @@
+{
+	"type": "combat:default",
+	"uniqueId": "0476ba86-f7ee-4f60-9323-688f69709b9d",
+	"baseAttribute": "combat:generic.max_mana"
+}

@@ -136,10 +136,4 @@ public abstract class AbstractElectricFurnaceScreen<T extends AbstractElectricFu
 	public RecipeBookComponent getRecipeBookComponent() {
 		return this.recipeGui;
 	}
-
-	@Override
-	public void onClose() {
-		this.recipeGui.removed();
-		super.onClose();
-	}
 }

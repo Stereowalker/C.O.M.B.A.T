@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.stereowalker.combat.Combat;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
@@ -26,7 +27,7 @@ public class CLootItemFunctions {
 	
 	public static void registerAll() {
 		for (Pair<String, LootItemFunctionType> type : LOOT_FUNCTION_TYPES) {
-			Registry.register(Registry.LOOT_FUNCTION_TYPE, Combat.getInstance().location(type.getKey()), type.getValue());
+			Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, Combat.getInstance().location(type.getKey()), type.getValue());
 		}
 	}
 }

@@ -1,0 +1,7 @@
+{
+  "type": "combat:etherion_tower",
+  "biomes": "#combat:has_structure/etherion_tower_badlands",
+  "variant": "badlands",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

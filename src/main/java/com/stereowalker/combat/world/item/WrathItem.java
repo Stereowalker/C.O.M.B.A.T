@@ -3,8 +3,7 @@ package com.stereowalker.combat.world.item;
 import com.stereowalker.combat.world.entity.CEntityType;
 import com.stereowalker.combat.world.entity.monster.SkeletonMinion;
 
-import net.minecraft.network.chat.BaseComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -43,7 +42,7 @@ public class WrathItem extends Item implements LegendaryGear{
 				skull.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
 				skull.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
 				skull.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));
-				skull.setCustomName(((BaseComponent) playerIn.getDisplayName()).append(new TranslatableComponent("'s Skeleton")));
+				skull.setCustomName(playerIn.getDisplayName().copy().append(Component.translatable("'s Skeleton")));
 				skull.setMasterId(playerIn.getUUID());
 				worldIn.addFreshEntity(skull);
 				skull.setTarget(playerIn.getKillCredit());

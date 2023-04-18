@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -209,15 +210,15 @@ public class Vampire extends Monster
 	}
 
 	@Override
-	public void killed(ServerLevel serverWorld, LivingEntity entityLivingIn)
+	public boolean wasKilled(ServerLevel serverWorld, LivingEntity entityLivingIn)
 	{
-		super.killed(serverWorld, entityLivingIn);
+		boolean flag = super.wasKilled(serverWorld, entityLivingIn);
 
 		if ((serverWorld.getDifficulty() == Difficulty.NORMAL || serverWorld.getDifficulty() == Difficulty.HARD) && entityLivingIn instanceof Villager)
 		{
 			if (serverWorld.getDifficulty() != Difficulty.HARD && this.random.nextBoolean())
 			{
-				return;
+				return flag;
 			}
 
 			Villager villagerentity = (Villager)entityLivingIn;
@@ -235,7 +236,9 @@ public class Vampire extends Monster
 
 			serverWorld.addFreshEntity(vampirevillagerentity);
 			serverWorld.levelEvent((Player)null, 1026, this.blockPosition(), 0);
+			flag = false;
 		}
+		return flag;
 	}
 
 //	public boolean processInteract(Player player, Hand hand) {
@@ -265,7 +268,7 @@ public class Vampire extends Monster
 		spawnDataIn = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
 		float f = difficultyIn.getSpecialMultiplier();
 		this.setCanPickUpLoot(this.random.nextFloat() < 0.55F * f);
-
+		RandomSource source = worldIn.getRandom();
 		if (spawnDataIn instanceof Zombie.ZombieGroupData) {
 			Zombie.ZombieGroupData zombieentity$groupdata = (Zombie.ZombieGroupData)spawnDataIn;
 			if (zombieentity$groupdata.isBaby) {
@@ -286,8 +289,8 @@ public class Vampire extends Monster
 				}
 			}
 
-			this.populateDefaultEquipmentSlots(difficultyIn);
-			this.populateDefaultEquipmentEnchantments(difficultyIn);
+			this.populateDefaultEquipmentSlots(source, difficultyIn);
+			this.populateDefaultEquipmentEnchantments(source, difficultyIn);
 		}
 
 		if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {

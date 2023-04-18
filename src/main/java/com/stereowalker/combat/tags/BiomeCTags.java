@@ -15,4 +15,12 @@ public class BiomeCTags {
 	public static final TagKey<Biome> ACROTLEST_PORTAL = BiomeTags.create("combat:has_structure/acrotlest_portal");
 	public static final TagKey<Biome> OVERWORLD_PORTAL = BiomeTags.create("combat:has_structure/overworld_portal");
 	public static final TagKey<Biome> MAGIC_STONE_DEPOSIT = BiomeTags.create("combat:has_structure/magic_stone_deposit");
+	public static final TagKey<Biome> HAS_ORE_RUBY = BiomeTags.create("combat:has_feature/ore_ruby");
+	public static final TagKey<Biome> HAS_ORE_TRIDOX = BiomeTags.create("combat:has_feature/ore_tridox");
+	public static final TagKey<Biome> HAS_ORE_PASQUEM = BiomeTags.create("combat:has_feature/ore_pasquem");
+	public static final TagKey<Biome> HAS_ORE_LIMESTONE = BiomeTags.create("combat:has_feature/ore_limestone");
+	public static final TagKey<Biome> HAS_ORE_CASSITERITE = BiomeTags.create("combat:has_feature/ore_cassiterite");
+	public static final TagKey<Biome> HAS_ORE_TRIDOX_MAGIC = BiomeTags.create("combat:has_feature/ore_tridox_magic");
+	public static final TagKey<Biome> HAS_ORE_YELLOW_CLUSTER = BiomeTags.create("combat:has_feature/ore_yellow_cluster");
+	public static final TagKey<Biome> HAS_ORE_YELLOW_CLUSTER_MAGIC = BiomeTags.create("combat:has_feature/ore_yellow_cluster_magic");
 }

@@ -1,7 +1,6 @@
 package com.stereowalker.combat.core;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -101,6 +100,6 @@ public class EnergyUtils {
 	}
 	
 	public static Component getEnergyComponent(ItemStack stack, EnergyType energyType) {
-		return new TextComponent(getEnergy(stack, energyType)+" "+energyType.getAbbreviation());
+		return Component.literal(getEnergy(stack, energyType)+" "+energyType.getAbbreviation());
 	}
 }

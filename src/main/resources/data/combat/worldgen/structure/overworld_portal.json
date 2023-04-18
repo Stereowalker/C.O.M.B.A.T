@@ -1,0 +1,7 @@
+{
+  "type": "combat:acrotlest_portal",
+  "biomes": "#combat:has_structure/overworld_portal",
+  "variant": "acrotlest",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

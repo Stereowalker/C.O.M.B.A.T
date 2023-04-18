@@ -6,7 +6,6 @@ import com.stereowalker.combat.world.inventory.BackpackContainer;
 import com.stereowalker.combat.world.inventory.BackpackMenu;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -65,7 +64,7 @@ public class BackpackItem extends InventoryItem<BackpackContainer> implements Dy
 						count+=arrow2.getCount();
 					}
 				}
-				if (count != 0) tooltip.add(new TranslatableComponent(item.getDescriptionId()).append(" x"+count));
+				if (count != 0) tooltip.add(Component.translatable(item.getDescriptionId()).append(" x"+count));
 			}
 		}
 	}

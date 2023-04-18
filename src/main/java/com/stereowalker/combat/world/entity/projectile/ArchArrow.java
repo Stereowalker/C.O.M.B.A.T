@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,8 +19,8 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -120,10 +121,10 @@ public class ArchArrow extends AbstractArrow {
 	}
 
 	private void explode() {
-		this.level.explode(this, this.getX(), this.getY() + (double)(this.getBbHeight() / 16.0F), this.getZ(), 2.5F, true, Explosion.BlockInteraction.DESTROY);
+		this.level.explode(this, this.getX(), this.getY() + (double)(this.getBbHeight() / 16.0F), this.getZ(), 2.5F, true, ExplosionInteraction.TNT);
 	}
 	private void explodeTarget(LivingEntity target) {
-		this.level.explode(target, this.getX(), this.getY() + (double)(this.getBbHeight() / 16.0F), this.getZ(), 2.5F, true, Explosion.BlockInteraction.DESTROY);
+		this.level.explode(target, this.getX(), this.getY() + (double)(this.getBbHeight() / 16.0F), this.getZ(), 2.5F, true, ExplosionInteraction.TNT);
 	}
 
 //	public static boolean canIgnite(IWorld p_201825_0_, BlockPos p_201825_1_) {
@@ -194,7 +195,7 @@ public class ArchArrow extends AbstractArrow {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

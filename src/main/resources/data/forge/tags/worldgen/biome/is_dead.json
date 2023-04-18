@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "combat:dead_forest",
+    "combat:dead_plains",
+    "combat:hisov_sands"
+  ]
+}

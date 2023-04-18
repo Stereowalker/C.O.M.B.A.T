@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.client.model.BackpackModel;
 import com.stereowalker.combat.client.model.QuiverModel;
@@ -104,9 +104,9 @@ public class CuriosCompat {
 //							rotateWhenOnRight(matrixStack);
 //							matrixStack.translate(0.1D, 0,Minecraft.getInstance().gameSettings.mainHand == HumanoidArm.RIGHT ? -0.16D :  0.16D);
 							matrixStack.translate(-0.01D, 0.35D, 0.32D);
-							matrixStack.mulPose(Vector3f.YP.rotationDegrees(90));
-							matrixStack.mulPose(Vector3f.XP.rotationDegrees(30));
-							matrixStack.mulPose(Vector3f.ZN.rotationDegrees(10));
+							matrixStack.mulPose(Axis.YP.rotationDegrees(90));
+							matrixStack.mulPose(Axis.XP.rotationDegrees(30));
+							matrixStack.mulPose(Axis.ZN.rotationDegrees(10));
 							//Draw Bow
 							Minecraft.getInstance().getItemRenderer().renderStatic(quiverInventory.getAttachedBow(), ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer, 0);
 							matrixStack.popPose();
@@ -163,9 +163,9 @@ public class CuriosCompat {
 						ICurioRenderer.translateIfSneaking(matrixStack, livingEntity);
 						moveWhenSneaking(livingEntity, matrixStack);
 						rotateWhenOnRight(matrixStack);
-						matrixStack.translate(0.1D, 0,Minecraft.getInstance().options.mainHand == HumanoidArm.RIGHT ? -0.16D :  0.16D);
-						matrixStack.mulPose(Vector3f.YP.rotationDegrees(90));
-						matrixStack.mulPose(Vector3f.XN.rotationDegrees(20));
+						matrixStack.translate(0.1D, 0,Minecraft.getInstance().options.mainHand().get() == HumanoidArm.RIGHT ? -0.16D :  0.16D);
+						matrixStack.mulPose(Axis.YP.rotationDegrees(90));
+						matrixStack.mulPose(Axis.XN.rotationDegrees(20));
 						if (!sheathInventory.getSheathedSword().isEmpty()) {
 							//Draw Sword
 							Minecraft.getInstance().getItemRenderer().renderStatic(sheathInventory.getSheathedSword(), ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer, 0);
@@ -173,7 +173,7 @@ public class CuriosCompat {
 						float scale = 1.0f;
 						matrixStack.scale(scale+0.1f, scale+0.01f, scale+0.1f);
 						matrixStack.translate(0.003, 0.493, 0.065);
-						matrixStack.mulPose(Vector3f.XN.rotationDegrees(179));
+						matrixStack.mulPose(Axis.XN.rotationDegrees(179));
 						Minecraft.getInstance().getItemRenderer().renderStatic(sheath, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, light, OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer, 0);
 						matrixStack.popPose();
 					}
@@ -305,7 +305,7 @@ public class CuriosCompat {
 	@SuppressWarnings("resource")
 	@OnlyIn(Dist.CLIENT)
 	public static void rotateWhenOnRight(com.mojang.blaze3d.vertex.PoseStack stack) {
-		if (Minecraft.getInstance().options.mainHand == HumanoidArm.RIGHT) stack.mulPose(Vector3f.YN.rotationDegrees(180));
+		if (Minecraft.getInstance().options.mainHand().get() == HumanoidArm.RIGHT) stack.mulPose(Axis.YN.rotationDegrees(180));
 	}
 
 	public static ItemStack getSlotsForType(@Nonnull final LivingEntity livingEntity, String identifier, int slot) {

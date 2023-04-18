@@ -1,0 +1,5 @@
+{
+  "type": "combat:custom",
+  "biomes": "#combat:has_feature/ore_pasquem",
+  "feature": "combat:ore_pasquem"
+}

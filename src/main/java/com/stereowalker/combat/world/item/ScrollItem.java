@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
@@ -12,13 +11,11 @@ import com.stereowalker.combat.world.spellcraft.SpellStats;
 import com.stereowalker.combat.world.spellcraft.Spells;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -44,17 +41,6 @@ public class ScrollItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		addSpellTooltip(stack, tooltip, SpellUtil.getSpellFromItem(stack));
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group == CCreativeModeTab.MAGIC) {
-			for(Spell spell : CombatRegistries.SPELLS) {
-				if (spell != Spells.NONE && spell.getCategory().getClassType() == type) {
-					items.add(SpellUtil.addSpellToStack(new ItemStack(this), spell));
-				}
-			}
-		}
 	}
 
 	@Override

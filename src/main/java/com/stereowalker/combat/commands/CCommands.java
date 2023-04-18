@@ -13,12 +13,12 @@ import net.minecraft.commands.CommandSourceStack;
 public class CCommands {
 
 	public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
-		CastCommand.register(dispatcher);
+//		CastCommand.register(dispatcher);
 		AffinityCommand.register(dispatcher);
 		AllyCommand.register(dispatcher);
 		Combat.debug("Registered All Commands");
 		if (Combat.RPG_CONFIG.enableLevelingSystem) {
-			SkillCommand.register(dispatcher);
+//			SkillCommand.register(dispatcher);
 			LevelCommand.register(dispatcher);
 			Combat.debug("Registered All Commands for Rankup");
 		}

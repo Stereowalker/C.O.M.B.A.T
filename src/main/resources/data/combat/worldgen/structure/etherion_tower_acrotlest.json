@@ -1,0 +1,7 @@
+{
+  "type": "combat:etherion_tower",
+  "biomes": "#combat:has_structure/etherion_tower_acrotlest",
+  "variant": "acrotlest",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

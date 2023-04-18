@@ -1,21 +1,17 @@
 package com.stereowalker.rankup.network.protocol.game;
 
-import com.stereowalker.unionlib.network.PacketRegistry;
-
-import net.minecraftforge.network.simple.SimpleChannel;
+import com.stereowalker.unionlib.api.collectors.PacketCollector;
 
 
 public class RankupNetRegistry {
-	public static void registerMessages(SimpleChannel arg0) {
-		int netID = -101;
-		arg0.registerMessage(netID++, ClientboundPlayerStatsPacket.class, ClientboundPlayerStatsPacket::encode, ClientboundPlayerStatsPacket::decode, ClientboundPlayerStatsPacket::handle);
-		arg0.registerMessage(netID++, ClientboundPlayerSkillsPacket.class, ClientboundPlayerSkillsPacket::encode, ClientboundPlayerSkillsPacket::decode, ClientboundPlayerSkillsPacket::handle);
-		arg0.registerMessage(netID++, ClientboundStatManagerPacket.class, ClientboundStatManagerPacket::encode, ClientboundStatManagerPacket::decode, ClientboundStatManagerPacket::handle);
-		PacketRegistry.registerMessage(arg0, netID++, ServerboundUpgradeLevelsPacket.class, (packetBuffer) -> {return new ServerboundUpgradeLevelsPacket(packetBuffer);});
-		PacketRegistry.registerMessage(arg0, netID++, ServerboundActivateSkillPacket.class, (packetBuffer) -> {return new ServerboundActivateSkillPacket(packetBuffer);});
-		PacketRegistry.registerMessage(arg0, netID++, ClientboundPlayerJobsPacket.class, (packetBuffer) -> {return new ClientboundPlayerJobsPacket(packetBuffer);});
-		PacketRegistry.registerMessage(arg0, netID++, ClientboundEntityStatsPacket.class, (packetBuffer) -> {return new ClientboundEntityStatsPacket(packetBuffer);});
-		PacketRegistry.registerMessage(arg0, netID++, ClientboundPlayerLevelUpPacket.class, (packetBuffer) -> {return new ClientboundPlayerLevelUpPacket(packetBuffer);});
-		PacketRegistry.registerMessage(arg0, netID++, ClientboundPlayerDisplayStatPacket.class, (packetBuffer) -> {return new ClientboundPlayerDisplayStatPacket(packetBuffer);});
+	public static void registerMessages(PacketCollector collector) {
+		collector.registerPacket(ClientboundPlayerJobsPacket.class, (packetBuffer) -> {return new ClientboundPlayerJobsPacket(packetBuffer);});
+		collector.registerPacket(ClientboundEntityStatsPacket.class, (packetBuffer) -> {return new ClientboundEntityStatsPacket(packetBuffer);});
+		collector.registerPacket(ClientboundPlayerLevelUpPacket.class, (packetBuffer) -> {return new ClientboundPlayerLevelUpPacket(packetBuffer);});
+		collector.registerPacket(ClientboundPlayerStatsPacket.class, (packetBuffer) -> {return new ClientboundPlayerStatsPacket(packetBuffer);});
+		collector.registerPacket(ClientboundPlayerSkillsPacket.class, (packetBuffer) -> {return new ClientboundPlayerSkillsPacket(packetBuffer);});
+		collector.registerPacket(ClientboundStatManagerPacket.class, (packetBuffer) -> {return new ClientboundStatManagerPacket(packetBuffer);});
+		collector.registerPacket(ServerboundUpgradeLevelsPacket.class, (packetBuffer) -> {return new ServerboundUpgradeLevelsPacket(packetBuffer);});
+		collector.registerPacket(ServerboundActivateSkillPacket.class, (packetBuffer) -> {return new ServerboundActivateSkillPacket(packetBuffer);});
 	}
 }

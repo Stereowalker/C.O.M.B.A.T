@@ -1,6 +1,5 @@
 package com.stereowalker.combat.world.entity.monster;
 
-import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -16,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
@@ -60,7 +60,7 @@ public class ZombieCow extends Monster {
 	 *  
 	 * @param animal The animal entity to be spawned
 	 */
-	public static boolean canZombieCowSpawn(EntityType<? extends ZombieCow> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean canZombieCowSpawn(EntityType<? extends ZombieCow> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return worldIn.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK);
 	}
 
@@ -93,12 +93,12 @@ public class ZombieCow extends Monster {
 	}
 
 	@Override
-	protected int getExperienceReward(Player player) {
+	public int getExperienceReward() {
 		if (this.isBaby()) {
 			this.xpReward = (int)((float)this.xpReward * 2.5F);
 		}
 
-		return super.getExperienceReward(player);
+		return super.getExperienceReward();
 	}
 
 	/**
@@ -179,34 +179,32 @@ public class ZombieCow extends Monster {
 		if (compound.getBoolean("IsBaby")) {
 			this.setChild(true);
 		}
-
 	}
 
 	/**
 	 * This method gets called when the entity kills another one.
 	 */
 	@Override
-	public void killed(ServerLevel serverWorld, LivingEntity entityLivingIn) {
-		super.killed(serverWorld, entityLivingIn);
-		if ((serverWorld.getDifficulty() == Difficulty.NORMAL || serverWorld.getDifficulty() == Difficulty.HARD) && entityLivingIn instanceof Cow) {
-			if (serverWorld.getDifficulty() != Difficulty.HARD && this.random.nextBoolean()) {
-				return;
+	public boolean wasKilled(ServerLevel pLevel, LivingEntity pEntity) {
+		boolean flag = super.wasKilled(pLevel, pEntity);
+		if ((pLevel.getDifficulty() == Difficulty.NORMAL || pLevel.getDifficulty() == Difficulty.HARD) && pEntity instanceof Cow cow) {
+			if (pLevel.getDifficulty() != Difficulty.HARD && this.random.nextBoolean()) {
+				return flag;
 			}
 
-			Cow entityvillager = (Cow)entityLivingIn;
-			ZombieCow entityzombievillager = new ZombieCow(serverWorld);
-			entityzombievillager.copyPosition(entityvillager);
-			entityvillager.discard();
-			entityzombievillager.setChild(entityvillager.isBaby());
-			entityzombievillager.setNoAi(entityvillager.isNoAi());
-			if (entityvillager.hasCustomName()) {
-				entityzombievillager.setCustomName(entityvillager.getCustomName());
-				entityzombievillager.setCustomNameVisible(entityvillager.isCustomNameVisible());
+			ZombieCow entityzombievillager = cow.convertTo(CEntityType.ZOMBIE_COW, false);
+			if (entityzombievillager != null) {
+				entityzombievillager.setChild(cow.isBaby());
+				entityzombievillager.setNoAi(cow.isNoAi());
+				if (!this.isSilent()) {
+					pLevel.levelEvent((Player)null, 1026, this.blockPosition(), 0);
+				}
 			}
 
-			serverWorld.addFreshEntity(entityzombievillager);
-			serverWorld.levelEvent((Player)null, 1026, this.blockPosition(), 0);
+	            flag = false;
 		}
+
+	      return flag;
 
 	}
 

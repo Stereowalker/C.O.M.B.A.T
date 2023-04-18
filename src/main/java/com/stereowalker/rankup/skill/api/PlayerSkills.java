@@ -9,10 +9,8 @@ import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.world.job.JobEvents;
 
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +20,7 @@ public class PlayerSkills {
 	public static boolean hasSkill(LivingEntity entity, Skill skill) {
 		if(entity != null) {
 			CompoundTag compound = getRankSkillNBT(entity);
-			return compound.getBoolean(skill.getRegistryName().getPath());
+			return compound.getBoolean(CombatRegistries.SKILLS.get().getKey(skill).getPath());
 		}
 		return false;
 	}
@@ -30,7 +28,7 @@ public class PlayerSkills {
 	public static boolean isSkillActive(LivingEntity entity, Skill skill) {
 		if(entity != null && hasSkill(entity, skill)) {
 			CompoundTag compound = getRankSkillNBT(entity);
-			return compound.getBoolean("skill_active_"+skill.getRegistryName().getPath());
+			return compound.getBoolean("skill_active_"+CombatRegistries.SKILLS.get().getKey(skill).getPath());
 		}
 		return false;
 	}
@@ -50,12 +48,12 @@ public class PlayerSkills {
 	
 	public static void setSkill(Player player, Skill skill, boolean flag) {
 		CompoundTag compound = getRankSkillNBT(player);
-		compound.putBoolean(skill.getRegistryName().getPath(), flag);
+		compound.putBoolean(CombatRegistries.SKILLS.get().getKey(skill).getPath(), flag);
 	}
 	
 	public static void setSkillActive(Player player, Skill skill, boolean flag) {
 		CompoundTag compound = getRankSkillNBT(player);
-		compound.putBoolean("skill_active_"+skill.getRegistryName().getPath(), flag);
+		compound.putBoolean("skill_active_"+CombatRegistries.SKILLS.get().getKey(skill).getPath(), flag);
 	}
 
 	public static enum SkillGrantAction {
@@ -96,7 +94,7 @@ public class PlayerSkills {
 		} else {
 			if (reason != SkillGrantReason.NONE) setSkill(player, skill, true);
 			if (reason == SkillGrantReason.ITEM && player instanceof ServerPlayer) {
-				((ServerPlayer)player).getServer().getPlayerList().broadcastMessage(new TranslatableComponent("chat.skill.earned", player.getDisplayName(), JobEvents.jobDisplay(skill.getName(), skill.getDescription())), ChatType.SYSTEM, Util.NIL_UUID);
+				((ServerPlayer)player).getServer().getPlayerList().broadcastSystemMessage(Component.translatable("chat.skill.earned", player.getDisplayName(), JobEvents.jobDisplay(skill.getName(), skill.getDescription())), false);
 			}
 			return SkillGrantAction.SUCCESS;
 		}
@@ -110,7 +108,7 @@ public class PlayerSkills {
 			attemps++;
 			Combat.debug("Attempt "+attemps+" To Award Random Skill");
 			List<Skill> elegibleSkills = new ArrayList<Skill>();
-			for (Skill skill : CombatRegistries.SKILLS) {
+			for (Skill skill : CombatRegistries.SKILLS.get()) {
 				if (!hasSkill(player, skill)) {
 					elegibleSkills.add(skill);
 				}
@@ -127,7 +125,7 @@ public class PlayerSkills {
 			}
 			
 			action = grantSkill(player, elegibleSkills.get(randomNumber), reason);
-			Combat.debug("Tried to give player "+elegibleSkills.get(randomNumber).getRegistryName().getPath()+" skill. Resulted in "+action);
+			Combat.debug("Tried to give player "+CombatRegistries.SKILLS.get().getKey(elegibleSkills.get(randomNumber)).getPath()+" skill. Resulted in "+action);
 		}
 	}
 	
@@ -140,7 +138,7 @@ public class PlayerSkills {
 			attemps++;
 			Combat.debug("Attempt "+attemps+" To Award Random Skill");
 			List<Skill> elegibleSkills = new ArrayList<Skill>();
-			for (Skill skill : CombatRegistries.SKILLS) {
+			for (Skill skill : CombatRegistries.SKILLS.get()) {
 				if (!skill.isJobSkill() && !hasSkill(player, skill) && (onlyStartSkills?skill.isSpawnSkill():true)) {
 					elegibleSkills.add(skill);
 				}
@@ -153,7 +151,7 @@ public class PlayerSkills {
 			generatedSkill = elegibleSkills.get(randomNumber);
 			action = grantSkill(player, generatedSkill, SkillGrantReason.NONE);
 			Combat.debug("Size: "+elegibleSkills.size()+" Contains Empty: "+elegibleSkills.contains(Skills.EMPTY));
-			Combat.debug("Tried to generate "+elegibleSkills.get(randomNumber).getRegistryName().getPath()+" skill for player. Resulted in "+action);
+			Combat.debug("Tried to generate "+CombatRegistries.SKILLS.get().getKey(elegibleSkills.get(randomNumber)).getPath()+" skill for player. Resulted in "+action);
 			
 			if ((elegibleSkills.size() == 1 && elegibleSkills.contains(Skills.EMPTY)) || action == SkillGrantAction.SUCCESS) {
 				flag = true;
@@ -172,7 +170,7 @@ public class PlayerSkills {
 			return false;
 		} else {
 			setSkill(player, skill, false);
-			for (Skill subSkill : CombatRegistries.SKILLS) {
+			for (Skill subSkill : CombatRegistries.SKILLS.get()) {
 				if (subSkill.getSuperSkill() == skill) {
 					revokeSkill(player, subSkill);
 				}
@@ -188,11 +186,11 @@ public class PlayerSkills {
 		compound = getOrCreateRankSkillNBT(player);
 		String name = player.getScoreboardName();
 		if(player.isAlive()) {
-			for (Skill skill : CombatRegistries.SKILLS) {
-				if (!compound.contains(skill.getRegistryName().getPath())) {
+			for (Skill skill : CombatRegistries.SKILLS.get()) {
+				if (!compound.contains(CombatRegistries.SKILLS.get().getKey(skill).getPath())) {
 					setSkill(player, skill, false);
 					setSkillActive(player, skill, true);
-					Combat.debug("Set " + name + "'s "+skill.getRegistryName().getPath()+" skill to " + hasSkill(player, skill));
+					Combat.debug("Set " + name + "'s "+CombatRegistries.SKILLS.get().getKey(skill).getPath()+" skill to " + hasSkill(player, skill));
 				}
 			}
 			if(!compound.contains("StartingSkill")) {

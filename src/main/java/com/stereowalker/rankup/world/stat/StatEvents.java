@@ -7,8 +7,6 @@ import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
-import com.stereowalker.rankup.network.protocol.game.ClientboundEntityStatsPacket;
-import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerDisplayStatPacket;
 import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerLevelUpPacket;
 import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerStatsPacket;
 import com.stereowalker.rankup.network.protocol.game.ClientboundStatManagerPacket;
@@ -19,9 +17,9 @@ import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -31,7 +29,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
-import net.minecraftforge.network.NetworkDirection;
 
 public class StatEvents {
 
@@ -40,29 +37,25 @@ public class StatEvents {
 	}
 
 	public static void playerToClient(ServerPlayer player) {
-		Combat.getInstance().channel.sendTo(new ClientboundPlayerStatsPacket(player), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
-	}
-
-	public static void sendEntityToClient(ServerPlayer player, LivingEntity target) {
-		new ClientboundEntityStatsPacket(target).send(player);
+		new ClientboundPlayerStatsPacket(player).send(player);
 	}
 
 	public static void sendStatsToClient(ServerPlayer player) {
 		for (ResourceKey<Stat> stat : Rankup.statsManager.STATS.keySet()) {
-			Combat.getInstance().channel.sendTo(new ClientboundStatManagerPacket(stat.location(), Rankup.statsManager.STATS.get(stat)), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+			new ClientboundStatManagerPacket(stat.location(), Rankup.statsManager.STATS.get(stat)).send(player);
 		}
 	}
 
-	public static void restoreStats(Player player, Player original, boolean wasDeath) {
-		PlayerAttributeLevels.getOrCreateRankNBT(player);
-		if (player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || !wasDeath) {
-			PlayerAttributeLevels.setExperience(player, PlayerAttributeLevels.getExperience(original));
+	public static void restoreStats(Player thisPlayer, Player thatPlayer, boolean keepEverything) {
+		PlayerAttributeLevels.getOrCreateRankNBT(thisPlayer);
+		if (thisPlayer.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || keepEverything) {
+			PlayerAttributeLevels.setExperience(thisPlayer, PlayerAttributeLevels.getExperience(thatPlayer));
 		}
-		for (Entry<ResourceKey<Stat>, Stat> levels : player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).entrySet()) {
-			PlayerAttributeLevels.setStatProfile(player, levels.getKey(), PlayerAttributeLevels.getStatProfile(original, levels.getKey()));
+		for (Entry<ResourceKey<Stat>, Stat> levels : thisPlayer.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY).entrySet()) {
+			PlayerAttributeLevels.setStatProfile(thisPlayer, levels.getKey(), PlayerAttributeLevels.getStatProfile(thatPlayer, levels.getKey()));
 		}
-		PlayerAttributeLevels.setLevel(player, PlayerAttributeLevels.getLevel(original));
-		PlayerAttributeLevels.setUpgradePoints(player, PlayerAttributeLevels.getUpgradePoints(original));
+		PlayerAttributeLevels.setLevel(thisPlayer, PlayerAttributeLevels.getLevel(thatPlayer));
+		PlayerAttributeLevels.setUpgradePoints(thisPlayer, PlayerAttributeLevels.getUpgradePoints(thatPlayer));
 	}
 
 	public static int getExperienceCost(int level) {
@@ -85,8 +78,7 @@ public class StatEvents {
 
 	public static void levelUp(LivingEntity player, boolean sendMessage) {
 		PlayerAttributeLevels.addLevel(player);
-		if (sendMessage) new ClientboundPlayerLevelUpPacket(PlayerAttributeLevels.getLevel(player)).send((ServerPlayer)player);
-		MutableComponent upText = new TextComponent("You are now at Level "+PlayerAttributeLevels.getLevel(player)+" and have recieved [").withStyle(ChatFormatting.AQUA);
+		MutableComponent upText = Component.literal("You are now at Level "+PlayerAttributeLevels.getLevel(player)+" and have recieved [").withStyle(ChatFormatting.AQUA);
 		int upPoints = 0;
 		Registry<Stat> registry = player.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
 		for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
@@ -100,16 +92,16 @@ public class StatEvents {
 
 			if (Combat.RPG_CONFIG.levelUpType == LevelType.ASSIGN_POINTS) {
 				PlayerAttributeLevels.addStatPoints(player, stat.getKey(), i);
-				upText.append(new TranslatableComponent(Util.makeDescriptionId("stat", stat.getKey().location())).append("+"+i).withStyle(ChatFormatting.GREEN)).append(", ");
+				upText.append(Component.translatable(Util.makeDescriptionId("stat", stat.getKey().location())).append("+"+i).withStyle(ChatFormatting.GREEN)).append(", ");
 			} else {
 				upPoints += Rankup.statsManager.STATS.get(stat.getKey()).getUpgradePointsPerLevel();
 			}
 		}
 		if (Combat.RPG_CONFIG.levelUpType == LevelType.UPGRADE_POINTS) {
 			PlayerAttributeLevels.addUpgradePoints(player, upPoints);
-			upText.append(new TextComponent("Upgrade Points +"+upPoints).withStyle(ChatFormatting.GREEN));
+			upText.append(Component.literal("Upgrade Points +"+upPoints).withStyle(ChatFormatting.GREEN));
 		}
-		if (sendMessage) new ClientboundPlayerDisplayStatPacket(upText.append("]").withStyle(ChatFormatting.AQUA)).send((ServerPlayer)player);
+		if (sendMessage) new ClientboundPlayerLevelUpPacket(PlayerAttributeLevels.getLevel(player), upText.append("]").withStyle(ChatFormatting.AQUA)).send((ServerPlayer)player);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -145,8 +137,8 @@ public class StatEvents {
 					}
 				}
 
-				statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
-
+				statSettings.getAttributeMap().forEach((attributeKey, modifierPerPoint) -> {
+					Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(attributeKey);
 					
 					double baseValue = modifierPerPoint.doubleValue() * addition;
 
@@ -178,10 +170,10 @@ public class StatEvents {
 				Attribute attribute = registry.get(stat).getBaseAttribute();
 				if (Rankup.statsManager.STATS.get(stat) != null) {
 					if (attribute != null
-							&& Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(attribute) 
+							&& Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(BuiltInRegistries.ATTRIBUTE.getKey(attribute)) 
 							&& DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
 						double baseValue = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute);
-						return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(attribute));
+						return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(BuiltInRegistries.ATTRIBUTE.getKey(attribute)));
 					}
 				} else {
 					Combat.debug(stat+"' settings are not set");
@@ -194,6 +186,7 @@ public class StatEvents {
 	}
 
 	public static void initializeAllStats(LivingEntity entity) {
+		System.out.println("ADUWA PLEASE");
 		Registry<Stat> registry = entity.getLevel().registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY);
 		for (Entry<ResourceKey<Stat>, Stat> stat : registry.entrySet()) {
 			StatSettings statSettings = Rankup.statsManager.STATS.get(stat.getKey());
@@ -203,7 +196,7 @@ public class StatEvents {
 				statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
 
 					double baseValue = modifierPerPoint.doubleValue() * points;
-					stat.getValue().init(entity, attribute, baseValue, points);
+					stat.getValue().getType().init(entity, BuiltInRegistries.ATTRIBUTE.get(attribute), baseValue, points);
 				});
 			else
 				Combat.debug(stat+"' settings are not set");

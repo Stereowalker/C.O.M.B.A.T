@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -87,12 +86,12 @@ public class CardboardBoxBlockEntity extends RandomizableContainerBlockEntity im
 
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent("container." + getNameString());
+		return Component.translatable("container." + getNameString());
 	}
 
 	@Override
 	protected Component getDefaultName() {
-		return new TranslatableComponent(this.hasCustomName() ? this.customName : "container.cardboard_box");
+		return Component.translatable(this.hasCustomName() ? this.customName : "container.cardboard_box");
 	}
 
 	@Override

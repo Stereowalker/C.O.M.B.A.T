@@ -1,0 +1,7 @@
+{
+  "type": "combat:acrotlest_mineshaft",
+  "biomes": "#combat:has_structure/acrotlest_mineshaft_normal",
+  "mineshaft_type": "normal",
+  "spawn_overrides": {},
+  "step": "underground_structures"
+}

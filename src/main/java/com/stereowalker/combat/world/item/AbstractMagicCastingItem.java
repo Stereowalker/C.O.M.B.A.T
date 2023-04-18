@@ -21,7 +21,6 @@ import com.stereowalker.combat.world.spellcraft.Spells;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -198,7 +197,7 @@ public abstract class AbstractMagicCastingItem extends Item implements Vanishabl
 		String m = getCostModifier() >= 0 ? "+" : "-"; 
 		ChatFormatting f = getCostModifier() >= 0 ? ChatFormatting.RED : ChatFormatting.GREEN; 
 		int cost = (int) (Mth.abs((float) getCostModifier())*10000);
-		tooltip.add(new TranslatableComponent(m+(float)(cost/(100.0F))+"% Mana Cost").withStyle(f));
+		tooltip.add(Component.translatable(m+(float)(cost/(100.0F))+"% Mana Cost").withStyle(f));
 	}
 
 

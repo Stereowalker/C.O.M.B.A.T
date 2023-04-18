@@ -1,15 +1,14 @@
 package com.stereowalker.combat.mixinhooks;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
-import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.client.renderer.CRenderType;
+import com.stereowalker.combat.tags.BlockCTags;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
 import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.item.LegendaryGear;
@@ -19,7 +18,6 @@ import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
 import com.stereowalker.old.combat.config.Config;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
-import com.stereowalker.unionlib.util.RegistryHelper;
 import com.stereowalker.unionlib.util.math.UnionMathHelper;
 
 import net.minecraft.client.Minecraft;
@@ -33,6 +31,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -169,7 +168,7 @@ public class CombatHooks {
 		if (stack.isCorrectToolForDrops(state)) {
 			isValidTool = true;
 		}
-		if (entityIn instanceof Player && PlayerSkills.hasSkill((Player) entityIn, Skills.TREASURE_HUNTER) && UnionMathHelper.probabilityCheck(100) && RegistryHelper.listContainsRegisteredEntry(Combat.MAGIC_CONFIG.treasureHuntingBlocks, state.getBlock()) && isValidTool) {
+		if (entityIn instanceof Player && PlayerSkills.hasSkill((Player) entityIn, Skills.TREASURE_HUNTER) && UnionMathHelper.probabilityCheck(100) && state.is(BlockCTags.TREASURE_HUNTABLE) && isValidTool) {
 			int i = 3;
 			int j = 3;
 			int k = 30;
@@ -192,7 +191,7 @@ public class CombatHooks {
 		}
 	}
 
-	public static ItemStack randomlyEnchantAndDamage(Random random, Item item, int minDamage, int maxDamage, int level, boolean allowTreasure) {
+	public static ItemStack randomlyEnchantAndDamage(RandomSource random, Item item, int minDamage, int maxDamage, int level, boolean allowTreasure) {
 		ItemStack stack = EnchantmentHelper.enchantItem(random, new ItemStack(item), level, allowTreasure);
 		int damage = random.nextInt(item.getMaxDamage(stack));
 		int max = item.getMaxDamage(stack)-maxDamage;

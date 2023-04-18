@@ -91,7 +91,7 @@ public class MythrilChargerBlock extends BaseEntityBlock {
 			if(tile == null) {
 			}
 			if(tile instanceof MythrilChargerBlockEntity) {
-				NetworkHooks.openGui((ServerPlayer)player, (MythrilChargerBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
+				NetworkHooks.openScreen((ServerPlayer)player, (MythrilChargerBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
 			}
 		}
 		return InteractionResult.SUCCESS;

@@ -321,7 +321,7 @@ public class CSurfaceRuleData {
 		SurfaceRules.RuleSource arules$rulesource3 = 
 				SurfaceRules.sequence(
 						SurfaceRules.ifTrue(
-								SurfaceRules.isBiome(CBiomes.HISOV_SANDS_BI), homse));
+								SurfaceRules.isBiome(CBiomes.HISOV_SANDS), homse));
 		
 		SurfaceRules.RuleSource arules$rulesource6 = 
 				SurfaceRules.sequence(
@@ -357,7 +357,7 @@ public class CSurfaceRuleData {
 												SurfaceRules.UNDER_FLOOR, arules$rulesource6), 
 										SurfaceRules.ifTrue(surfacerules$conditionsource12, 
 												SurfaceRules.ifTrue(SurfaceRules.DEEP_UNDER_FLOOR, HOMSE_STONE)), 
-										SurfaceRules.ifTrue(SurfaceRules.isBiome(CBiomes.HISOV_SANDS_BI), 
+										SurfaceRules.ifTrue(SurfaceRules.isBiome(CBiomes.HISOV_SANDS), 
 												SurfaceRules.ifTrue(SurfaceRules.VERY_DEEP_UNDER_FLOOR, HOMSE_STONE))))
 						);
 	}

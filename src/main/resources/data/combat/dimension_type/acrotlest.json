@@ -12,6 +12,14 @@
   	"logical_height": 496,
 	"infiniburn": "#minecraft:infiniburn_overworld",
 	"effects": "combat:acrotlest",
-  	"min_y": -192,
-  	"height": 496
+  	"min_y": -256,
+  	"height": 496,
+	"monster_spawn_block_light_limit": 0,
+	"monster_spawn_light_level": {
+		"type": "minecraft:uniform",
+		"value": {
+			"max_inclusive": 7,
+			"min_inclusive": 0
+		}
+	}
 }

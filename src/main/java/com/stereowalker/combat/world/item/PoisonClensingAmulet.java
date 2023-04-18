@@ -1,10 +1,9 @@
 package com.stereowalker.combat.world.item;
 
-import com.stereowalker.unionlib.entity.AccessorySlot.Group;
+import com.stereowalker.unionlib.world.entity.AccessorySlot.Group;
 import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +24,7 @@ public class PoisonClensingAmulet extends AccessoryItem {
 
 	@Override
 	public Component accessoryInformation() {
-		return new TranslatableComponent("Cleanses the wearer of the poison effect");
+		return Component.translatable("Cleanses the wearer of the poison effect");
 	}
 
 }

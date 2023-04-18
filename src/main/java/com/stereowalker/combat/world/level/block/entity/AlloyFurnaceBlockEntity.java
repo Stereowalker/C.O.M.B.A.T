@@ -18,7 +18,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -117,7 +116,7 @@ public class AlloyFurnaceBlockEntity extends BaseContainerBlockEntity implements
 
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent("container." + getNameString());
+		return Component.translatable("container." + getNameString());
 	}
 
 	@Override
@@ -192,7 +191,7 @@ public class AlloyFurnaceBlockEntity extends BaseContainerBlockEntity implements
 
 	@Override
 	protected Component getDefaultName() {
-		return new TranslatableComponent(this.hasCustomName() ? this.customName : "container.alloy_furnace");
+		return Component.translatable(this.hasCustomName() ? this.customName : "container.alloy_furnace");
 	}
 
 	public String getNameString() {
@@ -232,13 +231,13 @@ public class AlloyFurnaceBlockEntity extends BaseContainerBlockEntity implements
 					pBlockEntity.recipesUsed = pBlockEntity.burnTime;
 					if (pBlockEntity.isBurning()) {
 						flag1 = true;
-						if (itemstack.hasContainerItem())
-							pBlockEntity.items.set(3, itemstack.getContainerItem());
+						if (itemstack.hasCraftingRemainingItem())
+							pBlockEntity.items.set(3, itemstack.getCraftingRemainingItem());
 						else
 							if (!itemstack.isEmpty()) {
 								itemstack.shrink(1);
 								if (itemstack.isEmpty()) {
-									pBlockEntity.items.set(3, itemstack.getContainerItem());
+									pBlockEntity.items.set(3, itemstack.getCraftingRemainingItem());
 								}
 							}
 					}

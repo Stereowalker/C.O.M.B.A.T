@@ -1,0 +1,26 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 53060063,
+    "separation": 95,
+    "spacing": 190
+  },
+  "structures": [
+    {
+      "structure": "combat:etherion_tower",
+      "weight": 1
+    },
+    {
+      "structure": "combat:etherion_tower_acrotlest",
+      "weight": 1
+    },
+    {
+      "structure": "combat:etherion_tower_badlands",
+      "weight": 1
+    },
+    {
+      "structure": "combat:etherion_tower_desert",
+      "weight": 1
+    }
+  ]
+}

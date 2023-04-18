@@ -4,20 +4,17 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.rankup.skill.api.SkillUtil;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -57,17 +54,6 @@ public class SkillRunestoneItem extends Item {
 		}
 		else {
 			return false;
-		}
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (this.allowdedIn(group)) {
-			for(Skill spell : CombatRegistries.SKILLS) {
-				if (spell != Skills.EMPTY) {
-					items.add(SkillUtil.addSkillToItemStack(new ItemStack(this), spell));
-				}
-			}
 		}
 	}
 

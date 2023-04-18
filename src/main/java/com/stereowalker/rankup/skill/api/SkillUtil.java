@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class SkillUtil {
 	public static Skill getSkillFromName(String name) {
-		for(Skill skill : CombatRegistries.SKILLS) {
+		for(Skill skill : CombatRegistries.SKILLS.get()) {
 			if(skill.getKey().contentEquals(name)) {
 				return skill;
 			}

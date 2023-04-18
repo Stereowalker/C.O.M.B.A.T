@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
@@ -108,7 +107,7 @@ public class DisenchantmentTableBlockEntity extends BlockEntity implements Namea
 
 	@Override
 	public Component getName() {
-		return (Component)(this.name != null ? this.name : new TranslatableComponent("container.enchant"));
+		return (Component)(this.name != null ? this.name : Component.translatable("container.enchant"));
 	}
 
 	public void setCustomName(@Nullable Component pName) {

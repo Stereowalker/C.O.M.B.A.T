@@ -1,0 +1,5 @@
+{
+  "type": "combat:custom",
+  "biomes": "#combat:has_feature/ore_limestone",
+  "feature": "combat:ore_limestone"
+}

@@ -26,7 +26,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -36,7 +36,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkDirection;
 
 public class CombatEntityStats {
 	public static String manaID = "Mana";
@@ -453,7 +452,7 @@ public class CombatEntityStats {
 						Combat.debug("A "+AbominationType.byId(abominationRand)+" TYPE ABOMINATION SPAWNED");
 						if (isRareAbomination)Combat.debug("THIS ONE IS A RARE");
 						String apendedName = isRareAbomination ? "Rare Abomination" : "Abomination";
-						monster.setCustomName(new TextComponent(apendedName+" ").append(monster.getName()));
+						monster.setCustomName(Component.literal(apendedName+" ").append(monster.getName()));
 						double defaultValue = isRareAbomination ? 5.0D : 2.5D;
 						double enhancedValue = isRareAbomination ? 10.0D : 6.0D;
 						if (!AbominationType.byId(abominationRand).equals(AbominationType.NORMAL)) {
@@ -472,7 +471,7 @@ public class CombatEntityStats {
 					List<Player> visiblePlayers = monster.level.getEntitiesOfClass(Player.class, new AABB(monster.blockPosition().relative(Direction.NORTH, visualRadius).relative(Direction.WEST, visualRadius).relative(Direction.UP, visualRadius), monster.blockPosition().relative(Direction.SOUTH, visualRadius).relative(Direction.EAST, visualRadius).relative(Direction.DOWN, visualRadius)));
 					for (Player player : monster.level.players()) {
 						if (visiblePlayers.contains(player)) {
-							Combat.getInstance().channel.sendTo(new ClientboundAbominationPacket(monster.getRandomX(0.5D), monster.getRandomY() - 0.25D, monster.getRandomZ(0.5D)), ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+							new ClientboundAbominationPacket(monster.getRandomX(0.5D), monster.getRandomY() - 0.25D, monster.getRandomZ(0.5D)).send(((ServerPlayer) player));
 						}
 					}
 				}

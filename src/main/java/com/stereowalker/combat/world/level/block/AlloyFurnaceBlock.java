@@ -59,7 +59,7 @@ public class AlloyFurnaceBlock extends BaseEntityBlock {
 			if(tile == null) {
 			}
 			if(tile instanceof AlloyFurnaceBlockEntity) {
-				NetworkHooks.openGui((ServerPlayer)player, (AlloyFurnaceBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
+				NetworkHooks.openScreen((ServerPlayer)player, (AlloyFurnaceBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
 			}
 		}
 		return InteractionResult.SUCCESS;

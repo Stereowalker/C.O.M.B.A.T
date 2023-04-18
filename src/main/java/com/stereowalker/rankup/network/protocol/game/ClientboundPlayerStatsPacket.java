@@ -1,59 +1,44 @@
 package com.stereowalker.rankup.network.protocol.game;
 
-import java.util.UUID;
-import java.util.function.Supplier;
-
+import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
+import com.stereowalker.unionlib.network.protocol.game.ClientboundUnionPacket;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
 
-public class ClientboundPlayerStatsPacket {
+public class ClientboundPlayerStatsPacket extends ClientboundUnionPacket {
 	private CompoundTag stats;
-	private UUID uuid;
 	
-	public ClientboundPlayerStatsPacket(final CompoundTag statsIn, final UUID uuid) {
+	public ClientboundPlayerStatsPacket(final CompoundTag statsIn) {
+		super(Combat.getInstance().channel);
 		this.stats = statsIn;
-		this.uuid = uuid;
 	}
 	
 	public ClientboundPlayerStatsPacket(final ServerPlayer player){
-		this(PlayerAttributeLevels.getRankNBT(player), player.getUUID());
+		this(PlayerAttributeLevels.getRankNBT(player));
 	}
 	
-	public static void encode(final ClientboundPlayerStatsPacket msg, final FriendlyByteBuf packetBuffer) {
-		packetBuffer.writeNbt(msg.stats);
-		packetBuffer.writeLong(msg.uuid.getMostSignificantBits());
-        packetBuffer.writeLong(msg.uuid.getLeastSignificantBits());
+	public ClientboundPlayerStatsPacket(FriendlyByteBuf packetBuffer) {
+		super(packetBuffer, Combat.getInstance().channel);
+		this.stats = packetBuffer.readNbt();
 	}
 	
-	public static ClientboundPlayerStatsPacket decode(final FriendlyByteBuf packetBuffer) {
-		return new ClientboundPlayerStatsPacket(packetBuffer.readNbt(), new UUID(packetBuffer.readLong(), packetBuffer.readLong()));
+	@Override
+	public void encode(final FriendlyByteBuf packetBuffer) {
+		packetBuffer.writeNbt(this.stats);
 	}
 	
-	@SuppressWarnings("deprecation")
-	public static void handle(final ClientboundPlayerStatsPacket msg, final Supplier<NetworkEvent.Context> contextSupplier) {
-		final NetworkEvent.Context context = contextSupplier.get();
-		context.enqueueWork(() -> DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-			final CompoundTag stats = msg.stats;
-			final UUID uuid = msg.uuid;
-			update(stats, uuid);
-		}));
-		context.setPacketHandled(true);
-	}
-	
-	@SuppressWarnings("resource")
+	@Override
 	@OnlyIn(Dist.CLIENT)
-	public static void update(final CompoundTag stats, final UUID uuid) {
-		if (uuid.equals(Player.createPlayerUUID(Minecraft.getInstance().player.getGameProfile()))) {
-			PlayerAttributeLevels.setRankNBT(stats, Minecraft.getInstance().player);
+	public boolean handleOnClient(LocalPlayer player) {
+		if (player != null) {
+			PlayerAttributeLevels.setRankNBT(stats, player);
 		}
+		return true;
 	}
 }

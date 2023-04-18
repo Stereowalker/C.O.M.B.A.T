@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
-public class ArcaneConversionRecipeSerializer<T extends AbstractArcaneWorkbenchRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
+public class ArcaneConversionRecipeSerializer<T extends AbstractArcaneWorkbenchRecipe> implements RecipeSerializer<T> {
 	private final int inputs;
 	private final ArcaneConversionRecipeSerializer.IFactory<T> factory;
 

@@ -1,6 +1,6 @@
 package com.stereowalker.combat.world.level.material;
 
-import java.util.Random;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
@@ -10,12 +10,16 @@ import com.stereowalker.combat.tags.CTags.FluidCTags;
 import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -29,9 +33,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.fluids.FluidType;
 
 public abstract class BiableFluid extends FlowingFluid {
 	@Override
@@ -51,7 +58,7 @@ public abstract class BiableFluid extends FlowingFluid {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(Level worldIn, BlockPos pos, FluidState state, Random random) {
+	public void animateTick(Level worldIn, BlockPos pos, FluidState state, RandomSource random) {
 		if (!state.isSource() && !state.getValue(FALLING)) {
 			if (random.nextInt(64) == 0) {
 				worldIn.playLocalSound((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);
@@ -62,16 +69,67 @@ public abstract class BiableFluid extends FlowingFluid {
 
 	}
 
-	@Override
-	protected FluidAttributes createAttributes() {
-		return net.minecraftforge.fluids.FluidAttributes.builder(
-				Combat.getInstance().location("block/biable_still"),
-				Combat.getInstance().location("block/biable_flow"))
-                .overlay(Combat.getInstance().location("block/biable_overlay"))
-                .translationKey("block.combat.biable")
-                .build(this);
-	}
+	public static final FluidType TYPE = new FluidType(FluidType.Properties.create()
+            .descriptionId("block.combat.biable")
+            .fallDistanceModifier(0F)
+            .canExtinguish(true)
+            .canConvertToSource(true)
+            .supportsBoating(true)
+            .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+            .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+            .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
+            .canHydrate(true)
+			.density(10)
+			//.luminosity(1)
+			//.color(0xff000000+Survive.PURIFIED_WATER_COLOR)
+			.viscosity(10))
+    {
+        @Override
+        public @Nullable BlockPathTypes getBlockPathType(FluidState state, BlockGetter level, BlockPos pos, @Nullable Mob mob, boolean canFluidLog)
+        {
+            return canFluidLog ? super.getBlockPathType(state, level, pos, mob, true) : null;
+        }
 
+        @Override
+        public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer)
+        {
+            consumer.accept(new IClientFluidTypeExtensions()
+            {
+                private static final ResourceLocation UNDERWATER_LOCATION = new ResourceLocation("textures/misc/underwater.png");
+
+                @Override
+                public ResourceLocation getStillTexture()
+                {
+                    return Combat.getInstance().location("block/biable_still");
+                }
+
+                @Override
+                public ResourceLocation getFlowingTexture()
+                {
+                    return Combat.getInstance().location("block/biable_flow");
+                }
+
+                @Nullable
+                @Override
+                public ResourceLocation getOverlayTexture()
+                {
+                    return Combat.getInstance().location("block/biable_overlay");
+                }
+
+                @Override
+                public ResourceLocation getRenderOverlayTexture(Minecraft mc)
+                {
+                    return UNDERWATER_LOCATION;
+                }
+            });
+        }
+    };
+    
+    @Override
+    public FluidType getFluidType() {
+    	return TYPE;
+    }
+    
 	@Nullable
 	@OnlyIn(Dist.CLIENT)
 	public ParticleOptions getDripParticleData() {
@@ -79,7 +137,7 @@ public abstract class BiableFluid extends FlowingFluid {
 	}
 
 	@Override
-	protected boolean canConvertToSource() {
+	protected boolean canConvertToSource(Level level) {
 		return false;
 	}
 

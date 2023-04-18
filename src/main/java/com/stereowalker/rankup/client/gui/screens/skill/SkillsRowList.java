@@ -10,6 +10,7 @@ import com.stereowalker.rankup.network.protocol.game.ServerboundActivateSkillPac
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.unionlib.client.gui.components.OverlayImageButton;
+import com.stereowalker.unionlib.util.ScreenHelper;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -24,8 +25,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -55,20 +54,20 @@ public class SkillsRowList extends PlayerStatusRowList<SkillsRowList.Row> {
 		Button upgradeButton;
 		upgradeButton = new OverlayImageButton(0, 0, 30, 30, 0, 0, 30, 30, isEnabled && skill != null ? skill.getButtonTexture() : skill.getLockedButtonTexture(), 30, 30, (p_213088_1_) -> {
 
-		}, new TextComponent(""));
+		}, Component.literal(""));
 		upgradeButton.active = false;
 		return upgradeButton;
 	}
 
 	public Button activateSkill(Skill skill) {
 		if (skill.isActiveSkill()) {
-			return new Button(0, 0, 60, 20, new TextComponent("Activate"), (p_214328_1_) -> {
+			return ScreenHelper.buttonBuilder(Component.literal("Activate"), (p_214328_1_) -> {
 				new ServerboundActivateSkillPacket(skill).send();
-			});
+			}).bounds(0, 0, 60, 20).build();
 		} else {
 			Button upgradeButton;
-			upgradeButton = new Button(0, 0, 60, 20, new TextComponent("Passive"), (p_214328_1_) -> {
-			});
+			upgradeButton = ScreenHelper.buttonBuilder(Component.literal("Passive"), (p_214328_1_) -> {
+			}).bounds(0, 0, 60, 20).build();
 			upgradeButton.active = false;
 			return upgradeButton;
 		}
@@ -101,21 +100,21 @@ public class SkillsRowList extends PlayerStatusRowList<SkillsRowList.Row> {
 			Player player = SkillsRowList.this.minecraft.player;
 			final int hoverY = index == 0 ? Math.max(top+15, mouseY) : mouseY;
 			final int hoverX = Math.min(left+(width/2), mouseX);
-			this.widgets.get(0).x = left;
-			this.widgets.get(1).x = left+width - 80;
+			ScreenHelper.setWidgetX(this.widgets.get(0), left);
+			ScreenHelper.setWidgetX(this.widgets.get(1), left+width - 80);
 
-			List<FormattedText> cpmos = this.findOptimalLines(ComponentUtils.mergeStyles(new TranslatableComponent(skill.getTranslationKey()+".desc"), Style.EMPTY.withColor(ChatFormatting.GOLD)), Mth.ceil((float)width*0.75f));
+			List<FormattedText> cpmos = this.findOptimalLines(ComponentUtils.mergeStyles(Component.translatable(skill.getTranslationKey()+".desc"), Style.EMPTY.withColor(ChatFormatting.GOLD)), Mth.ceil((float)width*0.75f));
 
 			if (skill.isActiveSkill()) 
 				if (PlayerSkills.isSkillActive(player, skill))
-					this.widgets.get(1).setMessage(new TextComponent("Deactivate").withStyle(ChatFormatting.RED));
+					this.widgets.get(1).setMessage(Component.literal("Deactivate").withStyle(ChatFormatting.RED));
 				else
-					this.widgets.get(1).setMessage(new TextComponent("Activate").withStyle(ChatFormatting.GREEN));
+					this.widgets.get(1).setMessage(Component.literal("Activate").withStyle(ChatFormatting.GREEN));
 			else
-				this.widgets.get(1).setMessage(new TextComponent("Passive").withStyle(ChatFormatting.BLUE));
+				this.widgets.get(1).setMessage(Component.literal("Passive").withStyle(ChatFormatting.BLUE));
 
 			this.widgets.forEach((widget) -> {
-				widget.y = top + 20 - (widget.getHeight()/2);
+				ScreenHelper.setWidgetY(widget, top + 20 - (widget.getHeight()/2));
 			});
 			this.widgets.get(0).render(matrixStack, mouseX, mouseY, partialTicks);
 			this.widgets.get(1).render(matrixStack, mouseX, mouseY, partialTicks);

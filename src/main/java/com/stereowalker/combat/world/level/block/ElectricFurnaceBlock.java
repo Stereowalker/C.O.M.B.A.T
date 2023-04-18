@@ -1,7 +1,5 @@
 package com.stereowalker.combat.world.level.block;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import com.stereowalker.combat.world.level.block.entity.CBlockEntityType;
@@ -14,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -52,7 +51,7 @@ public class ElectricFurnaceBlock extends AbstractElectricFurnaceBlock {
 			if(tile == null) {
 			}
 			if(tile instanceof ElectricFurnaceBlockEntity) {
-				NetworkHooks.openGui((ServerPlayer)player, (ElectricFurnaceBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
+				NetworkHooks.openScreen((ServerPlayer)player, (ElectricFurnaceBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
 			}
 		}
 		return InteractionResult.SUCCESS;
@@ -70,7 +69,7 @@ public class ElectricFurnaceBlock extends AbstractElectricFurnaceBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		if (stateIn.getValue(LIT)) {
 			double d0 = (double)pos.getX() + 0.5D;
 			double d1 = (double)pos.getY();

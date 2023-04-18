@@ -2,21 +2,21 @@ package com.stereowalker.combat.api.world.spellcraft;
 
 import java.util.Random;
 
+import com.stereowalker.combat.api.registries.CombatRegistries;
+
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public abstract class Spell extends ForgeRegistryEntry<Spell>{
+public abstract class Spell {
 	public Random rand;
 	private String translationKey;
 	private SpellCategory category;
@@ -47,7 +47,7 @@ public abstract class Spell extends ForgeRegistryEntry<Spell>{
 	}
 
 	public MutableComponent getKnownName() {
-		return new TranslatableComponent(this.getTranslationKey());
+		return Component.translatable(this.getTranslationKey());
 	}
 	
 	public MutableComponent getKnownColoredName() {
@@ -66,7 +66,7 @@ public abstract class Spell extends ForgeRegistryEntry<Spell>{
 
 	protected String getDefaultTranslationKey() {
 		if (this.translationKey == null) {
-			this.translationKey = Util.makeDescriptionId("spell", this.getRegistryName());
+			this.translationKey = Util.makeDescriptionId("spell", CombatRegistries.SPELLS.getKey(this));
 		}
 
 		return this.translationKey;
@@ -130,11 +130,11 @@ public abstract class Spell extends ForgeRegistryEntry<Spell>{
 	}
 
 	public String toString() {
-		return this.getRegistryName().getPath() + " " + this.getCategory().getName()+" "+this.getRank().getName();
+		return CombatRegistries.SPELLS.getKey(this).getPath() + " " + this.getCategory().getName()+" "+this.getRank().getName();
 	}
 
 	public Component getDescription() {
-		return new TranslatableComponent(this.getDefaultTranslationKey()+".desc");
+		return Component.translatable(this.getDefaultTranslationKey()+".desc");
 	}
 
 	public static enum CastType {

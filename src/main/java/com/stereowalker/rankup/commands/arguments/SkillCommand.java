@@ -13,7 +13,7 @@ import com.stereowalker.rankup.skill.api.Skill;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public class SkillCommand {
@@ -47,15 +47,15 @@ public class SkillCommand {
 		}
 		if (i == 0) {
 			if (players.size() == 1) {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.skill.grant."+action.getName()+".single", players.iterator().next().getDisplayName(), skill.getName(), skill.getSuperSkill().getName())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.skill.grant."+action.getName()+".single", players.iterator().next().getDisplayName(), skill.getName(), skill.getSuperSkill().getName())).create();
 			} else {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.skill.grant.failed.multiple", skill.getName(), players.size())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.skill.grant.failed.multiple", skill.getName(), players.size())).create();
 			}
 		} else {
 			if (players.size() == 1) {
-				source.sendSuccess(new TranslatableComponent("commands.skill.grant."+action.getName()+".single", players.iterator().next().getDisplayName(), skill.getName(), skill.getSuperSkill().getName()), true);
+				source.sendSuccess(Component.translatable("commands.skill.grant."+action.getName()+".single", players.iterator().next().getDisplayName(), skill.getName(), skill.getSuperSkill().getName()), true);
 			} else {
-				source.sendSuccess(new TranslatableComponent("commands.skill.grant.success.multiple", skill.getName(), players.size()), true);
+				source.sendSuccess(Component.translatable("commands.skill.grant.success.multiple", skill.getName(), players.size()), true);
 			}
 
 			return i;
@@ -71,15 +71,15 @@ public class SkillCommand {
 		}
 		if (i == 0) {
 			if (players.size() == 1) {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.skill.revoke.failed.single", players.iterator().next().getDisplayName(), skill.getName())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.skill.revoke.failed.single", players.iterator().next().getDisplayName(), skill.getName())).create();
 			} else {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.skill.revoke.failed.multiple", players.size(), skill.getName())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.skill.revoke.failed.multiple", players.size(), skill.getName())).create();
 			}
 		} else {
 			if (players.size() == 1) {
-				source.sendSuccess(new TranslatableComponent("commands.skill.revoke.success.single", players.iterator().next().getDisplayName(), skill.getName()), true);
+				source.sendSuccess(Component.translatable("commands.skill.revoke.success.single", players.iterator().next().getDisplayName(), skill.getName()), true);
 			} else {
-				source.sendSuccess(new TranslatableComponent("commands.skill.revoke.success.multiple", players.size(), skill.getName()), true);
+				source.sendSuccess(Component.translatable("commands.skill.revoke.success.multiple", players.size(), skill.getName()), true);
 			}
 
 			return i;
@@ -92,9 +92,9 @@ public class SkillCommand {
 			i++;
 		}
 		if (i == 0) {
-			throw new SimpleCommandExceptionType(new TranslatableComponent("commands.skill.query.failed", skill.getName(), player.getDisplayName())).create();
+			throw new SimpleCommandExceptionType(Component.translatable("commands.skill.query.failed", skill.getName(), player.getDisplayName())).create();
 		} else {
-			source.sendSuccess(new TranslatableComponent("commands.skill.query.success", skill.getName(), player.getDisplayName()), true);
+			source.sendSuccess(Component.translatable("commands.skill.query.success", skill.getName(), player.getDisplayName()), true);
 		}
 		return i;
 	}

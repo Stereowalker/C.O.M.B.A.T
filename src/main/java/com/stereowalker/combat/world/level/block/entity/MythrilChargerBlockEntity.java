@@ -12,7 +12,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
@@ -198,12 +197,12 @@ public class MythrilChargerBlockEntity  extends AbstractEnergyConsumerBlockEntit
 
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent("container.battery_charger");
+		return Component.translatable("container.battery_charger");
 	}
 
 	@Override
 	protected Component getDefaultName() {
-		return new TranslatableComponent(this.hasCustomName() ? this.customName : "container.battery_charger");
+		return Component.translatable(this.hasCustomName() ? this.customName : "container.battery_charger");
 	}
 
 	@Override

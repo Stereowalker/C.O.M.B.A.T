@@ -30,7 +30,7 @@ public class GunItem extends Item {
 	private SoundEvent reloadSound;
 
 	public GunItem(int magazineCapacity, int fireRate, float muzzleSpeed, Item magazine, Item emptyMagazine, GunType gunType, SoundEvent fireSound, SoundEvent reloadSound) {
-		super(new Item.Properties().stacksTo(1).tab(CCreativeModeTab.BATTLE));
+		super(new Item.Properties().stacksTo(1));
 		this.magazineCapacity = magazineCapacity;
 		this.muzzleSpeed = muzzleSpeed;
 		this.magazine = magazine;

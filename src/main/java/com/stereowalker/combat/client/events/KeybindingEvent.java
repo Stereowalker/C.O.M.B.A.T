@@ -41,8 +41,6 @@ public class KeybindingEvent {
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void keybindTick(ClientTickEvent event) {
-//		if (!Minecraft.func_71410_x().func_195544_aj() */)
-//			return;
 		if (event.phase == Phase.START) {
 			LocalPlayer clientPlayer = Minecraft.getInstance().player;
 			if (mc.getOverlay() == null && (mc.screen == null
@@ -109,7 +107,6 @@ public class KeybindingEvent {
 					}
 				}
 				
-//				clientPlayer.setForcedPose(Pose.SWIMMING);
 				boolean isProne = KeyMappings.PRONE.isDown();
 				new ServerboundPronePacket(isProne).send();
 				if (isProne && clientPlayer.getForcedPose() != Pose.SWIMMING) clientPlayer.setForcedPose(Pose.SWIMMING);
@@ -123,7 +120,7 @@ public class KeybindingEvent {
 		ItemStack stack = AbstractSpellBookItem.getMainSpellBook(clientPlayer);
 		AbstractSpellBookItem book = AbstractSpellBookItem.getMainSpellBookItem(clientPlayer);
 		book.scrollSpell(forward, stack);
-		Combat.getInstance().channel.sendTo(new ServerboundSpellbookNBTPacket(stack.getTag(), clientPlayer.getUUID()), mc.player.connection.getConnection(), NetworkDirection.PLAY_TO_SERVER);
+		new ServerboundSpellbookNBTPacket(stack.getTag(), clientPlayer.getUUID()).send();;
 		mc.player.displayClientMessage(book.getCurrentSpell(stack).getColoredName(SpellStats.getSpellKnowledge(clientPlayer, book.getCurrentSpell(stack))), true);
 	}
 }

@@ -1,8 +1,5 @@
 package com.stereowalker.combat.config;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
 import com.stereowalker.unionlib.config.ConfigObject;
 import com.stereowalker.unionlib.config.UnionConfig;
 
@@ -30,7 +27,7 @@ public class MagicConfig implements ConfigObject {
 	@UnionConfig.Entry(name = "Scroll Drop Chance From Kills", type = Type.COMMON)
 	@UnionConfig.Range(min = 1, max = 1000)
 	@UnionConfig.Comment(comment = {"The chance a monster when killed by a player, will drop a spell scroll","The lower this value, the less likely a spell scroll will drop","Set to zero to prevent spell scrolls from dropping from vanquished monsters"})
-	public int scrollDropChanceFromKill = 99;
+	public int scrollDropChanceFromKill = 66;
 	
 	@UnionConfig.Entry(name = "Abomination Chance", type = Type.COMMON)
 	@UnionConfig.Range(min = 1, max = 1000)
@@ -41,8 +38,4 @@ public class MagicConfig implements ConfigObject {
 	@UnionConfig.Range(min = 1, max = 1000)
 	@UnionConfig.Comment(comment = {"The chance that an abomination monster will become a rare abomination","The lower this value, the less likely one is to become one","Set to zero to prevent abominations from becoming rare abominations"})
 	public int rareAbominationChance = 2;
-	
-	@UnionConfig.Entry(name = "Treasure Hunting Blocks", type = Type.COMMON)
-	@UnionConfig.Comment(comment = {"This is a list of blocks that if broken with the correct tool and the Treasure Hunter skill will drop loot.","Entries are in the format \"namespace:path\""})
-	public List<String> treasureHuntingBlocks = Lists.newArrayList("minecraft:dirt");
 }

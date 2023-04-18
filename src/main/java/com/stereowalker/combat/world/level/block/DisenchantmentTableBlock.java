@@ -1,7 +1,5 @@
 package com.stereowalker.combat.world.level.block;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import com.stereowalker.combat.world.inventory.DisenchantmentMenu;
@@ -11,6 +9,7 @@ import com.stereowalker.combat.world.level.block.entity.DisenchantmentTableBlock
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -55,7 +54,7 @@ public class DisenchantmentTableBlock extends BaseEntityBlock {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		super.animateTick(stateIn, worldIn, pos, rand);
 
 		for(int i = -2; i <= 2; ++i) {

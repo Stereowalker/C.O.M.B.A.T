@@ -1,8 +1,8 @@
 package com.stereowalker.combat.world.item;
 
-import com.stereowalker.unionlib.entity.AccessorySlot;
-import com.stereowalker.unionlib.entity.player.CustomInventoryGetter;
 import com.stereowalker.unionlib.util.ModHelper;
+import com.stereowalker.unionlib.world.entity.AccessorySlot;
+import com.stereowalker.unionlib.world.entity.player.CustomInventoryGetter;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;

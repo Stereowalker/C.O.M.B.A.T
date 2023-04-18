@@ -16,16 +16,26 @@
     "hidden": true
   },
   "criteria": {
-    "nan": {
+    "magic_forest": {
       "trigger": "minecraft:location",
       "conditions": {
-        "biome": "combat:nan"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "combat:magic_forest"
+              }
+            }
+          }
+        ]
     	}
     }
   },
   "requirements": [
     [
-      "nan"
+      "magic_forest"
     ]
   ]
 }

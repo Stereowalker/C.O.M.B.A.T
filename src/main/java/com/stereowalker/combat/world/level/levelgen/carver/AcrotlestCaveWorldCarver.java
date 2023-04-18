@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
 public class AcrotlestCaveWorldCarver extends CaveWorldCarver {
 	public AcrotlestCaveWorldCarver(Codec<CaveCarverConfiguration> p_159194_) {
 		super(p_159194_);
-		this.replaceableBlocks = ImmutableSet.of(CBlocks.PURIFIED_DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, CBlocks.PURIFIED_GRASS_BLOCK, CBlocks.MEZEPINE, CBlocks.SLYAPHY, Blocks.GREEN_TERRACOTTA);
+//		this.replaceableBlocks = ImmutableSet.of(CBlocks.PURIFIED_DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, CBlocks.PURIFIED_GRASS_BLOCK, CBlocks.MEZEPINE, CBlocks.SLYAPHY, Blocks.GREEN_TERRACOTTA);
 		this.liquids = ImmutableSet.of(CFluids.BIABLE);
 	}
 

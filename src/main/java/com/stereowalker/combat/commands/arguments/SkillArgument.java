@@ -19,14 +19,14 @@ import com.stereowalker.rankup.skill.api.SkillUtil;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class SkillArgument implements ArgumentType<Skill> {
-	private static final SimpleCommandExceptionType INVALID_EXCEPTION = new SimpleCommandExceptionType(new TranslatableComponent("argument.id.invalid"));
+	private static final SimpleCommandExceptionType INVALID_EXCEPTION = new SimpleCommandExceptionType(Component.translatable("argument.id.invalid"));
 	private static final Collection<String> EXAMPLES = Arrays.asList("spooky", "spell");
 	public static final DynamicCommandExceptionType SPELL_NOT_FOUND = new DynamicCommandExceptionType((p_208663_0_) -> {
-		return new TranslatableComponent("skill.effectNotFound", p_208663_0_);
+		return Component.translatable("skill.effectNotFound", p_208663_0_);
 	});
 
 	public static SkillArgument skill() {
@@ -39,13 +39,13 @@ public class SkillArgument implements ArgumentType<Skill> {
 
 	public Skill parse(StringReader string) throws CommandSyntaxException {
 		ResourceLocation resourcelocation = ResourceLocation.read(string);
-		return CombatRegistries.SKILLS.getValue(resourcelocation)/* .orElseThrow(() -> { */
+		return CombatRegistries.SKILLS.get().getValue(resourcelocation)/* .orElseThrow(() -> { */
 //	         return EFFECT_NOT_FOUND.create(resourcelocation);
 	      /*})*/;
 	}
 
 	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> p_listSuggestions_1_, SuggestionsBuilder p_listSuggestions_2_) {
-		return SharedSuggestionProvider.suggestResource(CombatRegistries.SKILLS.getKeys(), p_listSuggestions_2_);
+		return SharedSuggestionProvider.suggestResource(CombatRegistries.SKILLS.get().getKeys(), p_listSuggestions_2_);
 	}
 
 

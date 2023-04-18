@@ -11,8 +11,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -103,7 +103,7 @@ public class RobinSummonerBlock extends Block {
 					) {
 				worldIn.setBlockAndUpdate(pos, CBlocks.EMPTY_ROBIN_SUMMONER.defaultBlockState());
 				worldIn.addFreshEntity(lightningboltentity);
-				worldIn.explode(lightningboltentity, pos.getX(), pos.getY(), pos.getZ(), 1.5F, Explosion.BlockInteraction.NONE);
+				worldIn.explode(lightningboltentity, pos.getX(), pos.getY(), pos.getZ(), 1.5F, ExplosionInteraction.BLOCK);
 				worldIn.setBlockAndUpdate(goldCornerUNE, Blocks.COARSE_DIRT.defaultBlockState());
 				worldIn.setBlockAndUpdate(goldCornerUNE.relative(Direction.DOWN), Blocks.COARSE_DIRT.defaultBlockState());
 				worldIn.setBlockAndUpdate(goldCornerUNE.relative(Direction.SOUTH), Blocks.COARSE_DIRT.defaultBlockState());

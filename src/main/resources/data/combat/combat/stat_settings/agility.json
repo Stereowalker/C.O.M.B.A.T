@@ -14,7 +14,7 @@
 		},
 		{
 			"attribute": "minecraft:generic.attack_speed",
-			"modifier_per_point": 0.04
+			"modifier_per_point": 0.03
 		},
 		{
 			"attribute": "forge:swim_speed",

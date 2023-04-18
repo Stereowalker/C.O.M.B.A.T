@@ -5,7 +5,6 @@ import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +29,7 @@ public class StormSpell extends Spell {
 
 	@Override
 	public Component getFailedMessage(LivingEntity caster) {
-		return new TranslatableComponent("This spell only works when its raining");
+		return Component.translatable("This spell only works when its raining");
 	}
 
 }

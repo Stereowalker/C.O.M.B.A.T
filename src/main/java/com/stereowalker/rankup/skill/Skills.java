@@ -1,16 +1,18 @@
 package com.stereowalker.rankup.skill;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.rankup.skill.api.Skill.Builder;
 
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 
 public class Skills {
-	public static final List<Skill> SKILL_LIST = new ArrayList<Skill>();
+	public static final Map<ResourceLocation,Skill> SKILL_LIST = new HashMap<ResourceLocation,Skill>();
 	
 	public static final Skill EMPTY = register("empty", new Skill(new Builder()));
 	public static final Skill DAGGER_THROW = register("dagger_throw", new Skill(new Builder().setPrimaryColor(0x86F9A1).setSecondaryColor(0x770402).setNoLevels().isSpawnSkill()));
@@ -26,21 +28,20 @@ public class Skills {
 	public static final Skill BURNING_FIST = register("burning_fist", new Skill(new Builder().setPrimaryColor(0xAF75EF).setSecondaryColor(0xBEA88B).isActiveSkill().setLevel(1)));
 	public static final Skill BURNING_STRIKE = register("burning_strike", new Skill(new Builder().setPrimaryColor(0xAF75EF).setSecondaryColor(0xBEA88B).isActiveSkill().setLevel(2).setSuperSkill(BURNING_FIST)));
 	public static final Skill FREEZING_STRIKE = register("freezing_strike", new FrozenStrikeSkill(new Builder().setPrimaryColor(0xAA73A8).setSecondaryColor(0x08D86C).setNoLevels()));
-	public static final Skill INSIGHT = register("insight", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).setNoLevels()));
+	public static final Skill INSIGHT = register("insight", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).isActiveSkill().setNoLevels()));
 	public static final Skill LIMITER = register("limiter", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).isActiveSkill().setNoLevels()));
 	public static final Skill ARCHERS_ELBOW = register("archers_elbow", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).isJobSkill().setNoLevels()));
 	public static final Skill ARROW_SAVINGS = register("arrow_savings", new Skill(new Builder().setPrimaryColor(0x60CA28).setSecondaryColor(0x4CA48D).isJobSkill().setNoLevels()));
 	
 	public static Skill register(String name, Skill skill) {
-		skill.setRegistryName(Combat.getInstance().location(name));
-		SKILL_LIST.add(skill);
+		SKILL_LIST.put(Combat.getInstance().location(name),skill);
 		return skill;
 	}
 	
-	public static void registerAll(IForgeRegistry<Skill> registry) {
-		for(Skill skill : SKILL_LIST) {
-			registry.register(skill);
-			Combat.debug("Skill: \""+skill.getRegistryName().toString()+"\" registered");
+	public static void registerAll(RegisterHelper<Skill> registry) {
+		for(Entry<ResourceLocation, Skill> skill : SKILL_LIST.entrySet()) {
+			registry.register(skill.getKey(), skill.getValue());
+			Combat.debug("Skill: \""+skill.getKey().toString()+"\" registered");
 		}
 		Combat.debug("All Skills Registered");
 	}

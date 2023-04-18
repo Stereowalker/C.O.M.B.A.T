@@ -6,19 +6,18 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import com.mojang.datafixers.util.Pair;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory.ClassType;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
-import com.stereowalker.combat.data.worldgen.CStructureFeatures;
 import com.stereowalker.combat.event.AbominationEvents;
 import com.stereowalker.combat.event.LegendaryWeaponEvents;
 import com.stereowalker.combat.event.MagicEvents;
 import com.stereowalker.combat.network.protocol.game.ClientboundPlayerStatsPacket;
 import com.stereowalker.combat.network.protocol.game.ServerboundClientMotionPacket;
 import com.stereowalker.combat.tags.EntityTypeCTags;
+import com.stereowalker.combat.tags.StructureCTags;
 import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.effect.CMobEffects;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
@@ -41,22 +40,25 @@ import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.rankup.skill.api.SkillUtil;
+import com.stereowalker.unionlib.api.insert.InsertCanceller;
+import com.stereowalker.unionlib.api.insert.InsertSetter;
 import com.stereowalker.unionlib.util.EntityHelper;
 import com.stereowalker.unionlib.util.math.UnionMathHelper;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -72,29 +74,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.event.world.SleepFinishedTimeEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.event.level.BlockEvent.BreakEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid = "combat")
@@ -150,125 +141,115 @@ public class GameEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void collectBlood(EntityInteract event) {
-		ItemStack bottle = event.getPlayer().getItemInHand(InteractionHand.OFF_HAND);
-		ItemStack dagger = event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND);
+	public static void collectBlood(Player player, InteractionHand hand, Entity target, InsertCanceller canceller, InsertSetter<InteractionResult> cancelResult) {
+		ItemStack bottle = player.getItemInHand(InteractionHand.OFF_HAND);
+		ItemStack dagger = player.getItemInHand(InteractionHand.MAIN_HAND);
 		if (bottle.getItem() == Items.GLASS_BOTTLE && dagger.getItem() instanceof DaggerItem) {
 			boolean flag = false;
-			if (event.getTarget() instanceof Vampire) {
-				event.getPlayer().addItem(new ItemStack(CItems.VAMPIRE_BLOOD));
+			if (target instanceof Vampire) {
+				player.addItem(new ItemStack(CItems.VAMPIRE_BLOOD));
 				flag = true;
-			} else if (event.getTarget() instanceof LivingEntity && !((LivingEntity)event.getTarget()).getMobType().equals(MobType.UNDEAD)) {
-				event.getPlayer().addItem(new ItemStack(CItems.BLOOD));
+			} else if (target instanceof LivingEntity && !((LivingEntity)target).getMobType().equals(MobType.UNDEAD)) {
+				player.addItem(new ItemStack(CItems.BLOOD));
 				flag = true;
 			}
-			if (!event.getPlayer().getAbilities().instabuild && flag) {
+			if (!player.getAbilities().instabuild && flag) {
 				bottle.shrink(1);
 			}
 			if (flag) {
-				event.setCanceled(true);
-				event.setCancellationResult(InteractionResult.SUCCESS);
+				canceller.cancel();
+				cancelResult.set(InteractionResult.SUCCESS);
 			}
 		}
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void setupJumpHeightAttribute(LivingJumpEvent event) {
+	public static void setupJumpHeightAttribute(LivingEntity living) {
 		boolean isActive = false;
-		LivingEntity living = event.getEntityLiving();
 		if (living != null) {
 			if (living.hasEffect(CMobEffects.PARALYSIS)) isActive = true;
 			if (jumpingEntities.test(living) || isActive) {
 				//Cancels the actual jumping motion of the entity
-				float actualJumpHeight = EntityHelper.getJumpUpwardsMotion(event.getEntityLiving()) ;
-				if (event.getEntityLiving().hasEffect(MobEffects.JUMP)) {
-					actualJumpHeight += 0.1F * (float)(event.getEntityLiving().getEffect(MobEffects.JUMP).getAmplifier() + 1);
+				float actualJumpHeight = EntityHelper.getJumpUpwardsMotion(living) ;
+				if (living.hasEffect(MobEffects.JUMP)) {
+					actualJumpHeight += 0.1F * (float)(living.getEffect(MobEffects.JUMP).getAmplifier() + 1);
 				}
 				if (isActive) actualJumpHeight = 100.0F;
-				Vec3 vec3d = event.getEntityLiving().getDeltaMovement();
-				event.getEntityLiving().setDeltaMovement(vec3d.x, (double)-actualJumpHeight , vec3d.z);
+				Vec3 vec3d = living.getDeltaMovement();
+				living.setDeltaMovement(vec3d.x, (double)-actualJumpHeight , vec3d.z);
 			}
 
 			if (jumpingEntities.test(living)) {
 				//Implements the modded version of this via the Attribute system
-				double modifiedJumpHeight = EntityHelper.getJumpUpwardsMotion(event.getEntityLiving()) + (living.getAttributeValue(CAttributes.JUMP_STRENGTH) - 0.2D);
-				Vec3 vec3d2 = event.getEntityLiving().getDeltaMovement();
-				event.getEntityLiving().setDeltaMovement(vec3d2.x, modifiedJumpHeight , vec3d2.z);
+				double modifiedJumpHeight = EntityHelper.getJumpUpwardsMotion(living) + (living.getAttributeValue(CAttributes.JUMP_STRENGTH) - 0.2D);
+				Vec3 vec3d2 = living.getDeltaMovement();
+				living.setDeltaMovement(vec3d2.x, modifiedJumpHeight , vec3d2.z);
 			}
 
 			if (isActive) {
 				//Prevents the entity from moving by jumping and moving
-				if (event.getEntityLiving().isSprinting()) {
-					float f1 = event.getEntityLiving().getYRot() * ((float)Math.PI / 180F);
+				if (living.isSprinting()) {
+					float f1 = living.getYRot() * ((float)Math.PI / 180F);
 					double x = (double)(-Mth.sin(f1) * 0.2F);
 					double z = (double)(Mth.cos(f1) * 0.2F);
-					event.getEntityLiving().setDeltaMovement(event.getEntityLiving().getDeltaMovement().add(-x, 0.0D, -z));
+					living.setDeltaMovement(living.getDeltaMovement().add(-x, 0.0D, -z));
 				}
-				event.getEntityLiving().hasImpulse = false;
+				living.hasImpulse = false;
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void setupHealthRegenerationAttribute(LivingHealEvent event) {
-		if (event.getEntityLiving() instanceof Player) {
-			event.setAmount((float) (event.getAmount() * event.getEntityLiving().getAttributeValue(CAttributes.HEALTH_REGENERATION)));
+	public static void setupHealthRegenerationAttribute(LivingEntity living, InsertSetter<Float> amount) {
+		if (living instanceof Player) {
+			amount.set((float) (amount.get() * living.getAttributeValue(CAttributes.HEALTH_REGENERATION)));
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	@SubscribeEvent
-	public static void xpRingStorage(PlayerXpEvent.PickupXp event) {
-		if (AccessoryItemCheck.isEquipped(event.getPlayer(), CItems.XP_STORAGE_RING)) {
-			CombatEntityStats.addStoredXP(event.getPlayer(), event.getOrb().getValue());
-			event.getOrb().value = 0;
+	public static void xpRingStorage(Player player, ExperienceOrb orb) {
+		if (AccessoryItemCheck.isEquipped(player, CItems.XP_STORAGE_RING)) {
+			CombatEntityStats.addStoredXP(player, orb.getValue());
+			orb.value = 0;
 		}
 	}
 
-	@SubscribeEvent
-	public static void livingUpdate(LivingUpdateEvent event) {
-		if (event.getEntityLiving() instanceof Monster) {
-			AbominationEvents.updateAbomination((Monster)event.getEntityLiving());
+	public static void livingUpdate(LivingEntity living) {
+		if (living instanceof Monster) {
+			AbominationEvents.updateAbomination((Monster)living);
 		}
-		if (event.getEntityLiving() instanceof Player) {
-			LegendaryWeaponEvents.legendaryCollection((Player) event.getEntityLiving());
+		if (living instanceof Player) {
+			LegendaryWeaponEvents.legendaryCollection((Player) living);
 		}
-		if (!event.getEntityLiving().level.isClientSide && event.getEntityLiving() instanceof ServerPlayer) {
-			setTower((ServerPlayer) event.getEntityLiving());
+		if (!living.level.isClientSide && living instanceof ServerPlayer) {
+			setTower((ServerPlayer) living);
 		}
-		MagicEvents.manaUpdate(event.getEntityLiving());
+		MagicEvents.manaUpdate(living);
 		//Set the players stats once when they spawn into the world
-		if(event.getEntityLiving() instanceof Player) {
-			Player player = (Player)event.getEntityLiving();
+		if(living instanceof Player) {
+			Player player = (Player)living;
 			CombatEntityStats.addStatsToPlayerOnSpawn(player);
 		}
 		//Send tickets to the client containing every stat for the player
-		if (!event.getEntityLiving().level.isClientSide && event.getEntityLiving() instanceof ServerPlayer) {
-			ServerPlayer player = (ServerPlayer)event.getEntityLiving();
+		if (!living.level.isClientSide && living instanceof ServerPlayer) {
+			ServerPlayer player = (ServerPlayer)living;
 			CombatEntityStats.setResist(player, player.getAttribute(Attributes.KNOCKBACK_RESISTANCE).getValue()*10);
-			Combat.getInstance().channel.sendTo(new ClientboundPlayerStatsPacket(player), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+			new ClientboundPlayerStatsPacket(player).send(player);;
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	@SubscribeEvent
-	public static void livingUpdateOnClient(LivingUpdateEvent event) {
-		if (event.getEntityLiving().level.isClientSide && event.getEntityLiving() instanceof LocalPlayer) {
-			new ServerboundClientMotionPacket(event.getEntityLiving().getDeltaMovement()).send();
+	public static void livingUpdateOnClient(LivingEntity living) {
+		if (living.level.isClientSide && living instanceof LocalPlayer) {
+			new ServerboundClientMotionPacket(living.getDeltaMovement()).send();
 		}
 	}
 
-	@SubscribeEvent
-	public static void replenishManaOnSleep(SleepFinishedTimeEvent event) {
-		MagicEvents.replenishManaOnSleep(event.getWorld());
+	public static void replenishManaOnSleep(LevelAccessor level, InsertSetter<Long> wakeTime) {
+		MagicEvents.replenishManaOnSleep(level);
 	}
 
-	@SubscribeEvent
-	public static void fovUpdate(FOVModifierEvent event) {
+	public static void fovUpdate(Player player, float originalFov, InsertSetter<Float> newFov) {
 		float f = 1.0F;
-		if (event.getEntity().isUsingItem() && event.getEntity().getUseItem().getItem() instanceof LongbowItem) {
-			int i = event.getEntity().getTicksUsingItem();
+		if (player.isUsingItem() && player.getUseItem().getItem() instanceof LongbowItem) {
+			int i = player.getTicksUsingItem();
 			float f1 = (float)i / 30.0F;
 			if (f1 > 1.5F) {
 				f1 = 2.25F;
@@ -277,11 +258,11 @@ public class GameEvents {
 			}
 
 			f *= 1.0F - f1 * 0.15F;
-			event.setNewfov(f);
+			newFov.set(f);
 		}
 
-		if (event.getEntity().isUsingItem() && event.getEntity().getUseItem().getItem() instanceof SoulBowItem) {
-			int i = event.getEntity().getTicksUsingItem();
+		if (player.isUsingItem() && player.getUseItem().getItem() instanceof SoulBowItem) {
+			int i = player.getTicksUsingItem();
 			float f1 = (float)i / 20.0F;
 			if (f1 > 1.0F) {
 				f1 = 1.0F;
@@ -290,11 +271,11 @@ public class GameEvents {
 			}
 
 			f *= 1.0F - f1 * 0.15F;
-			event.setNewfov(f);
+			newFov.set(f);
 		}
 
-		if (event.getEntity().isUsingItem() && event.getEntity().getUseItem().getItem() instanceof ArchItem) {
-			int i = event.getEntity().getTicksUsingItem();
+		if (player.isUsingItem() && player.getUseItem().getItem() instanceof ArchItem) {
+			int i = player.getTicksUsingItem();
 			float f1 = (float)i / 20.0F;
 			if (f1 > 1.0F) {
 				f1 = 1.0F;
@@ -303,33 +284,32 @@ public class GameEvents {
 			}
 
 			f *= 1.0F - f1 * 0.15F;
-			event.setNewfov(f);
+			newFov.set(f);
 		}
 	}
 
 	public static void setTower(ServerPlayer player) {
-		Pair<BlockPos, Holder<ConfiguredStructureFeature<?, ?>>> blockpos = player.getLevel().getChunkSource().getGenerator().findNearestMapFeature(player.getLevel(), HolderSet.direct(CStructureFeatures.ETHERION_TOWER, CStructureFeatures.ETHERION_TOWER_ACROTLEST), player.blockPosition(), 100, false);
+        BlockPos blockpos = player.getLevel().findNearestMapStructure(StructureCTags.ETHERION_COMPASS_POINTS, player.blockPosition(), 100, false);
 		if (blockpos == null) CombatEntityStats.setNearestEtherionTowerPos(player, BlockPos.ZERO);
-		else if (CombatEntityStats.getNearestEtherionTowerPos(player) != blockpos.getFirst()) CombatEntityStats.setNearestEtherionTowerPos(player, blockpos.getFirst() != null ? blockpos.getFirst() : BlockPos.ZERO);
+		else if (CombatEntityStats.getNearestEtherionTowerPos(player) != blockpos) CombatEntityStats.setNearestEtherionTowerPos(player, blockpos != null ? blockpos : BlockPos.ZERO);
 	}
 
-	@SubscribeEvent
-	public static void restoreStats(PlayerEvent.Clone event) {
-		CombatEntityStats.getOrCreateModNBT(event.getPlayer());
-		if (!event.isWasDeath()) {
-			CombatEntityStats.setVampire(event.getPlayer(), CombatEntityStats.isVampire(event.getOriginal()));
-			CombatEntityStats.setManabornBonus(event.getPlayer(), CombatEntityStats.hasManabornBonus(event.getOriginal()));
-			CombatEntityStats.setMana(event.getPlayer(), CombatEntityStats.getMana(event.getOriginal()));
+	public static void restoreStats(Player thisPlayer, Player thatPlayer, boolean keepEverything) {
+		CombatEntityStats.getOrCreateModNBT(thisPlayer);
+		if (keepEverything) {
+			CombatEntityStats.setVampire(thisPlayer, CombatEntityStats.isVampire(thatPlayer));
+			CombatEntityStats.setManabornBonus(thisPlayer, CombatEntityStats.hasManabornBonus(thatPlayer));
+			CombatEntityStats.setMana(thisPlayer, CombatEntityStats.getMana(thatPlayer));
 		}
-		event.getPlayer().getAttribute(CAttributes.EARTH_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.EARTH_AFFINITY));
-		event.getPlayer().getAttribute(CAttributes.FIRE_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.FIRE_AFFINITY));
-		event.getPlayer().getAttribute(CAttributes.LIGHTNING_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.LIGHTNING_AFFINITY));
-		event.getPlayer().getAttribute(CAttributes.WATER_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.WATER_AFFINITY));
-		event.getPlayer().getAttribute(CAttributes.WIND_AFFINITY).setBaseValue(event.getOriginal().getAttributeBaseValue(CAttributes.WIND_AFFINITY));
-		CombatEntityStats.setManaColor(event.getPlayer() , CombatEntityStats.getManaColor(event.getOriginal()));
-		CombatEntityStats.setPrimevalAffinity(event.getPlayer(), CombatEntityStats.getPrimevalAffinity(event.getOriginal()));
-		CombatEntityStats.setAllies(event.getPlayer(), CombatEntityStats.getAllies(event.getOriginal()));
-		CombatEntityStats.setStoredXP(event.getPlayer(), CombatEntityStats.getStoredXP(event.getOriginal()));
+		thisPlayer.getAttribute(CAttributes.EARTH_AFFINITY).setBaseValue(thatPlayer.getAttributeBaseValue(CAttributes.EARTH_AFFINITY));
+		thisPlayer.getAttribute(CAttributes.FIRE_AFFINITY).setBaseValue(thatPlayer.getAttributeBaseValue(CAttributes.FIRE_AFFINITY));
+		thisPlayer.getAttribute(CAttributes.LIGHTNING_AFFINITY).setBaseValue(thatPlayer.getAttributeBaseValue(CAttributes.LIGHTNING_AFFINITY));
+		thisPlayer.getAttribute(CAttributes.WATER_AFFINITY).setBaseValue(thatPlayer.getAttributeBaseValue(CAttributes.WATER_AFFINITY));
+		thisPlayer.getAttribute(CAttributes.WIND_AFFINITY).setBaseValue(thatPlayer.getAttributeBaseValue(CAttributes.WIND_AFFINITY));
+		CombatEntityStats.setManaColor(thisPlayer , CombatEntityStats.getManaColor(thatPlayer));
+		CombatEntityStats.setPrimevalAffinity(thisPlayer, CombatEntityStats.getPrimevalAffinity(thatPlayer));
+		CombatEntityStats.setAllies(thisPlayer, CombatEntityStats.getAllies(thatPlayer));
+		CombatEntityStats.setStoredXP(thisPlayer, CombatEntityStats.getStoredXP(thatPlayer));
 	}
 
 	private static ItemStack findSoulGem(Player player) {
@@ -354,19 +334,18 @@ public class GameEvents {
 	}
 
 	@SuppressWarnings("resource")
-	@SubscribeEvent
-	public static void entityKill(LivingDeathEvent event) {
-		if (event.getEntityLiving() instanceof Monster) {
-			AbominationEvents.abominationDeath(event.getSource(), (Monster)event.getEntityLiving());
+	public static void entityKill(LivingEntity living, DamageSource source) {
+		if (living instanceof Monster) {
+			AbominationEvents.abominationDeath(source, (Monster)living);
 		}
 		
 		Random rand = new Random();
 		ItemStack itemIn = new ItemStack(CItems.SCROLL);
 		ItemStack itemIn1 = new ItemStack(CItems.EMPTY_SOUL_GEM);
-		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && (event.getEntityLiving() instanceof LivingEntity)) {
-			if(event.getSource().getEntity() instanceof Player) {
-				Player player = (Player)event.getSource().getEntity();
-				if (event.getEntityLiving().getMobType() != MobType.UNDEAD) {
+		if(!living.getCommandSenderWorld().isClientSide && (living instanceof LivingEntity)) {
+			if(source.getEntity() instanceof Player) {
+				Player player = (Player)source.getEntity();
+				if (living.getMobType() != MobType.UNDEAD) {
 					if (CEnchantmentHelper.hasSoulSealing(player.getMainHandItem()) || UnionMathHelper.probabilityCheck(50)) {
 						if (!findSoulGem(player).isEmpty()) {
 							findSoulGem(player).shrink(1);
@@ -374,41 +353,41 @@ public class GameEvents {
 						}
 					}
 				}
-				if (event.getEntityLiving().getMobType() == MobType.UNDEAD) {
-					if (UnionMathHelper.probabilityCheck(100) || CEnchantmentHelper.hasContainerExtraction(player.getMainHandItem())) event.getEntityLiving().spawnAtLocation(itemIn1);
+				if (living.getMobType() == MobType.UNDEAD) {
+					if (UnionMathHelper.probabilityCheck(100) || CEnchantmentHelper.hasContainerExtraction(player.getMainHandItem())) living.spawnAtLocation(itemIn1);
 				}
 			}
 		}
-		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && event.getEntityLiving() instanceof Monster) {
-			Spell spell = SpellUtil.getWeightedRandomSpell(rand, SpellCategory.values(ClassType.ELEMENTAL));
-			if(event.getSource().getEntity() instanceof Player) {
+		if(!living.getCommandSenderWorld().isClientSide && living instanceof Monster) {
+			Spell spell = SpellUtil.getWeightedRandomSpell(living.getRandom(), SpellCategory.values(ClassType.ELEMENTAL));
+			if(source.getEntity() instanceof Player) {
 				if(UnionMathHelper.probabilityCheck(Combat.MAGIC_CONFIG.scrollDropChanceFromKill)) {
 					System.out.println("Should Drop Scroll");
-					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, spell));
+					living.spawnAtLocation(SpellUtil.addSpellToStack(itemIn, spell));
 				}
 			} else {
 				if(UnionMathHelper.probabilityCheck(Combat.MAGIC_CONFIG.scrollDropChance)) {
-					event.getEntityLiving().spawnAtLocation(SpellUtil.addSpellToStack(itemIn, spell));
+					living.spawnAtLocation(SpellUtil.addSpellToStack(itemIn, spell));
 				}
 			}
 		}
 		int runeDropChance = 3;
 		boolean flag = UnionMathHelper.probabilityCheck(runeDropChance);
-		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && ((event.getEntityLiving() instanceof Monster && flag) || event.getEntityLiving().getType().is(EntityTypeCTags.BOSSES))) {
-			if(event.getSource().getEntity() instanceof Player) {
-				Skill skill = PlayerSkills.generateRandomSkill((Player)event.getSource().getEntity(), false);
-				if (skill != Skills.EMPTY) event.getEntityLiving().spawnAtLocation(SkillUtil.addSkillToItemStack(new ItemStack(CItems.SKILL_RUNESTONE), skill));
+		if(!living.getCommandSenderWorld().isClientSide && ((living instanceof Monster && flag) || living.getType().is(EntityTypeCTags.BOSSES))) {
+			if(source.getEntity() instanceof Player) {
+				Skill skill = PlayerSkills.generateRandomSkill((Player)source.getEntity(), false);
+				if (skill != Skills.EMPTY) living.spawnAtLocation(SkillUtil.addSkillToItemStack(new ItemStack(CItems.SKILL_RUNESTONE), skill));
 			}
 		}
 
-		if(!event.getEntityLiving().getCommandSenderWorld().isClientSide && event.getEntityLiving().getType().is(EntityTypeCTags.BOSSES)) {
-			if(event.getSource().getEntity() instanceof Player) {
+		if(!living.getCommandSenderWorld().isClientSide && living.getType().is(EntityTypeCTags.BOSSES)) {
+			if(source.getEntity() instanceof Player) {
 				//				for (EntityType<?> entity : ForgeRegistries.ENTITIES) {
 				//					if (entity.getRegistryName().toString() == "c") {
 				//						
 				//					}
 				//				}
-				Player player = (Player)event.getSource().getEntity();
+				Player player = (Player)source.getEntity();
 				double luck = player.getAttributeValue(Attributes.LUCK);
 				double maxLuck = 10;
 				double luckMod = luck/maxLuck;
@@ -420,32 +399,30 @@ public class GameEvents {
 						}
 					}
 					int legendrand = rand.nextInt(legendaryItems.size());
-					event.getEntityLiving().spawnAtLocation(new ItemStack(legendaryItems.get(legendrand)));
+					living.spawnAtLocation(new ItemStack(legendaryItems.get(legendrand)));
 				}
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void openFletchingTable(RightClickBlock event) {
-		if (!event.getPlayer().isCrouching()) {
+	public static void openFletchingTable(Player player, InteractionHand hand, BlockPos pos, BlockHitResult hitVec, InsertCanceller cancel, InsertSetter<InteractionResult> cancelResult) {
+		if (!player.isCrouching()) {
 			if (Config.COMMON.enable_fletching.get()) {
-				TranslatableComponent CONTAINER_NAME = new TranslatableComponent("container.fletching");
-				if (event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.FLETCHING_TABLE) {
-					event.setCanceled(true);
-					event.setCancellationResult(InteractionResult.FAIL);
-					event.getPlayer().openMenu(new SimpleMenuProvider((p_220270_2_, p_220270_3_, p_220270_4_) -> {
-						return new FletchingMenu(p_220270_2_, p_220270_3_, ContainerLevelAccess.create(event.getWorld(), event.getPos()));
+				Component CONTAINER_NAME = Component.translatable("container.fletching");
+				if (player.level.getBlockState(pos).getBlock() == Blocks.FLETCHING_TABLE) {
+					cancel.cancel();
+					cancelResult.set(InteractionResult.FAIL);
+					player.openMenu(new SimpleMenuProvider((p_220270_2_, p_220270_3_, p_220270_4_) -> {
+						return new FletchingMenu(p_220270_2_, p_220270_3_, ContainerLevelAccess.create(player.level, pos));
 					}, CONTAINER_NAME));
 				}
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void entityJoinWorld(EntityJoinWorldEvent event) {
-		if (event.getEntity() instanceof ServerPlayer) {
-			ServerPlayer player = (ServerPlayer)event.getEntity();
+	public static void entityJoinWorld(Entity entity, Level level, boolean loadedFromDisk) {
+		if (entity instanceof ServerPlayer) {
+			ServerPlayer player = (ServerPlayer)entity;
 //			if (CombatEntityStats.getElementalAffinity(player) == SpellCategory.NONE) {
 				//				player.sendMessage(new StringTextComponent("Use /affinitiy to set your Elemental, Life and Special Affinity. You won't be able to cast magic until you do"), Util.DUMMY_UUID);
 //			}

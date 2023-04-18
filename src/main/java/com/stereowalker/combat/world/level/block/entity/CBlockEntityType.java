@@ -1,17 +1,19 @@
 package com.stereowalker.combat.world.level.block.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 
-public class CBlockEntityType extends net.minecraftforge.registries.ForgeRegistryEntry<BlockEntityType<?>> {
-	private static final List<BlockEntityType<?>> TILE_ENTITY_TYPES = new ArrayList<BlockEntityType<?>>();
+public class CBlockEntityType {
+	private static final Map<ResourceLocation,BlockEntityType<?>> TILE_ENTITY_TYPES = new HashMap<ResourceLocation,BlockEntityType<?>>();
 
 	public static final BlockEntityType<CardboardBoxBlockEntity> CARDBOARD_BOX = register("cardboard_box", BlockEntityType.Builder.of(CardboardBoxBlockEntity::new, CBlocks.CARDBOARD_BOX));
 	public static final BlockEntityType<AlloyFurnaceBlockEntity> ALLOY_FURNACE = register("alloy_furnace", BlockEntityType.Builder.of(AlloyFurnaceBlockEntity::new, CBlocks.ALLOY_FURNACE));
@@ -49,18 +51,17 @@ public class CBlockEntityType extends net.minecraftforge.registries.ForgeRegistr
 	public static final BlockEntityType<MythrilChargerBlockEntity> MYTHRIL_CHARGER = register("mythril_charger", BlockEntityType.Builder.of(MythrilChargerBlockEntity::new, CBlocks.MYTHRIL_CHARGER));
 			
 
-	public static void registerAll(IForgeRegistry<BlockEntityType<?>> registry) {
-		for(BlockEntityType<?> entitytype: TILE_ENTITY_TYPES) {
-			registry.register(entitytype);
-			Combat.debug("Block Entity: \""+entitytype.getRegistryName().toString()+"\" registered");
+	public static void registerAll(RegisterHelper<BlockEntityType<?>> registry) {
+		for(Entry<ResourceLocation, BlockEntityType<?>> entitytype: TILE_ENTITY_TYPES.entrySet()) {
+			registry.register(entitytype.getKey(), entitytype.getValue());
+			Combat.debug("Block Entity: \""+entitytype.getKey().toString()+"\" registered");
 		}
 		Combat.debug("All Block Entities Registered");
 	}
 
 	private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.Builder<T> builder){
 		BlockEntityType<T> type = builder.build(null);
-		type.setRegistryName(Combat.getInstance().location(name));
-		TILE_ENTITY_TYPES.add(type);
+		TILE_ENTITY_TYPES.put(Combat.getInstance().location(name), type);
 		return type;
 	}
 }

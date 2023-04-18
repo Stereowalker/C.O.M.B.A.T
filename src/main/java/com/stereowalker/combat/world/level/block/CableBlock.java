@@ -1,7 +1,6 @@
 package com.stereowalker.combat.world.level.block;
 
 import java.util.Map;
-import java.util.Random;
 
 import com.google.common.collect.Maps;
 import com.stereowalker.combat.tags.BlockCTags;
@@ -12,6 +11,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -268,7 +268,7 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
 		BlockState connectedTo;
 		for (Direction direction : Direction.values()) {
 			if (state.getValue(getConnectionFromDirection(direction)) == CableConnectionType.RECIEVE) {

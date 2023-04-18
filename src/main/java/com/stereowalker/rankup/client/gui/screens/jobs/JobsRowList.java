@@ -11,6 +11,7 @@ import com.stereowalker.rankup.api.job.Job;
 import com.stereowalker.rankup.client.gui.screens.PlayerStatusRowList;
 import com.stereowalker.rankup.world.job.JobProfile;
 import com.stereowalker.rankup.world.job.PlayerJobs;
+import com.stereowalker.unionlib.util.ScreenHelper;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -22,8 +23,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -43,7 +42,7 @@ public class JobsRowList extends PlayerStatusRowList<JobsRowList.Row> {
 		for(java.util.Map.Entry<ResourceKey<Job>, Job> s : registry.entrySet()) {
 			ResourceKey<Job> jobKey = s.getKey();
 			if (PlayerJobs.getJobProfile(this.minecraft.player, jobKey).hasJob()) {
-				Component component = new TranslatableComponent(Util.makeDescriptionId("job", jobKey.location()));
+				Component component = Component.translatable(Util.makeDescriptionId("job", jobKey.location()));
 				int i = this.minecraft.font.width(component);
 				if (i > this.maxNameWidth) {
 					this.maxNameWidth = i;
@@ -78,9 +77,9 @@ public class JobsRowList extends PlayerStatusRowList<JobsRowList.Row> {
 
 		public static Button addUpgrade(ResourceKey<Job> statKey) {
 			Button upgradeButton;
-			upgradeButton = new Button(0, 0, 20, 20, new TextComponent("+"), (p_214328_1_) -> {
+			upgradeButton = ScreenHelper.buttonBuilder(Component.literal("+"), (p_214328_1_) -> {
 //				Combat.getInstance().channel.sendTo(new ServerboundUpgradeLevelsPacket(statKey.location(), Minecraft.getInstance().player.getUUID()), Minecraft.getInstance().player.connection.getConnection(), NetworkDirection.PLAY_TO_SERVER);
-			});
+			}).bounds(0, 0, 20, 20).build();
 			return upgradeButton;
 		}
 
@@ -93,17 +92,18 @@ public class JobsRowList extends PlayerStatusRowList<JobsRowList.Row> {
 			float val = jobProfile.getExperience();
 			float max = job.levels.get(jobProfile.getLevel()-1);
 			this.widgets.forEach((widget) -> {
-				widget.y = top;
+				ScreenHelper.setWidgetY(widget, top);
+				
 			});
 			String na = Util.makeDescriptionId("job", jobKey.location());
-			GuiComponent.drawString(pPoseStack, Minecraft.getInstance().font, new TranslatableComponent(na), left, top+5, 0xffffff);
+			GuiComponent.drawString(pPoseStack, Minecraft.getInstance().font, Component.translatable(na), left, top+5, 0xffffff);
 			
 			int d = Mth.ceil(left+(width*0.5f));
 			Component component;
 			if (jobProfile.getLevel() > 9)
-				component = new TextComponent("Level "+jobProfile.getLevel()).append("   ");
+				component = Component.literal("Level "+jobProfile.getLevel()).append("   ");
 			else
-				component = new TextComponent("Level "+jobProfile.getLevel()).append("  ");
+				component = Component.literal("Level "+jobProfile.getLevel()).append("  ");
 			GuiComponent.drawString(pPoseStack, Minecraft.getInstance().font, component, d-Minecraft.getInstance().font.width(component), top+5, 0xffffff);
 			RenderBars.drawBar(jobsScreen, pPoseStack, left+width/2, top + 7, width/2 - 5, RenderBars.Color.BLUE, RenderBars.Divisor.FOUR, val / max);
 		}

@@ -1,7 +1,6 @@
 package com.stereowalker.combat.world.level.storage.loot.functions;
 
 import java.util.List;
-import java.util.Random;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
@@ -15,6 +14,7 @@ import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
@@ -39,7 +39,7 @@ public class AppendRandomSpellFunction extends LootItemConditionalFunction {
 
 	@Override
 	public ItemStack run(ItemStack stack, LootContext context) {
-		Random random = context.getRandom();
+		RandomSource random = context.getRandom();
 		return SpellUtil.addSpellToStack(stack, SpellUtil.getWeightedRandomSpell(random, null, categories, rank));
 	}
 

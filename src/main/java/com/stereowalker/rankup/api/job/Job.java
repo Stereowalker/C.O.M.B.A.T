@@ -8,12 +8,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.skill.api.Skill;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class Job extends ForgeRegistryEntry<Job>{
+public class Job {
 	
 	public static final Codec<Job> CODEC = RecordCodecBuilder.create((p_67790_) -> {
 		return p_67790_.group(ResourceLocation.CODEC.fieldOf("statToTrack").forGetter((p_160992_) -> {
@@ -39,7 +39,7 @@ public class Job extends ForgeRegistryEntry<Job>{
 	public Job(ResourceLocation statToTrack, int amountToUnlock, int amountForExperience, int[] levels, List<Skill> jobSkills, boolean handleGivingStatXP) {
 		this(statToTrack, amountToUnlock, amountForExperience, Lists.newArrayList(ArrayUtils.toObject(levels)), new ArrayList<>());
 		jobSkills.forEach((skill) ->{
-			this.jobSkills.add(skill.getRegistryName());
+			this.jobSkills.add(CombatRegistries.SKILLS.get().getKey(skill));
 		});
 		this.handleGivingStatXP = handleGivingStatXP;
 	}

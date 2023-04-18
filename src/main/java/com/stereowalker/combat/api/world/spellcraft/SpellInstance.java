@@ -12,7 +12,6 @@ import com.stereowalker.combat.world.spellcraft.SpellStats;
 import com.stereowalker.combat.world.spellcraft.Spells;
 import com.stereowalker.unionlib.util.NBTHelper;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -108,7 +107,7 @@ public class SpellInstance {
 				}
 				else{
 					if (caster.level.isClientSide) {
-						if (this.getSpell().getFailedMessage(caster) != null) caster.sendMessage(this.getSpell().getFailedMessage(caster), Util.NIL_UUID);
+						if (this.getSpell().getFailedMessage(caster) != null) caster.sendSystemMessage(this.getSpell().getFailedMessage(caster));
 					}
 					return false;
 				}

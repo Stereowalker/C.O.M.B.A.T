@@ -1,11 +1,10 @@
 package com.stereowalker.combat.world.item;
 
 import com.stereowalker.combat.world.entity.CombatEntityStats;
-import com.stereowalker.unionlib.entity.AccessorySlot.Group;
+import com.stereowalker.unionlib.world.entity.AccessorySlot.Group;
 import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,7 +34,7 @@ public class XPRingItem extends AccessoryItem {
 
 	@Override
 	public Component accessoryInformation() {
-		return new TranslatableComponent("Stores your experience in an ender storage when equipped. Stored experience can be retrieved by crouching and right-clicking with the ring in your hand. Experience stored can be retrieved from any XP Ring");
+		return Component.translatable("Stores your experience in an ender storage when equipped. Stored experience can be retrieved by crouching and right-clicking with the ring in your hand. Experience stored can be retrieved from any XP Ring");
 	}
 
 }

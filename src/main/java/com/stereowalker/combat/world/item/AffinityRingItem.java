@@ -5,11 +5,10 @@ import com.google.common.collect.Multimap;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.util.UUIDS;
 import com.stereowalker.combat.world.effect.CMobEffects;
-import com.stereowalker.unionlib.entity.AccessorySlot.Group;
+import com.stereowalker.unionlib.world.entity.AccessorySlot.Group;
 import com.stereowalker.unionlib.world.item.AccessoryItem;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,19 +52,19 @@ public class AffinityRingItem extends AccessoryItem {
 	@Override
 	public Component accessoryInformation() {
 		if (this == CItems.PYROMANCER_RING) {
-			return new TranslatableComponent("Gives you the ability to use fire magic when equipped");
+			return Component.translatable("Gives you the ability to use fire magic when equipped");
 		}
 		if (this == CItems.HYDROMANCER_RING) {
-			return new TranslatableComponent("Gives you the ability to use water magic when equipped");
+			return Component.translatable("Gives you the ability to use water magic when equipped");
 		}
 		if (this == CItems.ELECTROMANCER_RING) {
-			return new TranslatableComponent("Gives you the ability to use lightning magic when equipped");
+			return Component.translatable("Gives you the ability to use lightning magic when equipped");
 		}
 		if (this == CItems.TERRAMANCER_RING) {
-			return new TranslatableComponent("Gives you the ability to use earth magic when equipped");
+			return Component.translatable("Gives you the ability to use earth magic when equipped");
 		}
 		if (this == CItems.AEROMANCER_RING) {
-			return new TranslatableComponent("Gives you the ability to use wind magic when equipped");
+			return Component.translatable("Gives you the ability to use wind magic when equipped");
 		}
 		return null;
 	}

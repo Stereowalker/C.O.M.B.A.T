@@ -1,26 +1,30 @@
 package com.stereowalker.combat.core.registries;
-
 import com.stereowalker.combat.Combat;
+import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.client.particle.AcrotlestPortalParticle;
 import com.stereowalker.combat.client.particle.CDripParticle;
 import com.stereowalker.combat.core.particles.CParticleTypes;
+import com.stereowalker.combat.data.worldgen.CStructureSets;
+import com.stereowalker.combat.data.worldgen.CStructures;
 import com.stereowalker.combat.data.worldgen.features.COreFeatures;
 import com.stereowalker.combat.data.worldgen.features.CTreeFeatures;
 import com.stereowalker.combat.data.worldgen.features.CVegetationFeatures;
+import com.stereowalker.combat.data.worldgen.features.MiscAcrotlestFeatures;
 import com.stereowalker.combat.data.worldgen.placement.COrePlacements;
 import com.stereowalker.combat.data.worldgen.placement.CTreePlacements;
 import com.stereowalker.combat.data.worldgen.placement.CVegetationPlacements;
+import com.stereowalker.combat.data.worldgen.placement.MiscAcrotlestPlacements;
+import com.stereowalker.combat.event.handler.ModdedBiomeGeneration;
 import com.stereowalker.combat.sounds.CSoundEvents;
 import com.stereowalker.combat.stats.CStats;
-import com.stereowalker.combat.world.effect.CMobEffects;
 import com.stereowalker.combat.world.entity.CEntityType;
 import com.stereowalker.combat.world.entity.ai.attributes.CAttributes;
-import com.stereowalker.combat.world.entity.ai.village.poi.CPoiType;
+import com.stereowalker.combat.world.entity.ai.village.poi.CPoiTypes;
 import com.stereowalker.combat.world.entity.boss.robin.RobinBoss;
-import com.stereowalker.combat.world.entity.decoration.CMotive;
+import com.stereowalker.combat.world.entity.decoration.CPaintingVariants;
 import com.stereowalker.combat.world.entity.monster.Biog;
 import com.stereowalker.combat.world.entity.monster.Lichu;
 import com.stereowalker.combat.world.entity.monster.RedBiog;
@@ -33,24 +37,25 @@ import com.stereowalker.combat.world.item.SoulGemItem;
 import com.stereowalker.combat.world.item.alchemy.CPotions;
 import com.stereowalker.combat.world.item.crafting.CRecipeSerializer;
 import com.stereowalker.combat.world.item.crafting.CRecipeType;
-import com.stereowalker.combat.world.item.enchantment.CEnchantments;
 import com.stereowalker.combat.world.level.biome.CBiomeRegistry;
 import com.stereowalker.combat.world.level.block.CBlocks;
 import com.stereowalker.combat.world.level.block.entity.CBlockEntityType;
-import com.stereowalker.combat.world.level.levelgen.CNoiseGeneratorSettings;
 import com.stereowalker.combat.world.level.levelgen.carver.CWorldCarver;
 import com.stereowalker.combat.world.level.levelgen.feature.CFeature;
-import com.stereowalker.combat.world.level.levelgen.feature.CStructureFeature;
 import com.stereowalker.combat.world.level.levelgen.feature.StructurePieceTypes;
-import com.stereowalker.combat.world.level.material.CFluids;
+import com.stereowalker.combat.world.level.levelgen.structure.CStructureType;
+import com.stereowalker.combat.world.level.material.BiableFluid;
+import com.stereowalker.combat.world.level.material.OilFluid;
 import com.stereowalker.combat.world.level.storage.loot.functions.CLootItemFunctions;
 import com.stereowalker.combat.world.spellcraft.Spells;
 import com.stereowalker.rankup.api.job.Job;
 import com.stereowalker.rankup.api.stat.Stat;
+import com.stereowalker.rankup.api.stat.StatType;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.rankup.skill.api.SkillUtil;
 import com.stereowalker.rankup.world.job.Jobs;
+import com.stereowalker.rankup.world.stat.StatTypes;
 import com.stereowalker.rankup.world.stat.Stats;
 
 import net.minecraft.client.Minecraft;
@@ -58,50 +63,32 @@ import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SplashParticle;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.stats.StatType;
-import net.minecraft.world.effect.MobEffect;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.village.poi.PoiType;
-import net.minecraft.world.entity.decoration.Motive;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.FoliageColor;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DataPackRegistryEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.NewRegistryEvent;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryBuilder;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD, modid = "combat")
@@ -109,23 +96,62 @@ public class CombatRegistryEvents
 {
 	private static final int MAX_VARINT = Integer.MAX_VALUE - 1;
 
-	@SuppressWarnings("deprecation")
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void onTextureStitch(TextureStitchEvent.Pre event)
-	{
-		if(event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS))
-		{
-			event.addSprite(Combat.getInstance().EMPTY_SPELLBOOK_SLOT);
-		}
-	}
-
 	//Game Object Registries
 	@SubscribeEvent
-	public static void registerAttributes(final RegistryEvent.Register<Attribute> event) 
+	public static void registerAttributes(final RegisterEvent event) 
 	{
-		RegistryOverrides.overrideAttributes(event.getRegistry());
-		CAttributes.registerAll(event.getRegistry());
+		event.register(Registries.SOUND_EVENT, CSoundEvents::registerAll);
+		event.register(Registries.ATTRIBUTE, RegistryOverrides::overrideAttributes);
+		event.register(Registries.BLOCK, CBlocks::registerAll);
+		event.register(Registries.BLOCK, RegistryOverrides::overrideBlocks);
+		event.register(Registries.ENTITY_TYPE, CEntityType::registerAll);
+		event.register(Registries.ITEM, CItems::registerAll);
+		event.register(Registries.ITEM, RegistryOverrides::overrideItems);
+		event.register(Registries.BLOCK_ENTITY_TYPE, CBlockEntityType::registerAll);
+		event.register(ForgeRegistries.Keys.FLUID_TYPES, (helper) -> {
+			helper.register(new ResourceLocation("combat:biable"), BiableFluid.TYPE);
+			helper.register(new ResourceLocation("combat:oil"), OilFluid.TYPE);
+		});
+		event.register(Registries.RECIPE_TYPE, CRecipeType::registerAll);
+		event.register(Registries.RECIPE_SERIALIZER, CRecipeSerializer::registerAll);
+		event.register(Registries.POTION, CPotions::registerAll);
+		event.register(Registries.PARTICLE_TYPE, CParticleTypes::registerAll);
+		event.register(Registries.PAINTING_VARIANT, CPaintingVariants::registerAll);
+		event.register(Registries.MENU, CMenuType::registerAll);
+		event.register(Registries.CARVER, CWorldCarver::registerAll);
+		event.register(Registries.FEATURE, CFeature::registerAll);
+		StructurePieceTypes.init();
+		CStructures.init();
+		CStructureType.init();
+		CStructureSets.init();
+		CTreeFeatures.init();
+		CTreePlacements.init();
+		CVegetationFeatures.init();
+		CVegetationPlacements.init();
+		MiscAcrotlestFeatures.init();
+		MiscAcrotlestPlacements.init();
+		event.register(Registries.BIOME, CBiomeRegistry::registerAll);
+		event.register(Registries.POINT_OF_INTEREST_TYPE, CPoiTypes::registerAll);
+		event.register(Registries.STAT_TYPE, CStats::registerAll);
+		event.register(Registries.CUSTOM_STAT, CStats::registerAllCustom);
+//		NoiseGeneratorSettings.register(CNoiseGeneratorSettings.ACROTLEST, CNoiseGeneratorSettings.acrotlestSettings(false));
+		CLootItemFunctions.registerAll();
+		new COreFeatures();
+		new COrePlacements();
+		event.register(CombatRegistries.SKILLS_REGISTRY, Skills::registerAll);
+		event.register(CombatRegistries.STAT_TYPES_REGISTRY, StatTypes::registerAll);
+		event.register(CombatRegistries.STATS_REGISTRY, Stats::registerAll);
+		event.register(CombatRegistries.JOBS_REGISTRY, Jobs::registerAll);
+		event.register(CombatRegistries.SPELLS_REGISTRY, Spells::registerAll);
+		event.register(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, (helper) -> helper.register("custom", ModdedBiomeGeneration.EXAMPLE_CODEC));
+		MobEffects.JUMP.addAttributeModifier(CAttributes.JUMP_STRENGTH, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A0", 0.1D, AttributeModifier.Operation.ADDITION);
+		MobEffects.DAMAGE_RESISTANCE.addAttributeModifier(CAttributes.PHYSICAL_RESISTANCE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A1", 5.0D, AttributeModifier.Operation.ADDITION);
+	}
+	
+	@SubscribeEvent
+	public static void registerAttributes(DataPackRegistryEvent.NewRegistry event) {
+		event.dataPackRegistry(CombatRegistries.JOBS_REGISTRY, Job.CODEC, Job.CODEC);
+		event.dataPackRegistry(CombatRegistries.STATS_REGISTRY, Stat.CODEC, Stat.CODEC);
 	}
 
 	@SubscribeEvent
@@ -147,35 +173,11 @@ public class CombatRegistryEvents
 		event.add(EntityType.PLAYER, CAttributes.MAGIC_STRENGTH);
 		event.add(EntityType.PLAYER, CAttributes.MANA_REGENERATION);
 		event.add(EntityType.PLAYER, CAttributes.MAX_MANA);
-		event.add(EntityType.PLAYER, CAttributes.ATTACK_REACH);
-		event.add(EntityType.PLAYER, CAttributes.EARTH_AFFINITY);
-		event.add(EntityType.PLAYER, CAttributes.FIRE_AFFINITY);
-		event.add(EntityType.PLAYER, CAttributes.LIGHTNING_AFFINITY);
-		event.add(EntityType.PLAYER, CAttributes.WATER_AFFINITY);
-		event.add(EntityType.PLAYER, CAttributes.WIND_AFFINITY);
-	}
-
-	@SubscribeEvent
-	public static void registerBlocks(final RegistryEvent.Register<Block> event) 
-	{
-		RegistryOverrides.overrideBlocks(event.getRegistry());
-		CBlocks.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerFluids(final RegistryEvent.Register<Fluid> event) {
-		CFluids.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerItems(final RegistryEvent.Register<Item> event) {
-		RegistryOverrides.overrideItems(event.getRegistry());
-		CItems.registerAll(event.getRegistry());
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public static void registerItemColors(ColorHandlerEvent.Item event) {
+	public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
 		event.getItemColors().register((stack, tintIndex) -> {
 			return tintIndex == 0 ? PotionUtils.getColor(stack) : -1;
 		}, CItems.WOODEN_TIPPED_ARROW, CItems.GOLDEN_TIPPED_ARROW, CItems.QUARTZ_TIPPED_ARROW, CItems.DIAMOND_TIPPED_ARROW, CItems.OBSIDIAN_TIPPED_ARROW, CItems.IRON_TIPPED_ARROW);
@@ -201,15 +203,15 @@ public class CombatRegistryEvents
 			return ((SoulGemItem)stack.getItem()).getCat() == SpellCategory.NONE ? 0x56a6bf : ((SoulGemItem)stack.getItem()).getCat().getColor().getValue();
 		}, CItems.SOUL_GEM, CItems.CRUSHED_SOUL_GEM, CItems.DROWNED_SOUL_GEM, CItems.SCORCHED_SOUL_GEM, CItems.SHOCKED_SOUL_GEM, CItems.SHREDDED_SOUL_GEM);
 		event.getItemColors().register((p_92687_, p_92688_) -> {
-	         BlockState blockstate = ((BlockItem)p_92687_.getItem()).getBlock().defaultBlockState();
-	         return event.getBlockColors().getColor(blockstate, (BlockAndTintGetter)null, (BlockPos)null, p_92688_);
-	      }, CBlocks.REZAL_LEAVES);
-	      
+			BlockState blockstate = ((BlockItem)p_92687_.getItem()).getBlock().defaultBlockState();
+			return event.getBlockColors().getColor(blockstate, (BlockAndTintGetter)null, (BlockPos)null, p_92688_);
+		}, CBlocks.REZAL_LEAVES);
+
 	}
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public static void registerBlockColors(ColorHandlerEvent.Block event) {
+	public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
 		event.getBlockColors().register((state, reader, pos, color) -> {
 			int originalRGB = reader != null && pos != null ? BiomeColors.getAverageFoliageColor(reader, pos) : FoliageColor.getDefaultColor();
 			return (0xFFFFFF - originalRGB) | 0xFF000000;
@@ -217,78 +219,19 @@ public class CombatRegistryEvents
 	}
 
 	@SubscribeEvent
-	public static void registerEffects(final RegistryEvent.Register<MobEffect> event) {
-		CMobEffects.registerAll(event.getRegistry());
-		MobEffects.JUMP.addAttributeModifier(CAttributes.JUMP_STRENGTH, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A0", 0.1D, AttributeModifier.Operation.ADDITION);
-		MobEffects.DAMAGE_RESISTANCE.addAttributeModifier(CAttributes.PHYSICAL_RESISTANCE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A1", 5.0D, AttributeModifier.Operation.ADDITION);
-	}
-
-	@SubscribeEvent
-	public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event) {
-		CSoundEvents.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerPotions(final RegistryEvent.Register<Potion> event) {
-		CPotions.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerEnchantments(final RegistryEvent.Register<Enchantment> event) {
-		CEnchantments.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerEntity(final RegistryEvent.Register<EntityType<?>> event) {
-		CEntityType.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerBlockEntities(final RegistryEvent.Register<BlockEntityType<?>> event) {
-		CBlockEntityType.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {
+	public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
 		@SuppressWarnings("resource")
 		ParticleEngine manager = Minecraft.getInstance().particleEngine;
-		manager.register(CParticleTypes.ACROTLEST_PORTAL, AcrotlestPortalParticle.Provider::new);
-		manager.register(CParticleTypes.PYRANITE_FLAME, FlameParticle.Provider::new);
-		manager.register(CParticleTypes.DRIPPING_OIL, CDripParticle.DrippingOilProvider::new);
-		manager.register(CParticleTypes.FALLING_OIL, CDripParticle.FallingOilProvider::new);
-		manager.register(CParticleTypes.DRIPPING_BIABLE, CDripParticle.DrippingBiableProvider::new);
-		manager.register(CParticleTypes.FALLING_BIABLE, CDripParticle.FallingBiableProvider::new);
-		manager.register(CParticleTypes.OIL_SPLASH, SplashParticle.Provider::new);
+		event.register(CParticleTypes.ACROTLEST_PORTAL, AcrotlestPortalParticle.Provider::new);
+		event.register(CParticleTypes.PYRANITE_FLAME, FlameParticle.Provider::new);
+		event.register(CParticleTypes.DRIPPING_OIL, CDripParticle.DrippingOilProvider::new);
+		event.register(CParticleTypes.FALLING_OIL, CDripParticle.FallingOilProvider::new);
+		event.register(CParticleTypes.DRIPPING_BIABLE, CDripParticle.DrippingBiableProvider::new);
+		event.register(CParticleTypes.FALLING_BIABLE, CDripParticle.FallingBiableProvider::new);
+		event.register(CParticleTypes.OIL_SPLASH, SplashParticle.Provider::new);
 		manager.register(CParticleTypes.BIABLE_SPLASH, SplashParticle.Provider::new);
 	}
-
-	@SubscribeEvent
-	public static void registerParticles(final RegistryEvent.Register<ParticleType<?>> event) {
-		CParticleTypes.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerContainers(final RegistryEvent.Register<MenuType<?>> event) {
-		CMenuType.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerMotives(final RegistryEvent.Register<Motive> event) {
-		CMotive.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerRecipeSerializers(final RegistryEvent.Register<RecipeSerializer<?>> event) {
-		new CRecipeType();
-		CRecipeSerializer.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerStats(final RegistryEvent.Register<StatType<?>> event) {
-		CStats.registerAll(event.getRegistry());
-	}
-
 
 	//Village Regirtres
 	//	@SubscribeEvent
@@ -299,73 +242,20 @@ public class CombatRegistryEvents
 	//		Combat.debug("No Professions to register");
 	//	}
 
-	@SubscribeEvent
-	public static void registerPOITypes(final RegistryEvent.Register<PoiType> event) {
-		CPoiType.registerAll(event.getRegistry());
-	}
-
-
 	//Worldgen Registries
-	@SubscribeEvent
-	public static void registerBiomes(final RegistryEvent.Register<Biome> event) {
-		CBiomeRegistry.registerAll(event.getRegistry());
-		NoiseGeneratorSettings.register(CNoiseGeneratorSettings.ACROTLEST, CNoiseGeneratorSettings.acrotlestSettings(false));
-		StructurePieceTypes.init();
-		CLootItemFunctions.registerAll();
-		new COreFeatures();
-		new CTreeFeatures();
-		new CVegetationFeatures();
-		new COrePlacements();
-		new CTreePlacements();
-		new CVegetationPlacements();
-	}
-
-	@SubscribeEvent
-	public static void registerWorldCarvers(final RegistryEvent.Register<WorldCarver<?>> event) {
-		CWorldCarver.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerFeatures(final RegistryEvent.Register<Feature<?>> event) {
-		CFeature.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerStructures(final RegistryEvent.Register<StructureFeature<?>> event) {
-		CStructureFeature.registerAll(event.getRegistry());
-	}
+//	@SubscribeEvent
+//	public static void registerStructures(final RegistryEvent.Register<StructureFeature<?>> event) {
+//		CStructureFeature.registerAll(event.getRegistry());
+//	}
 
 
 
 	@SubscribeEvent
-	public static void registerCombatRegistries(final NewRegistryEvent event) {
-		event.create(new RegistryBuilder<Spell>().setName(Combat.getInstance().location("spell")).setType(c(Spell.class)).setMaxID(MAX_VARINT));
-		event.create(new RegistryBuilder<Skill>().setName(Combat.getInstance().location("skill")).setType(c(Skill.class)).setMaxID(MAX_VARINT));
-		event.create(new RegistryBuilder<Stat>().setName(Combat.getInstance().location("stats")).setType(c(Stat.class)).setMaxID(MAX_VARINT).dataPackRegistry(Stat.CODEC, Stat.CODEC));
-		event.create(new RegistryBuilder<Job>().setName(Combat.getInstance().location("jobs")).setType(c(Job.class)).setMaxID(MAX_VARINT).dataPackRegistry(Job.CODEC, Job.CODEC));
+	public static void registerCombatRegistries(NewRegistryEvent event) {
+		event.create(new RegistryBuilder<Spell>().setName(Combat.getInstance().location("spell")).setMaxID(MAX_VARINT), (x) -> CombatRegistries.SPELLS = x);
+		CombatRegistries.SKILLS = event.create(new RegistryBuilder<Skill>().setName(CombatRegistries.SKILLS_REGISTRY.location()).setMaxID(MAX_VARINT));
+		event.create(new RegistryBuilder<StatType>().setName(CombatRegistries.STAT_TYPES_REGISTRY.location()).setMaxID(MAX_VARINT), (x) -> CombatRegistries.STAT_TYPES = x);
+		event.create(new RegistryBuilder<Stat>().setName(CombatRegistries.STATS_REGISTRY.location()).setMaxID(MAX_VARINT));
+		event.create(new RegistryBuilder<Job>().setName(CombatRegistries.JOBS_REGISTRY.location()).setMaxID(MAX_VARINT), (x) -> CombatRegistries.JOBS = x);
 	}
-
-	//Custom C.O.M.B.A.T. Registries
-	@SubscribeEvent
-	public static void registerSpells(final RegistryEvent.Register<Spell> event) {
-		Spells.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerSkills(final RegistryEvent.Register<Skill> event) {
-		Skills.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerLeveledStats(final RegistryEvent.Register<Stat> event) {
-		Stats.registerAll(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerjobs(final RegistryEvent.Register<Job> event) {
-		Jobs.registerAll(event.getRegistry());
-	}
-	
-	@SuppressWarnings("unchecked") //Ugly hack to let us pass in a typed Class object. Remove when we remove type specific references.
-	private static <T> Class<T> c(Class<?> cls) { return (Class<T>)cls; }
 }

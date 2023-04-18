@@ -11,12 +11,12 @@ import com.stereowalker.combat.world.entity.CombatEntityStats;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public class AllyCommand {
-	private static final SimpleCommandExceptionType ADD_SLEF_FAILED_EXCEPTION = new SimpleCommandExceptionType(new TranslatableComponent("commands.ally.add.failed.self"));
-	private static final SimpleCommandExceptionType REMOVE_SLEF_FAILED_EXCEPTION = new SimpleCommandExceptionType(new TranslatableComponent("commands.ally.remove.failed.self"));
+	private static final SimpleCommandExceptionType ADD_SLEF_FAILED_EXCEPTION = new SimpleCommandExceptionType(Component.translatable("commands.ally.add.failed.self"));
+	private static final SimpleCommandExceptionType REMOVE_SLEF_FAILED_EXCEPTION = new SimpleCommandExceptionType(Component.translatable("commands.ally.remove.failed.self"));
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(Commands.literal("ally").requires((command) -> {
@@ -36,7 +36,7 @@ public class AllyCommand {
 		Player player = source.getPlayerOrException();
 		List<Player> currentAllies = CombatEntityStats.getAllies(player);
 		for(Player ally : allies) {
-			if (!Player.createPlayerUUID(player.getGameProfile()).equals(Player.createPlayerUUID(ally.getGameProfile()))) {
+			if (!player.getUUID().equals(ally.getUUID())) {
 				if (!currentAllies.contains(ally)) {
 					currentAllies.add(ally);
 					i++;
@@ -48,17 +48,17 @@ public class AllyCommand {
 		CombatEntityStats.setAllies(player, currentAllies);
 		if (i == 0 && !flag) {
 			if (allies.size() == 1) {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.ally.add.failed.single", allies.iterator().next().getDisplayName())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.ally.add.failed.single", allies.iterator().next().getDisplayName())).create();
 			} else {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.ally.add.failed.multiple", allies.size())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.ally.add.failed.multiple", allies.size())).create();
 			}
 		} else if (i == 0 && flag) {
 			throw ADD_SLEF_FAILED_EXCEPTION.create();
 		} else {
 			if (allies.size() == 1) {
-				source.sendSuccess(new TranslatableComponent("commands.ally.add.success.single", allies.iterator().next().getDisplayName()), true);
+				source.sendSuccess(Component.translatable("commands.ally.add.success.single", allies.iterator().next().getDisplayName()), true);
 			} else {
-				source.sendSuccess(new TranslatableComponent("commands.ally.add.success.multiple", allies.size()), true);
+				source.sendSuccess(Component.translatable("commands.ally.add.success.multiple", allies.size()), true);
 			}
 
 			return i;
@@ -71,7 +71,7 @@ public class AllyCommand {
 		Player player = source.getPlayerOrException();
 		List<Player> currentAllies = CombatEntityStats.getAllies(player);
 		for(Player ally : allies) {
-			if (!Player.createPlayerUUID(player.getGameProfile()).equals(Player.createPlayerUUID(ally.getGameProfile()))) {
+			if (!player.getUUID().equals(ally.getUUID())) {
 				if (currentAllies.contains(ally)) {
 					currentAllies.remove(ally);
 					i++;
@@ -83,17 +83,17 @@ public class AllyCommand {
 		CombatEntityStats.setAllies(player, currentAllies);
 		if (i == 0 && !flag) {
 			if (allies.size() == 1) {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.ally.remove.failed.single", allies.iterator().next().getDisplayName())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.ally.remove.failed.single", allies.iterator().next().getDisplayName())).create();
 			} else {
-				throw new SimpleCommandExceptionType(new TranslatableComponent("commands.ally.remove.failed.multiple", allies.size())).create();
+				throw new SimpleCommandExceptionType(Component.translatable("commands.ally.remove.failed.multiple", allies.size())).create();
 			}
 		} else if (i == 0 && flag) {
 			throw REMOVE_SLEF_FAILED_EXCEPTION.create();
 		} else {
 			if (allies.size() == 1) {
-				source.sendSuccess(new TranslatableComponent("commands.ally.remove.success.single", allies.iterator().next().getDisplayName()), true);
+				source.sendSuccess(Component.translatable("commands.ally.remove.success.single", allies.iterator().next().getDisplayName()), true);
 			} else {
-				source.sendSuccess(new TranslatableComponent("commands.ally.remove.success.multiple", allies.size()), true);
+				source.sendSuccess(Component.translatable("commands.ally.remove.success.multiple", allies.size()), true);
 			}
 
 			return i;

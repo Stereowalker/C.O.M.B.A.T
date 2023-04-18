@@ -1,11 +1,10 @@
 package com.stereowalker.combat.world.level.levelgen.feature;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -22,7 +21,7 @@ public class TsuneColumnFeature extends Feature<NoneFeatureConfiguration> {
 	@Override
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159882_) {
 		BlockPos pos = p_159882_.origin();
-		Random rand = p_159882_.random();
+		RandomSource rand = p_159882_.random();
 
 		WorldGenLevel worldIn;
 		for(worldIn = p_159882_.level(); worldIn.isEmptyBlock(pos) && pos.getY() > worldIn.getMinBuildHeight() + 2; pos = pos.below()) {

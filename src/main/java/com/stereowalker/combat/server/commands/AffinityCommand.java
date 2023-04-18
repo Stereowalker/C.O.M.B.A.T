@@ -9,7 +9,7 @@ import com.stereowalker.unionlib.util.TextHelper;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 public class AffinityCommand {
@@ -62,9 +62,9 @@ public class AffinityCommand {
 			}
 		}
 		if (i == 0) {
-			throw new SimpleCommandExceptionType(new TranslatableComponent("commands.affinity.failed", caster.getDisplayName(), affinity.getColoredDisplayName(), type.getName(), TextHelper.articulatedText(type.getName(), false))).create();
+			throw new SimpleCommandExceptionType(Component.translatable("commands.affinity.failed", caster.getDisplayName(), affinity.getColoredDisplayName(), type.getName(), TextHelper.articulatedText(type.getName(), false))).create();
 		} else {
-			source.sendSuccess(new TranslatableComponent("commands.affinity.success", caster.getDisplayName(), affinity.getColoredDisplayName(), type.getName()), true);
+			source.sendSuccess(Component.translatable("commands.affinity.success", caster.getDisplayName(), affinity.getColoredDisplayName(), type.getName()), true);
 			return i;
 		}
 	}

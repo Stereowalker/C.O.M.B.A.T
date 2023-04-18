@@ -1,16 +1,17 @@
 package com.stereowalker.combat.event;
 
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.UUID;
 
 import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import com.stereowalker.combat.world.damagesource.CDamageSource;
 import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
 import com.stereowalker.combat.world.item.enchantment.CEnchantments;
+import com.stereowalker.unionlib.api.insert.InsertCanceller;
 import com.stereowalker.unionlib.util.EntityHelper;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -23,28 +24,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ThornsEnchantment;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.Clone;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber(modid = "combat")
 public class EnchantmentEvents {
-	@SubscribeEvent
-	public static void enchantmentIceAspect(AttackEntityEvent event) {
-		int i = CEnchantmentHelper.getIceAspectModifier(event.getEntityLiving());
+	public static void enchantmentIceAspect(Player player, Entity target, InsertCanceller canceller) {
+		int i = CEnchantmentHelper.getIceAspectModifier(player);
 
 		if (i > 0) {
-			SpellUtil.setIce(event.getTarget(), i * 4);
+			SpellUtil.setIce(target, i * 4);
 		}
 	}
 
-	@SubscribeEvent
-	public static void enchantmentRestoring(LivingUpdateEvent event) {
-		if (event.getEntityLiving() instanceof ServerPlayer) {
-			ServerPlayer player = (ServerPlayer)event.getEntityLiving();
+	public static void enchantmentRestoring(LivingEntity living) {
+		if (living instanceof ServerPlayer) {
+			ServerPlayer player = (ServerPlayer)living;
 			Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(CEnchantments.RESTORING, player);
 			if (entry != null) {
 				ItemStack itemstack = entry.getValue();
@@ -57,13 +49,10 @@ public class EnchantmentEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void enchantmentClone(Clone event) {
-		Player oldPlayer = event.getOriginal();
-		Player newPlayer = event.getPlayer();
-		for(int i = 0; i < oldPlayer.getInventory().getContainerSize(); ++i) {
-			if (CEnchantmentHelper.hasRetaining(oldPlayer.getInventory().getItem(i))) {
-				newPlayer.getInventory().setItem(i, oldPlayer.getInventory().getItem(i));
+	public static void enchantmentClone(Player thisPlayer, Player thatPlayer, boolean keepEverything) {
+		for(int i = 0; i < thatPlayer.getInventory().getContainerSize(); ++i) {
+			if (CEnchantmentHelper.hasRetaining(thatPlayer.getInventory().getItem(i))) {
+				thisPlayer.getInventory().setItem(i, thatPlayer.getInventory().getItem(i));
 			}
 		}
 	}
@@ -76,10 +65,9 @@ public class EnchantmentEvents {
 	//		return xp * 2;
 	//	}
 
-	@SubscribeEvent
-	public static void enchantmentQuickSwing(LivingUpdateEvent event) {
-		if (event.getEntityLiving() instanceof Player) {
-			Player player = (Player)event.getEntityLiving();
+	public static void enchantmentQuickSwing(LivingEntity living) {
+		if (living instanceof Player) {
+			Player player = (Player)living;
 			int level = EnchantmentHelper.getEnchantmentLevel(CEnchantments.QUICK_DRAW, player);
 			AttributeModifier bonus = new AttributeModifier(UUID.fromString("16b2d169-b860-48e6-98dd-5fa801bb3b71"), "Quick_Draw_Bonus", level, AttributeModifier.Operation.ADDITION);
 			if (level > 0) {
@@ -97,22 +85,20 @@ public class EnchantmentEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void enchantmentBurningSpikes(LivingAttackEvent event) {
-		Entity attacker = event.getSource().getEntity();
-		LivingEntity user = event.getEntityLiving();
-		if (event.getAmount() > 0.0F && canBlockDamageSource(event.getEntityLiving(), event.getSource())) {
-			Random random = user.getRandom();
-			Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(CEnchantments.BURNING_SPIKES, user);
-			int level = EnchantmentHelper.getEnchantmentLevel(CEnchantments.BURNING_SPIKES, user);
+	public static void enchantmentBurningSpikes(LivingEntity living, DamageSource source, float amount) {
+		Entity attacker = source.getEntity();
+		if (amount > 0.0F && canBlockDamageSource(living, source)) {
+			RandomSource random = living.getRandom();
+			Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(CEnchantments.BURNING_SPIKES, living);
+			int level = EnchantmentHelper.getEnchantmentLevel(CEnchantments.BURNING_SPIKES, living);
 			if (ThornsEnchantment.shouldHit(level, random)) {
 				if (attacker != null) {
 					attacker.setSecondsOnFire(level * 40);
-					attacker.hurt(CDamageSource.causeBurningThornsDamage(user), (float)ThornsEnchantment.getDamage(level, random));
+					attacker.hurt(CDamageSource.causeBurningThornsDamage(living), (float)ThornsEnchantment.getDamage(level, random));
 				}
 
 				if (entry != null) {
-					entry.getValue().hurtAndBreak(3, user, (p_222183_1_) -> {
+					entry.getValue().hurtAndBreak(3, living, (p_222183_1_) -> {
 						p_222183_1_.broadcastBreakEvent(entry.getKey());
 					});
 				}
@@ -120,21 +106,19 @@ public class EnchantmentEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void enchantmentSpikes(LivingAttackEvent event) {
-		Entity attacker = event.getSource().getEntity();
-		LivingEntity user = event.getEntityLiving();
-		if (event.getAmount() > 0.0F && canBlockDamageSource(event.getEntityLiving(), event.getSource())) {
-			Random random = user.getRandom();
-			Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(CEnchantments.SPIKES, user);
-			int level = EnchantmentHelper.getEnchantmentLevel(CEnchantments.SPIKES, user);
+	public static void enchantmentSpikes(LivingEntity living, DamageSource source, float amount) {
+		Entity attacker = source.getEntity();
+		if (amount > 0.0F && canBlockDamageSource(living, source)) {
+			RandomSource random = living.getRandom();
+			Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(CEnchantments.SPIKES, living);
+			int level = EnchantmentHelper.getEnchantmentLevel(CEnchantments.SPIKES, living);
 			if (ThornsEnchantment.shouldHit(level, random)) {
 				if (attacker != null) {
-					attacker.hurt(DamageSource.thorns(user), (float)ThornsEnchantment.getDamage(level, random));
+					attacker.hurt(DamageSource.thorns(living), (float)ThornsEnchantment.getDamage(level, random));
 				}
 
 				if (entry != null) {
-					entry.getValue().hurtAndBreak(3, user, (p_222183_1_) -> {
+					entry.getValue().hurtAndBreak(3, living, (p_222183_1_) -> {
 						p_222183_1_.broadcastBreakEvent(entry.getKey());
 					});
 				}
@@ -142,21 +126,19 @@ public class EnchantmentEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void enchantmentAbsorption(LivingAttackEvent event) {
-		Entity attacker = event.getSource().getEntity();
-		LivingEntity user = event.getEntityLiving();
-		if (event.getAmount() > 0.0F && canBlockDamageSource(event.getEntityLiving(), event.getSource())) {
-			Random random = user.getRandom();
-			Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(CEnchantments.SPIKES, user);
-			int level = EnchantmentHelper.getEnchantmentLevel(CEnchantments.SPIKES, user);
+	public static void enchantmentAbsorption(LivingEntity living, DamageSource source, float amount) {
+		Entity attacker = source.getEntity();
+		if (amount > 0.0F && canBlockDamageSource(living, source)) {
+			RandomSource random = living.getRandom();
+			Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(CEnchantments.SPIKES, living);
+			int level = EnchantmentHelper.getEnchantmentLevel(CEnchantments.SPIKES, living);
 			if (ThornsEnchantment.shouldHit(level, random)) {
 				if (attacker != null) {
-					attacker.hurt(DamageSource.thorns(user), (float)ThornsEnchantment.getDamage(level, random));
+					attacker.hurt(DamageSource.thorns(living), (float)ThornsEnchantment.getDamage(level, random));
 				}
 
 				if (entry != null) {
-					entry.getValue().hurtAndBreak(3, user, (p_222183_1_) -> {
+					entry.getValue().hurtAndBreak(3, living, (p_222183_1_) -> {
 						p_222183_1_.broadcastBreakEvent(entry.getKey());
 					});
 				}

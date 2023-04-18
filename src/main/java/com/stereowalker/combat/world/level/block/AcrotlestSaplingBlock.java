@@ -1,11 +1,11 @@
 package com.stereowalker.combat.world.level.block;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
@@ -37,7 +37,7 @@ public class AcrotlestSaplingBlock extends BushBlock implements BonemealableBloc
 	 * Performs a random tick on a block.
 	 */
 	@Override
-	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
 		if (worldIn.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0) {
 			if (!worldIn.isAreaLoaded(pos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
 			this.advanceTree(worldIn, pos, state, random);
@@ -45,7 +45,7 @@ public class AcrotlestSaplingBlock extends BushBlock implements BonemealableBloc
 
 	}
 
-	public void advanceTree(ServerLevel world, BlockPos pos, BlockState state, Random rand) {
+	public void advanceTree(ServerLevel world, BlockPos pos, BlockState state, RandomSource rand) {
 		if (state.getValue(STAGE) == 0) {
 			world.setBlock(pos, state.cycle(STAGE), 4);
 		} else {
@@ -59,17 +59,17 @@ public class AcrotlestSaplingBlock extends BushBlock implements BonemealableBloc
 	 * @return whether bonemeal can be used on this block
 	 */
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pos, BlockState state, boolean isClient) {
 		return true;
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level worldIn, RandomSource rand, BlockPos pos, BlockState state) {
 		return (double)worldIn.random.nextFloat() < 0.45D;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel worldIn, RandomSource rand, BlockPos pos, BlockState state) {
 		this.advanceTree(worldIn, pos, state, rand);
 	}
 

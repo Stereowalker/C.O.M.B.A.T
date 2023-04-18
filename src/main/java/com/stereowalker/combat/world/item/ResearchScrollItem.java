@@ -2,7 +2,6 @@ package com.stereowalker.combat.world.item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.google.common.collect.Lists;
 import com.stereowalker.combat.Combat;
@@ -20,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 
@@ -34,10 +32,9 @@ public class ResearchScrollItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		if (!worldIn.isClientSide) {
 			ItemStack itemStack = playerIn.getItemInHand(handIn);
-			Random rand = new Random();
-			int chance = rand.nextInt(3);
+			int chance = worldIn.random.nextInt(3);
 			if (CombatEntityStats.addMana(playerIn, -2.0F)) {
-				Spell spell = SpellUtil.getWeightedRandomSpell(rand, SpellCategory.values(ClassType.ELEMENTAL));
+				Spell spell = SpellUtil.getWeightedRandomSpell(worldIn.random, SpellCategory.values(ClassType.ELEMENTAL));
 				itemStack.shrink(1);
 				if (Combat.MAGIC_CONFIG.toggle_affinities) {
 					
@@ -46,9 +43,9 @@ public class ResearchScrollItem extends Item {
 					cats.add(SpellCategory.getStrongestElementalAffinity(playerIn));
 					cats.addAll(Lists.newArrayList(SpellCategory.getNextStrongestElementalAffinities(playerIn)));
 					
-					spell = SpellUtil.getWeightedRandomSpell(rand, cats.toArray(new SpellCategory[0]));
+					spell = SpellUtil.getWeightedRandomSpell(worldIn.random, cats.toArray(new SpellCategory[0]));
 				} else {
-					spell = SpellUtil.getWeightedRandomSpell(rand);
+					spell = SpellUtil.getWeightedRandomSpell(worldIn.random);
 				}
 				ItemStack itemIn = SpellUtil.addSpellToStack(new ItemStack(CItems.SCROLL), spell);
 				if (chance == 0) {
@@ -56,7 +53,7 @@ public class ResearchScrollItem extends Item {
 						worldIn.addFreshEntity(new ItemEntity(worldIn, playerIn.getX(), playerIn.getY(), playerIn.getZ(), itemIn));
 					}
 				} else if (chance == 1){
-					worldIn.explode(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), 1, Explosion.BlockInteraction.NONE);
+					worldIn.explode(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), 1, Level.ExplosionInteraction.NONE);
 				} else if (chance == 2){
 					HitResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, ClipContext.Fluid.ANY);
 //					spell.setLocation(raytraceresult.getHitVec());

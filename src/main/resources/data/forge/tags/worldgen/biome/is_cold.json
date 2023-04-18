@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:acrotlest_forest",
+    "combat:acrotlest_mountains",
+    "combat:acrotlest_river",
+    "combat:hisov_sands"
+  ]
+}

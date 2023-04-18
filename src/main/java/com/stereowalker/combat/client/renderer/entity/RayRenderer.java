@@ -1,10 +1,11 @@
 package com.stereowalker.combat.client.renderer.entity;
 
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.AbstractRaySpell;
 import com.stereowalker.combat.world.entity.magic.Ray;
@@ -57,8 +58,8 @@ public class RayRenderer extends EntityRenderer<Ray>{
 	         vec3d2 = vec3d2.normalize();
 	         float f5 = (float)Math.acos(vec3d2.y);
 	         float f6 = (float)Math.atan2(vec3d2.z, vec3d2.x);
-	         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((((float)Math.PI / 2F) - f6) * (180F / (float)Math.PI)));
-	         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(f5 * (180F / (float)Math.PI)));
+	         matrixStackIn.mulPose(Axis.YP.rotationDegrees((((float)Math.PI / 2F) - f6) * (180F / (float)Math.PI)));
+	         matrixStackIn.mulPose(Axis.XP.rotationDegrees(f5 * (180F / (float)Math.PI)));
 	         float f7 = f1 * 0.05F * -1.5F;
 	         int j = (int) (entity.getSpell().getSpell().getCategory().getrCOlor()*255); 
 	         int k = (int) (entity.getSpell().getSpell().getCategory().getgCOlor()*255);

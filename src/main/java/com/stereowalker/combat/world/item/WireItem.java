@@ -2,9 +2,8 @@ package com.stereowalker.combat.world.item;
 
 import com.stereowalker.combat.world.level.block.entity.ConnectorBlockEntity;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,22 +23,22 @@ public class WireItem extends Item {
 			if (context.getLevel().getBlockEntity(context.getClickedPos()) instanceof ConnectorBlockEntity) {
 				ConnectorBlockEntity con = (ConnectorBlockEntity)context.getLevel().getBlockEntity(context.getClickedPos());
 				if (con.isConnected()) {
-					context.getPlayer().sendMessage(new TextComponent("There are already wires here"), Util.NIL_UUID);
+					context.getPlayer().sendSystemMessage(Component.literal("There are already wires here"));
 				}
 				else {
 					if (connectionLocation(stack) == null) {
 						setConnectionLocation(stack, context.getClickedPos());
-						context.getPlayer().sendMessage(new TextComponent("Set first end"), Util.NIL_UUID);
+						context.getPlayer().sendSystemMessage(Component.literal("Set first end"));
 					} else {
 						if ((connectionLocation(stack).getX() != context.getClickedPos().getX()) || (connectionLocation(stack).getY() != context.getClickedPos().getY()) || (connectionLocation(stack).getZ() != context.getClickedPos().getZ())) {
 							ConnectorBlockEntity con2 = (ConnectorBlockEntity)context.getLevel().getBlockEntity(connectionLocation(stack));
 							con.setConnection(connectionLocation(stack));
 							con2.setConnection(context.getClickedPos());
-							context.getPlayer().sendMessage(new TextComponent("Set Other end"), Util.NIL_UUID);
+							context.getPlayer().sendSystemMessage(Component.literal("Set Other end"));
 							removeConnectionLocation(stack);
 							stack.shrink(1);
 						} else {
-							context.getPlayer().sendMessage(new TextComponent("Removing connection"), Util.NIL_UUID);
+							context.getPlayer().sendSystemMessage(Component.literal("Removing connection"));
 							removeConnectionLocation(stack);
 						}
 					}

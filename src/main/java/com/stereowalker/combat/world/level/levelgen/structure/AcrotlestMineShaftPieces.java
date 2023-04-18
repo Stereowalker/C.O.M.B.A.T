@@ -1,23 +1,27 @@
 package com.stereowalker.combat.world.level.levelgen.structure;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.Lists;
-import com.stereowalker.combat.world.level.levelgen.feature.AcrotlestMineshaftFeature;
 import com.stereowalker.combat.world.level.levelgen.feature.StructurePieceTypes;
 
-import java.util.List;
-import java.util.Random;
-import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.MinecartChest;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -36,8 +40,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class AcrotlestMineShaftPieces {
 	static final Logger LOGGER = LogManager.getLogger();
@@ -48,7 +50,7 @@ public class AcrotlestMineShaftPieces {
 	private static final int MAX_CHAIN_HEIGHT = 50;
 	private static final int MAX_DEPTH = 8;
 
-	private static AcrotlestMineShaftPieces.AcrotlestMineShaftPiece createRandomShaftPiece(StructurePieceAccessor pPieces, Random pRandom, int pX, int pY, int pZ, @Nullable Direction pDirection, int pGenDepth, AcrotlestMineshaftFeature.Type pType) {
+	private static AcrotlestMineShaftPieces.AcrotlestMineShaftPiece createRandomShaftPiece(StructurePieceAccessor pPieces, RandomSource pRandom, int pX, int pY, int pZ, @Nullable Direction pDirection, int pGenDepth, AcrotlestMineshaftStructure.Type pType) {
 		int i = pRandom.nextInt(100);
 		if (i >= 80) {
 			BoundingBox boundingbox = AcrotlestMineShaftPieces.AcrotlestMineShaftCrossing.findCrossing(pPieces, pRandom, pX, pY, pZ, pDirection);
@@ -70,11 +72,11 @@ public class AcrotlestMineShaftPieces {
 		return null;
 	}
 
-	static AcrotlestMineShaftPieces.AcrotlestMineShaftPiece generateAndAddPiece(StructurePiece pPiece, StructurePieceAccessor pPieces, Random pRandom, int pX, int pY, int pZ, Direction pDirection, int pGenDepth) {
+	static AcrotlestMineShaftPieces.AcrotlestMineShaftPiece generateAndAddPiece(StructurePiece pPiece, StructurePieceAccessor pPieces, RandomSource pRandom, int pX, int pY, int pZ, Direction pDirection, int pGenDepth) {
 		if (pGenDepth > 8) {
 			return null;
 		} else if (Math.abs(pX - pPiece.getBoundingBox().minX()) <= 80 && Math.abs(pZ - pPiece.getBoundingBox().minZ()) <= 80) {
-			AcrotlestMineshaftFeature.Type mineshaftfeature$type = ((AcrotlestMineShaftPieces.AcrotlestMineShaftPiece)pPiece).type;
+			AcrotlestMineshaftStructure.Type mineshaftfeature$type = ((AcrotlestMineShaftPieces.AcrotlestMineShaftPiece)pPiece).type;
 			AcrotlestMineShaftPieces.AcrotlestMineShaftPiece mineshaftpieces$mineshaftpiece = createRandomShaftPiece(pPieces, pRandom, pX, pY, pZ, pDirection, pGenDepth + 1, mineshaftfeature$type);
 			if (mineshaftpieces$mineshaftpiece != null) {
 				pPieces.addPiece(mineshaftpieces$mineshaftpiece);
@@ -110,7 +112,7 @@ public class AcrotlestMineShaftPieces {
 			pTag.putInt("Num", this.numSections);
 		}
 
-		public AcrotlestMineShaftCorridor(int pGenDepth, Random pRandom, BoundingBox pBox, Direction pDirection, AcrotlestMineshaftFeature.Type pType) {
+		public AcrotlestMineShaftCorridor(int pGenDepth, RandomSource pRandom, BoundingBox pBox, Direction pDirection, AcrotlestMineshaftStructure.Type pType) {
 			super(StructurePieceTypes.MINE_SHAFT_CORRIDOR, pGenDepth, pType, pBox);
 			this.setOrientation(pDirection);
 			this.hasRails = pRandom.nextInt(3) == 0;
@@ -124,7 +126,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Nullable
-		public static BoundingBox findCorridorSize(StructurePieceAccessor pPieces, Random pRandom, int pX, int pY, int pZ, Direction pDirection) {
+		public static BoundingBox findCorridorSize(StructurePieceAccessor pPieces, RandomSource pRandom, int pX, int pY, int pZ, Direction pDirection) {
 			for(int i = pRandom.nextInt(3) + 2; i > 0; --i) {
 				int j = i * 5;
 				BoundingBox boundingbox;
@@ -153,7 +155,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public void addChildren(StructurePiece pPiece, StructurePieceAccessor pPieces, Random pRandom) {
+		public void addChildren(StructurePiece pPiece, StructurePieceAccessor pPieces, RandomSource pRandom) {
 			int i = this.getGenDepth();
 			int j = pRandom.nextInt(4);
 			Direction direction = this.getOrientation();
@@ -226,7 +228,7 @@ public class AcrotlestMineShaftPieces {
 		 * Adds chest to the structure and sets its contents
 		 */
 		@Override
-		protected boolean createChest(WorldGenLevel pLevel, BoundingBox pStructurebb, Random pRandom, int pX, int pY, int pZ, ResourceLocation pLoot) {
+		protected boolean createChest(WorldGenLevel pLevel, BoundingBox pStructurebb, RandomSource pRandom, int pX, int pY, int pZ, ResourceLocation pLoot) {
 			BlockPos blockpos = this.getWorldPos(pX, pY, pZ);
 			if (pStructurebb.isInside(blockpos) && pLevel.getBlockState(blockpos).isAir() && !pLevel.getBlockState(blockpos.below()).isAir()) {
 				BlockState blockstate = Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, pRandom.nextBoolean() ? RailShape.NORTH_SOUTH : RailShape.EAST_WEST);
@@ -241,7 +243,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public void postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+		public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pChunkGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
 			if (!this.edgesLiquid(pLevel, pBox)) {
 				int i = 0;
 				int j = 2;
@@ -283,7 +285,7 @@ public class AcrotlestMineShaftPieces {
 							pLevel.setBlock(blockpos, Blocks.SPAWNER.defaultBlockState(), 2);
 							BlockEntity blockentity = pLevel.getBlockEntity(blockpos);
 							if (blockentity instanceof SpawnerBlockEntity) {
-								((SpawnerBlockEntity)blockentity).getSpawner().setEntityId(EntityType.CAVE_SPIDER);
+								((SpawnerBlockEntity)blockentity).setEntityId(EntityType.CAVE_SPIDER, pRandom);
 							}
 						}
 					}
@@ -405,7 +407,7 @@ public class AcrotlestMineShaftPieces {
 			return Block.canSupportCenter(pLevel, pPos, Direction.DOWN) && !(pState.getBlock() instanceof FallingBlock);
 		}
 
-		private void placeSupport(WorldGenLevel pLevel, BoundingBox pBox, int pMinX, int pMinY, int pZ, int pMaxY, int pMaxX, Random pRandom) {
+		private void placeSupport(WorldGenLevel pLevel, BoundingBox pBox, int pMinX, int pMinY, int pZ, int pMaxY, int pMaxX, RandomSource pRandom) {
 			if (this.isSupportingBox(pLevel, pBox, pMinX, pMaxX, pMaxY, pZ)) {
 				BlockState blockstate = this.type.getPlanksState();
 				BlockState blockstate1 = this.type.getFenceState();
@@ -423,7 +425,7 @@ public class AcrotlestMineShaftPieces {
 			}
 		}
 
-		private void maybePlaceCobWeb(WorldGenLevel pLevel, BoundingBox pBox, Random pRandom, float pChance, int pX, int pY, int pZ) {
+		private void maybePlaceCobWeb(WorldGenLevel pLevel, BoundingBox pBox, RandomSource pRandom, float pChance, int pX, int pY, int pZ) {
 			if (this.isInterior(pLevel, pX, pY, pZ, pBox) && pRandom.nextFloat() < pChance && this.hasSturdyNeighbours(pLevel, pBox, pX, pY, pZ, 2)) {
 				this.placeBlock(pLevel, Blocks.COBWEB.defaultBlockState(), pX, pY, pZ, pBox);
 			}
@@ -467,14 +469,14 @@ public class AcrotlestMineShaftPieces {
 			pTag.putInt("D", this.direction.get2DDataValue());
 		}
 
-		public AcrotlestMineShaftCrossing(int pGenDepth, BoundingBox pBox, @Nullable Direction pDirection, AcrotlestMineshaftFeature.Type pType) {
+		public AcrotlestMineShaftCrossing(int pGenDepth, BoundingBox pBox, @Nullable Direction pDirection, AcrotlestMineshaftStructure.Type pType) {
 			super(StructurePieceTypes.MINE_SHAFT_CROSSING, pGenDepth, pType, pBox);
 			this.direction = pDirection;
 			this.isTwoFloored = pBox.getYSpan() > 3;
 		}
 
 		@Nullable
-		public static BoundingBox findCrossing(StructurePieceAccessor pPieces, Random pRandom, int pX, int pY, int pZ, Direction pDirection) {
+		public static BoundingBox findCrossing(StructurePieceAccessor pPieces, RandomSource pRandom, int pX, int pY, int pZ, Direction pDirection) {
 			int i;
 			if (pRandom.nextInt(4) == 0) {
 				i = 6;
@@ -503,7 +505,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public void addChildren(StructurePiece pPiece, StructurePieceAccessor pPieces, Random pRandom) {
+		public void addChildren(StructurePiece pPiece, StructurePieceAccessor pPieces, RandomSource pRandom) {
 			int i = this.getGenDepth();
 			switch(this.direction) {
 			case NORTH:
@@ -549,7 +551,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public void postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+		public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pChunkGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
 			if (!this.edgesLiquid(pLevel, pBox)) {
 				BlockState blockstate = this.type.getPlanksState();
 				if (this.isTwoFloored) {
@@ -586,16 +588,16 @@ public class AcrotlestMineShaftPieces {
 	}
 
 	abstract static class AcrotlestMineShaftPiece extends StructurePiece {
-		protected AcrotlestMineshaftFeature.Type type;
+		protected AcrotlestMineshaftStructure.Type type;
 
-		public AcrotlestMineShaftPiece(StructurePieceType pPieceType, int pGenDepth, AcrotlestMineshaftFeature.Type pType, BoundingBox pBox) {
+		public AcrotlestMineShaftPiece(StructurePieceType pPieceType, int pGenDepth, AcrotlestMineshaftStructure.Type pType, BoundingBox pBox) {
 			super(pPieceType, pGenDepth, pBox);
 			this.type = pType;
 		}
 
 		public AcrotlestMineShaftPiece(StructurePieceType p_71471_, CompoundTag p_71472_) {
 			super(p_71471_, p_71472_);
-			this.type = AcrotlestMineshaftFeature.Type.byId(p_71472_.getInt("MST"));
+			this.type = AcrotlestMineshaftStructure.Type.byId(p_71472_.getInt("MST"));
 		}
 
 		@Override
@@ -682,7 +684,7 @@ public class AcrotlestMineShaftPieces {
 	public static class AcrotlestMineShaftRoom extends AcrotlestMineShaftPieces.AcrotlestMineShaftPiece {
 		private final List<BoundingBox> childEntranceBoxes = Lists.newLinkedList();
 
-		public AcrotlestMineShaftRoom(int pGenDepth, Random pRandom, int pX, int pZ, AcrotlestMineshaftFeature.Type pType) {
+		public AcrotlestMineShaftRoom(int pGenDepth, RandomSource pRandom, int pX, int pZ, AcrotlestMineshaftStructure.Type pType) {
 			super(StructurePieceTypes.MINE_SHAFT_ROOM, pGenDepth, pType, new BoundingBox(pX, 50, pZ, pX + 7 + pRandom.nextInt(6), 54 + pRandom.nextInt(6), pZ + 7 + pRandom.nextInt(6)));
 			this.type = pType;
 		}
@@ -693,7 +695,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public void addChildren(StructurePiece pPiece, StructurePieceAccessor pPieces, Random pRandom) {
+		public void addChildren(StructurePiece pPiece, StructurePieceAccessor pPieces, RandomSource pRandom) {
 			int i = this.getGenDepth();
 			int j = this.boundingBox.getYSpan() - 3 - 1;
 			if (j <= 0) {
@@ -756,7 +758,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public void postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+		public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pChunkGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
 			if (!this.edgesLiquid(pLevel, pBox)) {
 				this.generateBox(pLevel, pBox, this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ(), this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.maxZ(), Blocks.DIRT.defaultBlockState(), CAVE_AIR, true);
 				this.generateBox(pLevel, pBox, this.boundingBox.minX(), this.boundingBox.minY() + 1, this.boundingBox.minZ(), this.boundingBox.maxX(), Math.min(this.boundingBox.minY() + 3, this.boundingBox.maxY()), this.boundingBox.maxZ(), CAVE_AIR, CAVE_AIR, false);
@@ -789,7 +791,7 @@ public class AcrotlestMineShaftPieces {
 	}
 
 	public static class AcrotlestMineShaftStairs extends AcrotlestMineShaftPieces.AcrotlestMineShaftPiece {
-		public AcrotlestMineShaftStairs(int pGenDepth, BoundingBox pBox, Direction pDirection, AcrotlestMineshaftFeature.Type pType) {
+		public AcrotlestMineShaftStairs(int pGenDepth, BoundingBox pBox, Direction pDirection, AcrotlestMineshaftStructure.Type pType) {
 			super(StructurePieceTypes.MINE_SHAFT_STAIRS, pGenDepth, pType, pBox);
 			this.setOrientation(pDirection);
 		}
@@ -799,7 +801,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Nullable
-		public static BoundingBox findStairs(StructurePieceAccessor pPieces, Random pRandom, int pX, int pY, int pZ, Direction pDirection) {
+		public static BoundingBox findStairs(StructurePieceAccessor pPieces, RandomSource pRandom, int pX, int pY, int pZ, Direction pDirection) {
 			BoundingBox boundingbox;
 			switch(pDirection) {
 			case NORTH:
@@ -821,7 +823,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public void addChildren(StructurePiece pPiece, StructurePieceAccessor pPieces, Random pRandom) {
+		public void addChildren(StructurePiece pPiece, StructurePieceAccessor pPieces, RandomSource pRandom) {
 			int i = this.getGenDepth();
 			Direction direction = this.getOrientation();
 			if (direction != null) {
@@ -844,7 +846,7 @@ public class AcrotlestMineShaftPieces {
 		}
 
 		@Override
-		public void postProcess(WorldGenLevel pLevel, StructureFeatureManager pStructureManager, ChunkGenerator pChunkGenerator, Random pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+		public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pChunkGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
 			if (!this.edgesLiquid(pLevel, pBox)) {
 				this.generateBox(pLevel, pBox, 0, 5, 0, 2, 7, 1, CAVE_AIR, CAVE_AIR, false);
 				this.generateBox(pLevel, pBox, 0, 0, 7, 2, 2, 8, CAVE_AIR, CAVE_AIR, false);

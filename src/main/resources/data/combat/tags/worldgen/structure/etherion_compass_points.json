@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "combat:etherion_tower",
+    "combat:etherion_tower_acrotlest",
+    "combat:etherion_tower_badlands",
+    "combat:etherion_tower_desert"
+  ]
+}

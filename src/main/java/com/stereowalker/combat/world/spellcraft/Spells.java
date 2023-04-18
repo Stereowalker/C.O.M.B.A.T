@@ -1,7 +1,8 @@
 package com.stereowalker.combat.world.spellcraft;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.api.world.spellcraft.EffectSpell;
@@ -13,12 +14,13 @@ import com.stereowalker.combat.world.effect.CMobEffects;
 import com.stereowalker.combat.world.entity.CEntityType;
 import com.stereowalker.combat.world.item.CItems;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 
 public class Spells {
-	public static List<Spell> SPELLS = new ArrayList<Spell>();
+	public static Map<ResourceLocation,Spell> SPELLS = new HashMap<ResourceLocation,Spell>();
 	public static final Spell NONE = register("none", new EmptySpell(SpellCategory.NONE, Rank.NONE, CastType.SELF, 0.0F, 0, 0));
 //----------------------------------------[Fire]----------------------------------------\\
 	//Basic
@@ -156,15 +158,14 @@ public class Spells {
 	public static final Spell BLOOD_AXE = register("blood_axe", new SummonItemSpell(SpellCategory.BLOOD, Rank.BASIC, 0.14F, 0, () -> CItems.BLOOD_AXE, 20));
 	
 	public static Spell register(String name, Spell spell) {
-		spell.setRegistryName(Combat.getInstance().location(name));
-		SPELLS.add(spell);
+		SPELLS.put(Combat.getInstance().location(name),spell);
 		return spell;
 	}
 	
-	public static void registerAll(IForgeRegistry<Spell> registry) {
-		for(Spell spell : SPELLS) {
-			registry.register(spell);
-			Combat.debug("Spell: \""+spell.getRegistryName().toString()+"\" registered");
+	public static void registerAll(RegisterHelper<Spell> registry) {
+		for(Entry<ResourceLocation, Spell> spell : SPELLS.entrySet()) {
+			registry.register(spell.getKey(), spell.getValue());
+			Combat.debug("Spell: \""+spell.getKey().toString()+"\" registered");
 		}
 		Combat.debug("All Spells Registered");
 	}

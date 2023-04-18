@@ -2,7 +2,7 @@ package com.stereowalker.combat.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.client.model.MeteorModel;
 import com.stereowalker.combat.client.model.geom.CModelLayers;
@@ -27,9 +27,9 @@ public class MeteorRenderer extends EntityRenderer<Meteor>{
 	public void render(Meteor entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource typeBuffer, int p_225623_6_) {
 		matrixStack.pushPose();
 		matrixStack.translate(0.0D, 0.015D, 0.0D);
-		matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityYaw));
+		matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F - entityYaw));
 		matrixStack.scale(entity.getMeteorSize().getSize(), entity.getMeteorSize().getSize(), entity.getMeteorSize().getSize());
-		matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+		matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
 		VertexConsumer ivertexbuilder = typeBuffer.getBuffer(this.meteorModel.renderType(this.getTextureLocation(entity)));
 		this.meteorModel.renderToBuffer(matrixStack, ivertexbuilder, p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		matrixStack.popPose();

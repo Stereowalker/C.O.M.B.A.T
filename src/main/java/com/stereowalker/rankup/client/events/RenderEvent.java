@@ -1,7 +1,8 @@
 package com.stereowalker.rankup.client.events;
 
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
@@ -14,7 +15,6 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,9 +36,9 @@ public class RenderEvent {
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public static void renderLayer(RenderLivingEvent<?, ?> event) {
-		if (PlayerSkills.hasSkill(mc.player, Skills.INSIGHT) && Combat.RPG_CONFIG.enableLevelingSystem && event.getEntity() != Minecraft.getInstance().player) {
+		if (PlayerSkills.isSkillActive(mc.player, Skills.INSIGHT) && Combat.RPG_CONFIG.enableLevelingSystem && event.getEntity() != Minecraft.getInstance().player) {
 			event.getPoseStack().translate(0, 0.25, 0);
-			renderName(event.getRenderer(), event.getEntity(), new TextComponent("Level "+PlayerAttributeLevels.getLevel(event.getEntity())), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());
+			renderName(event.getRenderer(), event.getEntity(), Component.literal("Level "+PlayerAttributeLevels.getLevel(event.getEntity())), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());
 			event.getPoseStack().translate(0, -0.25, 0);
 		}
 	}

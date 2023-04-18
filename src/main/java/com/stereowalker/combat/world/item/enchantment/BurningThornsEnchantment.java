@@ -2,10 +2,9 @@ package com.stereowalker.combat.world.item.enchantment;
 
 import java.util.Map.Entry;
 
-import java.util.Random;
-
 import com.stereowalker.combat.world.damagesource.CDamageSource;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,7 +42,7 @@ public class BurningThornsEnchantment extends Enchantment {
 
 	@Override
 	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
-		Random random = user.getRandom();
+		RandomSource random = user.getRandom();
 		Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(CEnchantments.BURNING_THORNS, user);
 		if (shouldHit(level, random)) {
 			if (attacker != null) {
@@ -64,16 +63,16 @@ public class BurningThornsEnchantment extends Enchantment {
 
 	}
 
-	public static boolean shouldHit(int level, Random rnd) {
+	public static boolean shouldHit(int level, RandomSource random) {
 		if (level <= 0) {
 			return false;
 		} else {
-			return rnd.nextFloat() < 0.15F * (float)level;
+			return random.nextFloat() < 0.15F * (float)level;
 		}
 	}
 
-	public static int getDamage(int level, Random rnd) {
-		return level > 10 ? level - 10 : 1 + rnd.nextInt(4);
+	public static int getDamage(int level, RandomSource random) {
+		return level > 10 ? level - 10 : 1 + random.nextInt(4);
 	}
 
 	@Override

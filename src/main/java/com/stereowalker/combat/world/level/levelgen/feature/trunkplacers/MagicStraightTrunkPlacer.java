@@ -1,7 +1,6 @@
 package com.stereowalker.combat.world.level.levelgen.feature.trunkplacers;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 import com.google.common.collect.ImmutableList;
@@ -10,6 +9,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -36,14 +36,14 @@ public class MagicStraightTrunkPlacer extends TrunkPlacer {
 		});
 	}
 
-	protected static void setDirtAt(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, BlockPos pPos, TreeConfiguration pConfig) {
+	protected static void setDirtAt(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, BlockPos pPos, TreeConfiguration pConfig) {
 		if (pConfig.forceDirt || !isDirt(pLevel, pPos)) {
 			pBlockSetter.accept(pPos, pConfig.dirtProvider.getState(pRandom, pPos));
 		}
 
 	}
 
-	public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader p_161859_, BiConsumer<BlockPos, BlockState> p_161860_, Random p_161861_, int p_161862_, BlockPos p_161863_, TreeConfiguration p_161864_) {
+	public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader p_161859_, BiConsumer<BlockPos, BlockState> p_161860_, RandomSource p_161861_, int p_161862_, BlockPos p_161863_, TreeConfiguration p_161864_) {
 		setDirtAt(p_161859_, p_161860_, p_161861_, p_161863_.below(), p_161864_);
 
 		for(int i = 0; i < p_161862_; ++i) {

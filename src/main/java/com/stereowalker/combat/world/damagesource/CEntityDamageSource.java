@@ -3,7 +3,6 @@ package com.stereowalker.combat.world.damagesource;
 import javax.annotation.Nullable;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -43,7 +42,7 @@ public class CEntityDamageSource extends CDamageSource {
    public Component getLocalizedDeathMessage(LivingEntity entityLivingBaseIn) {
       ItemStack itemstack = this.damageSourceEntity instanceof LivingEntity ? ((LivingEntity)this.damageSourceEntity).getMainHandItem() : ItemStack.EMPTY;
       String s = "death.attack." + this.msgId;
-      return !itemstack.isEmpty() && itemstack.hasCustomHoverName() ? new TranslatableComponent(s + ".item", entityLivingBaseIn.getDisplayName(), this.damageSourceEntity.getDisplayName(), itemstack.getDisplayName()) : new TranslatableComponent(s, entityLivingBaseIn.getDisplayName(), this.damageSourceEntity.getDisplayName());
+      return !itemstack.isEmpty() && itemstack.hasCustomHoverName() ? Component.translatable(s + ".item", entityLivingBaseIn.getDisplayName(), this.damageSourceEntity.getDisplayName(), itemstack.getDisplayName()) : Component.translatable(s, entityLivingBaseIn.getDisplayName(), this.damageSourceEntity.getDisplayName());
    }
 
    @Override

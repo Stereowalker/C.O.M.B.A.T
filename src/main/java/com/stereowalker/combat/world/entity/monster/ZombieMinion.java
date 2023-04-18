@@ -10,10 +10,8 @@ import com.stereowalker.combat.world.entity.ai.goal.MinionCasterHurtByTargetGoal
 import com.stereowalker.combat.world.entity.ai.goal.MinionCasterHurtTargetGoal;
 import com.stereowalker.combat.world.entity.ai.goal.MinionFollowCasterGoal;
 
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -82,7 +80,7 @@ public class ZombieMinion extends Zombie implements Minion<ZombieMinion> {
 	@Override
 	public Component getCustomName() {
 		if (this.getMaster() != null) {
-			return new TextComponent(this.getMaster().getScoreboardName()+"'s Zombie");
+			return Component.literal(this.getMaster().getScoreboardName()+"'s Zombie");
 		}
 		else return super.getCustomName();
 	}
@@ -175,7 +173,7 @@ public class ZombieMinion extends Zombie implements Minion<ZombieMinion> {
 	@Override
 	public void die(DamageSource cause) {
 		if (!this.level.isClientSide && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getMaster() instanceof ServerPlayer) {
-			this.getMaster().sendMessage(this.getCombatTracker().getDeathMessage(), Util.NIL_UUID);
+			this.getMaster().sendSystemMessage(this.getCombatTracker().getDeathMessage());
 		}
 
 		super.die(cause);

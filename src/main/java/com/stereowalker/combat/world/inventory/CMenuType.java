@@ -1,16 +1,18 @@
 package com.stereowalker.combat.world.inventory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.stereowalker.combat.Combat;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 
 public class CMenuType {
-	public static final List<MenuType<?>> CONTAINERTYPES = new ArrayList<MenuType<?>>();
+	public static final Map<ResourceLocation,MenuType<?>> CONTAINERTYPES = new HashMap<ResourceLocation,MenuType<?>>();
 	public static final MenuType<CardboardBoxMenu> CARDBOARD_BOX =  register("cardboard_box", CardboardBoxMenu::new);
 	public static final MenuType<AlloyFurnaceMenu> ALLOY_FURNACE = register("alloy_furnace", AlloyFurnaceMenu::new);
 	public static final MenuType<ArcaneWorkbenchMenu> ARCANE_WORKBENCH = register("arcane_workbench", ArcaneWorkbenchMenu::new);
@@ -26,15 +28,14 @@ public class CMenuType {
 
 	public static <T extends AbstractContainerMenu> MenuType<T> register(String name, MenuType.MenuSupplier<T> factory) {
 		MenuType<T> container = new MenuType<>(factory);
-		container.setRegistryName(Combat.getInstance().location(name));
-		CONTAINERTYPES.add(container);
+		CONTAINERTYPES.put(Combat.getInstance().location(name), container);
 		return container;
 	}
 
-	public static void registerAll(IForgeRegistry<MenuType<?>> registry) {
-		for(MenuType<?> container : CONTAINERTYPES) {
-			registry.register(container);
-			Combat.debug("Menu: \""+container.getRegistryName().toString()+"\" registered");
+	public static void registerAll(RegisterHelper<MenuType<?>> registry) {
+		for(Entry<ResourceLocation, MenuType<?>> container : CONTAINERTYPES.entrySet()) {
+			registry.register(container.getKey(), container.getValue());
+			Combat.debug("Menu: \""+container.getKey().toString()+"\" registered");
 		}
 		Combat.debug("All Menus Registered");
 	}

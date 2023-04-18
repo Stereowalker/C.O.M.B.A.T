@@ -6,7 +6,6 @@ import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 import com.stereowalker.combat.world.entity.misc.Meteor;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -59,7 +58,7 @@ public class MeteorSpell extends Spell {
 
 	@Override
 	public Component getFailedMessage(LivingEntity caster) {
-		return new TranslatableComponent("No location was selected");
+		return Component.translatable("No location was selected");
 	}
 
 }

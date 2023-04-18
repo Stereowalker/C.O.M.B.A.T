@@ -1,0 +1,18 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 65165156,
+    "separation": 10,
+    "spacing": 100
+  },
+  "structures": [
+    {
+      "structure": "combat:acrotlest_portal",
+      "weight": 1
+    },
+    {
+      "structure": "combat:overworld_portal",
+      "weight": 1
+    }
+  ]
+}

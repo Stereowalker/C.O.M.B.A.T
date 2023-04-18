@@ -1,7 +1,8 @@
 package com.stereowalker.combat.world.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.world.entity.boss.robin.RobinBoss;
@@ -35,16 +36,17 @@ import com.stereowalker.combat.world.entity.projectile.ThrownSpear;
 import com.stereowalker.combat.world.entity.projectile.WoodenArrow;
 import com.stereowalker.combat.world.entity.vehicle.BoatMod;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 
-public class CEntityType extends net.minecraftforge.registries.ForgeRegistryEntry<EntityType<?>> {
-	private static final List<EntityType<?>> ENTITY_TYPES = new ArrayList<EntityType<?>>();
+public class CEntityType {
+	private static final Map<ResourceLocation, EntityType<?>> ENTITY_TYPES = new HashMap<ResourceLocation, EntityType<?>>();
 	
 	public static final EntityType<Vampire> VAMPIRE = register("vampire", EntityType.Builder.<Vampire>of(Vampire::new, MobCategory.MONSTER).sized(0.6F, 1.95F));
 	public static final EntityType<ZombieCow> ZOMBIE_COW = register("zombie_cow", EntityType.Builder.<ZombieCow>of(ZombieCow::new, MobCategory.MONSTER).sized(0.9F, 1.4F));
@@ -77,10 +79,10 @@ public class CEntityType extends net.minecraftforge.registries.ForgeRegistryEntr
 	public static final EntityType<IronArrow> IRON_ARROW = register("iron_arrow", EntityType.Builder.<IronArrow>of(IronArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory((spawnEntity, world) -> CEntityType.IRON_ARROW.create(world)));
 	public static final EntityType<ObsidianArrow> OBSIDIAN_ARROW = register("obsidian_arrow", EntityType.Builder.<ObsidianArrow>of(ObsidianArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory((spawnEntity, world) -> CEntityType.OBSIDIAN_ARROW.create(world)));
 	
-	public static void registerAll(IForgeRegistry<EntityType<?>> registry) {
-		for(EntityType<?> entitytype: ENTITY_TYPES) {
-			registry.register(entitytype);
-			Combat.debug("Entity: \""+entitytype.getRegistryName().toString()+"\" registered");
+	public static void registerAll(RegisterHelper<EntityType<?>> registry) {
+		for(Entry<ResourceLocation, EntityType<?>> entitytype: ENTITY_TYPES.entrySet()) {
+			registry.register(entitytype.getKey(), entitytype.getValue());
+			Combat.debug("Entity: \""+entitytype.getKey().toString()+"\" registered");
 		}
 		SpawnPlacements.register(CEntityType.ZOMBIE_COW, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ZombieCow::canZombieCowSpawn);
 		SpawnPlacements.register(CEntityType.VAMPIRE, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
@@ -92,8 +94,7 @@ public class CEntityType extends net.minecraftforge.registries.ForgeRegistryEntr
 	
 	private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder){
 		EntityType<T> type = builder.build(name);
-		type.setRegistryName(Combat.getInstance().location(name));
-		ENTITY_TYPES.add(type);
+		ENTITY_TYPES.put(Combat.getInstance().location(name), type);
 		return type;
 	}
 }

@@ -3,6 +3,8 @@ package com.stereowalker.rankup.client.gui.screens.skill;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jline.reader.Widget;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.Combat;
@@ -13,17 +15,17 @@ import com.stereowalker.rankup.client.gui.screens.stats.PlayerLevelsScreen;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.Skill;
 import com.stereowalker.unionlib.client.gui.components.OverlayImageButton;
+import com.stereowalker.unionlib.util.ScreenHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -42,11 +44,11 @@ public class PlayerSkillsScreen extends Screen {
 	int offset = 40;
 
 	public PlayerSkillsScreen(Minecraft mc, int page, Skill skill) {
-		super(new TextComponent("").append(mc.player.getDisplayName()).append("'s Skills"));
+		super(Component.literal("").append(mc.player.getDisplayName()).append("'s Skills"));
 		this.minecraft = mc;
 		this.page = page;
 		List<Skill> playerSkills = new ArrayList<Skill>();
-		for (Skill skill2 : CombatRegistries.SKILLS) {
+		for (Skill skill2 : CombatRegistries.SKILLS.get()) {
 			if (PlayerSkills.hasSkill(minecraft.player, skill2)) {
 				playerSkills.add(skill2);
 			}
@@ -75,22 +77,22 @@ public class PlayerSkillsScreen extends Screen {
 		int defX = -118;
 		int xPos = defX;
 		int yPos1 = -42;
-//		prev = this.addRenderableWidget(new Button(this.width / 2 + xPos + (24*0), this.height/ 2 + yPos1, 20, 20, new TextComponent("<"), (p_213088_1_) -> {
+//		prev = this.addRenderableWidget(new Button(this.width / 2 + xPos + (24*0), this.height/ 2 + yPos1, 20, 20, Component.literal("<"), (p_213088_1_) -> {
 //			minecraft.setScreen(new PlayerSkillsScreen(minecraft, page-1, viewedSkill));
 //		}) {
 //			public void renderToolTip(PoseStack matrixStack, int p_renderToolTip_1_, int p_renderToolTip_2_) {
-//				if (page > 0)PlayerSkillsScreen.this.renderTooltip(matrixStack, new TextComponent("+ "+page+" More"), p_renderToolTip_1_, p_renderToolTip_2_);
+//				if (page > 0)PlayerSkillsScreen.this.renderTooltip(matrixStack, Component.literal("+ "+page+" More"), p_renderToolTip_1_, p_renderToolTip_2_);
 //			}
 //		});
 		int max = Math.min(skills.size(), 8);
 //		for (int i = 0; i < max; i++) {
 //			this.addSkill(xPos + (24*(i+1)), yPos1, (Skill) skills.toArray()[page+i], ((Skill) skills.toArray()[page+i]).isEnabled());
 //		}
-//		next = this.addRenderableWidget(new Button(this.width / 2 + xPos + (24*9), this.height/ 2 + yPos1, 20, 20, new TextComponent(">"), (p_213088_1_) -> {
+//		next = this.addRenderableWidget(new Button(this.width / 2 + xPos + (24*9), this.height/ 2 + yPos1, 20, 20, Component.literal(">"), (p_213088_1_) -> {
 //			minecraft.setScreen(new PlayerSkillsScreen(minecraft, page+1, viewedSkill));
 //		}) {
 //			public void renderToolTip(PoseStack matrixStack, int p_renderToolTip_1_, int p_renderToolTip_2_) {
-//				if (page+8 < skills.size())PlayerSkillsScreen.this.renderTooltip(matrixStack, new TextComponent("+ "+(skills.size() - (page+8))+" More"), p_renderToolTip_1_, p_renderToolTip_2_);
+//				if (page+8 < skills.size())PlayerSkillsScreen.this.renderTooltip(matrixStack, Component.literal("+ "+(skills.size() - (page+8))+" More"), p_renderToolTip_1_, p_renderToolTip_2_);
 //			}
 //		});
 
@@ -104,7 +106,7 @@ public class PlayerSkillsScreen extends Screen {
 //			} else {
 //				upgradeActive = false;
 //			}
-//			upgradeButton = this.addRenderableWidget(new Button(this.width / 2 - 24, this.height/ 2 - 18 + offset, 48, 20, new TextComponent("Upgrade"), (p_214328_1_) -> {
+//			upgradeButton = this.addRenderableWidget(new Button(this.width / 2 - 24, this.height/ 2 - 18 + offset, 48, 20, Component.literal("Upgrade"), (p_214328_1_) -> {
 //				Combat.CHANNEL.sendTo(new CUpgradeLevelsPacket(this.level, Minecraft.getInstance().player.getUniqueID()), Minecraft.getInstance().player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_SERVER);
 //				minecraft.setScreen(new PlayerSkillsScreen(minecraft, page, level));
 //			}));
@@ -112,19 +114,19 @@ public class PlayerSkillsScreen extends Screen {
 //		}
 		
 
-		this.addRenderableWidget(new Button(this.width / 2 - 125, this.height - 48, 80, 20, new TranslatableComponent("gui.show_stats"), (onPress) -> {
+		this.addRenderableWidget(ScreenHelper.buttonBuilder(Component.translatable("gui.show_stats"), (onPress) -> {
 			minecraft.setScreen(new PlayerLevelsScreen(minecraft));
-		}));
-		Button b = this.addRenderableWidget(new Button(this.width / 2 - 40, this.height - 48, 80, 20, new TranslatableComponent("gui.show_skills"), (onPress) -> {
+		}).bounds(this.width / 2 - 125, this.height - 48, 80, 20).build());
+		Button b = this.addRenderableWidget(ScreenHelper.buttonBuilder(Component.translatable("gui.show_skills"), (onPress) -> {
 			minecraft.setScreen(new PlayerSkillsScreen(minecraft, 0, null));
-		}));
-		this.addRenderableWidget(new Button(this.width / 2 + 45, this.height - 48, 80, 20, new TranslatableComponent("gui.show_jobs"), (onPress) -> {
+		}).bounds(this.width / 2 - 40, this.height - 48, 80, 20).build());
+		this.addRenderableWidget(ScreenHelper.buttonBuilder(Component.translatable("gui.show_jobs"), (onPress) -> {
 			minecraft.setScreen(new PlayerJobsScreen(minecraft));
-		}));
+		}).bounds(this.width / 2 + 45, this.height - 48, 80, 20).build());
 		b.active = false;
-		this.addRenderableWidget(new Button(this.width / 2 - 125, this.height - 23, 250, 20, CommonComponents.GUI_DONE, (onPress) -> {
+		this.addRenderableWidget(ScreenHelper.buttonBuilder(CommonComponents.GUI_DONE, (onPress) -> {
 			this.minecraft.setScreen(null);
-		}));
+		}).bounds(this.width / 2 - 125, this.height - 23, 250, 20).build());
 		
 	}
 
@@ -134,7 +136,7 @@ public class PlayerSkillsScreen extends Screen {
 			minecraft.setScreen(new PlayerSkillsScreen(minecraft, page, skill));
 		}, title) {
 			public void renderToolTip(PoseStack matrixStack, int p_renderToolTip_1_, int p_renderToolTip_2_) {
-				PlayerSkillsScreen.this.renderTooltip(matrixStack, new TranslatableComponent(skill.getTranslationKey()), p_renderToolTip_1_, p_renderToolTip_2_);
+				PlayerSkillsScreen.this.renderTooltip(matrixStack, Component.translatable(skill.getTranslationKey()), p_renderToolTip_1_, p_renderToolTip_2_);
 			}
 		});
 		newButton.active = isEnabled;
@@ -174,10 +176,10 @@ public class PlayerSkillsScreen extends Screen {
 		GuiComponent.drawCenteredString(pPoseStack, this.font, this.title, this.width / 2, 20, 16777215);
 		GuiComponent.drawCenteredString(pPoseStack, this.font, this.title, this.width / 2, 20, 16777215);
 		super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-		for(Widget widget : this.renderables) {
+		for(Renderable widget : this.renderables) {
 			if (widget instanceof AbstractWidget)
 				if (((AbstractWidget)widget).isHoveredOrFocused()) {
-					((AbstractWidget)widget).renderToolTip(pPoseStack, pMouseX, pMouseY);
+//					((AbstractWidget)widget).renderToolTip(pPoseStack, pMouseX, pMouseY);
 					break;
 				}
 		}

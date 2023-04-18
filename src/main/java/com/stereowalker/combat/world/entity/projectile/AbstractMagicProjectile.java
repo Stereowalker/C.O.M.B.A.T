@@ -8,8 +8,9 @@ import javax.annotation.Nullable;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -378,7 +379,7 @@ public abstract class AbstractMagicProjectile extends Projectile {
 			compound.putUUID("OwnerUUID", this.shootingEntity);
 		}
 
-		compound.putString("SoundEvent", Registry.SOUND_EVENT.getKey(this.hitSound).toString());
+		compound.putString("SoundEvent", BuiltInRegistries.SOUND_EVENT.getKey(this.hitSound).toString());
 		compound.putBoolean("ShotFromCrossbow", this.getShotFromCrossbow());
 	}
 
@@ -389,7 +390,7 @@ public abstract class AbstractMagicProjectile extends Projectile {
 	public void readAdditional(CompoundTag compound) {
 		this.ticksInGround = compound.getShort("life");
 		if (compound.contains("inBlockState", 10)) {
-			this.inBlockState = NbtUtils.readBlockState(compound.getCompound("inBlockState"));
+			this.inBlockState = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("inBlockState"));
 		}
 
 		this.arrowShake = compound.getByte("shake") & 255;
@@ -405,7 +406,7 @@ public abstract class AbstractMagicProjectile extends Projectile {
 		}
 
 		if (compound.contains("SoundEvent", 8)) {
-			this.hitSound = Registry.SOUND_EVENT.getOptional(new ResourceLocation(compound.getString("SoundEvent"))).orElse(this.getHitSound());
+			this.hitSound = BuiltInRegistries.SOUND_EVENT.getOptional(new ResourceLocation(compound.getString("SoundEvent"))).orElse(this.getHitSound());
 		}
 
 		this.setShotFromCrossbow(compound.getBoolean("ShotFromCrossbow"));

@@ -1,7 +1,6 @@
 package com.stereowalker.combat.api.world.spellcraft;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 public enum Rank {
 	NONE("none", 1),
@@ -24,7 +23,7 @@ public enum Rank {
 	}
 
 	public Component getDisplayName() {
-		return new TranslatableComponent("rank." + this.name);
+		return Component.translatable("rank." + this.name);
 	}
 
 	public int getWeight() {

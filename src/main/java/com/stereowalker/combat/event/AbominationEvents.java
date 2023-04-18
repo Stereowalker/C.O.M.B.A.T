@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
-import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.entity.AbominationEnums.AbominationType;
+import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.item.CItems;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -24,9 +25,9 @@ public class AbominationEvents {
 		CombatEntityStats.addStatsToMonstersOnSpawn(monster, random);
 	}
 
-	public static final List<ItemStack> getAbominationLoot() {
+	public static final List<ItemStack> getAbominationLoot(RandomSource source) {
 		return Lists.newArrayList(
-				EnchantmentHelper.enchantItem(random, new ItemStack(Items.BOOK), random.nextInt(100), true), 
+				EnchantmentHelper.enchantItem(source, new ItemStack(Items.BOOK), source.nextInt(100), true), 
 				new ItemStack(CItems.XP_STORAGE_RING), 
 				new ItemStack(CItems.POISON_CLEANSING_AMULET),
 				new ItemStack(CItems.PYROMANCER_RING),
@@ -38,8 +39,8 @@ public class AbominationEvents {
 		if (compound.contains(CombatEntityStats.abominationID)) {
 			if (CombatEntityStats.getAbomination(monster) != AbominationType.NORMAL) {
 				if (damageSource.getEntity() instanceof Player) {
-					int randomDrop = random.nextInt(getAbominationLoot().size());
-					monster.spawnAtLocation(getAbominationLoot().get(randomDrop));
+					int randomDrop = random.nextInt(getAbominationLoot(monster.getRandom()).size());
+					monster.spawnAtLocation(getAbominationLoot(monster.getRandom()).get(randomDrop));
 					CombatEntityStats.addMana((LivingEntity) damageSource.getEntity(), 20.0F);
 				}
 			}

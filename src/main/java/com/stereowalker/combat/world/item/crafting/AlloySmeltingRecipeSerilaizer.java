@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
-public class AlloySmeltingRecipeSerilaizer<T extends AbstractAlloyFurnaceRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
+public class AlloySmeltingRecipeSerilaizer<T extends AbstractAlloyFurnaceRecipe> implements RecipeSerializer<T> {
 	private final boolean twoInputs;
 	private final boolean oneOutput;
 	private final AlloySmeltingRecipeSerilaizer.IFactory<T> factory;

@@ -19,14 +19,14 @@ import com.stereowalker.combat.api.world.spellcraft.SpellUtil;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class SpellArgument implements ArgumentType<Spell> {
-	private static final SimpleCommandExceptionType INVALID_EXCEPTION = new SimpleCommandExceptionType(new TranslatableComponent("argument.id.invalid"));
+	private static final SimpleCommandExceptionType INVALID_EXCEPTION = new SimpleCommandExceptionType(Component.translatable("argument.id.invalid"));
 	private static final Collection<String> EXAMPLES = Arrays.asList("spooky", "spell");
 	public static final DynamicCommandExceptionType SPELL_NOT_FOUND = new DynamicCommandExceptionType((p_208663_0_) -> {
-		return new TranslatableComponent("spell.effectNotFound", p_208663_0_);
+		return Component.translatable("spell.effectNotFound", p_208663_0_);
 	});
 
 	public static SpellArgument spell() {

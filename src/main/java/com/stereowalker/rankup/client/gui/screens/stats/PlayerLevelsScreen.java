@@ -1,5 +1,7 @@
 package com.stereowalker.rankup.client.gui.screens.stats;
 
+import org.jline.reader.Widget;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.stereowalker.combat.Combat;
@@ -11,19 +13,18 @@ import com.stereowalker.rankup.client.gui.screens.skill.PlayerSkillsScreen;
 import com.stereowalker.rankup.world.stat.LevelType;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 import com.stereowalker.rankup.world.stat.StatEvents;
+import com.stereowalker.unionlib.util.ScreenHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,7 +37,7 @@ public class PlayerLevelsScreen extends Screen {
 	int offset = -5;
 
 	public PlayerLevelsScreen(Minecraft mc) {
-		super(new TextComponent("").append(mc.player.getDisplayName()).append("'s Stats"));
+		super(Component.literal("").append(mc.player.getDisplayName()).append("'s Stats"));
 		this.minecraft = mc;
 	}
 
@@ -52,19 +53,19 @@ public class PlayerLevelsScreen extends Screen {
 		this.statsRowList.addStat(this.minecraft.level.registryAccess().registryOrThrow(CombatRegistries.STATS_REGISTRY));
 		this.addWidget(this.statsRowList);
 
-		Button b = this.addRenderableWidget(new Button(this.width / 2 - 125, this.height - 48, 80, 20, new TranslatableComponent("gui.show_stats"), (onPress) -> {
+		Button b = this.addRenderableWidget(ScreenHelper.buttonBuilder(Component.translatable("gui.show_stats"), (onPress) -> {
 			minecraft.setScreen(new PlayerLevelsScreen(minecraft));
-		}));
-		this.addRenderableWidget(new Button(this.width / 2 - 40, this.height - 48, 80, 20, new TranslatableComponent("gui.show_skills"), (onPress) -> {
+		}).bounds(this.width / 2 - 125, this.height - 48, 80, 20).build());
+		this.addRenderableWidget(ScreenHelper.buttonBuilder(Component.translatable("gui.show_skills"), (onPress) -> {
 			minecraft.setScreen(new PlayerSkillsScreen(minecraft, 0, null));
-		}));
-		this.addRenderableWidget(new Button(this.width / 2 + 45, this.height - 48, 80, 20, new TranslatableComponent("gui.show_jobs"), (onPress) -> {
+		}).bounds(this.width / 2 - 40, this.height - 48, 80, 20).build());
+		this.addRenderableWidget(ScreenHelper.buttonBuilder(Component.translatable("gui.show_jobs"), (onPress) -> {
 			minecraft.setScreen(new PlayerJobsScreen(minecraft));
-		}));
+		}).bounds(this.width / 2 + 45, this.height - 48, 80, 20).build());
 		b.active = false;
-		this.addRenderableWidget(new Button(this.width / 2 - 125, this.height - 23, 250, 20, CommonComponents.GUI_DONE, (onPress) -> {
+		this.addRenderableWidget(ScreenHelper.buttonBuilder(CommonComponents.GUI_DONE, (onPress) -> {
 			this.minecraft.setScreen(null);
-		}));
+		}).bounds(this.width / 2 - 125, this.height - 23, 250, 20).build());
 	}
 
 	@Override
@@ -109,10 +110,10 @@ public class PlayerLevelsScreen extends Screen {
 			GuiComponent.drawCenteredString(pPoseStack, this.font, "Upgrade Points: "+PlayerAttributeLevels.getUpgradePoints(minecraft.player), this.width / 2, 65, 16777215);
 		
 		super.render(pPoseStack, mouseX, mouseY, partialTicks);
-		for(Widget widget : this.renderables) {
+		for(Renderable widget : this.renderables) {
 			if (widget instanceof AbstractWidget)
 				if (((AbstractWidget)widget).isHoveredOrFocused()) {
-					((AbstractWidget)widget).renderToolTip(pPoseStack, mouseX, mouseY);
+//					((AbstractWidget)widget).renderToolTip(pPoseStack, mouseX, mouseY);
 					break;
 				}
 		}

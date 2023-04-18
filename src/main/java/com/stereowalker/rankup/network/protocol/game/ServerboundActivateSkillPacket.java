@@ -19,12 +19,12 @@ public class ServerboundActivateSkillPacket extends ServerboundUnionPacket {
 	
 	public ServerboundActivateSkillPacket(FriendlyByteBuf packetBuffer) {
 		super(packetBuffer, Combat.getInstance().channel);
-		this.skill = CombatRegistries.SKILLS.getValue(packetBuffer.readResourceLocation());
+		this.skill = CombatRegistries.SKILLS.get().getValue(packetBuffer.readResourceLocation());
 	}
 	
 	@Override
 	public void encode(final FriendlyByteBuf packetBuffer) {
-		packetBuffer.writeResourceLocation(this.skill.getRegistryName());
+		packetBuffer.writeResourceLocation(CombatRegistries.SKILLS.get().getKey(this.skill));
 	}
 	
 	@Override

@@ -5,12 +5,11 @@ import com.stereowalker.combat.api.world.spellcraft.Spell;
 import com.stereowalker.combat.api.world.spellcraft.SpellCategory;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.phys.Vec3;
 
 public class ExplosionSpell extends Spell {
@@ -23,7 +22,7 @@ public class ExplosionSpell extends Spell {
 	public boolean spellProgram(LivingEntity caster, double strength, Vec3 location, InteractionHand hand) {
 		if (location != null) {
 			if(!caster.level.isClientSide) {
-				caster.level.explode((Entity)null, location.x, location.y, location.z, Mth.ceil(strength), false, Explosion.BlockInteraction.BREAK);
+				caster.level.explode((Entity)null, location.x, location.y, location.z, Mth.ceil(strength), false, ExplosionInteraction.TNT);
 			}
 			return true;
 		}
@@ -32,6 +31,6 @@ public class ExplosionSpell extends Spell {
 	
 	@Override
 	public Component getFailedMessage(LivingEntity caster) {
-		return new TranslatableComponent("No location was selected");
+		return Component.translatable("No location was selected");
 	}
 }

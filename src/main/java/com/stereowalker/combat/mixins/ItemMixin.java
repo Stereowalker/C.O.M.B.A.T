@@ -33,7 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ToolActions;
 
 @Mixin(Item.class)
-public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Item> implements ItemLike, net.minecraftforge.common.extensions.IForgeItem {
+public abstract class ItemMixin implements ItemLike, net.minecraftforge.common.extensions.IForgeItem {
 
 	/**
 	 * returns the action that specifies what animation to play when the items is being used

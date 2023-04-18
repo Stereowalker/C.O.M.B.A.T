@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import com.stereowalker.combat.world.entity.CEntityType;
 import com.stereowalker.combat.world.entity.ai.goal.RangedArchAttackGoal;
 import com.stereowalker.combat.world.entity.projectile.ArchArrow;
-import com.stereowalker.combat.world.entity.projectile.ThrownSpear;
 import com.stereowalker.combat.world.item.ArchSourceItem;
 import com.stereowalker.combat.world.item.ArchSourceItem.ArchType;
 import com.stereowalker.combat.world.item.CItems;
@@ -24,6 +23,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -188,8 +188,8 @@ public class RobinBoss extends Monster implements RangedAttackMob {
 	 * Gives armor or weapon for entity based on given DifficultyInstance
 	 */
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-		super.populateDefaultEquipmentSlots(difficulty);
+	protected void populateDefaultEquipmentSlots(RandomSource rand, DifficultyInstance difficulty) {
+		super.populateDefaultEquipmentSlots(rand, difficulty);
 		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(CItems.ARCH));
 	}
 
@@ -223,10 +223,11 @@ public class RobinBoss extends Monster implements RangedAttackMob {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		spawnDataIn = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-		this.populateDefaultEquipmentSlots(difficultyIn);
-		this.populateDefaultEquipmentEnchantments(difficultyIn);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+		spawnDataIn = super.finalizeSpawn(pLevel, difficultyIn, reason, spawnDataIn, dataTag);
+		RandomSource randomsource = pLevel.getRandom();
+		this.populateDefaultEquipmentSlots(randomsource, difficultyIn);
+		this.populateDefaultEquipmentEnchantments(randomsource, difficultyIn);
 		this.reassessWeaponGoal();
 		this.setCanPickUpLoot(this.random.nextFloat() < 0.55F * difficultyIn.getSpecialMultiplier());
 		if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {

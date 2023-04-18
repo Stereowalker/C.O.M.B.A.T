@@ -15,8 +15,6 @@ import com.stereowalker.combat.world.effect.CMobEffects;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.item.AbstractMagicCastingItem;
 import com.stereowalker.combat.world.item.AbstractSpellBookItem;
-import com.stereowalker.combat.world.item.AccessoryItemCheck;
-import com.stereowalker.combat.world.item.CItems;
 import com.stereowalker.combat.world.item.enchantment.CEnchantmentHelper;
 import com.stereowalker.combat.world.spellcraft.SpellStats;
 import com.stereowalker.combat.world.spellcraft.Spells;
@@ -27,12 +25,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -143,7 +140,7 @@ public class SpellUtil {
 	/**
 	 * @return A weighted random {@link Spell}
 	 */
-	public static Spell getWeightedRandomSpell(Random rand) {
+	public static Spell getWeightedRandomSpell(RandomSource rand) {
 		int totalWeight = 0;
 		for (Spell spell : CombatRegistries.SPELLS) {
 			totalWeight += spell.getWeight();
@@ -194,7 +191,7 @@ public class SpellUtil {
 	 * @param rand The random function
 	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
-	public static Spell getWeightedRandomSpell(Random rand, SpellCategory... categories) {
+	public static Spell getWeightedRandomSpell(RandomSource rand, SpellCategory... categories) {
 		return getWeightedRandomSpell(rand, null, categories, null);
 	}
 
@@ -204,7 +201,7 @@ public class SpellUtil {
 	 * @param rand The random function
 	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
-	public static Spell getWeightedRandomSpell(Random rand, CastType... castTypes) {
+	public static Spell getWeightedRandomSpell(RandomSource rand, CastType... castTypes) {
 		return getWeightedRandomSpell(rand, castTypes, null, null);
 	}
 	
@@ -216,7 +213,7 @@ public class SpellUtil {
 	 * @param ranks the filter to apply if null or empty, it will ignore the filter
 	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
-	public static Spell getWeightedRandomSpell(Random rand, CastType[] castTypes, SpellCategory[] categories, Rank[] ranks) {
+	public static Spell getWeightedRandomSpell(RandomSource rand, CastType[] castTypes, SpellCategory[] categories, Rank[] ranks) {
 		List<CastType> types = castTypes == null ? null : Lists.newArrayList(castTypes);
 		List<SpellCategory> categ = categories == null ? null : Lists.newArrayList(categories);
 		List<Rank> rank = ranks == null ? null : Lists.newArrayList(ranks);
@@ -231,7 +228,7 @@ public class SpellUtil {
 	 * @param ranks the filter to apply if null or empty, it will ignore the filter
 	 * @return A weighted random {@link Spell} based on the applied filter and the weights of the spells themselves
 	 */
-	public static Spell getWeightedRandomSpell(Random rand, List<CastType> castTypes, List<SpellCategory> categories, List<Rank> ranks) {
+	public static Spell getWeightedRandomSpell(RandomSource rand, List<CastType> castTypes, List<SpellCategory> categories, List<Rank> ranks) {
 		List<Spell> elegibleSpells = new ArrayList<Spell>();
 		for (Spell spell : CombatRegistries.SPELLS) {
 			if (!elegibleSpells.contains(spell) && (
@@ -308,7 +305,7 @@ public class SpellUtil {
 	@OnlyIn(Dist.CLIENT)
 	public static void addEffects(LivingEntity caster, Spell spell) {
 		Level world = caster.level;
-		if(caster instanceof Player) world.playSound((Player) caster, caster.blockPosition().getX(), caster.blockPosition().getY(), caster.blockPosition().getZ(), SoundEvents.NOTE_BLOCK_CHIME, SoundSource.PLAYERS, 10.0F, 2.0F);
+		if(caster instanceof Player) world.playSound((Player) caster, (double)caster.blockPosition().getX(), (double)caster.blockPosition().getY(), (double)caster.blockPosition().getZ(), SoundEvents.NOTE_BLOCK_CHIME.get(), SoundSource.PLAYERS, 10.0F, 2.0F);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -322,24 +319,24 @@ public class SpellUtil {
 			//			Blocks.SNOW
 			//TODO: Remove Cooldown
 			if (AbstractSpellBookItem.getMainSpellBook(player).isEmpty()) {
-				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.no_book"), sendStatus);
+				mc.player.displayClientMessage(Component.translatable("spell.fail.no_book"), sendStatus);
 			} else if (CombatEntityStats.getSpellStats(player, spell).getCooldown() > 0) {
-				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.on_cooldown", CombatEntityStats.getSpellStats(player, spell).getCooldown(), spell.getColoredName(SpellStats.getSpellKnowledge(player, spell))), sendStatus);
+				mc.player.displayClientMessage(Component.translatable("spell.fail.on_cooldown", CombatEntityStats.getSpellStats(player, spell).getCooldown(), spell.getColoredName(SpellStats.getSpellKnowledge(player, spell))), sendStatus);
 			} else if ( spell.getRank().ordinal() > stackItem.getTier().ordinal()) {
-				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.too_advanced", spell.getRank().getDisplayName()), sendStatus);
+				mc.player.displayClientMessage(Component.translatable("spell.fail.too_advanced", spell.getRank().getDisplayName()), sendStatus);
 			} else if (getModifiedSpellCost(spell, stackItem.getCostModifier()) > CombatEntityStats.getMana(caster)) {
-				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.not_enough_mana"), sendStatus);
+				mc.player.displayClientMessage(Component.translatable("spell.fail.not_enough_mana"), sendStatus);
 			} else if (!AbstractSpellBookItem.doesSpellBookContainSpell(player, spell)) {
-				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.not_in_book"), sendStatus);
+				mc.player.displayClientMessage(Component.translatable("spell.fail.not_in_book"), sendStatus);
 			} else if (caster.hasEffect(CMobEffects.MAGIC_JAMMING)) {
-				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.jammed"), sendStatus);
+				mc.player.displayClientMessage(Component.translatable("spell.fail.jammed"), sendStatus);
 			} else if (stack.getDamageValue() >= stack.getMaxDamage() - 1 && stack.isDamageableItem()) {
-				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.broken_wand"), sendStatus);
+				mc.player.displayClientMessage(Component.translatable("spell.fail.broken_wand"), sendStatus);
 			} else if (Combat.MAGIC_CONFIG.toggle_affinities && !(SpellCategory.canAccessElementalAffinity(player, spell.getCategory()) || spell.getCategory() == CombatEntityStats.getPrimevalAffinity(player)) && spell != Spells.NONE) {
-				mc.player.displayClientMessage(new TranslatableComponent("spell.fail.no_affinity", articulatedComponent(spell.getCategory().getColoredDisplayName(), false, false)), sendStatus);
+				mc.player.displayClientMessage(Component.translatable("spell.fail.no_affinity", articulatedComponent(spell.getCategory().getColoredDisplayName(), false, false)), sendStatus);
 			} else if (caster.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AbstractSpellBookItem) {//TODO: Use UnionLib Articulated component
 				Combat.debug("Book In Hand");
-			} else mc.player.displayClientMessage(new TranslatableComponent("spell.fail.unknown"),  sendStatus);
+			} else mc.player.displayClientMessage(Component.translatable("spell.fail.unknown"),  sendStatus);
 		}
 	}
 
@@ -348,10 +345,10 @@ public class SpellUtil {
 		MutableComponent comp;
 
 		if (iaArticleCapital) {
-			comp = new TextComponent(TextHelper.isFirstLeterVowel(component) ? "An " : "A ");
+			comp = Component.literal(TextHelper.isFirstLeterVowel(component) ? "An " : "A ");
 		}
 		else {
-			comp = new TextComponent(TextHelper.isFirstLeterVowel(component) ? "an " : "a ");
+			comp = Component.literal(TextHelper.isFirstLeterVowel(component) ? "an " : "a ");
 		}
 
 		if (shouldArticleUseComponentStyle && component.getStyle() != null) {

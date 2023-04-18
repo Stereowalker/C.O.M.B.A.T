@@ -10,11 +10,12 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class TippedArrowFletchingRecipe extends SpecialFletchingRecipe {
-	public TippedArrowFletchingRecipe(ResourceLocation idIn) {
+	public TippedArrowFletchingRecipe(ResourceLocation idIn, CraftingBookCategory pCategory) {
 		super(idIn);
 	}
 
@@ -67,5 +68,10 @@ public class TippedArrowFletchingRecipe extends SpecialFletchingRecipe {
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
 		return true;
+	}
+
+	@Override
+	public CraftingBookCategory category() {
+		return CraftingBookCategory.EQUIPMENT;
 	}
 }

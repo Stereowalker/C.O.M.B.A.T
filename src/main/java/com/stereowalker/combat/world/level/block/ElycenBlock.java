@@ -1,12 +1,14 @@
 package com.stereowalker.combat.world.level.block;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Optional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.GrassBlock;
@@ -22,9 +24,10 @@ public class ElycenBlock extends GrassBlock {
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel pLevel, Random pRand, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel pLevel, RandomSource pRand, BlockPos pos, BlockState state) {
 		BlockPos blockpos = pos.above();
 		BlockState blockstate = Blocks.GRASS.defaultBlockState();
+		Optional<Holder.Reference<PlacedFeature>> optional = pLevel.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolder(VegetationPlacements.GRASS_BONEMEAL);
 
 		label48:
 			for(int i = 0; i < 128; ++i) {
@@ -44,18 +47,22 @@ public class ElycenBlock extends GrassBlock {
 
 				if (blockstate2.isAir()) {
 					Holder<PlacedFeature> holder;
-		            if (pRand.nextInt(8) == 0) {
-		               List<ConfiguredFeature<?, ?>> list = pLevel.getBiome(blockpos1).value().getGenerationSettings().getFlowerFeatures();
-		               if (list.isEmpty()) {
-		                  continue;
-		               }
+					if (pRand.nextInt(8) == 0) {
+						List<ConfiguredFeature<?, ?>> list = pLevel.getBiome(blockpos1).value().getGenerationSettings().getFlowerFeatures();
+						if (list.isEmpty()) {
+							continue;
+						}
 
-		               holder = ((RandomPatchConfiguration)list.get(0).config()).feature();
-		            } else {
-		               holder = VegetationPlacements.GRASS_BONEMEAL;
-		            }
+						holder = ((RandomPatchConfiguration)list.get(0).config()).feature();
+					} else {
+						if (!optional.isPresent()) {
+							continue;
+						}
 
-		            holder.value().place(pLevel, pLevel.getChunkSource().getGenerator(), pRand, blockpos1);
+						holder = optional.get();
+					}
+
+					holder.value().place(pLevel, pLevel.getChunkSource().getGenerator(), pRand, blockpos1);
 				}
 			}
 

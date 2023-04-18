@@ -1,26 +1,23 @@
 package com.stereowalker.combat.world.level.levelgen.structure;
 
-import java.util.Random;
-
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.world.entity.CEntityType;
 import com.stereowalker.combat.world.level.block.CBlocks;
 import com.stereowalker.combat.world.level.levelgen.feature.StructurePieceTypes;
-import com.stereowalker.combat.world.level.levelgen.feature.configurations.EtherionTowerConfiguration.Variant;
+import com.stereowalker.combat.world.level.levelgen.structure.EtherionTowerStructure.Variant;
 import com.stereowalker.combat.world.level.storage.loot.CLootTables;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LanternBlock;
@@ -39,16 +36,16 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 public class EtherionTowerPieces {
 	private static final ResourceLocation BOTTOM = Combat.getInstance().location("etherion_tower/bottom");
 	private static final ResourceLocation TOP = Combat.getInstance().location("etherion_tower/top");
 
-	public static void addPieces(StructureManager templateManager, BlockPos blockPos, Rotation rotation, StructurePieceAccessor pPieces, Random random, Variant variant) {
+	public static void addPieces(StructureTemplateManager templateManager, BlockPos blockPos, Rotation rotation, StructurePieceAccessor pPieces, RandomSource random, Variant variant) {
 		pPieces.addPiece(new EtherionTowerPieces.Piece(templateManager, BOTTOM, blockPos, rotation, 0, variant));
 		pPieces.addPiece(new EtherionTowerPieces.Piece(templateManager, TOP, blockPos, rotation, 32, variant));
 
@@ -57,12 +54,12 @@ public class EtherionTowerPieces {
 	public static class Piece extends CustomTemplateStructurePiece {
 		private final Variant variant;
 
-		public Piece(StructureManager pStructureManager, ResourceLocation pLocation, BlockPos pPos, Rotation pRotation, int pDown, Variant variant) {
+		public Piece(StructureTemplateManager pStructureManager, ResourceLocation pLocation, BlockPos pPos, Rotation pRotation, int pDown, Variant variant) {
 			super(StructurePieceTypes.ETHERION_TOWER, 0, pStructureManager, pLocation, pLocation.toString(), makeSettings(pRotation, BlockPos.ZERO), makePosition(BlockPos.ZERO, pPos, pDown, Direction.UP));
 			this.variant = variant;
 		}
 
-		public Piece(StructureManager pStructureManager, CompoundTag pTag) {
+		public Piece(StructureTemplateManager pStructureManager, CompoundTag pTag) {
 			super(StructurePieceTypes.ETHERION_TOWER, pTag, pStructureManager, (p_162451_) -> {
 				return makeSettings(Rotation.valueOf(pTag.getString("Rot")), BlockPos.ZERO);
 			});
@@ -80,8 +77,7 @@ public class EtherionTowerPieces {
 		}
 
 		@Override
-		protected void handleDataMarker(String function, BlockPos pos, ServerLevelAccessor worldIn, Random rand, BoundingBox sbb) {
-			Holder<Biome> biome = worldIn.getBiome(pos);
+		protected void handleDataMarker(String function, BlockPos pos, ServerLevelAccessor worldIn, RandomSource rand, BoundingBox sbb) {
 			boolean flag = variant == Variant.ACROLEST;
 			EntityType<?>[] monster = (!flag) ? 
 					new EntityType<?>[] {EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.HUSK} : 
@@ -99,7 +95,7 @@ public class EtherionTowerPieces {
 				worldIn.setBlock(pos.below(2), Blocks.SPAWNER.defaultBlockState(), 3);
 				BlockEntity tileentity2 = worldIn.getBlockEntity(pos.below(2));
 				if (tileentity2 instanceof SpawnerBlockEntity) {
-					((SpawnerBlockEntity)tileentity2).getSpawner().setEntityId(monster[rand.nextInt(monster.length)]);
+					((SpawnerBlockEntity)tileentity2).setEntityId(monster[rand.nextInt(monster.length)], rand);
 				}
 
 				worldIn.setBlock(pos.below(5), Blocks.TNT.defaultBlockState(), 3);
@@ -126,7 +122,7 @@ public class EtherionTowerPieces {
 				worldIn.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
 				BlockEntity tileentity = worldIn.getBlockEntity(pos);
 				if (tileentity instanceof SpawnerBlockEntity) {
-					((SpawnerBlockEntity)tileentity).getSpawner().setEntityId(monster[rand.nextInt(monster.length)]);
+					((SpawnerBlockEntity)tileentity).setEntityId(monster[rand.nextInt(monster.length)], rand);
 				}
 			}
 			if ("spawner2".equals(function)) {
@@ -134,7 +130,7 @@ public class EtherionTowerPieces {
 				worldIn.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
 				BlockEntity tileentity = worldIn.getBlockEntity(pos);
 				if (tileentity instanceof SpawnerBlockEntity) {
-					((SpawnerBlockEntity)tileentity).getSpawner().setEntityId(monster[rand.nextInt(monster.length)]);
+					((SpawnerBlockEntity)tileentity).setEntityId(monster[rand.nextInt(monster.length)], rand);
 				}
 			}
 			if ("replace".equals(function)) {
@@ -144,19 +140,11 @@ public class EtherionTowerPieces {
 				} else if (variant == Variant.BADLANDS) {
 					replaceBlocks(worldIn, pos, Blocks.RED_SANDSTONE, Blocks.RED_SANDSTONE_STAIRS, Blocks.RED_SANDSTONE_SLAB, Blocks.ACACIA_LOG, Blocks.ACACIA_STAIRS, Blocks.ACACIA_SLAB);
 				}
-				if (!flag) {
-					if (checkType(biome, Biome.BiomeCategory.MESA)) {
-					}
-				} else {
+				if (flag) {
 					replaceBlocks(worldIn, pos, CBlocks.MEZEPINE_BRICKS, CBlocks.MEZEPINE_BRICK_STAIRS, CBlocks.MEZEPINE_BRICK_SLAB, CBlocks.MONORIS_LOG, CBlocks.MONORIS_STAIRS, CBlocks.MONORIS_SLAB);
 					replaceLights(worldIn, pos, CBlocks.PYRANITE_TORCH, CBlocks.PYRANITE_WALL_TORCH, CBlocks.PYRANITE_LANTERN);
 				}
 			}
-		}
-
-		@SuppressWarnings("deprecation")
-		public static boolean checkType(Holder<Biome> biome, Biome.BiomeCategory type) {
-			return type.equals(Biome.getBiomeCategory(biome));
 		}
 
 		public static void replaceBlocks(LevelAccessor worldIn, BlockPos pos, Block newBrickBlock, Block newBrickStairs, Block newBrickSlab, Block newLog, Block newWoodStairs, Block newWoodSlab) {
@@ -215,7 +203,7 @@ public class EtherionTowerPieces {
 		 * the end, it adds Fences...
 		 */
 		@Override
-		public void postProcess(WorldGenLevel seedReader, StructureFeatureManager mamager, ChunkGenerator chunkGenerator, Random randomIn, BoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn, BlockPos pos) {
+		public void postProcess(WorldGenLevel seedReader, StructureManager mamager, ChunkGenerator chunkGenerator, RandomSource randomIn, BoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn, BlockPos pos) {
 			StructurePlaceSettings placementsettings = makeSettings(this.placeSettings.getRotation(), BlockPos.ZERO);
 			BlockPos blockpos = BlockPos.ZERO;
 			BlockPos blockpos1 = this.templatePosition.offset(StructureTemplate.calculateRelativePosition(placementsettings, new BlockPos(3 - blockpos.getX(), 0, 0 - blockpos.getZ())));

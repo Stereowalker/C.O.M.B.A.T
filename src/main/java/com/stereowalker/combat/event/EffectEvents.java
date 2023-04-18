@@ -7,6 +7,7 @@ import com.stereowalker.combat.world.effect.CMobEffects;
 import com.stereowalker.combat.world.entity.CombatEntityStats;
 import com.stereowalker.combat.world.entity.ai.goal.FleeGoal;
 import com.stereowalker.combat.world.item.enchantment.CEnchantments;
+import com.stereowalker.unionlib.api.insert.InsertSetter;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,37 +21,29 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = "combat")
 public class EffectEvents {
-	@SubscribeEvent
-	public static void gravityPlusFall(LivingFallEvent event) {
-		LivingEntity living = event.getEntityLiving();
+	public static void gravityPlusFall(LivingEntity living, InsertSetter<Float> distance, InsertSetter<Float> damageMultiplier) {
 		boolean isActive = false;
 		if (living.hasEffect(CMobEffects.GRAVITY_PLUS)) isActive = true;
 		if(isActive) {
 			int amp = living.getEffect(CMobEffects.GRAVITY_PLUS).getAmplifier() + 1;
-			event.setDistance(((event.getDistance() * (0.08F * (1+(0.01F*amp)))) / 0.08F));
+			distance.set(((distance.get() * (0.08F * (1+(0.01F*amp)))) / 0.08F));
 		}
 	}
-	@SubscribeEvent
-	public static void gravityMinusFall(LivingFallEvent event) {
-		LivingEntity living = event.getEntityLiving();
+	public static void gravityMinusFall(LivingEntity living, InsertSetter<Float> distance, InsertSetter<Float> damageMultiplier) {
 		boolean isActive = false;
 		if (living.hasEffect(CMobEffects.GRAVITY_MINUS)) isActive = true;
 		if(isActive) {
 			int amp = living.getEffect(CMobEffects.GRAVITY_MINUS).getAmplifier() + 1;
-			event.setDistance(((event.getDistance() * (0.08F * (1+(-0.01F*amp)))) / 0.08F));
+			distance.set(((distance.get() * (0.08F * (1+(-0.01F*amp)))) / 0.08F));
 		}
 	}
 
-	@SubscribeEvent
-	public static void effectParalysis(LivingUpdateEvent event) {
-		LivingEntity living = event.getEntityLiving();
+	public static void effectParalysis(LivingEntity living) {
 		boolean isActive = false;
 		if (living.hasEffect(CMobEffects.PARALYSIS)) isActive = true;
 		if(isActive) {
@@ -62,10 +55,8 @@ public class EffectEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void effectVampirism(LivingUpdateEvent event) 
+	public static void effectVampirism(LivingEntity living) 
 	{
-		LivingEntity living = event.getEntityLiving();
 		Random rand = new Random();
 		boolean isActive = false;
 		if (living.hasEffect(CMobEffects.VAMPIRISM)) isActive = true;
@@ -111,9 +102,7 @@ public class EffectEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void effectFlammable(LivingUpdateEvent event) {
-		LivingEntity living = event.getEntityLiving();
+	public static void effectFlammable(LivingEntity living) {
 		boolean isActive = false;
 		if (living.hasEffect(CMobEffects.FLAMMABLE)) isActive = true;
 		if(isActive) {
@@ -125,9 +114,7 @@ public class EffectEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void effectFear(LivingUpdateEvent event) {
-		LivingEntity living = event.getEntityLiving();
+	public static void effectFear(LivingEntity living) {
 		if(!living.level.isClientSide) {
 			boolean isActive = false;
 			if (living.hasEffect(CMobEffects.FEAR)) isActive = true;
@@ -141,9 +128,7 @@ public class EffectEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void effectFrostbite(LivingUpdateEvent event) {
-		LivingEntity living = event.getEntityLiving();
+	public static void effectFrostbite(LivingEntity living) {
 		if(!living.level.isClientSide) {
 			boolean isActive = false;
 			if (living.hasEffect(CMobEffects.FROSTBITE)) isActive = true;
@@ -172,7 +157,7 @@ public class EffectEvents {
 	protected static boolean isInDaylight(LivingEntity mob) {
 		Random rand = new Random();
 		if (mob.level.isDay() && !mob.level.isClientSide) {
-			float f = mob.getBrightness();
+			float f = mob.getLightLevelDependentMagicValue();
 			BlockPos blockpos = mob.getVehicle() instanceof Boat ? (new BlockPos(mob.getX(), (double)Math.round(mob.getY()), mob.getZ())).above() : new BlockPos(mob.getX(), (double)Math.round(mob.getY()), mob.getZ());
 			if (f > 0.5F && rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && mob.level.canSeeSky(blockpos)) {
 				return true;

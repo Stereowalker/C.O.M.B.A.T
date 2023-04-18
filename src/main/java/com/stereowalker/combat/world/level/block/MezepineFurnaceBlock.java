@@ -1,7 +1,5 @@
 package com.stereowalker.combat.world.level.block;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import com.stereowalker.combat.core.particles.CParticleTypes;
@@ -15,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -55,7 +54,7 @@ public class MezepineFurnaceBlock extends AbstractFurnaceBlock {
 			if(tile == null) {
 			}
 			if(tile instanceof MezepineFurnaceBlockEntity) {
-				NetworkHooks.openGui((ServerPlayer)player, (MezepineFurnaceBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
+				NetworkHooks.openScreen((ServerPlayer)player, (MezepineFurnaceBlockEntity)tile, extraData -> {extraData.writeBlockPos(pos);});
 			}
 		}
 		return InteractionResult.SUCCESS;
@@ -75,7 +74,7 @@ public class MezepineFurnaceBlock extends AbstractFurnaceBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		if (stateIn.getValue(LIT)) {
 			double d0 = (double)pos.getX() + 0.5D;
 			double d1 = (double)pos.getY();

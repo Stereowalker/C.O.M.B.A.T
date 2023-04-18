@@ -1,20 +1,26 @@
 package com.stereowalker.combat.compat.jei;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
 import com.stereowalker.combat.Combat;
 import com.stereowalker.combat.client.gui.screens.inventory.AlloyFurnaceScreen;
 import com.stereowalker.combat.client.gui.screens.inventory.ArcaneWorkbenchScreen;
 import com.stereowalker.combat.client.gui.screens.inventory.FletchingScreen;
 import com.stereowalker.combat.world.inventory.AlloyFurnaceMenu;
 import com.stereowalker.combat.world.inventory.ArcaneWorkbenchMenu;
+import com.stereowalker.combat.world.inventory.CMenuType;
 import com.stereowalker.combat.world.inventory.FletchingMenu;
 import com.stereowalker.combat.world.inventory.WoodcutterMenu;
 import com.stereowalker.combat.world.item.CItems;
+import com.stereowalker.combat.world.item.crafting.AbstractAlloyFurnaceRecipe;
+import com.stereowalker.combat.world.item.crafting.AbstractArcaneWorkbenchRecipe;
 import com.stereowalker.combat.world.item.crafting.CRecipeSerializer;
 import com.stereowalker.combat.world.item.crafting.CRecipeType;
+import com.stereowalker.combat.world.item.crafting.FletchingRecipe;
 import com.stereowalker.combat.world.item.crafting.TippedArrowFletchingRecipe;
+import com.stereowalker.combat.world.item.crafting.WoodcuttingRecipe;
 import com.stereowalker.combat.world.level.block.CBlocks;
 
 import mezz.jei.api.IModPlugin;
@@ -27,12 +33,14 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
@@ -43,7 +51,7 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public ResourceLocation getPluginUid() {
-		return Combat.getInstance().location("recipe_handler");
+		return new ResourceLocation(Combat.MODID, "recipe_handler");
 	}
 
 	@Override
@@ -65,12 +73,12 @@ public class JEICompat implements IModPlugin {
 	@SuppressWarnings("resource")
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		Collection<Recipe<?>> collection = Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter((r) -> {
+		List<Recipe<?>> collection = Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter((r) -> {
 			return r.getType() == CRecipeType.FLETCHING && r.getSerializer() != CRecipeSerializer.FLETCHING_SPECIAL_TIPPEDARROW;	
 		}).collect(Collectors.toList());
 		for (Item arrow : CItems.ARROW_MAP.keySet()) {
 			for (Potion potion : ForgeRegistries.POTIONS) {
-				TippedArrowFletchingRecipe recipes = new TippedArrowFletchingRecipe(new ResourceLocation(arrow.getRegistryName().getPath()+"_"+potion.getRegistryName().getPath())) {
+				TippedArrowFletchingRecipe recipes = new TippedArrowFletchingRecipe(new ResourceLocation(BuiltInRegistries.ITEM.getKey(arrow).getPath()+"_"+BuiltInRegistries.POTION.getKey(potion).getPath()), CraftingBookCategory.EQUIPMENT) {
 					@Override
 					public NonNullList<Ingredient> getIngredients() {
 						NonNullList<Ingredient> ingredients = NonNullList.create();
@@ -93,18 +101,18 @@ public class JEICompat implements IModPlugin {
 				collection.add(recipes);
 			}
 		}
-		registration.addRecipes(collection, FletchingCategory.UID);
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(r -> r.getType() == CRecipeType.WOODCUTTING).collect(Collectors.toList()), WoodcuttingCategory.UID);
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(r -> r.getType() == CRecipeType.ALLOY_SMELTING).collect(Collectors.toList()), AlloySmeltingCategory.UID);
-		registration.addRecipes(Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(r -> r.getType() == CRecipeType.ARCANE_CONVERSION).collect(Collectors.toList()), ArcaneConversionCategory.UID);
+		registration.addRecipes(FletchingCategory.UID, Lists.newArrayList(collection.toArray(new FletchingRecipe[] {})));
+		registration.addRecipes(WoodcuttingCategory.UID, Lists.newArrayList(Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(r -> r.getType() == CRecipeType.WOODCUTTING).collect(Collectors.toList()).toArray(new WoodcuttingRecipe[] {})));
+		registration.addRecipes(AlloySmeltingCategory.UID, Lists.newArrayList(Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(r -> r.getType() == CRecipeType.ALLOY_SMELTING).collect(Collectors.toList()).toArray(new AbstractAlloyFurnaceRecipe[] {})));
+		registration.addRecipes(ArcaneConversionCategory.UID, Lists.newArrayList(Minecraft.getInstance().level.getRecipeManager().getRecipes().stream().filter(r -> r.getType() == CRecipeType.ARCANE_CONVERSION).collect(Collectors.toList()).toArray(new AbstractArcaneWorkbenchRecipe[] {})));
 	}
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-		registration.addRecipeTransferHandler(AlloyFurnaceMenu.class, AlloySmeltingCategory.UID, 0, 3, 6, 9*4);
-		registration.addRecipeTransferHandler(FletchingMenu.class, FletchingCategory.UID, 1, 3, 4, 9*4);
-		registration.addRecipeTransferHandler(WoodcutterMenu.class, WoodcuttingCategory.UID, 0, 1, 2, 9*4);
-		registration.addRecipeTransferHandler(ArcaneWorkbenchMenu.class, ArcaneConversionCategory.UID, 1, 5, 6, 9*4);
+		registration.addRecipeTransferHandler(AlloyFurnaceMenu.class, CMenuType.ALLOY_FURNACE, AlloySmeltingCategory.UID, 0, 3, 6, 9*4);
+		registration.addRecipeTransferHandler(FletchingMenu.class, CMenuType.FLETCHING, FletchingCategory.UID, 1, 3, 4, 9*4);
+		registration.addRecipeTransferHandler(WoodcutterMenu.class, CMenuType.WOODCUTTER, WoodcuttingCategory.UID, 0, 1, 2, 9*4);
+		registration.addRecipeTransferHandler(ArcaneWorkbenchMenu.class, CMenuType.ARCANE_WORKBENCH, ArcaneConversionCategory.UID, 1, 5, 6, 9*4);
 	}
 
 	@Override

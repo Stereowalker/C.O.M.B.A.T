@@ -8,7 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.phys.Vec3;
 
 public class ExplosionTrapSpell extends AbstractTrapSpell {
@@ -20,7 +20,7 @@ public class ExplosionTrapSpell extends AbstractTrapSpell {
 	@Override
 	public boolean extensionProgram(LivingEntity caster, Entity target, double strength, Vec3 location, InteractionHand hand) {
 		if (!caster.level.isClientSide) {
-			caster.level.explode(caster, location.x, location.y, location.z, Mth.ceil(strength), false, Explosion.BlockInteraction.BREAK);
+			caster.level.explode(caster, location.x, location.y, location.z, Mth.ceil(strength), false, ExplosionInteraction.TNT);
 		}
 		return true;
 	}

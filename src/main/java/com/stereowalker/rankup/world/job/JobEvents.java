@@ -4,7 +4,6 @@ import java.util.Map.Entry;
 
 import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.api.job.Job;
-import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerJobsPacket;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
@@ -12,13 +11,12 @@ import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.ChatType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,10 +25,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 
 public class JobEvents {
-	public static void playerToClient(ServerPlayer player) {
-		new ClientboundPlayerJobsPacket(player).send(player);
-	}
-	
 	public static void registerEntityStats(ServerPlayer entity) {
 		PlayerJobs.addLevelsOnSpawn(entity);
 	}
@@ -47,18 +41,18 @@ public class JobEvents {
 			Job job = entry.getValue();
 			boolean madeChange = false;
 			JobProfile jobProfile = PlayerJobs.getJobProfile(player, entry.getKey());
-			ResourceLocation statToTrack = player.getLevel().registryAccess().registryOrThrow(Registry.CUSTOM_STAT_REGISTRY).get(job.getStatToTrack());
+			ResourceLocation statToTrack = player.getLevel().registryAccess().registryOrThrow(Registries.CUSTOM_STAT).get(job.getStatToTrack());
 			int statValue = player.getStats().getValue(Stats.CUSTOM, statToTrack);
-			MutableComponent jobName = new TranslatableComponent(Util.makeDescriptionId("job", entry.getKey().location()));
-			MutableComponent jobDesc = new TranslatableComponent(Util.makeDescriptionId("job", entry.getKey().location())+".desc");
+			MutableComponent jobName = Component.translatable(Util.makeDescriptionId("job", entry.getKey().location()));
+			MutableComponent jobDesc = Component.translatable(Util.makeDescriptionId("job", entry.getKey().location())+".desc");
 			//If they meet the specified criteria...
 			if (statToTrack != null) {
 				if (!jobProfile.hasJob()) {
 					//Give the player the job
 					if (statValue >= job.getAmountToUnlock()) {
 						jobProfile.giveJob();
-						list.broadcastMessage(new TranslatableComponent("chat.job.earned", player.getDisplayName(), jobDisplay(jobName, jobDesc)), ChatType.SYSTEM, Util.NIL_UUID);
-						PlayerSkills.grantSkill(player, CombatRegistries.SKILLS.getValue(job.jobSkills.get(0)), SkillGrantReason.JOB);
+						list.broadcastSystemMessage(Component.translatable("chat.job.earned", player.getDisplayName(), jobDisplay(jobName, jobDesc)), false);
+						PlayerSkills.grantSkill(player, CombatRegistries.SKILLS.get().getValue(job.jobSkills.get(0)), SkillGrantReason.JOB);
 						madeChange = true;
 					}
 				} else {
@@ -73,9 +67,9 @@ public class JobEvents {
 					if (jobProfile.getLevel() < job.getMaximumLevel() && jobProfile.getExperience() >= job.levels.get(jobProfile.getLevel()-1)) {
 						jobProfile.addLevel(1);
 						int jobLevel = jobProfile.getLevel();
-						list.broadcastMessage(new TranslatableComponent("chat.job.upgraded", player.getDisplayName(), jobDisplay(jobName, jobDesc), jobLevel), ChatType.SYSTEM, Util.NIL_UUID);
+						list.broadcastSystemMessage(Component.translatable("chat.job.upgraded", player.getDisplayName(), jobDisplay(jobName, jobDesc), jobLevel), false);
 						if (job.jobSkills.size() >= jobLevel && job.jobSkills.get(jobLevel-1) != null) {
-							PlayerSkills.grantSkill(player, CombatRegistries.SKILLS.getValue(job.jobSkills.get(jobLevel-1)), SkillGrantReason.JOB);
+							PlayerSkills.grantSkill(player, CombatRegistries.SKILLS.get().getValue(job.jobSkills.get(jobLevel-1)), SkillGrantReason.JOB);
 						}
 						madeChange = true;
 					}

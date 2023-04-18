@@ -1,10 +1,11 @@
 package com.stereowalker.combat.client.renderer.entity;
 
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.stereowalker.combat.world.entity.projectile.AbstractMagicProjectile;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,15 +26,15 @@ public abstract class AbstractMagicProjectileRenderer<T extends AbstractMagicPro
 	@Override
 	public void render(T entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		matrixStackIn.pushPose();
-		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
-		matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
+		matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
+		matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
 		float f9 = (float)entityIn.arrowShake - partialTicks;
 		if (f9 > 0.0F) {
 			float f10 = -Mth.sin(f9 * 3.0F) * f9;
-			matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(f10));
+			matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f10));
 		}
 
-		matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(45.0F));
+		matrixStackIn.mulPose(Axis.XP.rotationDegrees(45.0F));
 		matrixStackIn.scale(0.05625F, 0.05625F, 0.05625F);
 		matrixStackIn.translate(-4.0D, 0.0D, 0.0D);
 		VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutout(this.getTextureLocation(entityIn)));
@@ -50,7 +51,7 @@ public abstract class AbstractMagicProjectileRenderer<T extends AbstractMagicPro
 		this.vertex(matrix4f, matrix3f, ivertexbuilder, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, packedLightIn);
 
 		for(int j = 0; j < 4; ++j) {
-			matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+			matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
 			this.vertex(matrix4f, matrix3f, ivertexbuilder, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, packedLightIn);
 			this.vertex(matrix4f, matrix3f, ivertexbuilder, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, packedLightIn);
 			this.vertex(matrix4f, matrix3f, ivertexbuilder, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, packedLightIn);

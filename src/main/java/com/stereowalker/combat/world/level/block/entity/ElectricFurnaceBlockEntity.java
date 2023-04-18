@@ -4,7 +4,6 @@ import com.stereowalker.combat.world.inventory.ElectricFurnaceMenu;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -16,7 +15,7 @@ public class ElectricFurnaceBlockEntity extends AbstractElectricFurnaceBlockEnti
    }
 
    protected Component getDefaultName() {
-      return new TranslatableComponent("container.electric_furnace");
+      return Component.translatable("container.electric_furnace");
    }
 
    protected AbstractContainerMenu createMenu(int id, Inventory player) {

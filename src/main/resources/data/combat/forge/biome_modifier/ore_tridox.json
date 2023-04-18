@@ -1,0 +1,5 @@
+{
+  "type": "combat:custom",
+  "biomes": "#combat:has_feature/ore_tridox",
+  "feature": "combat:ore_tridox"
+}
