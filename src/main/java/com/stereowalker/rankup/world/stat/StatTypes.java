@@ -13,6 +13,6 @@ public class StatTypes {
 	
 	public static void registerAll(RegisterHelper<StatType> registry) {
 		registry.register(DEFAULT_KEY, new DefaultStat());
-		registry.register(VITALITY_KEY, new VitalityStat2());
+		registry.register(VITALITY_KEY, new VitalityStat());
 	}
 }

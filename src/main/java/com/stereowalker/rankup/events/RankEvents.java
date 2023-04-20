@@ -2,7 +2,9 @@ package com.stereowalker.rankup.events;
 
 import com.stereowalker.combat.Combat;
 import com.stereowalker.rankup.network.protocol.game.ClientboundEntityStatsPacket;
+import com.stereowalker.rankup.network.protocol.game.ClientboundNearbyPlayerStatsPacket;
 import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerJobsPacket;
+import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerStatsPacket;
 import com.stereowalker.rankup.skill.SkillsEvents;
 import com.stereowalker.rankup.world.job.JobEvents;
 import com.stereowalker.rankup.world.stat.PlayerAttributeLevels;
@@ -36,8 +38,11 @@ public class RankEvents {
 					new ClientboundPlayerJobsPacket(player).send(player);
 				}
 			}
-			if (living instanceof ServerPlayer) {
-				StatEvents.playerToClient((ServerPlayer) living);
+			if (living instanceof ServerPlayer player) {
+				new ClientboundPlayerStatsPacket(player).send(player);
+				for (ServerPlayer other : living.level.getEntitiesOfClass(ServerPlayer.class, living.getBoundingBox().inflate(40))) {
+					new ClientboundNearbyPlayerStatsPacket(other).send(player);
+				}
 			} else if (!(living instanceof Player)){
 				for (ServerPlayer player : living.level.getEntitiesOfClass(ServerPlayer.class, living.getBoundingBox().inflate(40))) {
 					new ClientboundEntityStatsPacket(living).send(player);

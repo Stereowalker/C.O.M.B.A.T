@@ -11,6 +11,6 @@ public class Stats {
 	public static final ResourceKey<Stat> VITALITY_KEY = ResourceKey.create(CombatRegistries.STATS_REGISTRY, new ResourceLocation("combat:vitality"));
 	
 	public static void registerAll(RegisterHelper<Stat> registry) {
-		registry.register(VITALITY_KEY, new VitalityStat());
+		registry.register(VITALITY_KEY, new Vitality());
 	}
 }

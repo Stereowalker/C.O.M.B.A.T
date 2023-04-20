@@ -36,10 +36,6 @@ public class StatEvents {
 		PlayerAttributeLevels.addLevelsOnSpawn(entity);
 	}
 
-	public static void playerToClient(ServerPlayer player) {
-		new ClientboundPlayerStatsPacket(player).send(player);
-	}
-
 	public static void sendStatsToClient(ServerPlayer player) {
 		for (ResourceKey<Stat> stat : Rankup.statsManager.STATS.keySet()) {
 			new ClientboundStatManagerPacket(stat.location(), Rankup.statsManager.STATS.get(stat)).send(player);

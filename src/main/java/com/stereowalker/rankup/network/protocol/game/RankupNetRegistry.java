@@ -6,6 +6,7 @@ import com.stereowalker.unionlib.api.collectors.PacketCollector;
 public class RankupNetRegistry {
 	public static void registerMessages(PacketCollector collector) {
 		collector.registerPacket(ClientboundPlayerJobsPacket.class, (packetBuffer) -> {return new ClientboundPlayerJobsPacket(packetBuffer);});
+		collector.registerPacket(ClientboundNearbyPlayerStatsPacket.class, ClientboundNearbyPlayerStatsPacket::new);
 		collector.registerPacket(ClientboundEntityStatsPacket.class, (packetBuffer) -> {return new ClientboundEntityStatsPacket(packetBuffer);});
 		collector.registerPacket(ClientboundPlayerLevelUpPacket.class, (packetBuffer) -> {return new ClientboundPlayerLevelUpPacket(packetBuffer);});
 		collector.registerPacket(ClientboundPlayerStatsPacket.class, (packetBuffer) -> {return new ClientboundPlayerStatsPacket(packetBuffer);});
