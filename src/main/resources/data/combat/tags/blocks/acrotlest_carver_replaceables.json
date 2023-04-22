@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "combat:purified_dirt",
+    "combat:biable",
     "minecraft:coarse_dirt",
     "minecraft:podzol",
     "combat:mezepine",

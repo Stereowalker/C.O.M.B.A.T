@@ -46,6 +46,7 @@
 	"combat:connector",
 	"combat:mezepine",
 	"combat:slyaphy",
-	"combat:cobbled_slyaphy"
+	"combat:cobbled_slyaphy",
+	"combat:disenchanting_table"
   ]
 }

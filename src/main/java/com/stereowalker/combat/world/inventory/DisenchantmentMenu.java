@@ -10,6 +10,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -38,6 +41,7 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 	};
 	private final ContainerLevelAccess worldCallable;
 	private int power = 0;
+	private final DataSlot disecnhantCost = DataSlot.standalone();
 
 	public DisenchantmentMenu(int id, Inventory player) {
 		this(id, player, ContainerLevelAccess.NULL);
@@ -63,20 +67,19 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 			public boolean mayPlace(ItemStack stack) {
 				return false;
 			}
+			
+			@Override
+			public boolean mayPickup(Player pPlayer) {
+				return pPlayer.experienceLevel >= DisenchantmentMenu.this.disecnhantCost.get();
+			}
 
-			/**
-			 * Return whether this slot's stack can be taken from this slot.
-			 */
-			//			public boolean canTakeStack(Player playerIn) {
-			//				return (playerIn.abilities.isCreativeMode || playerIn.experienceLevel >= RepairContainer.this.maximumCost.get()) && RepairContainer.this.maximumCost.get() > 0 && this.hasItem();
-			//			}
-			//
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onTake(Player thePlayer, ItemStack stack) {
 				if (DisenchantmentMenu.this.inputSlots.getItem(0).getItem() == Items.ENCHANTED_BOOK && DisenchantmentMenu.this.inputSlots.getItem(1).getItem() == Items.BOOK) {
-					ItemStack encBook = new ItemStack(Items.ENCHANTED_BOOK);
-					ListTag enchantList = EnchantedBookItem.getEnchantments(DisenchantmentMenu.this.inputSlots.getItem(0));
+					ItemStack encBook = DisenchantmentMenu.this.inputSlots.getItem(0).copy();
+					ListTag enchantList = EnchantedBookItem.getEnchantments(encBook);
+					encBook.getOrCreateTag().put("StoredEnchantments", new ListTag());
 					Map<Enchantment, Integer> enchMap = Maps.newHashMap();
 					for (int i = 1; i < enchantList.size(); i++) {
 						CompoundTag compoundnbt = enchantList.getCompound(i);
@@ -86,14 +89,14 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 					}
 					EnchantmentHelper.setEnchantments(enchMap, encBook);
 					DisenchantmentMenu.this.inputSlots.setItem(0, encBook);
-				} else {
+				} else
 					DisenchantmentMenu.this.inputSlots.setItem(0, ItemStack.EMPTY);
-				}
 				if (DisenchantmentMenu.this.inputSlots.getItem(1).getCount() > 1) {
 					DisenchantmentMenu.this.inputSlots.getItem(1).shrink(1);
-				} else {
+				} else
 					DisenchantmentMenu.this.inputSlots.setItem(1, ItemStack.EMPTY);
-				}
+				thePlayer.giveExperienceLevels(-DisenchantmentMenu.this.disecnhantCost.get());
+				thePlayer.level.playSound((Player)null, thePlayer.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, thePlayer.level.random.nextFloat() * 0.1F + 0.9F);
 			}
 		});
 
@@ -106,6 +109,7 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 		for(int k = 0; k < 9; ++k) {
 			this.addSlot(new Slot(p_i50102_2_, k, 8 + k * 18, 142));
 		}
+		this.addDataSlot(this.disecnhantCost).set(0);
 	}
 
 	@Override
@@ -133,8 +137,8 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 					}
 				}
 				this.power = (int) power;
+				this.disenchant();
 			});
-			this.disenchant();
 		}
 		super.slotsChanged(inventoryIn);
 	}
@@ -146,25 +150,29 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 		if (input1.isEnchanted() && input2.getItem() == Items.BOOK) {
 			ListTag enchantList = input1.getEnchantmentTags();
 			ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
-			System.out.println("POWER "+power);
-			int pow = Mth.ceil(this.power/10) == 0 ? 1 : Mth.ceil(this.power/10);
+			System.out.println("POWERZ "+power+" "+Mth.ceil((float)this.power/11.0f));
+			int pow = Mth.ceil((float)this.power/10.0f) == 0 ? 1 : Mth.ceil((float)this.power/10.0f);
 			for (int i = 0; i < pow; i++) {
 				CompoundTag compoundnbt = enchantList.getCompound(i);
 				BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
 					EnchantedBookItem.addEnchantment(enchantedBook, new EnchantmentInstance(enc, compoundnbt.getInt("lvl")));
 				});
 			}
+			this.disecnhantCost.set(Math.min(pow, enchantList.size()));
 			this.outputSlot.setItem(0, enchantedBook);
 		}
-		if (input1.getItem() == Items.ENCHANTED_BOOK && input2.getItem() == Items.BOOK) {
-			//			EnchantedBookItem book = (EnchantedBookItem)input1.getItem();
-			//			EnchantedBookItem.getEnchantments(input1);
+		else if (input1.getItem() == Items.ENCHANTED_BOOK && input2.getItem() == Items.BOOK) {
 			ListTag enchantList = EnchantedBookItem.getEnchantments(input1);
-			CompoundTag compoundnbt = enchantList.getCompound(0);
-			BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
-				//	        	 enchMap.put(enc, compoundnbt.getInt("lvl"));
-				this.outputSlot.setItem(0, EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enc, compoundnbt.getInt("lvl"))));
-			});
+			if (enchantList.size() > 1) {
+				CompoundTag compoundnbt = enchantList.getCompound(0);
+				this.disecnhantCost.set(2);
+				BuiltInRegistries.ENCHANTMENT.getOptional(ResourceLocation.tryParse(compoundnbt.getString("id"))).ifPresent((enc) -> {
+					this.outputSlot.setItem(0, EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enc, compoundnbt.getInt("lvl"))));
+				});
+			}
+		}
+		else {
+			this.disecnhantCost.set(0);
 		}
 	}
 
@@ -203,5 +211,9 @@ public class DisenchantmentMenu extends AbstractContainerMenu {
 		}
 
 		return itemstack;
+	}
+	
+	public int getDisenchantCost() {
+		return this.disecnhantCost.get();
 	}
 }

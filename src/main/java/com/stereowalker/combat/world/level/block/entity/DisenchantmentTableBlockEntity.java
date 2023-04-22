@@ -107,7 +107,7 @@ public class DisenchantmentTableBlockEntity extends BlockEntity implements Namea
 
 	@Override
 	public Component getName() {
-		return (Component)(this.name != null ? this.name : Component.translatable("container.enchant"));
+		return (Component)(this.name != null ? this.name : Component.translatable("container.disenchant"));
 	}
 
 	public void setCustomName(@Nullable Component pName) {

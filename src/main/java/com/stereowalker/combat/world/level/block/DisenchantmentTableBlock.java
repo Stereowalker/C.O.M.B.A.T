@@ -23,6 +23,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EnchantmentTableBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -56,28 +57,12 @@ public class DisenchantmentTableBlock extends BaseEntityBlock {
 	@Override
 	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
 		super.animateTick(stateIn, worldIn, pos, rand);
-
-		for(int i = -2; i <= 2; ++i) {
-			for(int j = -2; j <= 2; ++j) {
-				if (i > -2 && i < 2 && j == -1) {
-					j = 2;
-				}
-
-				if (rand.nextInt(16) == 0) {
-					for(int k = 0; k <= 1; ++k) {
-						BlockPos blockpos = pos.offset(i, k, j);
-						if (worldIn.getBlockState(blockpos).getEnchantPowerBonus(worldIn, pos) > 0) {
-							if (!worldIn.isEmptyBlock(pos.offset(i / 2, 0, j / 2))) {
-								break;
-							}
-
-							worldIn.addParticle(ParticleTypes.ENCHANT, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D, (double)((float)i + rand.nextFloat()) + 0.5D, (double)((float)k + rand.nextFloat() + 1.0F), (double)((float)j - rand.nextFloat()) + 0.5D);
-						}
-					}
-				}
-			}
-		}
-
+		
+		for(BlockPos blockpos : EnchantmentTableBlock.BOOKSHELF_OFFSETS) {
+	         if (rand.nextInt(16) == 0 && EnchantmentTableBlock.isValidBookShelf(worldIn, pos, blockpos)) {
+	        	 worldIn.addParticle(ParticleTypes.ENCHANT, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.0D, (double)pos.getZ() + 0.5D, (double)((float)blockpos.getX() + rand.nextFloat()) + 0.5D, (double)((float)blockpos.getY() - rand.nextFloat() + 1.0F), (double)((float)blockpos.getZ() + rand.nextFloat()) + 0.5D);
+	         }
+	      }
 	}
 
 	@Override

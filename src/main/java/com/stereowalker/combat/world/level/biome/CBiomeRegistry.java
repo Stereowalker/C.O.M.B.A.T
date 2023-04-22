@@ -25,11 +25,6 @@ public class CBiomeRegistry {
 		BiomeManager.addBiome(BiomeType.ICY, new BiomeEntry(CBiomes.ACROTLEST_MOUNTAINS, 0));
 		BiomeManager.addBiome(BiomeType.ICY, new BiomeEntry(CBiomes.ACROTLEST_RIVER, 0));
 		BiomeManager.addBiome(BiomeType.ICY, new BiomeEntry(CBiomes.HISOV_SANDS, 0));
-//		Registry.register(Registry.BIOME_SOURCE, "combat:acrotlest", AcrotlestBiomeSource.CODEC);
-//		
-//		for(Pair<String,ConfiguredSurfaceBuilder<?>> configuredSurfaceBuilder: CSurfaceBuilders.CONFIGURED_SURFACE_BUILDERS) {
-//			BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, Combat.getInstance().locationString(configuredSurfaceBuilder.getKey()), configuredSurfaceBuilder.getValue());
-//		}
 	}
 	
 	public static void bootstrap(BootstapContext<Biome> pContext) {
