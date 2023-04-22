@@ -58,7 +58,7 @@ public class Spells {
 	public static final Spell STORM = register("storm", new StormSpell(SpellCategory.LIGHTNING, Rank.GOD, CastType.SELF, 20.0F, 150, 20));
 //----------------------------------------[Restoration]----------------------------------------\\
 	//Novice
-	public static final Spell REGENERATION = register("regeneration", new EffectSpell(SpellCategory.RESTORATION, Rank.NOVICE, 1.64F, MobEffects.REGENERATION, 0, 20));
+	public static final Spell REGENERATION = register("regeneration", new EffectSpell(SpellCategory.RESTORATION, Rank.NOVICE, 3.28F, MobEffects.REGENERATION, 0, 20));
 	//Apprentice
 	public static final Spell HEALING = register("healing", new HealingSpell(SpellCategory.RESTORATION, Rank.APPRENTICE, CastType.SELF, 5.0F, 10, 20));
 	//Advanced
