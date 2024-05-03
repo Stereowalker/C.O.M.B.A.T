@@ -2,6 +2,9 @@ package com.stereowalker.combat.world.level.block.entity;
 
 import javax.annotation.Nullable;
 
+import com.stereowalker.combat.world.item.WireItem;
+import com.stereowalker.combat.world.item.WireItem.Type;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -9,10 +12,13 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class ConnectorBlockEntity extends BlockEntity {
 	private BlockPos connection;
+	private WireItem.Type cable;
+	private boolean wasFirst;
 
 	public ConnectorBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(CBlockEntityType.CONNECTOR, pWorldPosition, pBlockState);
@@ -95,7 +101,7 @@ public class ConnectorBlockEntity extends BlockEntity {
 					}
 				}
 			} else {
-				pBlockEntity.setConnection(null);
+				pBlockEntity.setConnection(null, false, Type.NONE);
 			}
 		}
 	}
@@ -103,7 +109,7 @@ public class ConnectorBlockEntity extends BlockEntity {
 	@Override
 	public void load(CompoundTag compound) {
 		super.load(compound);
-		this.setConnection(new BlockPos(compound.getInt("conX"), compound.getInt("conY"), compound.getInt("conZ")));
+		this.setConnection(new BlockPos(compound.getInt("conX"), compound.getInt("conY"), compound.getInt("conZ")), compound.getBoolean("isFirst"), WireItem.Type.values()[compound.getInt("cableType")]);
 	}
 
 	@Override
@@ -113,6 +119,8 @@ public class ConnectorBlockEntity extends BlockEntity {
 			compound.putInt("conX", this.getConnection().getX());
 			compound.putInt("conY", this.getConnection().getY());
 			compound.putInt("conZ", this.getConnection().getZ());
+			compound.putBoolean("isFirst", this.wasFirst);
+			compound.putInt("cableType", this.cable.ordinal());
 		}
 	}
 
@@ -121,8 +129,14 @@ public class ConnectorBlockEntity extends BlockEntity {
 		return this.getConnection();
 	}
 
-	public void setConnection(BlockPos connection) {
+	public void setConnection(BlockPos connection, boolean wasFirst, WireItem.Type cable) {
 		this.connection = connection;
+		this.wasFirst = wasFirst;
+		this.cable = cable;
+	}
+
+	public boolean isFirst() {
+		return wasFirst;
 	}
 
 	public boolean isConnected() {
@@ -152,15 +166,23 @@ public class ConnectorBlockEntity extends BlockEntity {
 		this.load(pkt.getTag());
 	}
 
-	public Vec3 getLeashOffset() {
-		return new Vec3(0.0D, /*(double)this.getEyeHeight()*/0.4D, (double)(/*this.getBbWidth()*/5.0D * 0.4F));
+	public Vec3 getWireEndPos() {
+		return new Vec3(0.5D, 0.7D, 0.5D);
 	}
 
-	public Vec3 getRopeHoldPosition() {
-		return new Vec3(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ()).add(0.0D, /*(double)this.eyeHeight*/0.4D * 0.7D, 0.0D);
+	public Vec3 getWireStartPos() {
+		return new Vec3(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ()).add(0.5D, 0.7D, 0.5D);
 	}
 
 	public Vec3 getEyePosition(float pPartialTicks) {
 		return new Vec3(this.getBlockPos().getX(), this.getBlockPos().getY() + 0.4F, this.getBlockPos().getZ());
-		}
+	}
+	
+	public WireItem.Type cable() {return cable;}
+	
+	//FORGE:
+	@Override
+	public AABB getRenderBoundingBox() {
+		return INFINITE_EXTENT_AABB;
+	}
 }

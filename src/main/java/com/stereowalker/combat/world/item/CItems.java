@@ -588,7 +588,8 @@ public class CItems {
 	public static final Item ETHERION_SHOVEL = register("etherion_shovel", new ShovelItem(CTiers.ETHERION, 1.5F, -3.0F, new Item.Properties().fireResistant()));
 
 
-	public static final Item COPPER_WIRE = register("copper_wire", new WireItem(new Item.Properties()));
+	public static final Item COPPER_WIRE = register("copper_wire", new WireItem(WireItem.Type.COPPER, new Item.Properties()));
+	public static final Item MYTHRIL_WIRE = register("mythril_wire", new WireItem(WireItem.Type.MYTHRIL, new Item.Properties()));
 	//Food
 	public static final Item CORN = register("corn", new Item(new Item.Properties().food(CFoodProperties.CORN)));
 	public static final Item ROAST_CORN = register("roast_corn", new Item(new Item.Properties().food(CFoodProperties.ROAST_CORN)));

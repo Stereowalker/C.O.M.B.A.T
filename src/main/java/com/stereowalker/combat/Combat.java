@@ -734,6 +734,7 @@ public class Combat extends MinecraftMod implements PacketHolder
 			populator.getOutput().accept(CItems.MYTHRIL_CHARGER);
 			populator.getOutput().accept(CItems.LIGHT_SABER);
 			populator.getOutput().accept(CItems.COPPER_WIRE);
+			populator.getOutput().accept(CItems.MYTHRIL_WIRE);
 		}
 		if (populator.getTab() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
 			populator.getOutput().accept(CItems.BRONZE_SHEARS);
