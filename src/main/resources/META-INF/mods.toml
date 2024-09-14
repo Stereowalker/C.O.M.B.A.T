@@ -35,7 +35,7 @@ Concept Of Magic, Battle And Technology, or in short, C.O.M.B.A.T, is a mod that
 [[dependencies.combat]]
     modId="unionlib"
     mandatory=true
-    versionRange="[9.0.0, 9.1.0)"
+    versionRange="[9.0.1, 9.1.0)"
     ordering="NONE"
     side="BOTH"
 	
