@@ -8,16 +8,15 @@ import com.stereowalker.combat.api.registries.CombatRegistries;
 import com.stereowalker.rankup.Rankup;
 import com.stereowalker.rankup.api.stat.Stat;
 import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerLevelUpPacket;
-import com.stereowalker.rankup.network.protocol.game.ClientboundPlayerStatsPacket;
 import com.stereowalker.rankup.network.protocol.game.ClientboundStatManagerPacket;
 import com.stereowalker.rankup.skill.Skills;
 import com.stereowalker.rankup.skill.api.PlayerSkills;
 import com.stereowalker.rankup.skill.api.PlayerSkills.SkillGrantReason;
+import com.stereowalker.unionlib.util.RegistryHelper;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
@@ -134,7 +133,7 @@ public class StatEvents {
 				}
 
 				statSettings.getAttributeMap().forEach((attributeKey, modifierPerPoint) -> {
-					Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(attributeKey);
+					Attribute attribute = RegistryHelper.attributes().get(attributeKey);
 					
 					double baseValue = modifierPerPoint.doubleValue() * addition;
 
@@ -166,10 +165,10 @@ public class StatEvents {
 				Attribute attribute = registry.get(stat).getBaseAttribute();
 				if (Rankup.statsManager.STATS.get(stat) != null) {
 					if (attribute != null
-							&& Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(BuiltInRegistries.ATTRIBUTE.getKey(attribute)) 
+							&& Rankup.statsManager.STATS.get(stat).getAttributeMap().containsKey(RegistryHelper.attributes().getKey(attribute)) 
 							&& DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).hasAttribute(attribute)) {
 						double baseValue = DefaultAttributes.getSupplier((EntityType<? extends LivingEntity>) entity.getType()).getBaseValue(attribute);
-						return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(BuiltInRegistries.ATTRIBUTE.getKey(attribute)));
+						return Mth.ceil(baseValue / Rankup.statsManager.STATS.get(stat).getAttributeMap().get(RegistryHelper.attributes().getKey(attribute)));
 					}
 				} else {
 					Combat.debug(stat+"' settings are not set");
@@ -192,7 +191,7 @@ public class StatEvents {
 				statSettings.getAttributeMap().forEach((attribute, modifierPerPoint) -> {
 
 					double baseValue = modifierPerPoint.doubleValue() * points;
-					stat.getValue().getType().init(entity, BuiltInRegistries.ATTRIBUTE.get(attribute), baseValue, points);
+					stat.getValue().getType().init(entity, RegistryHelper.attributes().get(attribute), baseValue, points);
 				});
 			else
 				Combat.debug(stat+"' settings are not set");
